@@ -1,0 +1,124 @@
+.PreviewButton__container{
+    display: flex;
+    -webkit-box-align: center;
+    -moz-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    margin-bottom: 1em;
+    margin-left: 1em;
+    min-height: 2em;
+}
+
+.PreviewButton__float-left-container{
+    float: left;
+    position: absolute;
+    left: 0px;
+    bottom: 0px;
+    z-index: 1000;
+    padding: 5px;
+}
+
+.PreviewButton__float-right-container{
+    float: right;
+    position: absolute;
+    right: 0px;
+    bottom: 0px;
+    z-index: 1000;
+    padding: 5px;
+}
+
+.PreviewButton__float-top-right-container{
+    float: right;
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    z-index: 1000;
+    padding: 5px;
+}
+
+.PlayButton__primary-color{
+    background-color: white;
+    color: black;
+}
+
+.PlayButton__primary-button{
+    border: 0px;
+    border-radius: 4px;
+    cursor: pointer;
+    padding: 0.8rem;
+    position: relative;
+}
+
+.PlayButton__secondary-color{
+    border-width: 2px;
+    background-color: rgba(42,42,42,.6);
+    border-color: rgba(255,255,255,.5);
+}
+
+
+.PlayButton__secondary-button{
+    border-radius: 80px;
+    cursor: pointer;
+    padding: 0.8rem;
+    position: relative;
+}
+
+.PlayButton__close-color{
+    background-color: rgba(42,42,42,.6);
+}
+
+.PlayButton__close-button{
+    border: 0px;
+    border-radius: 80px;
+    cursor: pointer;
+    padding: 0.8rem;
+    position: relative;
+}
+
+.PlayButton__primary-text{
+    font-family: "Netflix Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    display: block;
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+.PlayButton__primary-text-transform{
+    float: right;
+    transform: translateY(0.25rem);
+}
+
+.PlayIcon_icon {
+    height: 2rem;
+    width: 2rem;
+}
+
+.PlayIcon_icon-container {
+    display: inline-block;
+}
+
+.AddIcon_icon {
+    color: white;
+    height: 2rem;
+    width: 2rem;
+}
+
+.CloseIcon_icon {
+    color: white;
+    height: 2rem;
+    width: 2rem;
+}
+
+// Custom Bootstrap
+.plr-2 {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+}
+
+.ml-2{
+    margin-left: 0.5rem;
+}
+
+.mr-2{
+    margin-right: 0.5rem;
+}

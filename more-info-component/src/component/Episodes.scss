@@ -1,0 +1,216 @@
+.episodesSelector__header{
+    display: flex;
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+    -webkit-box-align: baseline;
+    align-items: baseline;
+}
+
+.episodesSelector__label{
+    font-weight: 700;
+    font-size: 24px;
+    margin-top: 48px;
+    margin-bottom: 20px;
+}
+
+.episodesSelector__dropdown{
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.episodesSelector__container{
+    display: flex;
+    flex-wrap: wrap;
+    -webkit-box-pack: start;
+    justify-content: flex-start;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    flex-direction: column;
+}
+
+.titleCardList__container{
+    border-top: 1px solid #404040; //Only first one
+    border-bottom: 1px solid #404040;
+    padding: 1em;
+    border-radius: .25em;
+    overflow: hidden;
+    cursor: pointer;
+    position: relative;
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+}
+
+.titleCard_title_index{
+    font-size: 1.5em;
+    color: #d2d2d2;
+    display: flex;
+    -webkit-box-pack: center;
+    justify-content: center;
+    -webkit-box-flex: 0;
+    flex: 0 0 7%;
+}
+
+.titleCard_imageWrapper{
+    position: relative;
+    overflow: hidden;
+    -webkit-box-flex: 0;
+    flex: 0 0 18%;
+    border-radius: 4px;
+
+    img {
+        max-width: 100%;
+        display: block;
+    }
+}
+
+.titleCardList__metadataWrapper{
+    min-height: 100%;
+    -webkit-box-flex: 0;
+    flex: 0 0 70%;
+    font-size: 1em;
+}
+
+.titleCardList__title {
+    padding: 1em;
+    padding-bottom: .5em;
+    display: flex;
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+}
+
+.titleCard__title_text{
+    color: #fff;
+    font-size: 1em;
+    font-weight: 700;
+    overflow-wrap: anywhere;
+}
+
+.duration{
+    padding-left: 10px;
+}
+
+.titleCard-synopsis{
+    padding: 0 1em 1em;
+    margin: 0;
+    color: #d2d2d2;
+}
+.previewModal__small-text{
+    font-size: 14px;
+    line-height: 20px;
+}
+
+.dropdown-toggle.season-toggle{
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    min-width: 4em;
+    position: relative;
+    font-size: 1.5em;
+    background-color: rgb(36, 36, 36);
+    padding: 0.5em 1em;
+    color: white;
+    cursor: pointer;
+    border: 0.1em solid rgb(77, 77, 77);
+    border-radius: 0.2em;
+}
+
+.section__container {
+
+}
+
+.moreLikeThis__container{
+    display: grid;
+    grid-gap: 1em;
+    -webkit-box-align: stretch;
+    align-items: stretch;
+    justify-items: stretch;
+    grid-template-columns: repeat(3,1fr);
+}
+
+.titleCard__container.more-like-this-item {
+    margin: .1em;
+    height: 100%;
+    -webkit-box-flex: 0;
+    flex: 0 0 31%;
+    min-height: 22em;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    border-radius: .25em;
+}
+
+.titleCard__container .titleCard-imageWrapper {
+    position: relative;
+    overflow: hidden;
+}
+
+.titleCard__metadataWrapper{
+    background-color: #2f2f2f;
+    min-height: 100%;
+}
+
+.videoMetadata--container-container{
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+    padding: 1em;
+}
+
+.videoMetadata--container{
+    padding: 0;
+    min-width: unset;
+}
+
+.videoMetadata--container .videoMetadata--first-line {
+    max-width: 100%;
+    margin: .25em .5em .25em 0;
+}
+
+.match-score{
+    max-width: 300px;
+    opacity: 1;
+    transition: max-width 550ms cubic-bezier(.86,0,.07,1) 1.65s,opacity 150ms linear 2.2s;
+    white-space: unset;
+    color: #46d369;
+    font-weight: 700;
+    display: inline-block;
+}
+
+.titleCard__container .titleCard-imageWrapper img {
+    width: 100%;
+    display: block;
+}
+
+.has-smaller-buttons{
+    border: 1px solid rgba(124, 124, 124, 0.7);
+    color: white;
+    border-radius: 999px;
+}
+
+.ltr-dguo2f{
+    height: 1.8rem;
+    width: 1.8rem;
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    justify-content: center;
+}
+
+.titleCard-synopsis.previewModal--small-text{
+    padding: 0 1em 1em;
+    margin: 0;
+    color: #d2d2d2;
+    font-size: 14px;
+    line-height: 20px;
+}
+
+.titleCard__container .titleCard--metadataWrapper {
+    background-color: #2f2f2f;
+    min-height: 60%;
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+}

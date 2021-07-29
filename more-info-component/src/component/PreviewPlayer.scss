@@ -1,0 +1,7 @@
+.position-relative {
+    position: relative;
+}
+
+.mask-image {
+    -webkit-mask-image: -webkit-gradient(linear, left 90%, left bottom, from(rgba(0,0,0,1)), to(rgba(0,0,0,0)))
+}
