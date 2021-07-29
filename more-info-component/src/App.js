@@ -1,11 +1,11 @@
 import './App.css';
 
-import PreviewPopup from './component/PreviewPopup';
+import SliderComponent from './component/SliderComponent';
 
 function App() {
   return (
     <div>
-      <PreviewPopup/>
+      <SliderComponent/>
     </div>
   );
 }

@@ -1,0 +1,130 @@
+$itemGrow: 1.2;
+$duration: 250ms;
+
+.black-bg{
+    background-color:black;
+}
+
+.row-header-title{
+    font-size: 1.4vw;
+    color: #e5e5e5;
+    font-weight: 700;
+    margin: 0 4% .5em 4%;
+    text-decoration: none;
+    display: inline-block;
+    min-width: 6em;
+}
+
+.see-all-link {
+    display: inline-block;
+    font-size: .9vw;
+    margin-right: 4px;
+    max-width: 0;
+    line-height: .8vw;
+    -webkit-transition: max-width 1s,opacity 1s,-webkit-transform 750ms;
+    transition: max-width 1s,opacity 1s,-webkit-transform 750ms;
+    -o-transition: max-width 1s,opacity 1s,-o-transform 750ms;
+    -moz-transition: max-width 1s,opacity 1s,transform 750ms,-moz-transform 750ms;
+    transition: max-width 1s,opacity 1s,transform 750ms;
+    transition: max-width 1s,opacity 1s,transform 750ms,-webkit-transform 750ms,-moz-transform 750ms,-o-transform 750ms;
+    white-space: nowrap;
+    vertical-align: bottom;
+    cursor: pointer;
+    opacity: 0;
+}
+
+.aro-row-chevron {
+    display: none;
+    -webkit-transition: -webkit-transform 750ms;
+    transition: -webkit-transform 750ms;
+    -o-transition: -o-transform 750ms;
+    -moz-transition: transform 750ms,-moz-transform 750ms;
+    transition: transform 750ms;
+    transition: transform 750ms,-webkit-transform 750ms,-moz-transform 750ms,-o-transform 750ms;
+    font-size: .9vw;
+    vertical-align: bottom;
+}
+
+.icon-akiraCaretRight:before {
+    content: '\e658';
+}
+
+html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    margin: 0;
+    background-color: #000;
+    font-family: Arial;
+  }
+  
+  h1 {
+    color: red;
+    text-align: center;
+  }
+  
+  .wrapper {
+    display: grid;
+    grid-template-columns: repeat(3,100%);
+    overflow:hidden;
+    scroll-behavior: smooth;
+  
+    section {
+      width: 100%;
+      position: relative;
+      display: grid;
+      grid-template-columns: repeat(5, auto);
+      margin: 20px 0;
+      
+      .item {
+        position: relative;
+        padding: 0 2px;
+        transition: $duration all;
+        
+        &:hover { 
+          margin: 0 40px;
+          transform: scale(1.2);
+        }
+  
+  
+        .heading {
+          position: absolute;
+          bottom: 20px;
+          left: 20px;
+          color: #fff;
+        }
+  
+        .duration {
+          position: absolute;
+          bottom: 0;
+          left: 20px;
+          color: #fff;
+        }
+        
+      }
+  
+      .arrow__btn {
+        position: absolute;
+        color: #fff;
+        text-decoration: none;
+        font-size: 6em;
+        background:rgb(0,0,0);
+        width: 80px;
+        padding: 20px;
+        text-align: center;
+        z-index: 1;
+      }
+  
+      .left-arrow {
+        top:0; bottom:0; left:0;
+        background: linear-gradient(-90deg, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 100%);
+      }
+      
+      .right-arrow {
+        top:0; bottom:0; right: 0;
+        background: linear-gradient(90deg, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 100%);
+      }
+  
+    }
+  }
