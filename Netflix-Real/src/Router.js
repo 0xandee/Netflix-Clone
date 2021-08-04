@@ -12,6 +12,10 @@ import './App.css'
 import SignIn from "./views/SignIn";
 import CustomInput from "./components/CustomInput";
 import ForgotPassword from "./views/ForgotPassword";
+import Registration from "./views/Registration";
+import RegistrationForm from "./views/RegistrationForm";
+import SignUp from "./views/SignUp";
+import PlanForm from "./views/PlanForm";
 
 
 export default function WebRouter() {
@@ -23,13 +27,19 @@ export default function WebRouter() {
                     <Route path="/profile">
                         <Profile1 />
                     </Route>
+                    <Route path="/regform">
+                                <RegistrationForm />
+                            </Route>
                     <Route path="/">
 
                         <div className='App'>
                             {/* <SignIn /> */}
                             {/* <ForgotPassword/> */}
-                            
-                            <NavigationBar />
+                            {/* <Registration /> */}
+                            {/* <RegistrationForm/> */}
+                            <PlanForm/>
+                            {/* <SignUp /> */}
+                            {/* <NavigationBar /> */}
 
                         </div>
                         <Switch>
@@ -45,9 +55,18 @@ export default function WebRouter() {
                             <Route path="/popular">
                                 <NewAndPopular />
                             </Route>
-                            <Router path='/home'>
+                            <Route path='/home'>
                                 <Home />
-                            </Router>
+                            </Route>
+                            <Route path="/registration">
+                                <Registration />
+                            </Route>
+                            
+                            <Route path='/signup'>
+                                <Switch>
+
+                                </Switch>
+                            </Route>
                         </Switch>
                     </Route>
                 </Switch>
