@@ -48,7 +48,7 @@ const linkFooterData = [
 
 ]
 
-const Footer = () => {
+const Footer = (props) => {
     const [languages, setLanguages] = useState(languagesData);
     const [linkFooters, setLinkFooters] = useState(linkFooterData);
     const [isOpen, setOpen] = useState(false);
@@ -61,7 +61,7 @@ const Footer = () => {
     }
     return (
         <div id='footer'>
-            <div className={`footer`}>
+            <div className={`footer`} style={props.style}>
                 <div className={`footer__content`}>
                     <div className={`footer__content--top-site`}>
                         <NavLink to='/contact'>

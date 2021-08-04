@@ -1,0 +1,50 @@
+$itemGrow: 1.2;
+$duration: 250ms;
+
+.black-bg{
+    background-color:black;
+}
+
+.row-header-title{
+    font-size: 1.4vw;
+    color: #e5e5e5;
+    font-weight: 700;
+    margin: 0 4% .5em 4%;
+    text-decoration: none;
+    display: inline-block;
+    min-width: 6em;
+}
+
+.see-all-link {
+    display: inline-block;
+    font-size: .9vw;
+    margin-right: 4px;
+    max-width: 0;
+    line-height: .8vw;
+    -webkit-transition: max-width 1s,opacity 1s,-webkit-transform 750ms;
+    transition: max-width 1s,opacity 1s,-webkit-transform 750ms;
+    -o-transition: max-width 1s,opacity 1s,-o-transform 750ms;
+    -moz-transition: max-width 1s,opacity 1s,transform 750ms,-moz-transform 750ms;
+    transition: max-width 1s,opacity 1s,transform 750ms;
+    transition: max-width 1s,opacity 1s,transform 750ms,-webkit-transform 750ms,-moz-transform 750ms,-o-transform 750ms;
+    white-space: nowrap;
+    vertical-align: bottom;
+    cursor: pointer;
+    opacity: 0;
+}
+
+.aro-row-chevron {
+    display: none;
+    -webkit-transition: -webkit-transform 750ms;
+    transition: -webkit-transform 750ms;
+    -o-transition: -o-transform 750ms;
+    -moz-transition: transform 750ms,-moz-transform 750ms;
+    transition: transform 750ms;
+    transition: transform 750ms,-webkit-transform 750ms,-moz-transform 750ms,-o-transform 750ms;
+    font-size: .9vw;
+    vertical-align: bottom;
+}
+
+.icon-akiraCaretRight:before {
+    content: '\e658';
+}

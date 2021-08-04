@@ -51,7 +51,6 @@ const NavigationBar = (props) => {
         const handleScroll = () => {
             currentScrollY = window.scrollY
             currentScrollY > 0 ? setOnTopPage(true) : setOnTopPage(false);
-            console.log("🚀 ~ file: NavBar.js ~ line 52 ~ handleScroll ~ currentScrollY", currentScrollY > 0)
         };
 
         window.addEventListener("scroll", handleScroll, { passive: true });

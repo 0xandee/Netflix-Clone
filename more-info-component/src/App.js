@@ -1,13 +1,11 @@
 import './App.css';
-// eslint-disable-next-line
-import PreviewPopup from './component/PreviewPopup';
-import Slider from './component/Slider';
+
+import SliderComponent from './component/SliderComponent';
 
 function App() {
   return (
     <div>
-      <Slider/>
-      {/* <PreviewPopup/> */}
+      <SliderComponent/>
     </div>
   );
 }
