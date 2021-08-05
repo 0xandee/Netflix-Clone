@@ -20,9 +20,6 @@ const SignUp = () => {
                 </div>
 
                 <div className={`sign-up__header`}>
-                    {/* <img className={`sign-up__header__logo`}
-                        src='https://pixinvent.com/demo/vuexy-vuejs-admin-dashboard-template/demo-1/img/logo.36f34a9f.svg' alt='logo'
-                    /> */}
                     <IconNetflix className={'sign-up__header__logo'} />
                     <Link >
                         Sign Out

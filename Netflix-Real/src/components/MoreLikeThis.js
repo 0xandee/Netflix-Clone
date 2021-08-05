@@ -1,5 +1,5 @@
 import React from 'react';
-import './Episodes.scss';
+import '../scss/Episodes.scss';
 
 import MoreLikeThisItem from './MoreLikeThisItem';
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import './PreviewButtonControl.scss'
+import '../scss/PreviewButtonControl.scss'
 
 import PlayButton from './PlayButton'
 import AddButton from './AddButton'

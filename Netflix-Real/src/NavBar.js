@@ -6,6 +6,7 @@ import CustomDropdown from './components/Dropdown';
 import * as Icon from 'react-feather';
 import classnames from 'classnames'
 import CustomNotification from './components/CustomNotification';
+import IconNetflix from './assets/Icon/ic_netflix';
 
 //import classnames from 'classnames'
 
@@ -64,9 +65,10 @@ const NavigationBar = (props) => {
             <div className= {`nav-bar ${onToppage && 'top-page'} ${isOpen && 'top-page'}`}
             >
                 <div className='div-navigation'>
-                    <img className='brand-logo'
+                    {/* <img className='brand-logo'
                         src='https://pixinvent.com/demo/vuexy-vuejs-admin-dashboard-template/demo-1/img/logo.36f34a9f.svg' alt='logo'
-                    />
+                    /> */}
+                    <IconNetflix className='brand-logo'/>
                     {width > 865 ?
                         <React.Fragment>
                             <div className='tab-navigation'>

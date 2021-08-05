@@ -1,5 +1,5 @@
 import React from 'react';
-import './PreviewButtonControl.scss';
+import '../scss/PreviewButtonControl.scss';
 
 const DislikeButton = () => {
     return (
