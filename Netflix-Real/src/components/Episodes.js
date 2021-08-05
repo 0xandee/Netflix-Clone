@@ -1,5 +1,5 @@
 import React from 'react';
-import './Episodes.scss';
+import '../scss/Episodes.scss';
 
 import EpisodeItem from './EpisodeItem';
 import EpisodeSelector from './EpisodeSelector';

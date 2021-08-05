@@ -1,5 +1,5 @@
 import React from 'react';
-import './PreviewInfo.scss';
+import '../scss/PreviewInfo.scss';
 
 const DetailInfoMetadata = () => {
     return (

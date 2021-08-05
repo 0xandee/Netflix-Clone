@@ -1,10 +1,11 @@
 #navbar .brand-logo {
-    height: 20px;
+    height: 28px;
     font-size: 25px;
     margin-right: 40px;
+    fill: #e50914;
 }
 .nav-bar {
-    position: relative;
+    position: fixed;
     width: 100%;
     top: 0;
     padding: 1% 2%;
@@ -14,10 +15,10 @@
     flex-direction: row;
     justify-content: space-between;
     box-sizing: border-box;
-    background: #000000;
+    background-color: #000000;
     background: linear-gradient(to top, rgba(0,0,0,0), rgba(0,0,0,0.8));
     transition: background-color 0.4s;
-
+    z-index: 2;
     &.top-page {
         position: fixed;
         background: black;

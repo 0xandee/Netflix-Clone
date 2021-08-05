@@ -34,7 +34,7 @@
     transition: height 0.4s;
     &.open {
       display: block;
-      height: 300px;
+      height: max-content;
     }
     .dropdown-content {
       display: none;

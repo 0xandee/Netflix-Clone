@@ -1,5 +1,5 @@
 import React from 'react';
-import './PreviewPopup.scss';
+import '../scss/PreviewPopup.scss';
 import PreviewPlayer from './PreviewPlayer';
 import PreviewInfo from './PreviewInfo';
 

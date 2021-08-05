@@ -1,5 +1,5 @@
 import React from 'react';
-import './PreviewInfo.scss';
+import '../scss/PreviewInfo.scss';
 
 import DetailInfoMetadata from './DetailInfoMetadata';
 import DetailInfoTags from './DetailInfoTags';

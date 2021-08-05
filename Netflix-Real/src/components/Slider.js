@@ -6,15 +6,15 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/swiper.min.css";
 import "swiper/components/navigation/navigation.min.css"
 
-import './Slider.scss';
 
 // import Swiper core and required modules
 import SwiperCore, {
-  Navigation
+    Navigation
 } from 'swiper/core';
 
-import './PreviewButtonControl.scss';
-import './PreviewInfo.scss';
+import '../scss/Slider.scss';
+import '../scss/PreviewButtonControl.scss';
+import '../scss/PreviewInfo.scss';
 import PlayButton from './PlayButton';
 import AddButton from './AddButton';
 import LikeButton from './LikeButton';
@@ -26,9 +26,6 @@ SwiperCore.use([Navigation]);
 const Slider = () => {
     return (
         <div className="blackBg">
-            <header class="header">
-                <img src="https://assets.stickpng.com/images/580b57fcd9996e24bc43c529.png" alt="Netflix" class="headerLogo"/>
-            </header>
             <div className="billboard">
                 <div className="hero-image-wrapper">
                     <img class="hero static-image image-layer" src="https://occ-0-395-325.1.nflxso.net/dnm/api/v6/6AYY37jfdO6hpXcMjf9Yu5cnmO0/AAAABYc72Xn4KxiSlpUDG8BMuyUWBb_6o7OR-51Nz0ucjOemsjDqJRkKgPpGDeuCJIZM9mrNoChvYsV-EERaCnryX0IqbOXs.jpg?r=37c" alt="aaa"/>

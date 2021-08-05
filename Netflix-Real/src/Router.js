@@ -16,7 +16,7 @@ import Registration from "./views/Registration";
 import RegistrationForm from "./views/RegistrationForm";
 import SignUp from "./views/SignUp";
 import PlanForm from "./views/PlanForm";
-
+import Slider from "./components/Slider";
 
 export default function WebRouter() {
 
@@ -37,9 +37,9 @@ export default function WebRouter() {
                             {/* <ForgotPassword/> */}
                             {/* <Registration /> */}
                             {/* <RegistrationForm/> */}
-                            <PlanForm/>
+                            {/* <PlanForm/> */}
                             {/* <SignUp /> */}
-                            {/* <NavigationBar /> */}
+                            <NavigationBar />
 
                         </div>
                         <Switch>
@@ -76,7 +76,7 @@ export default function WebRouter() {
 }
 
 function Home() {
-    return <h2>Home</h2>;
+    return <Slider />;
 }
 
 function TVShow() {

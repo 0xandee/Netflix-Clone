@@ -1,5 +1,5 @@
 import React from 'react';
-import './PreviewPlayer.scss';
+import '../scss/PreviewPlayer.scss';
 import PreviewButtonControl from './PreviewButtonControl';
 
 const PreviewPlayer = () => {
