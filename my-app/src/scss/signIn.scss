@@ -1,0 +1,147 @@
+$blackOpacity1: rgba(0, 0, 0, 0.75);
+$red: #e50914;
+$gray: #8c8c8c;
+
+#signIn .sign-in {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+
+    height: 100%;
+    width: 100%;
+
+    overflow: hidden;
+
+    z-index: 0;
+
+    background-color: $blackOpacity1;
+    &__background-image {
+        position: absolute;
+        display: block;
+
+        height: 100%;
+        min-height: 120vh;
+        width: 100%;
+
+        overflow: hidden;
+
+        z-index: -1;
+
+        background-size: cover;
+        &__image-style {
+            min-height: 100%;
+            min-width: 100%;
+        
+        }
+    }
+    &__header {
+        position: absolute;
+        top: 0;
+
+        width: 100%;
+
+        padding: 10px 15px;
+
+        border-bottom: transparent;
+        .sign-in__header__logo {
+            height: 90px;
+            margin-left: 3%;
+        }
+    }
+    &__body {
+        max-width: 450px;
+        min-height: 100vh;
+
+        margin: 0 auto -236px;
+        padding: 0 5%;
+
+        background-color: transparent;
+
+        &::before {
+            content: "";
+            height: 91px;
+            display: block;
+        }
+        &::after {
+            content: "";
+            height: 236px;
+            display: block;
+        }
+        &__content {
+            box-sizing: border-box;
+            flex-direction: column;
+            display: flex;
+
+            min-height: 660px;
+            width: 100%;
+
+            padding: 40px 68px;
+            margin-bottom: 90px;
+
+            border-radius: 4px;
+
+            background-color: $blackOpacity1;
+            &__main {
+                box-sizing: border-box;
+                display: flex;
+                flex-direction: column;
+
+                width: 100%;
+                min-height: 515px;
+
+                padding: 20px 0 30px;
+
+                span {
+                    color: $gray;
+                    font-size: 12px;
+
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                }
+                a {
+                    text-decoration: none;
+                    color: #757575;
+                    font-size: 12px;
+                    &:hover{
+                        text-decoration: underline; 
+                    }
+                }
+
+                &__title {
+                    color: #fff;
+                    font-size: 32px;
+                    font-weight: 700;
+
+                    margin-bottom: 28px;
+                }
+
+                &__button-sign-in {
+                    width: 100%;
+
+                    margin: 24px 0;
+                    padding: 16px;
+
+                    border-radius: 4px;
+
+                    background-color: $red;
+                    span {
+                        font-size: 16px;
+                        font-weight: 700;
+                        color: #fff;
+
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                    }
+                }
+                .sign-up{
+                    color: #fff;
+                    font-weight: 400;
+                    margin-left: 5px;
+                }
+
+            }
+        }
+    }
+}
