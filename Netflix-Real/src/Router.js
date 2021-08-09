@@ -9,9 +9,9 @@ import {
 } from "react-router-dom";
 
 import './App.css'
-import { Slider,NavBar, NavigationBar, } from "./components/index";
+import { Slider,NavBar, NavigationBar, VideoPlayer, } from "./components/index";
 
-import { ForgotPassword, PlanForm, Registration, RegistrationForm, SignUp, SignIn } from "./views/index";
+import { ForgotPassword, PlanForm, Registration, RegistrationForm, SignUp, SignIn, MoviePlayer } from "./views/index";
 
 
 export default function WebRouter() {
@@ -35,7 +35,9 @@ export default function WebRouter() {
                             {/* <RegistrationForm/> */}
                             {/* <PlanForm /> */}
                             {/* <SignUp /> */}
-                            <NavigationBar />
+                            {/* <NavigationBar /> */}
+                            <VideoPlayer />
+                            {/* <MoviePlayer/> */}
 
                         </div>
                         <Switch>
