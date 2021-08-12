@@ -9,9 +9,9 @@ import {
 } from "react-router-dom";
 
 import './App.css'
-import { Slider,NavBar, NavigationBar, VideoPlayer, } from "./components/index";
+import { Slider,NavBar, NavigationBar, } from "./components/index";
 
-import { ForgotPassword, PlanForm, Registration, RegistrationForm, SignUp, SignIn, MoviePlayer } from "./views/index";
+import { ForgotPassword, PlanForm, Registration, RegistrationForm, SignUp, SignIn, VideoPlayer } from "./views/index";
 
 
 export default function WebRouter() {

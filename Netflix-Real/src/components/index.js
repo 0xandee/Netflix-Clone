@@ -23,8 +23,6 @@ import PreviewInfo from './PreviewInfo';
 import PreviewPlayer from './PreviewPlayer';
 import PreviewPopup from './PreviewPopup';
 import Slider from './Slider';
-import VideoPlayer from './VideoPlayer';
-import ToolTip from './Tooltip';
 
 export {
     About, AddButton, 
@@ -37,5 +35,4 @@ export {
     NavigationBar,
     PlayButton, PreviewPopup, PreviewPlayer, PreviewButtonControl, PreviewInfo,
     Slider,
-    VideoPlayer,
 }
