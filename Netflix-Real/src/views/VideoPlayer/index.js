@@ -10,13 +10,14 @@ import './style.scss'
 let count = 0;
 //https://www.example.com/url_to_video.mp4
 ///https://player.vimeo.com/external/194837908.sd.mp4?s=c350076905b78c67f74d7ee39fdb4fef01d12420&profile_id=164
+// http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4
 const VideoPlayer = () => {
     const [played, setPlayed] = useState(0);
     const [loaded, setLoaded] = useState(0);
     const [playing, setPlaying] = useState(false);
     const [muted, setMuted] = useState(false);
     const [seeking, setSeeking] = useState(false);
-    const [url, setUrl] = useState('https://player.vimeo.com/external/194837908.sd.mp4?s=c350076905b78c67f74d7ee39fdb4fef01d12420&profile_id=164');
+    const [url, setUrl] = useState('http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4');
     const [duration, setDuration] = useState(0);
     const [volume, setVolume] = useState(0.8);
     const playerRef = useRef(null);

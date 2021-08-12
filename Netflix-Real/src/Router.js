@@ -21,9 +21,13 @@ export default function WebRouter() {
             <div >
                 <Switch>
                     <Route path="/signin">
-                        <SignIn />
+                        {/* <SignIn /> */}
                         {/* <LanguageSetup /> */}
                         {/* <ForgotPassword /> */}
+                    </Route>
+
+                    <Route path="/watch">
+                        <VideoPlayer/>
                     </Route>
 
                     <Route path="/signup">
