@@ -1,7 +1,7 @@
 import React, { createRef, useCallback, useEffect, useRef, useState } from "react";
 import { findDOMNode } from "react-dom";
 import ReactPlayer from "react-player";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { Progress, Tooltip } from "reactstrap";
 import screenfull from "screenfull";
 import { IconBackArrow, IconFullScreen, IconLayer, IconNext10s, IconPause, IconPauseCircle, IconPlay, IconPlayCircle, IconRewind10s, IconSetting, IconSkip, IconVolume, IconVolumeMute } from "../../assets/Icon";
@@ -12,6 +12,7 @@ let count = 0;
 ///https://player.vimeo.com/external/194837908.sd.mp4?s=c350076905b78c67f74d7ee39fdb4fef01d12420&profile_id=164
 // http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4
 const VideoPlayer = () => {
+    const history = useHistory(); // Navigate back to the previous state
     const [played, setPlayed] = useState(0);
     const [loaded, setLoaded] = useState(0);
     const [playing, setPlaying] = useState(false);
@@ -30,7 +31,6 @@ const VideoPlayer = () => {
 
     const toggleRewind = () => setIconRewind(!iconRewind);
     const toggleNext = () => setIconNext(!iconNext);
-
     const handleStop = () => {
         setUrl(null);
         setPlaying(false);
@@ -219,10 +219,10 @@ const VideoPlayer = () => {
                 </div>
                 <div ref={controlRef} style ={{transition: 'all 0.5s'}}>
 
-                    <Link className={`video-player__top`}>
+                    <div className={`video-player__top`} onClick={() => history.goBack()}>
                         <IconBackArrow className={'video-player__top__icon-back'} />
                         <span>Back to Browse</span>
-                    </Link>
+                    </div>
                     <div className={`video-player__bottom`}>
                         <div className={`video-player__bottom__bar-container`}>
                             <div className={`video-player__bottom__bar-container__bar`}>
