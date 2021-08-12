@@ -1,8 +1,9 @@
 .App {
   
   /* background: linear-gradient(to bottom, #5b5b5b 0%, #595959 30%, #faffff 0%); */
-  height: 100%;
-  width: 100%;
+  height: 100vh;
+  width: 100vw;
+  overflow-x: hidden;
 }
 
 .App-logo {

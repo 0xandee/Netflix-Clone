@@ -11,7 +11,7 @@ import {
 import './App.css'
 import { Slider,NavBar, NavigationBar, } from "./components/index";
 
-import { ForgotPassword, PlanForm, Registration, RegistrationForm, SignUp, SignIn } from "./views/index";
+import { ForgotPassword, PlanForm, Registration, RegistrationForm, SignUp, SignIn, VideoPlayer } from "./views/index";
 
 
 export default function WebRouter() {
@@ -30,12 +30,14 @@ export default function WebRouter() {
 
                         <div className='App'>
                             {/* <SignIn /> */}
-                            {/* <ForgotPassword /> */}
+                            <ForgotPassword />
                             {/* <Registration /> */}
                             {/* <RegistrationForm/> */}
                             {/* <PlanForm /> */}
                             {/* <SignUp /> */}
-                            <NavigationBar />
+                            {/* <NavigationBar /> */}
+                            {/* <VideoPlayer /> */}
+                            
 
                         </div>
                         <Switch>
