@@ -18,13 +18,6 @@ const RegistrationForm = () => {
             <div className={`reg-form`}>
                 <div className='reg-form__background-image'>
                 </div>
-
-                <div className={`reg-form__header`}>
-                    <IconNetflix className={'reg-form__header__logo'} />
-                    <Link >
-                        Sign In
-                    </Link>
-                </div>
                 <div className={`reg-form__body`}>
                     <div className={`reg-form__body__content`}>
                         <div className={`reg-form__body__content__main`}>
@@ -58,7 +51,7 @@ const RegistrationForm = () => {
                                 </span>
                             </div>
 
-                            <NavLink to='/signup/regform'>
+                            <NavLink to='/signup/chooseplan'>
                                 <button className={`reg-form__body__content__main__button-next`} >
                                     <span>Next
                                     </span>

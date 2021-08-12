@@ -31,10 +31,13 @@ const CustomInput = (props) => {
             <div className={`custom-input`}>
                 <div className={`custom-input__form`}>
                     <div className={`custom-input__form__input ${isError && `error`}`} style={{...props.style}} >
-                        <input type={props.type} ref={textInput} onFocus={onFocus} onBlur={onBlur}  style={props.textStyle}/>
+                        <input type={props.type} ref={textInput} onFocus={onFocus} onBlur={onBlur}  style={props.textStyle} autoComplete="new-password"/>
+
                         <label className={`custom-input__form__input__placehoder-label ${isFocus && 'focus-input'}`}>{props.label}</label>
+
                         {isError && <label  className={`custom-input__form__input__error-label`}>{props.placeHolder}</label>}
-                        {props.type ==='password' && <button className='' onClick={btnRevealClicked}>
+
+                        {props.type ==='password' && <button className='mr-2' onClick={btnRevealClicked}>
                             {isReveal ?
                                 <Icon.EyeOff color='#8c8c8c' />
                                 :

@@ -2,7 +2,7 @@ $blackOpacity1: rgba(0, 0, 0, 0.75);
 $red: #e50914;
 $gray: #8c8c8c;
 
-#registration .registration {
+#langSetup .registration {
     position: relative;
     display: flex;
     flex-direction: column;
@@ -75,9 +75,16 @@ $gray: #8c8c8c;
 
         background-color: transparent;
 
+        .submitBtnContainer{
+            margin-top: 24px;
+            text-align: center;
+            max-width: 440px;
+            margin: 0 auto;
+        }
+
         &::before {
             content: "";
-            height: 20vh;
+            height: 10vh;
             display: block;
         }
         &::after {
@@ -91,7 +98,7 @@ $gray: #8c8c8c;
             display: flex;
 
             min-height: 80vh;
-            max-width: 340px;
+            // max-width: 340px;
             width: 100%;
 
             margin-bottom: 10vh;
@@ -106,11 +113,81 @@ $gray: #8c8c8c;
                 display: flex;
                 flex-direction: column;
                 align-items: center;
-                text-align: center;
-
+                text-align: left;
                 width: 100%;
-
                 padding: 20px 0 30px;
+
+                &__languages-container{
+                    max-width: 50vw;
+                    @media screen and (min-width: 1024px){
+                        column-count: 4;
+                    }
+                    @media screen and (max-width: 1024px){
+                        column-count: 2;
+                    }
+                    li {
+                        display: flex;
+                        page-break-inside: avoid;
+                        overflow: hidden;
+                        .ui-binary-input{
+                            position: relative;
+                            display: flex;
+                            align-items: center;
+                            min-height: 2.8em;
+                            box-sizing: border-box;
+                            padding-left: 36px;
+                            font-size: 16px;
+                            max-width: 500px;
+                            text-transform: capitalize;
+                            .allLanguages_ms{
+                                position: absolute;
+                                top: 0;
+                                left: 0;
+                                opacity: 0;
+                            }
+                            label{
+                                margin: 0;
+                                padding: 0;
+                                position: relative;
+                                display: block;
+                                line-height: 1.2;
+                                &::before{
+                                    top: 50%;
+                                    margin-top: -14px;
+                                    width: 25px;
+                                    height: 25px;
+                                    content: "";
+                                    position: absolute;
+                                    display: block;
+                                    left: -36px;
+                                    padding: 0;
+                                    border: 1px solid black;
+                                    background-color: #fff;
+                                }
+                                .language{
+                                    color: black;
+                                }
+                            }
+                            label.checked{
+                                &::after{
+                                    top: 50%;
+                                    margin-top: -6px;
+                                    display: block;
+                                    position: absolute;
+                                    left: -30px;
+                                    height: 6px;
+                                    width: 14px;
+                                    color: #0071eb;
+                                    content: "";
+                                    border-bottom: 4px solid;
+                                    border-left: 4px solid;
+                                    transform: rotate(-45deg);
+                                }
+                            }
+                        }
+                    }
+                }
+
                 &__image-devices {
                     max-width: 260px;
                     margin: 3vh 0;
@@ -125,10 +202,10 @@ $gray: #8c8c8c;
                     font-weight: 700;
                     margin: 0 0 0.4em;
                     color: #333;
+                    
                 }
                 &__step-content {
                     font-size: 18px;
-                    max-width: 300px;
                     display: inline-block;
                     color: #333;
                 }

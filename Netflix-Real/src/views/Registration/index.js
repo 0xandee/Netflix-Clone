@@ -17,13 +17,6 @@ const Registration = () => {
             <div className={`registration`}>
                 <div className='registration__background-image'>
                 </div>
-
-                <div className={`registration__header`}>
-                    <IconNetflix className={'registration__header__logo'} />
-                    <Link >
-                        Sign Out
-                    </Link>
-                </div>
                 <div className={`registration__body`}>
                     <div className={`registration__body__content`}>
                         <div className={`registration__body__content__main`}>
@@ -40,7 +33,7 @@ const Registration = () => {
                                 </div>
                             </div>
 
-                            <NavLink to='/signup/regform'>
+                            <NavLink to='/signup/registrationform'>
                                 <button className={`registration__body__content__main__button-next`} >
                                     <span>Next
                                     </span>

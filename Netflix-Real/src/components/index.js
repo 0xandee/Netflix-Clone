@@ -23,16 +23,18 @@ import PreviewInfo from './PreviewInfo';
 import PreviewPlayer from './PreviewPlayer';
 import PreviewPopup from './PreviewPopup';
 import Slider from './Slider';
-
+import SignUpNavigationBar from './SignUpNavigationBar';
+import LanguageItem from './LanguageItem';
+import OnboardingMovieItem from './OnboardingMovieItem';
 export {
     About, AddButton, 
     CloseButton, CustomInput, CustomNotification,
     DetailInfoMetadata, DetailInfoTags, DetailInfo, DislikeButton, Dropdown,
-    Episodes, EpisodeItem, EpisodeSelector,
+    Episodes, EpisodeItem, EpisodeSelector, LanguageItem, OnboardingMovieItem,
     Footer,
     LikeButton,
     MoreLikeThis, MoreLikeThisItem, MuteButton,
-    NavigationBar,
+    NavigationBar, SignUpNavigationBar,
     PlayButton, PreviewPopup, PreviewPlayer, PreviewButtonControl, PreviewInfo,
     Slider,
 }
