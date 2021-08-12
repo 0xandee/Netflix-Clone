@@ -30,14 +30,14 @@ export default function WebRouter() {
 
                         <div className='App'>
                             {/* <SignIn /> */}
-                            {/* <ForgotPassword /> */}
+                            <ForgotPassword />
                             {/* <Registration /> */}
                             {/* <RegistrationForm/> */}
                             {/* <PlanForm /> */}
                             {/* <SignUp /> */}
                             {/* <NavigationBar /> */}
-                            <VideoPlayer />
-                            {/* <MoviePlayer/> */}
+                            {/* <VideoPlayer /> */}
+                            
 
                         </div>
                         <Switch>

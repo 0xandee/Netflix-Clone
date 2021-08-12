@@ -58,6 +58,7 @@ const VideoPlayer = () => {
     }
 
     const handlePlayPause = useCallback(() => {
+        controlRef.current.style.opacity = '1'
         setPlaying(!playing)
     }, [playing])
 
@@ -69,8 +70,7 @@ const VideoPlayer = () => {
         setPlaying(false)
     }
 
-    const handleVideoProgress = (state) => {
-        console.log("🚀 ~ file: index.js ~ line 61 ~ handleProgress ", seeking)
+    const handleVideoProgress = (state) => {   
         if (count > 3 && !seeking) {
 
             controlRef.current.style.opacity = '0'
@@ -216,7 +216,7 @@ const VideoPlayer = () => {
 
 
                 </div>
-                <div ref={controlRef}>
+                <div ref={controlRef} style ={{transition: 'all 0.5s'}}>
 
                     <Link className={`video-player__top`}>
                         <IconBackArrow className={'video-player__top__icon-back'} />
@@ -264,7 +264,7 @@ const VideoPlayer = () => {
                                     </div>
                                     <div id='iconNext' onClick={handleNext}>
                                         <IconNext10s className={'icon--fill'} />
-                                        <Tooltip placement="top" isOpen={!iconNext} target="iconNext" toggle={toggleNext}>
+                                        <Tooltip placement="top" isOpen={iconNext} target="iconNext" toggle={toggleNext}>
                                             10s
                                         </Tooltip>
                                     </div>
