@@ -1,24 +1,28 @@
 #footer .footer {
     position: relative;
     width: 100%;
+
     background: rgba(0, 0, 0, 0.75);
+
     padding-bottom: 20px;
+
     font-size: 1em;
     color: #757575;
+
     display: flex;
     align-items: center;
     justify-content: center;
-    .footer__content {
+    &__content {
         padding: 30px ;
-        width: 1000px;
-        .footer__content--top-site {
+        width: 100vw;
+        &--top-site {
             margin: 0 0 30px;
             a {
                 text-decoration: none;
                 color: #757575;
             }
         }
-        .footer__content--links {
+        &--links {
             font-size: 13px;
             .footer__content--links_item {
                 box-sizing: border-box;
@@ -38,10 +42,10 @@
                   }
             }
         }
-        .footer__content--language-selection {
+        &--language-selection {
             margin-top: 20px;
 
-            .footer__content--language-selection__header {
+            &__header {
                 cursor: pointer;
                 display: flex;
                 width: 100px;

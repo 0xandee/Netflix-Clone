@@ -6,6 +6,7 @@ import ForgotPassword from './ForgotPassword'
 import Registration from './Registration'
 import LanguageSetup from './LanguageSetup'
 import OnboardingMovies from './OnboardingMovies'
+import VideoPlayer from './VideoPlayer'
 export {
-    SignIn,SignUp,ForgotPassword,Registration,RegistrationForm,PlanForm,LanguageSetup,OnboardingMovies
+    SignIn,SignUp,ForgotPassword,Registration,RegistrationForm,PlanForm,LanguageSetup,OnboardingMovies,VideoPlayer
 }

@@ -11,7 +11,7 @@ import {
 import './App.css'
 import { Slider,NavBar, NavigationBar, SignUpNavigationBar} from "./components/index";
 
-import { ForgotPassword, PlanForm, Registration, RegistrationForm, SignUp, SignIn, LanguageSetup, OnboardingMovies } from "./views/index";
+import { ForgotPassword, PlanForm, Registration, RegistrationForm, SignUp, SignIn, LanguageSetup, OnboardingMovies, VideoPlayer } from "./views/index";
 
 
 export default function WebRouter() {
