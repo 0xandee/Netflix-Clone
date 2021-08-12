@@ -9,9 +9,9 @@ import {
 } from "react-router-dom";
 
 import './App.css'
-import { Slider,NavBar, NavigationBar, } from "./components/index";
+import { Slider,NavBar, NavigationBar, SignUpNavigationBar} from "./components/index";
 
-import { ForgotPassword, PlanForm, Registration, RegistrationForm, SignUp, SignIn, VideoPlayer } from "./views/index";
+import { ForgotPassword, PlanForm, Registration, RegistrationForm, SignUp, SignIn, LanguageSetup, OnboardingMovies, VideoPlayer } from "./views/index";
 
 
 export default function WebRouter() {
@@ -20,6 +20,49 @@ export default function WebRouter() {
         <Router>
             <div >
                 <Switch>
+                    <Route path="/signin">
+                        {/* <SignIn /> */}
+                        {/* <LanguageSetup /> */}
+                        {/* <ForgotPassword /> */}
+                    </Route>
+
+                    <Route path="/watch">
+                        <VideoPlayer/>
+                    </Route>
+
+                    <Route path="/signup">
+                        <div className="App">
+                            <SignUpNavigationBar/>
+                            <Switch>
+                                <Route path="/signup/registration">
+                                    {/* Step 1 */}
+                                    <Registration /> 
+                                </Route>
+                                <Route path="/signup/registrationform">
+                                    {/* Step 1.1 */}
+                                    <RegistrationForm/>
+                                </Route>
+                                <Route path="/signup/chooseplan">
+                                    {/* Step 2 */}
+                                    <ChoosePlan />
+                                </Route>
+                                <Route path="/signup/chooseplanform">
+                                    {/* Step 3 */}
+                                    <PlanForm />
+                                </Route>
+                                <Route path="/signup/languagesetup">
+                                    {/* Step 4 */}
+                                    <LanguageSetup />
+                                </Route>
+                                <Route path="/signup/choosemovies">
+                                    {/* Step 5 */}
+                                    <OnboardingMovies />
+                                </Route>
+                            </Switch>
+                        </div>
+
+                    </Route>
+                    
                     <Route path="/profile">
                         <Profile1 />
                     </Route>
@@ -27,18 +70,8 @@ export default function WebRouter() {
                         <RegistrationForm />
                     </Route>
                     <Route path="/">
-
                         <div className='App'>
-                            {/* <SignIn /> */}
-                            <ForgotPassword />
-                            {/* <Registration /> */}
-                            {/* <RegistrationForm/> */}
-                            {/* <PlanForm /> */}
-                            {/* <SignUp /> */}
-                            {/* <NavigationBar /> */}
-                            {/* <VideoPlayer /> */}
-                            
-
+                            <NavigationBar />
                         </div>
                         <Switch>
                             <Route path="/tvshow">
@@ -60,17 +93,17 @@ export default function WebRouter() {
                                 <Registration />
                             </Route>
 
-                            <Route path='/signup'>
-                                <Switch>
-
-                                </Switch>
-                            </Route>
+                            
                         </Switch>
                     </Route>
                 </Switch>
             </div>
         </Router>
     );
+}
+
+function ChoosePlan(){
+    return <SignUp />;
 }
 
 function Home() {

@@ -65,22 +65,15 @@ const PlanForm = () => {
     }, []);
 
     return (
-        <div id='planForm'>
+        <div id='planForm' className="mt-4">
             <div className={`plan-form`}>
                 <div className='plan-form__background-image'>
-                </div>
-
-                <div className={`plan-form__header`}>
-                    <IconNetflix className={'plan-form__header__logo'} />
-                    <Link >
-                        Sign In
-                    </Link>
                 </div>
                 <div className={`plan-form__body`}>
                     <div className={`plan-form__body__content`}>
                         <div className={`plan-form__body__content__main`}>
                             <div >
-                                <span class="plan-form__body__content__main__step-indicator" >STEP <b>1</b> OF <b>3</b>
+                                <span class="plan-form__body__content__main__step-indicator" >STEP <b>2</b> OF <b>3</b>
                                 </span>
                                 <h1 class="plan-form__body__content__main__step-title">
 
@@ -182,7 +175,7 @@ const PlanForm = () => {
                                     ))}
                                 </Row>
                             </Container>
-                            <NavLink to='/signup/regform'>
+                            <NavLink to='/signup/languagesetup'>
                                 <button className={`plan-form__body__content__main__button-next`} >
                                     <span>Next
                                     </span>

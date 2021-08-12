@@ -2,7 +2,8 @@ $blackOpacity1: rgba(0, 0, 0, 0.75);
 $red: #e50914;
 $gray: #8c8c8c;
 
-#signIn .sign-in {
+.registration {
+
     position: relative;
     display: flex;
     flex-direction: column;
@@ -12,7 +13,7 @@ $gray: #8c8c8c;
 
     overflow: hidden;
 
-    z-index: 0;
+    z-index: 999;
 
     background-color: $blackOpacity1;
     &__background-image {
@@ -27,30 +28,47 @@ $gray: #8c8c8c;
 
         z-index: -1;
 
+        background-color: white;
         background-size: cover;
         &__image-style {
             min-height: 100%;
             min-width: 100%;
-        
         }
     }
     &__header {
-        position: absolute;
+        // position: absolute;
+        display: flex;
+        justify-content: space-between;
+        box-sizing: border-box;
         top: 0;
 
         width: 100%;
 
-        padding: 10px 15px;
+        padding: 10px 3%;
 
-        border-bottom: transparent;
-        .sign-in__header__logo {
-            height: 90px;
-            margin-left: 3%;
+        border-bottom: 1px solid #e6e6e6;
+        
+        &__container {
+            line-height: 90px;
+        }
+
+        &__logo {
+            height: 45px;
+            fill: #e50914;
+        }
+        a {
+            text-decoration: none;
+            float: right;
+            color: black;
+            font-weight: 700;
+            font-size: 1.2em;
+            line-height: 90px;
+            &:hover {
+                text-decoration: underline;
+            }
         }
     }
     &__body {
-        min-width: 500px;
-        width: 35vw;
         min-height: 100vh;
 
         margin: 0 auto -236px;
@@ -60,12 +78,12 @@ $gray: #8c8c8c;
 
         &::before {
             content: "";
-            height: 91px;
+            height: 20vh;
             display: block;
         }
         &::after {
             content: "";
-            height: 236px;
+            height: 30vh;
             display: block;
         }
         &__content {
@@ -73,52 +91,57 @@ $gray: #8c8c8c;
             flex-direction: column;
             display: flex;
 
-            min-height: 660px;
+            min-height: 80vh;
+            max-width: 340px;
             width: 100%;
 
-            padding: 40px 68px;
-            margin-bottom: 90px;
+            margin-bottom: 10vh;
 
             border-radius: 4px;
 
-            background-color: $blackOpacity1;
+            display: block;
+            transform: none;
+            transition-duration: 250ms;
             &__main {
                 box-sizing: border-box;
                 display: flex;
                 flex-direction: column;
+                align-items: center;
+                text-align: center;
 
                 width: 100%;
-                min-height: 515px;
 
                 padding: 20px 0 30px;
-
-                span {
-                    color: $gray;
-                    font-size: 12px;
-
-                    display: flex;
-                    align-items: center;
-                    justify-content: space-between;
+                &__image-devices {
+                    max-width: 260px;
+                    margin: 3vh 0;
                 }
-                a {
-                    text-decoration: none;
-                    color: #757575;
-                    font-size: 12px;
-                    &:hover{
-                        text-decoration: underline; 
-                    }
+                &__step-indicator {
+                    width: 100%;
+                    display: block;
+                    font-size: 13px;
                 }
-
-                &__title {
-                    color: #fff;
+                &__step-title {
                     font-size: 32px;
                     font-weight: 700;
-
-                    margin-bottom: 28px;
+                    margin: 0 0 0.4em;
+                    color: #333;
+                }
+                &__step-content {
+                    font-size: 18px;
+                    max-width: 300px;
+                    display: inline-block;
+                    color: #333;
                 }
 
-                &__button-sign-in {
+                a {
                     width: 100%;
+                    text-decoration: none;
+                }
+
+                &__button-next {
+                    width: 100%;
+                    min-height: 64px;
 
                     margin: 24px 0;
                     padding: 16px;
@@ -127,8 +150,8 @@ $gray: #8c8c8c;
 
                     background-color: $red;
                     span {
-                        font-size: 16px;
-                        font-weight: 700;
+                        font-weight: 500;
+                        font-size: 24px;
                         color: #fff;
 
                         display: flex;
@@ -136,12 +159,6 @@ $gray: #8c8c8c;
                         justify-content: center;
                     }
                 }
-                .sign-up{
-                    color: #fff;
-                    font-weight: 400;
-                    margin-left: 5px;
-                }
-
             }
         }
     }

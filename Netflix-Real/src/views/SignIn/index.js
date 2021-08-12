@@ -28,7 +28,7 @@ const SignIn = () => {
                                 type='text' />
                             <CustomInput
                                 placeHolder='Your password must contain between 4 and 60 characters.'
-                                label='password'
+                                label='Password'
                                 type='password' />
 
                             <button className={`sign-in__body__content__main__button-sign-in`}>
@@ -47,7 +47,7 @@ const SignIn = () => {
                             <div style={{ display: 'flex', flexDirection: 'row',color:'#c8c8c8',size:'14',marginTop:'40px',justifyContent:'center' }}>
                              <span> Don't have account yet? 
                                  </span>   
-                                <NavLink className={`sign-up`} to='/help' >
+                                <NavLink className={`sign-up`} to='/signup/registration' >
                                       Sign Up
                                 </NavLink>
                             </div>

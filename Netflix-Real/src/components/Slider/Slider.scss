@@ -108,7 +108,7 @@ body {
 }
 
 .swiper-slide:hover{
-    transform: scale(1.3) translateY(-10%);
+    // transform: scale(1.3) translateY(-10%);
     z-index: 999;
     .controlPlayer {
         opacity: 1;
@@ -117,13 +117,14 @@ body {
 }
 
 .swiper-container {
-    overflow: initial;
+    // overflow: initial;
 }
 
 .controlPlayer{
     position: absolute;
-    height: 50px;
+    height: 30%;
     width: 100%;
+    bottom: 0;
     background-color: var(--colorTwo);
     border-bottom-left-radius: 8px;
     border-bottom-right-radius: 8px;
@@ -233,7 +234,7 @@ body {
 }
 
 body {
-    color: rgb(255,255,255) !important;
+    color: rgb(255,255,255);
 }
 
 .billboard-links{
