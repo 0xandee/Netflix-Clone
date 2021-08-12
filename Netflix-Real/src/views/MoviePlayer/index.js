@@ -207,6 +207,7 @@ class MoviePlayer extends Component {
                     type='range' min={0} max={0.999999} step='any'
                     value={played}
                     onMouseDown={this.handleSeekMouseDown}
+                    
                     onChange={this.handleSeekChange}
                     onMouseUp={this.handleSeekMouseUp}
                   />

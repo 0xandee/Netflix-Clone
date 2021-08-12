@@ -16,9 +16,12 @@ import IconSkip from "./ic_skip"
 import IconLayer from "./ic_layer"
 import IconSetting from "./ic_setting"
 import IconFullScreen from "./ic_fullScreen"
+import IconPauseCircle from "./ic_pauseCircle"
+import IconPlayCircle from "./ic_playCircle"
 
 export {
     IconCheckmark,IconComputer,IconNetflix,IconPhone,IconSearch,
     IconTablet,IconTV,IconBackArrow,IconNext10s,IconPlay,IconPause,IconVolumeMute,
-    IconVolume,IconRewind10s,IconSkip,IconLayer,IconFullScreen,IconSetting
+    IconVolume,IconRewind10s,IconSkip,IconLayer,IconFullScreen,IconSetting,
+    IconPauseCircle,IconPlayCircle
 }
