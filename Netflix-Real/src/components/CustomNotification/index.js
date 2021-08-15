@@ -36,42 +36,43 @@ const CustomNotification = () => {
                     <div className="number-notification">{numb != 0 && numb}</div>
                     <div >
                         <Icon.Bell className='icon-style' fill='white' size='16px' strokeWidth='4' color='white' />
-                        {isOpen && <div className='callout-arrow' />}
-                        <div className={`notification-content ${isOpen && 'open'} ${items.length > 2 && 'scroll'}`}>
-                            {items.length !== 0 ? items.map(item => (
-                                <div className={`notification-item`}>
-                                    
-                                    <Link to={item.navLink} className='image-text-notification'>
-                                    <div className = 'notification-type-new'></div>
-                                        <div class='multi-landing-stack-space-holder'>
-                                            <div class="multi-landing-stack-1"></div>
-                                            <div class="multi-landing-stack-2"></div>
-                                             <img className='title-card' size='112px' src={avatar} alt="" /> 
-                                        </div>
+                        <div className = {`notification-container`}>
+                            {isOpen && <div className='callout-arrow' />}
+                            <div className={`notification-content ${isOpen && 'open'} ${items.length > 2 && 'scroll'}`}>
+                                {items.length !== 0 ? items.map(item => (
+                                    <div className={`notification-item`}>
 
-                                        <div className='notification-text'>
-                                            <div className='notification-header'>
-                                                {item.header}
+                                        <Link to={item.navLink} className='image-text-notification'>
+                                            <div className='notification-type-new'></div>
+                                            <div class='multi-landing-stack-space-holder'>
+                                                <div class="multi-landing-stack-1"></div>
+                                                <div class="multi-landing-stack-2"></div>
+                                                <img className='title-card' size='112px' src={avatar} alt="" />
                                             </div>
-                                            <div className='notification-body'>
-                                                {item.body}
+
+                                            <div className='notification-text'>
+                                                <div className='notification-header'>
+                                                    {item.header}
+                                                </div>
+                                                <div className='notification-body'>
+                                                    {item.body}
+                                                </div>
+                                                <div className='notification-time'>
+                                                    {item.time}
+                                                </div>
                                             </div>
-                                            <div className='notification-time'>
-                                                {item.time}
-                                            </div>
-                                        </div>
 
 
-                                    </Link>
+                                        </Link>
+                                    </div>
+                                )) : <div className={`notification-item`}>
+                                    <span>No recent notifications
+                                    </span>
+                                </div>}
+                                <div>
+
                                 </div>
-                            )) : <div className={`notification-item`}>
-                                <span>No recent notifications
-                                </span>
-                            </div>}
-                            <div>
-
                             </div>
-
                         </div>
                     </div>
 

@@ -1,171 +1,182 @@
 #customNotification .notification {
     position: relative;
     .button-style {
-        transition: 0.5s;
         cursor: pointer;
         position: relative;
-
-        .notification-content {
-            width: 400px;
-            height: 0px;
-            display: none;
+        .notification-container {
             position: absolute;
-            text-align: center;
-            //overflow-y: hidden;
-            top: 200%;
-            right: -20%;
-            box-sizing: border-box;
-            background-color: rgba(0, 0, 0, 0.3);
-            -webkit-box-shadow: 10px 10px 23px 0px rgba(0, 0, 0, 0.2);
-            -moz-box-shadow: 10px 10px 23px 0px rgba(0, 0, 0, 0.1);
-            box-shadow: 10px 10px 23px 0px rgba(0, 0, 0, 0.1);
-            cursor: context-menu;
-            &.scroll {
-                overflow-y: auto;
-            }
-            .notification-item {
-                position: relative;
-                display: flex;
-                height: 100px;
-                background-color: rgba(0, 0, 0, 0.3);
-                align-items: center;
-                justify-content: center;
+            
+            top: 55px;
+            right: -60%;
+
+            min-width: 400px;
+            max-width: 450px;
+            width:30vw;
+            .notification-content {
                 
-                .image-text-notification {
+                width: 100%;
+                height: 0px;
+
+                display: none;
+
+
+                text-align: center;
+                //overflow-y: hidden;
+
+                box-sizing: border-box;
+                background-color: rgba(0, 0, 0, 0.3);
+                -webkit-box-shadow: 10px 10px 23px 0px rgba(0, 0, 0, 0.2);
+                -moz-box-shadow: 10px 10px 23px 0px rgba(0, 0, 0, 0.1);
+                box-shadow: 10px 10px 23px 0px rgba(0, 0, 0, 0.1);
+
+                cursor: context-menu;
+                &.scroll {
+                    overflow-y: auto;
+                }
+                .notification-item {
                     position: relative;
-                    box-sizing: border-box;
-                    width: 100%;
-                    height: 100%;
-                    color: #b3aeae;;
-                    padding: 8px 10px 8px 0;
-                    cursor: pointer;
                     display: flex;
-                    justify-content: space-between;
-                    box-sizing: border-box;
+                    height: 100px;
+                    background-color: rgba(0, 0, 0, 0.3);
                     align-items: center;
-                    text-decoration: none;
-                    border-bottom: 1px solid rgba(255,255,255,.25);
-                    .notification-type{
-                        right: -40px;
-                        top: 50%;
-                        height: 60%;
-                        width: 3px;
-                        border-bottom-right-radius: 4px;
-                        border-top-right-radius: 4px;
-                        &-new{
-                            @extend .notification-type;
-                            background-color: red;
-                        }
-                        &-old{
-                            @extend .notification-type;
-                            background-color: transparent;
-                        }
-                    }
-                    
-                    .multi-landing-stack-space-holder {
+                    justify-content: center;
+
+                    .image-text-notification {
                         position: relative;
-                        width: 112px;
-                        height: 63px;
-                        border-radius: 4px;
-                        .multi-landing-stack {
-                            position: absolute;
-                            height: 56px;
-                            width: 103px;                        
-                            border-radius: 4px;
-                            box-shadow: 0 2px 2px 0 rgba(0, 0, 0 , 0.24);
-                            &-1 {
-                                @extend .multi-landing-stack;
-                                top: 2px;
-                                left: 3px;
-                                z-index: 2;
-                                background-color: #dbdbd7;
+                        box-sizing: border-box;
+                        width: 100%;
+                        height: 100%;
+                        color: #b3aeae;
+                        padding: 8px 10px 8px 0;
+                        cursor: pointer;
+                        display: flex;
+                        justify-content: space-between;
+                        box-sizing: border-box;
+                        align-items: center;
+                        text-decoration: none;
+                        border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+                        .notification-type {
+                            right: -20%;
+                            top: 50%;
+                            height: 60%;
+                            width: 3px;
+                            border-bottom-right-radius: 4px;
+                            border-top-right-radius: 4px;
+                            &-new {
+                                @extend .notification-type;
+                                background-color: red;
                             }
-                            &-2 {
-                                @extend .multi-landing-stack;
-                                top: 5px;
-                                left: 7px;
-                                z-index: 1;
-                                background-color: #dbdbd7;
+                            &-old {
+                                @extend .notification-type;
+                                background-color: transparent;
                             }
                         }
 
-                        .title-card {
-                            @extend .multi-landing-stack;
-                            top: 0;
-                            left: 0;
-                            z-index: 3;
+                        .multi-landing-stack-space-holder {
+                            position: relative;
+                            width: 112px;
+                            height: 63px;
+                            border-radius: 4px;
+                            .multi-landing-stack {
+                                position: absolute;
+                                height: 56px;
+                                width: 103px;
+                                border-radius: 4px;
+                                box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.24);
+                                &-1 {
+                                    @extend .multi-landing-stack;
+                                    top: 2px;
+                                    left: 3px;
+                                    z-index: 2;
+                                    background-color: #dbdbd7;
+                                }
+                                &-2 {
+                                    @extend .multi-landing-stack;
+                                    top: 5px;
+                                    left: 7px;
+                                    z-index: 1;
+                                    background-color: #dbdbd7;
+                                }
+                            }
+
+                            .title-card {
+                                @extend .multi-landing-stack;
+                                top: 0;
+                                left: 0;
+                                z-index: 3;
+                            }
                         }
-                    }
-                    
-                    .notification-text {
-                        width: 60%;
-                        text-align: start;
-                        .notification-header {
-                            font-size: medium;
-                            overflow: hidden;
-                            text-overflow: ellipsis;
-                            display: -webkit-box;
-                            -webkit-line-clamp: 1; /* number of lines to show */
-                            -webkit-box-orient: vertical;
+
+                        .notification-text {
+                            width: 60%;
+                            text-align: start;
+                            .notification-header {
+                                font-size: medium;
+                                overflow: hidden;
+                                text-overflow: ellipsis;
+                                display: -webkit-box;
+                                -webkit-line-clamp: 1; /* number of lines to show */
+                                -webkit-box-orient: vertical;
+                            }
+                            .notification-body {
+                                font-size: medium;
+                                width: 100%;
+                                overflow: hidden;
+                                text-overflow: ellipsis;
+                                display: -webkit-box;
+                                -webkit-line-clamp: 1; /* number of lines to show */
+                                -webkit-box-orient: vertical;
+                            }
+                            .notification-time {
+                                font-size: small;
+                                color: gray;
+                            }
                         }
-                        .notification-body {
-                            font-size: medium;
-                            width: 100%;
-                            overflow: hidden;
-                            text-overflow: ellipsis;
-                            display: -webkit-box;
-                            -webkit-line-clamp: 1; /* number of lines to show */
-                            -webkit-box-orient: vertical;
+                        .notification-icon {
+                            height: 52px;
+                            width: 52px;
+                            border-radius: 4px;
                         }
-                        .notification-time {
-                            font-size: small;
-                            color: gray;
+                        &:hover {
+                            background-color: black;
+                            color: white;
                         }
-                    }
-                    .notification-icon {
-                        height: 52px;
-                        width: 52px;
-                        border-radius: 4px;
-                    }
-                    &:hover {
-                        background-color: black;
-                        color: white;
-                    }
-                    &:hover > .new {
-                        background-color: black;
-                        
+                        &:hover > .new {
+                            background-color: black;
+                        }
                     }
                 }
-            }
 
-            &::-webkit-scrollbar-track {
-                -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-                background-color: #f5f5f5;
-                border-radius: 5px;
-            }
+                &::-webkit-scrollbar-track {
+                    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+                    background-color: #f5f5f5;
+                    border-radius: 5px;
+                }
 
-            &::-webkit-scrollbar {
-                width: 10px;
-                background-color: #f5f5f5;
-                border-radius: 5px;
-            }
+                &::-webkit-scrollbar {
+                    width: 10px;
+                    background-color: #f5f5f5;
+                    border-radius: 5px;
+                }
 
-            &::-webkit-scrollbar-thumb {
-                background-color: rgba(0, 0, 0, 0.3);
-                border: 2px solid rgba(0, 0, 0, 0.3);
-                border-radius: 5px;
-            }
-            &.open {
-                max-height: 300px;
-                min-height: 200px;
+                &::-webkit-scrollbar-thumb {
+                    background-color: rgba(0, 0, 0, 0.3);
+                    border: 2px solid rgba(0, 0, 0, 0.3);
+                    border-radius: 5px;
+                }
+                &.open {
+                    max-height: 300px;
+                    min-height: 200px;
 
-                display: block;
+                    display: block;
+                }
             }
         }
+
         .callout-arrow {
             position: absolute;
-            top: 115%;
-            right: 1%;
+            top: -10%;
+            right: 2%;
             border-width: 7px;
             border-color: transparent transparent white;
             border-style: solid;

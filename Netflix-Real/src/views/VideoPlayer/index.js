@@ -5,7 +5,7 @@ import { Link, useHistory } from "react-router-dom";
 import { Progress, Tooltip } from "reactstrap";
 import screenfull from "screenfull";
 import { IconBackArrow, IconFullScreen, IconLayer, IconNext10s, IconPause, IconPauseCircle, IconPlay, IconPlayCircle, IconRewind10s, IconSetting, IconSkip, IconVolume, IconVolumeMute } from "../../assets/Icon";
-import Duration from "../../service/function/Duration";
+import { Duration, Format } from "../../service/function/Duration";
 import './style.scss'
 let count = 0;
 //https://www.example.com/url_to_video.mp4
@@ -16,6 +16,7 @@ const VideoPlayer = () => {
     const [played, setPlayed] = useState(0);
     const [loaded, setLoaded] = useState(0);
     const [playing, setPlaying] = useState(false);
+
     const [muted, setMuted] = useState(false);
     const [seeking, setSeeking] = useState(false);
     const [url, setUrl] = useState('http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4');
@@ -26,14 +27,20 @@ const VideoPlayer = () => {
     const controlRef = useRef(null);
     const volumeRef = useRef(null);
     const playedRef = useRef(null);
+    const titlePlayedRef = useRef(null);
     const [iconRewind, setIconRewind] = useState(false);
     const [iconNext, setIconNext] = useState(false);
+    let valueHover = 0;
 
     const toggleRewind = () => setIconRewind(!iconRewind);
     const toggleNext = () => setIconNext(!iconNext);
     const handleStop = () => {
         setUrl(null);
         setPlaying(false);
+    }
+
+    const handleVideoOnReady = () => {
+        console.log('loading')
     }
 
     const handleVolumeChange = () => {
@@ -71,7 +78,7 @@ const VideoPlayer = () => {
         setPlaying(false)
     }
 
-    const handleVideoProgress = (state) => {   
+    const handleVideoProgress = (state) => {
         if (count > 3 && !seeking) {
 
             controlRef.current.style.opacity = '0'
@@ -93,6 +100,7 @@ const VideoPlayer = () => {
     }
 
     const handleVideoDuration = (duration) => {
+        console.log("🚀 ~ file: index.js ~ line 103 ~ handleVideoDuration ~ duration", duration)
         setDuration(duration);
     }
 
@@ -120,9 +128,26 @@ const VideoPlayer = () => {
         // console.log('move')
         controlRef.current.style.opacity = '1'
     }
+
+    const calcSliderPos = (e) => {
+        return (e.nativeEvent.offsetX / e.target.clientWidth) * parseInt(e.target.getAttribute('max'), 10);
+    }
+
+    //attach to slider and fire on mousemove
+    const handlePlayedMouseMove = (e) => {
+        valueHover = calcSliderPos(e).toFixed(4);
+
+
+        titlePlayedRef.current.textContent = Format((valueHover * duration).toFixed(0));
+        titlePlayedRef.current.style.left = e.nativeEvent.offsetX + 'px';
+    }
+
+
+
     const handleKeyDown = useCallback((e) => {
 
         if (e.key === 'ArrowDown') {
+
 
             if (volume <= 0.1) {
                 setVolume(0)
@@ -193,7 +218,7 @@ const VideoPlayer = () => {
                         width='100%'
                         height='100%'
                         url={url}
-
+                        onReady={handleVideoOnReady}
                         playing={playing}
                         controls={false}
 
@@ -217,20 +242,27 @@ const VideoPlayer = () => {
 
 
                 </div>
-                <div ref={controlRef} style ={{transition: 'all 0.5s'}}>
+                <div ref={controlRef} style={{ transition: 'all 0.5s' }}>
 
                     <div className={`video-player__top`} onClick={() => history.goBack()}>
-                        <IconBackArrow className={'video-player__top__icon-back'} />
-                        <span>Back to Browse</span>
+                        <div className={`video-player__top__icon-container`}>
+                            <IconBackArrow className={'video-player__top__icon-back'} />
+                            <span>Back to Browse</span>
+                        </div>
+
                     </div>
                     <div className={`video-player__bottom`}>
                         <div className={`video-player__bottom__bar-container`}>
                             <div className={`video-player__bottom__bar-container__bar`}>
-                                <input type='range' min={0} max={1} step='any' ref={playedRef}
+                                <input type='range' min={0} max={1} step='any' ref={playedRef} id='playedInput'
                                     value={played}
+                                    onMouseMove={handlePlayedMouseMove}
                                     onMouseDown={handlePlayedDown}
                                     onChange={handlePlayedChange}
                                     onMouseUp={handlePlayedUp} />
+                                <span className={`tool-tip`} ref={titlePlayedRef}  >
+
+                                </span>
                                 <div className={`video-player__bottom__bar-container__bar--played`}>
                                     <progress min={0}
                                         max={1} value={played} >
@@ -257,8 +289,8 @@ const VideoPlayer = () => {
                                     </div>
 
 
-                                    <div id= 'iconRewind' onClick={handleRewind}>
-                                        <IconRewind10s  className={'icon--fill'} />
+                                    <div id='iconRewind' onClick={handleRewind}>
+                                        <IconRewind10s className={'icon--fill'} />
                                         <Tooltip placement="top" isOpen={iconRewind} target="iconRewind" toggle={toggleRewind}>
                                             10s
                                         </Tooltip>
