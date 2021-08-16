@@ -1,3 +1,4 @@
+import { Dialog } from "@material-ui/core";
 import React, { useEffect, useRef, useState } from "react";
 import {
     BrowserRouter as Router,
@@ -5,17 +6,18 @@ import {
     Route,
     Link,
     useRouteMatch,
-    useParams
+    useParams,
+    useHistory
 } from "react-router-dom";
 
 import './App.css'
-import { Slider,NavBar, NavigationBar, SignUpNavigationBar} from "./components/index";
+import { Slider, NavBar, NavigationBar, SignUpNavigationBar, PreviewInfo, PreviewPopup } from "./components/index";
 
 import { ForgotPassword, PlanForm, Registration, RegistrationForm, SignUp, SignIn, LanguageSetup, OnboardingMovies, VideoPlayer } from "./views/index";
 
 
 export default function WebRouter() {
-
+    const history = useHistory();
     return (
         <Router>
             <div >
@@ -27,20 +29,20 @@ export default function WebRouter() {
                     </Route>
 
                     <Route path="/watch">
-                        <VideoPlayer/>
+                        <VideoPlayer />
                     </Route>
 
                     <Route path="/signup">
                         <div className="App">
-                            <SignUpNavigationBar/>
+                            <SignUpNavigationBar />
                             <Switch>
                                 <Route path="/signup/registration">
                                     {/* Step 1 */}
-                                    <Registration /> 
+                                    <Registration />
                                 </Route>
                                 <Route path="/signup/registrationform">
                                     {/* Step 1.1 */}
-                                    <RegistrationForm/>
+                                    <RegistrationForm />
                                 </Route>
                                 <Route path="/signup/chooseplan">
                                     {/* Step 2 */}
@@ -62,7 +64,7 @@ export default function WebRouter() {
                         </div>
 
                     </Route>
-                    
+
                     <Route path="/profile">
                         <Profile1 />
                     </Route>
@@ -70,9 +72,10 @@ export default function WebRouter() {
                         <RegistrationForm />
                     </Route>
                     <Route path="/">
-                        <div className='App'>
-                            <NavigationBar />
-                        </div>
+
+                        <NavigationBar />
+
+
                         <Switch>
                             <Route path="/tvshow">
                                 <TVShow />
@@ -86,14 +89,24 @@ export default function WebRouter() {
                             <Route path="/popular">
                                 <NewAndPopular />
                             </Route>
-                            <Route path='/home'>
+                            <Route path='/home' 
+                            // children={({ match }) => {
+                            //     return (
+                            //         <Dialog onClose={history.goBack} open={Boolean(match)}>
+                            //             <PreviewPopup />
+                            //         </Dialog>
+
+
+                            //     );
+                            // }}
+                            >
                                 <Home />
                             </Route>
                             <Route path="/registration">
                                 <Registration />
                             </Route>
 
-                            
+
                         </Switch>
                     </Route>
                 </Switch>
@@ -102,7 +115,7 @@ export default function WebRouter() {
     );
 }
 
-function ChoosePlan(){
+function ChoosePlan() {
     return <SignUp />;
 }
 

@@ -1,7 +1,7 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import './navBar.scss'
 
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useHistory } from 'react-router-dom';
 
 import * as Icon from 'react-feather';
 import classnames from 'classnames'
@@ -22,10 +22,14 @@ const navTabs = [{ id: 0, label: "Home", navLink: '/home' },
 { id: 4, label: "My Playlist", navLink: '/playlist' }];
 
 const NavigationBar = (props) => {
+    const history = useHistory();
     const [isShown, setIsShown] = useState(false);
     const [isOpen, setOpen] = useState(false);
     const textInput = React.createRef(null);
     const [items, setItem] = useState(navTabs);
+    const [onToppage, setOnTopPage] = useState(false);
+    var currentScrollY = useRef(0);
+    
     const useWindowSize = () => {
         const [size, setSize] = useState([0, 0]);
         useLayoutEffect(() => {
@@ -50,8 +54,7 @@ const NavigationBar = (props) => {
         }
         setIsShown(!isShown)
     }
-    const [onToppage, setOnTopPage] = useState(false);
-    var currentScrollY = useRef(0);
+  
 
     useEffect(() => {
         const handleScroll = () => {
@@ -60,7 +63,7 @@ const NavigationBar = (props) => {
         };
 
         window.addEventListener("scroll", handleScroll, { passive: true });
-
+        history.push('/home')
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
 
@@ -77,9 +80,10 @@ const NavigationBar = (props) => {
                     {width > 865 ?
                         <React.Fragment>
                             <div className='tab-navigation'>
+                         
                                 {
                                     items.map(item => (
-                                        <NavLink exact={item.id == 1 && true} to={item.navLink} className='nav-item' activeStyle={styles.activeStyle}>{item.label}</NavLink>
+                                        <NavLink  to={item.navLink} className='nav-item' activeStyle={styles.activeStyle}>{item.label}</NavLink>
                                     ))
                                 }
                             </div>

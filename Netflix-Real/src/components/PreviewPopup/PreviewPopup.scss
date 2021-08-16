@@ -4,45 +4,55 @@
 
 .pop-up__dialog {
     // width: 932.62px;
-    display: inline-block;
-    top: 103px;
-    left: auto;
+
+    position: absolute;
+    // height: 100vh;
+    width: 100%;
+
+    top: 0;
+    left: 0;
     transform-origin: center top;
     transform: translateX(0px) translateY(calc(-103px + 2em)) scaleX(1) scaleY(1) translateZ(0px);
-    z-index: 2;
+    z-index: 4;
     opacity: 1;
     box-shadow: rgba(0, 0, 0, 75%) 0px 3px 10px;
-    margin-bottom: 2em;
+
+    box-sizing: border-box;
+    padding: 8% 0;
     // min-width: 850px;
 }
 
 .pop-up__container {
-    will-change: transform;
-    position: absolute;
+    will-change: scroll-position;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     color: #fff;
-    // background-color: transparent;
+    background-color: rgba(0, 0, 0, 0.5);
     font-size: 16px;
     border-radius: 6px;
-    overflow: hidden;
+    z-index: 4;
+    overflow-y: scroll;
 }
 
 .max-width {
     max-width: 665px;
+    max-height: 665px;
 }
 
-.preview-tags{
+.preview-tags {
     font-size: 14px;
     line-height: 20px;
-    margin: .5em;
+    margin: 0.5em;
     margin-left: 0;
     word-break: break-word;
 }
 
-.preview-tags-label{
+.preview-tags-label {
     color: #777;
 }
 
-.preview-tags-item{
+.preview-tags-item {
     color: #ddd;
     margin: 0;
     cursor: pointer;

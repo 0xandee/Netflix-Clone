@@ -3,11 +3,15 @@ import './PreviewPopup.scss';
 import PreviewPlayer from '../PreviewPlayer';
 import PreviewInfo from '../PreviewInfo';
 
-const PreviewPopup = () => {
+const PreviewPopup = (props) => {
     return (
-        <div className="pop-up__dialog pop-up__container background max-width">
-            <PreviewPlayer/>
-            <PreviewInfo/>
+        <div className="pop-up__dialog pop-up__container">
+            <div className="background max-width">
+                <PreviewPlayer onCloseButton = {props.onCloseButton}/>
+                <PreviewInfo />
+
+            </div>
+
         </div>
     );
 };
