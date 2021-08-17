@@ -22,7 +22,9 @@ body {
     font-family: var(--fontOne);
     background-color: var(--colorOne) !important;
 }
-
+.cursor-pointer{
+    cursor: pointer;
+}
 .headerLogo {
     width: 120px;
 }
@@ -38,7 +40,13 @@ body {
     font-weight: 500;
     margin-bottom: 12px;
     color: var(--colorWhite);
+    transition: all 0.2s ease-in-out;
+    &:hover{
+        color:rgb(255, 255, 255);
+    }
 }
+
+
 
 .thumbTiles.swiper-container {
     padding: 0 4%;

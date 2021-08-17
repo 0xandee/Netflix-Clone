@@ -5,7 +5,6 @@ import PreviewInfo from '../PreviewInfo';
 import { useHistory, useRouteMatch } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { showPopUpInfo } from '../../services/redux/actions';
-import Dialog from '@material-ui/core/Dialog';
 
 const PreviewPopup = (props) => {
     const params = new URLSearchParams(props.location.search)
@@ -27,9 +26,7 @@ const PreviewPopup = (props) => {
 
     return (params.get('jbv') &&
         <dia   className="pop-up__container">
-            <div  className="pop-up__dialog " 
-            style ={{top:`${tops.scrollY + 30 + 'px'}`,}} 
-            >
+            <div  className="pop-up__dialog ">
                 <div className="background max-width">
                     <PreviewPlayer onCloseButton={handleOncloseButtonClick} />
                     <PreviewInfo />

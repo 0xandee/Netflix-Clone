@@ -1,6 +1,9 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useCallback, useEffect, createRef } from "react";
 import './Slider.scss';
 import { BigBanner, Slider, Footer } from "../../components";
+import { useSelector, useDispatch } from 'react-redux';
+import { showPopUpInfo } from "../../services/redux/actions";
+import { Link, useHistory, useLocation } from "react-router-dom";
 
 const movieData = [{
     id: 1,
@@ -82,11 +85,67 @@ const movieData = [{
     }]
 }]
 
-const Homepage = () => {
+const Homepage = (props) => {
+    //const [showed, setShowed] = useState(false)
+    const history = useHistory();
+    const showed = useSelector((state) => state.isPopUp)
+    const homePageRef = useRef(null)
+    const [currentScrollY, setCurrentScrollY] = useState(0);
+    const dispatch = useDispatch()
+    const handleMoreInfo = () => {
+        dispatch(showPopUpInfo(!showed))
+        if (!showed) {
+            homePageRef.current.style.top = -currentScrollY + 'px';
+            history.push({
+                pathname: props.match.url,
+                search: `jbv=${'detailId'}`,
+                state: { scrollY: currentScrollY }
+            })
+            window.scroll(0, 0)
+        }
+        else {
+            homePageRef.current.style.top = null;
+
+        }
+
+    }
+    const styles = ({
+        fixed: {
+            position: 'fixed',
+        },
+        sticky: {
+            position: 'static',
+        }
+    })
+
+    const handleScroll = useCallback(() => {
+        setCurrentScrollY(window.scrollY)
+
+    }, []);
+
+    const handlePopState = useCallback(() => {
+        // window.scroll(0, 76)
+        dispatch(showPopUpInfo(false))
+        // console.log("🚀 ~ file: index.js ~ line 84 ~ handlePopState ~ dispatch", showed)
+
+    }, [dispatch]);
+
+    useEffect(() => {
+
+
+        window.addEventListener("scroll", handleScroll);
+        window.addEventListener('popstate', handlePopState);
+        return () => {
+
+            window.removeEventListener("scroll", handleScroll);
+            window.removeEventListener('onpopstate ', handlePopState);
+        }
+
+    }, [handleScroll, handlePopState]);
     return (
-        <div className="overflow-x-hidden">
-            <BigBanner/>
-            {movieData.map(item => (<Slider id={item.id} sliderTitle={item.sliderTitle} sliderMovieList={item.sliderMovieList}/>))}
+        <div className="overflow-x-hidden" ref={homePageRef} style={showed ? styles.fixed : styles.sticky}>
+            <BigBanner handleMoreInfo={handleMoreInfo} />
+            {movieData.map(item => (<Slider id={item.id} sliderTitle={item.sliderTitle} sliderMovieList={item.sliderMovieList} handleMoreInfo={handleMoreInfo}/>))}
             <Footer/>
         </div>
     );

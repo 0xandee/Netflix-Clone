@@ -13,7 +13,7 @@ const PlayButton = () => {
                             </svg>
                         </div>
                     </div>
-                    <span className="PlayButton__primary-text PlayButton__primary-text-transform plr-2">Play</span>
+                    <span className="PlayButton__primary-text PlayButton__primary-text-transform plr-2 ">Play</span>
                 </button>
             </NavLink>
     );

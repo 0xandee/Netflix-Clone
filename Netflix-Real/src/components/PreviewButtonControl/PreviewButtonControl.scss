@@ -5,7 +5,7 @@
     -ms-flex-align: center;
     align-items: center;
     margin-bottom: 1em;
-    margin-left: 1em;
+    // margin-left: 1em;
     min-height: 2em;
 }
 
@@ -51,8 +51,9 @@
 
 .PlayButton__secondary-color{
     border-width: 2px;
-    background-color: rgba(42,42,42,.6);
+    background-color: rgba(109, 109, 110, 0.7);
     border-color: rgba(255,255,255,.5);
+    color: white;
 }
 
 
@@ -78,9 +79,10 @@
 .PlayButton__primary-text{
     font-family: "Netflix Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
-    display: block;
-    font-size: 1.1rem;
+    display: inline;
+    font-size: 1.2rem;
     font-weight: bold;
+    vertical-align: middle;
 }
 
 .PlayButton__primary-text-transform{
@@ -89,12 +91,13 @@
 }
 
 .PlayIcon_icon {
-    height: 2rem;
-    width: 2rem;
+    width: 2.2rem;
+    display: inline;
+
 }
 
 .PlayIcon_icon-container {
-    display: inline-block;
+    display: inline-flex;
 }
 
 .AddIcon_icon {

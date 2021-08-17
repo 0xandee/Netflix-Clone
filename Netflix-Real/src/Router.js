@@ -1,4 +1,3 @@
-import { Dialog } from "@material-ui/core";
 import React, { useEffect, useRef, useState } from "react";
 import {
     BrowserRouter as Router,
@@ -90,7 +89,7 @@ export default function WebRouter() {
                             <Route path="/popular">
                                 <NewAndPopular />
                             </Route>
-                            <Route path='/home' component={Slider}>
+                            <Route path='/home' component={Homepage}>
                                 {/* <Home /> */}
                             </Route>
                             <Route path="/registration">
