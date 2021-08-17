@@ -5,7 +5,7 @@
 
     --tileBorderRadius: 8px;
 
-    --fontOne: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    --fontOne: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 * {
@@ -99,7 +99,6 @@ body {
     .thumbTile:hover .swiper-button-next::after {
         display: block;
     }
-
 }
 .swiper-button-next.swiper-button-disabled, .swiper-button-prev.swiper-button-disabled {
     opacity: 0 !important;
@@ -137,7 +136,7 @@ body {
     overflow: visible;
 }
 
-.controlPlayer{
+.controlPlayer {
     position: absolute;
     height: 30%;
     width: 100%;
@@ -148,7 +147,7 @@ body {
     transition: all 0.5s ease-in-out;
     opacity: 0;
     // display: none;
-    .PreviewButton__hidden-container{
+    .PreviewButton__hidden-container {
         transform: scale(0.4);
         transform-origin: top left;
         transition: all 0.5s ease-in-out;
@@ -167,11 +166,11 @@ body {
     transform-origin: left;
 }
 
-.float-right{
+.float-right {
     float: right;
 }
 
-.svg-num{
+.svg-num {
     position: absolute;
     top: 0;
     bottom: 0;
@@ -181,13 +180,13 @@ body {
     z-index: 1;
 }
 
-.svg-img{
+.svg-img {
     width: 50%;
     float: right;
     z-index: 999;
 }
 
-.mt-45{
+.mt-45 {
     margin-top: 45%;
 }
 
@@ -200,13 +199,22 @@ body {
 }
 
 body {
-    color: rgb(255,255,255);
+    color: rgb(255, 255, 255);
 }
 
 
-.blackBg{
+.blackBg {
+    
+    width: 100%;
+    height: max-content;
     background-color: black;
+    &.shown-pop-up {
+        position: fixed;
+        
+    }
 }
+
+
 
 .PreviewButton__container_preview {
     display: flex;
@@ -217,7 +225,7 @@ body {
     justify-content: flex-start;
 }
 
-.pl-4em{
+.pl-4em {
     padding-top: 0.4em;
     padding-left: 0.4em;
 }

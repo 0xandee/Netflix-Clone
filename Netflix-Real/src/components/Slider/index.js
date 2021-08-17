@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
 
@@ -11,7 +11,6 @@ import SwiperCore, {
 } from 'swiper/core';
 
 import './Slider.scss';
-import BigBanner from "../BigBanner";
 
 // install Swiper modules
 SwiperCore.use([Navigation]);

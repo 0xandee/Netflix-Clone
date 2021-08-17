@@ -1,0 +1,1 @@
+export const IS_INFO_POP_UP = "IS_INFO_POP_UP"

@@ -5,7 +5,7 @@ import { Link, useHistory } from "react-router-dom";
 import { Progress, Tooltip } from "reactstrap";
 import screenfull from "screenfull";
 import { IconBackArrow, IconFullScreen, IconLayer, IconNext10s, IconPause, IconPauseCircle, IconPlay, IconPlayCircle, IconRewind10s, IconSetting, IconSkip, IconVolume, IconVolumeMute } from "../../assets/Icon";
-import { Duration, Format } from "../../service/function/Duration";
+import { Duration, Format } from "../../services/function/Duration";
 import './style.scss'
 let count = 0;
 //https://www.example.com/url_to_video.mp4
@@ -100,7 +100,6 @@ const VideoPlayer = () => {
     }
 
     const handleVideoDuration = (duration) => {
-        console.log("🚀 ~ file: index.js ~ line 103 ~ handleVideoDuration ~ duration", duration)
         setDuration(duration);
     }
 
@@ -136,7 +135,6 @@ const VideoPlayer = () => {
     //attach to slider and fire on mousemove
     const handlePlayedMouseMove = (e) => {
         valueHover = calcSliderPos(e).toFixed(4);
-
 
         titlePlayedRef.current.textContent = Format((valueHover * duration).toFixed(0));
         titlePlayedRef.current.style.left = e.nativeEvent.offsetX + 'px';

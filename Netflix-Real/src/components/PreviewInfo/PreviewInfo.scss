@@ -1,9 +1,12 @@
 .PreviewInfo__container {
     position: relative;
+    background-color: rgba(0,0,0, 0.5);
+    padding: 0 1.25em;
 }
 
 .DetailInfo__container{
-    padding: 0 1.25em;
+    
+    background-color:black
 }
 
 .match-score {

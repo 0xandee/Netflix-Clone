@@ -9,11 +9,11 @@ import './PreviewButtonControl.scss'
 
 
 
-const PreviewButtonControl = () => {
+const PreviewButtonControl = (props) => {
     return (
         <div>
             <div className="PreviewButton__container PreviewButton__float-left-container">
-                <PlayButton/>
+                <PlayButton />
                 <AddButton/>
                 <LikeButton/>
                 <DislikeButton/>
@@ -22,7 +22,7 @@ const PreviewButtonControl = () => {
                 <MuteButton/>
             </div>
             <div className="PreviewButton__container PreviewButton__float-top-right-container">
-                <CloseButton/>
+                <CloseButton onCloseButton = {props.onCloseButton}/>
             </div>
         </div>
     )
