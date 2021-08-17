@@ -10,10 +10,10 @@ const EpisodeItem = () => {
             </div>
             <div className="titleCardList__metadataWrapper">
                 <div className="titleCardList__title">
-                    <span class="titleCard__title_text">Episode 1</span>
-                    <span><span class="duration ellipsized">82m</span></span>
+                    <span className="titleCard__title_text">Episode 1</span>
+                    <span><span className="duration ellipsized">82m</span></span>
                 </div>
-                <p class="titleCard-synopsis previewModal__small-text">For the first time in 20 years, everyone's finally working under the same roof. A patient with a familiar name finds Chae Song-hwa.</p>
+                <p className="titleCard-synopsis previewModal__small-text">For the first time in 20 years, everyone's finally working under the same roof. A patient with a familiar name finds Chae Song-hwa.</p>
             </div>
         </div>
     );

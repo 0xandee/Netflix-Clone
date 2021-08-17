@@ -23,12 +23,12 @@ const Registration = () => {
 
                             <img className={`registration__body__content__main__image-devices`} src={backgroudUrl} />
                             <div >
-                                <span class="registration__body__content__main__step-indicator" >STEP <b>1</b> OF <b>3</b>
+                                <span className="registration__body__content__main__step-indicator" >STEP <b>1</b> OF <b>3</b>
                                 </span>
-                                <h1 class="registration__body__content__main__step-title">
+                                <h1 className="registration__body__content__main__step-title">
 
                                     Finish setting up your account</h1>
-                                <div class="registration__body__content__main__step-content">
+                                <div className="registration__body__content__main__step-content">
                                     Netflix is personalized for you. Create a password to watch on any device at any time.
                                 </div>
                             </div>

@@ -73,12 +73,12 @@ const PlanForm = () => {
                     <div className={`plan-form__body__content`}>
                         <div className={`plan-form__body__content__main`}>
                             <div >
-                                <span class="plan-form__body__content__main__step-indicator" >STEP <b>2</b> OF <b>3</b>
+                                <span className="plan-form__body__content__main__step-indicator" >STEP <b>2</b> OF <b>3</b>
                                 </span>
-                                <h1 class="plan-form__body__content__main__step-title">
+                                <h1 className="plan-form__body__content__main__step-title">
 
                                     Choose the plan that’s right for you</h1>
-                                <div class="plan-form__body__content__main__step-content">
+                                <div className="plan-form__body__content__main__step-content">
                                     <span>
                                         <IconCheckmark className={`plan-form__icon-checkmark`} />
                                         <p>Watch all you want. Ad-free.

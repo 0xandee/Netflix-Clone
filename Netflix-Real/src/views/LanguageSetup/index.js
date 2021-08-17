@@ -51,12 +51,12 @@ const LanguageSetup = () => {
                     <div className={`registration__body__content`}>
                         <div className={`registration__body__content__main`}>
                             <div >
-                                <span class="registration__body__content__main__step-indicator" >STEP <b>3</b> OF <b>3</b>
+                                <span className="registration__body__content__main__step-indicator" >STEP <b>3</b> OF <b>3</b>
                                 </span>
-                                <h1 class="registration__body__content__main__step-title">
+                                <h1 className="registration__body__content__main__step-title">
 
                                 Which languages do you like to watch shows and movies in?</h1>
-                                <div class="registration__body__content__main__step-content">
+                                <div className="registration__body__content__main__step-content">
                                     Letting us know helps set up your personalization and audio, subtitles.
                                 </div>
                             </div>

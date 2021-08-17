@@ -36,7 +36,7 @@ const CustomDropdown = () => {
     >
       <div className='customdropdown' onClick={() => setOpen(!isOpen)}>
         <div className='customdropdown-header' >
-          <img class="profile-icon" style={{ borderRadius: '4px' }} src={avatar} alt="" />
+          <img className="profile-icon" style={{ borderRadius: '4px' }} src={avatar} alt="" />
           <span className={`caret ${isOpen && 'open'}`} />
           <div className={`dropdown-body ${isOpen && 'open'}`} >
             <React.Fragment>
@@ -45,7 +45,7 @@ const CustomDropdown = () => {
                 {items.length !== 0 && items.map(item => (
                   <div className="dropdown-item" id={item.id}>
                     <Link to={item.navLink} className='profile-link'>
-                      <img class="profile-icon" src={item.avatar} alt="" />
+                      <img className="profile-icon" src={item.avatar} alt="" />
                       <span className='profile-name'>
                         {item.label}
                       </span>

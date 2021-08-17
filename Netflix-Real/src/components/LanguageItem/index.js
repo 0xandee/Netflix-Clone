@@ -14,7 +14,7 @@ const LanguageItem = (props) => {
             <div className="ui-binary-input" onClick={langChecked}>
                 <input value={props.id} type="checkbox" className="allLanguages_ms" checked={isCheck} />
                 <label className={`${isCheck ? 'checked' : ''}`}>
-                    <span class="language">{props.language}</span>
+                    <span className="language">{props.language}</span>
                 </label>
             </div>
         </li>

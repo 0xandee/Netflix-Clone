@@ -12,20 +12,20 @@ const MoreLikeThisItem = () => {
                     <div className="videoMetadata--container-container">
                         <div className="videoMetadata--container">
                             <div className="videoMetadata--first-line">
-                                <span class="match-score">93% Match</span>
+                                <span className="match-score">93% Match</span>
                             </div>
                         </div>
                         <div>
                             <div className="has-smaller-buttons">
-                                <div class="ltr-1ksxkn9">
-                                    <div class="small ltr-dguo2f" role="presentation">
+                                <div className="ltr-1ksxkn9">
+                                    <div className="small ltr-dguo2f" role="presentation">
                                         <svg viewBox="0 0 24 24"><path d="M13 11h8v2h-8v8h-2v-8H3v-2h8V3h2v8z" fill="currentColor"></path></svg>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <p class="titleCard-synopsis previewModal--small-text">America's fate rests in the hands of a low-level official after an attack on Washington decimates the government in this gripping political thriller.</p>
+                    <p className="titleCard-synopsis previewModal--small-text">America's fate rests in the hands of a low-level official after an attack on Washington decimates the government in this gripping political thriller.</p>
                 </div>
             </div>
         </div>

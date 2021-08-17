@@ -25,12 +25,12 @@ const SignUp = () => {
 
                             <img className={`sign-up__body__content__main__image-devices`} src={backgroudUrl} />
                             <div >
-                                <span class="sign-up__body__content__main__step-indicator" >STEP <b>2</b> OF <b>3</b>
+                                <span className="sign-up__body__content__main__step-indicator" >STEP <b>2</b> OF <b>3</b>
                                 </span>
-                                <h1 class="sign-up__body__content__main__step-title">
+                                <h1 className="sign-up__body__content__main__step-title">
 
                                     Choose your plan</h1>
-                                <div class="sign-up__body__content__main__step-content">
+                                <div className="sign-up__body__content__main__step-content">
                                     <span>
                                         <IconCheckmark className={`sign-up__icon-checkmark`} />
                                       <p>No commitments, cancel anytime.

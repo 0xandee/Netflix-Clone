@@ -19,7 +19,7 @@ const VideoPlayer = () => {
 
     const [muted, setMuted] = useState(false);
     const [seeking, setSeeking] = useState(false);
-    const [url, setUrl] = useState('http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4');
+    const [url, setUrl] = useState('https://www.youtube.com/watch?v=K1QICrgxTjA&ab_channel=LoungeVFilms-RelaxingMusicandNatureSounds');
     const [duration, setDuration] = useState(0);
     const [volume, setVolume] = useState(0.8);
     const playerRef = useRef(null);
@@ -220,7 +220,7 @@ const VideoPlayer = () => {
                         url={url}
                         onReady={handleVideoOnReady}
                         playing={playing}
-                        controls={false}
+                        controls={true}
 
 
                         volume={volume}

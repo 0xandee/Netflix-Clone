@@ -26,11 +26,12 @@ import Slider from './Slider';
 import SignUpNavigationBar from './SignUpNavigationBar';
 import LanguageItem from './LanguageItem';
 import OnboardingMovieItem from './OnboardingMovieItem';
+import BigBanner from './BigBanner';
 export {
     About, AddButton, 
     CloseButton, CustomInput, CustomNotification,
     DetailInfoMetadata, DetailInfoTags, DetailInfo, DislikeButton, Dropdown,
-    Episodes, EpisodeItem, EpisodeSelector, LanguageItem, OnboardingMovieItem,
+    Episodes, EpisodeItem, EpisodeSelector, LanguageItem, OnboardingMovieItem, BigBanner,
     Footer,
     LikeButton,
     MoreLikeThis, MoreLikeThisItem, MuteButton,

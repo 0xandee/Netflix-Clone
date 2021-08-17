@@ -52,12 +52,12 @@ const OnboardingMovies = () => {
                         <div className={`registration__body__content__main`}>
                             {/* Uncomment to show choose 3 you like */}
                             <div >
-                                <span class="registration__body__content__main__step-indicator" >STEP <b>3</b> OF <b>3</b>
+                                <span className="registration__body__content__main__step-indicator" >STEP <b>3</b> OF <b>3</b>
                                 </span>
-                                <h1 class="registration__body__content__main__step-title">
+                                <h1 className="registration__body__content__main__step-title">
 
                                 Andy Vo, choose 3 you like.</h1>
-                                <div class="registration__body__content__main__step-content">
+                                <div className="registration__body__content__main__step-content">
                                 It will help us find TV shows &amp; movies you'll love! Click the ones you like!
                                 </div>
                                 <NavLink to='/signup/regform' className='submitBtnContainer'>
@@ -67,12 +67,12 @@ const OnboardingMovies = () => {
                                 </NavLink>
                             </div>
                             {/* <div className='mb-3'>
-                                <span class="registration__body__content__main__step-indicator" >STEP <b>3</b> OF <b>3</b></span>
-                                <h1 class="registration__body__content__main__step-title">Personalizing for Andy Vo.</h1>
+                                <span className="registration__body__content__main__step-indicator" >STEP <b>3</b> OF <b>3</b></span>
+                                <h1 className="registration__body__content__main__step-title">Personalizing for Andy Vo.</h1>
                                 <div className="registration__body__content__main__waiting-spinner">
                                     <div className="basic-spinner center-absolute"></div>
                                 </div>
-                                <div class="registration__body__content__main__step-content">
+                                <div className="registration__body__content__main__step-content">
                                     We're looking for movies and TV shows we think you'll love.
                                 </div>
                             </div> */}

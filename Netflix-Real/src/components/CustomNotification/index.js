@@ -44,9 +44,9 @@ const CustomNotification = () => {
 
                                         <Link to={item.navLink} className='image-text-notification'>
                                             <div className='notification-type-new'></div>
-                                            <div class='multi-landing-stack-space-holder'>
-                                                <div class="multi-landing-stack-1"></div>
-                                                <div class="multi-landing-stack-2"></div>
+                                            <div className='multi-landing-stack-space-holder'>
+                                                <div className="multi-landing-stack-1"></div>
+                                                <div className="multi-landing-stack-2"></div>
                                                 <img className='title-card' size='112px' src={avatar} alt="" />
                                             </div>
 

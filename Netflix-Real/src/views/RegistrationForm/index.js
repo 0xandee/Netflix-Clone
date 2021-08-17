@@ -22,12 +22,12 @@ const RegistrationForm = () => {
                     <div className={`reg-form__body__content`}>
                         <div className={`reg-form__body__content__main`}>
                             <div >
-                                <span class="reg-form__body__content__main__step-indicator" >STEP <b>1</b> OF <b>3</b>
+                                <span className="reg-form__body__content__main__step-indicator" >STEP <b>1</b> OF <b>3</b>
                                 </span>
-                                <h1 class="reg-form__body__content__main__step-title">
+                                <h1 className="reg-form__body__content__main__step-title">
 
                                     Create a password to start your membership</h1>
-                                <div class="reg-form__body__content__main__step-content">
+                                <div className="reg-form__body__content__main__step-content">
                                     Just a few more steps and you're done!
                                     We hate paperwork, too.
                                 </div>

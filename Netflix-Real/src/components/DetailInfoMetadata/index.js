@@ -10,8 +10,8 @@ const DetailInfoMetadata = () => {
                 <span className="maturiry-rating ml-2">
                     <span className="maturity-number">13+</span>
                 </span>
-                <span class="duration ml-2">1h 56m</span>
-                <span class="player-feature-badge ml-2">HD</span>
+                <span className="duration ml-2">1h 56m</span>
+                <span className="player-feature-badge ml-2">HD</span>
             </div>
             <div className="supplemental-message">
                 <span>#4 in Movies Today</span>  

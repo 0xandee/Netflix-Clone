@@ -11,7 +11,7 @@ import {
 import './App.css'
 import { Slider,NavBar, NavigationBar, SignUpNavigationBar} from "./components/index";
 
-import { ForgotPassword, PlanForm, Registration, RegistrationForm, SignUp, SignIn, LanguageSetup, OnboardingMovies, VideoPlayer } from "./views/index";
+import { ForgotPassword, PlanForm, Registration, RegistrationForm, SignUp, SignIn, LanguageSetup, OnboardingMovies, VideoPlayer, Homepage } from "./views/index";
 
 
 export default function WebRouter() {
@@ -107,7 +107,7 @@ function ChoosePlan(){
 }
 
 function Home() {
-    return <Slider />;
+    return <Homepage />;
 }
 
 function TVShow() {
