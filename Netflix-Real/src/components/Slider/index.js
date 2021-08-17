@@ -24,6 +24,7 @@ const Slider = (props) => {
         freeMode={true}
         speed={500}
         navigation={true}
+        // loop={true}
         breakpoints={{
         "768": {"slidesPerView": 4,"slidesPerGroup": 4,freeMode: false},
         "1024": {"slidesPerView": 6,"slidesPerGroup": 6,freeMode: false}}}

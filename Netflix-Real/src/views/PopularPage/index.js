@@ -169,7 +169,7 @@ const movieData = [{
     }]
 }]
 
-const Homepage = (props) => {
+const PopularPage = (props) => {
     //const [showed, setShowed] = useState(false)
     const history = useHistory();
     const showed = useSelector((state) => state.isPopUp)
@@ -228,11 +228,11 @@ const Homepage = (props) => {
     }, [handleScroll, handlePopState]);
     return (
         <div className="overflow-x-hidden" ref={homePageRef} style={showed ? styles.fixed : styles.sticky}>
-            <BigBanner handleMoreInfo={handleMoreInfo} />
+            <div class="sub-header"><div><div class="sub-header-wrapper"><div class="galleryHeader"><div class="title"> </div></div></div></div></div>
             {movieData.map(item => (<Slider id={item.id} sliderTitle={item.sliderTitle} sliderMovieList={item.sliderMovieList} handleMoreInfo={handleMoreInfo}/>))}
             <Footer/>
         </div>
     );
 };
 
-export default Homepage;
+export default PopularPage;

@@ -29,6 +29,7 @@
     .tab-navigation {
         display: flex;
         align-items: center;
+        transition: all 0.2s;
     }
     .nav-item {
         text-decoration: none;

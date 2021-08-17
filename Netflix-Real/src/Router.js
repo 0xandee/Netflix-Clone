@@ -13,7 +13,7 @@ import {
 import './App.css'
 import { Slider, NavBar, NavigationBar, SignUpNavigationBar, PreviewInfo, PreviewPopup } from "./components/index";
 
-import { ForgotPassword, PlanForm, Registration, RegistrationForm, SignUp, SignIn, LanguageSetup, OnboardingMovies, VideoPlayer, Homepage } from "./views/index";
+import { ForgotPassword, PlanForm, Registration, RegistrationForm, SignUp, SignIn, LanguageSetup, OnboardingMovies, VideoPlayer, Homepage, MyPlaylist, PopularPage } from "./views/index";
 
 
 export default function WebRouter() {
@@ -87,7 +87,7 @@ export default function WebRouter() {
                                 <Movies />
                             </Route>
                             <Route path="/popular">
-                                <NewAndPopular />
+                                <PopularPage/>
                             </Route>
                             <Route path='/home' component={Homepage}>
                                 {/* <Home /> */}
@@ -116,14 +116,14 @@ function Home() {
 }
 
 function TVShow() {
-    return <h2>TVShow</h2>;
+    return <Homepage />;
 }
-function MyPlaylist() {
-    return <h2>MyPlaylist</h2>;
-}
+// function MyPlaylist() {
+//     return <MyPlaylist />;
+// }
 
 function Movies() {
-    return <h2>Movies</h2>;
+    return <Homepage />;
 }
 function NewAndPopular() {
     return <h2>NewAndPopular</h2>;

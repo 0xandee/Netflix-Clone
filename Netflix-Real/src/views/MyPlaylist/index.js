@@ -7,7 +7,7 @@ import { Link, useHistory, useLocation } from "react-router-dom";
 
 const movieData = [{
     id: 1,
-    sliderTitle: 'Popular Now',
+    sliderTitle: '',
     sliderMovieList: [{
         id: 1,
         movieName: 'Stranger Things',
@@ -38,40 +38,10 @@ const movieData = [{
         movieName: 'Love, Death & Robots',
         artworkLink: 'https://occ-0-395-325.1.nflxso.net/dnm/api/v6/X194eJsgWBDE2aQbaNdmCXGUP-Y/AAAABQvxXNAtHZO0L3elCihVEFr9kUl58LC4hz89kuhtxCpLtRlo099P722G-xO_L3vCpPV9zJt8UwjaLkd0n-j5ZFrWucMP0a-YMLYvO9uO14slVUVj3nZa4t51E2Av.jpg?r=4a1',
         movieLink: ''
-    },{
-        id: 7,
-        movieName: 'The Umbrella Academy',
-        artworkLink: 'https://occ-0-395-325.1.nflxso.net/dnm/api/v6/X194eJsgWBDE2aQbaNdmCXGUP-Y/AAAABVp2asRLMqBDtgNX3bwzallgbvVwPg5d8BWUMuJjnesDoy8BJjjcirT4IRdWrCopjNdbNpCPdUE0OJgqe6x5va-SB5rn9rDEYtFtFCMg1hLGNmIJ7oszYvXw-opz.jpg?r=9a7',
-        movieLink: ''
-    },{
-        id: 8,
-        movieName: 'Money Heist',
-        artworkLink: 'https://occ-0-325-58.1.nflxso.net/dnm/api/v6/X194eJsgWBDE2aQbaNdmCXGUP-Y/AAAABcQxdPFG90ttQZ-WSFAaR2nBeQnqpcF5GUYeV2KKS-0NMYSV-AIptWZG3S_BX7MDcuuIkW-8v2SintCM4wLRMu9j3G2etGVQ0iZYAyNgkE2n7JI5pqroDOyfG6Oa.jpg?r=a0a',
-        movieLink: ''
-    },{
-        id: 9,
-        movieName: 'Breaking Bad',
-        artworkLink: 'https://occ-0-325-58.1.nflxso.net/dnm/api/v6/X194eJsgWBDE2aQbaNdmCXGUP-Y/AAAABUr3Y1-NF-H2vxX46gBEwdYqSlvDsY126karuPPoXnHjijxuk1cXPIb8lrLk8TfN3YXWzniCLhrTOROMXuLaKcji8lI.jpg?r=01d',
-        movieLink: ''
-    },{
-        id: 10,
-        movieName: 'The Umbrella Academy',
-        artworkLink: 'https://occ-0-395-325.1.nflxso.net/dnm/api/v6/X194eJsgWBDE2aQbaNdmCXGUP-Y/AAAABVp2asRLMqBDtgNX3bwzallgbvVwPg5d8BWUMuJjnesDoy8BJjjcirT4IRdWrCopjNdbNpCPdUE0OJgqe6x5va-SB5rn9rDEYtFtFCMg1hLGNmIJ7oszYvXw-opz.jpg?r=9a7',
-        movieLink: ''
-    },{
-        id: 11,
-        movieName: 'Godzilla: King of the Monsters',
-        artworkLink: 'https://occ-0-325-58.1.nflxso.net/dnm/api/v6/X194eJsgWBDE2aQbaNdmCXGUP-Y/AAAABS-F1qZzItis6jCP5eKTw6jrmDkHLXu3lBO6iCwcnhKSDkQsi0VfW3SgQkrHpgKOgExdaG69LdDN0Cefd2LwKCd8LD103PB8Im-hTfKz7Gy0MjbfSebxjpiJZXz-Oq3tMWLK2gtQuKWw3-GhWy4H3znYLQE.jpg?r=b5a',
-        movieLink: ''
-    },{
-        id: 12,
-        movieName: 'Kingdom: Ashin of the North',
-        artworkLink: 'https://occ-0-325-58.1.nflxso.net/dnm/api/v6/X194eJsgWBDE2aQbaNdmCXGUP-Y/AAAABT_UlHwcT0fMIads2P9v2NFwQru5M7tOqYqcfDMYfCpCBpWLDti9-w-Ww8-pul8-mMNasGt6Cy7Q-TEjuT7BxctOqj2jJMMANa2SgHYuqzi3JZG2hAu9g5wLs7-7.jpg?r=799',
-        movieLink: ''
     }]
 },{
     id: 2,
-    sliderTitle: 'Action & Adventure',
+    sliderTitle: '',
     sliderMovieList: [{
         id: 1,
         movieName: 'Stranger Things',
@@ -102,40 +72,10 @@ const movieData = [{
         movieName: 'Love, Death & Robots',
         artworkLink: 'https://occ-0-395-325.1.nflxso.net/dnm/api/v6/X194eJsgWBDE2aQbaNdmCXGUP-Y/AAAABQvxXNAtHZO0L3elCihVEFr9kUl58LC4hz89kuhtxCpLtRlo099P722G-xO_L3vCpPV9zJt8UwjaLkd0n-j5ZFrWucMP0a-YMLYvO9uO14slVUVj3nZa4t51E2Av.jpg?r=4a1',
         movieLink: ''
-    },{
-        id: 7,
-        movieName: 'The Umbrella Academy',
-        artworkLink: 'https://occ-0-395-325.1.nflxso.net/dnm/api/v6/X194eJsgWBDE2aQbaNdmCXGUP-Y/AAAABVp2asRLMqBDtgNX3bwzallgbvVwPg5d8BWUMuJjnesDoy8BJjjcirT4IRdWrCopjNdbNpCPdUE0OJgqe6x5va-SB5rn9rDEYtFtFCMg1hLGNmIJ7oszYvXw-opz.jpg?r=9a7',
-        movieLink: ''
-    },{
-        id: 8,
-        movieName: 'Money Heist',
-        artworkLink: 'https://occ-0-325-58.1.nflxso.net/dnm/api/v6/X194eJsgWBDE2aQbaNdmCXGUP-Y/AAAABcQxdPFG90ttQZ-WSFAaR2nBeQnqpcF5GUYeV2KKS-0NMYSV-AIptWZG3S_BX7MDcuuIkW-8v2SintCM4wLRMu9j3G2etGVQ0iZYAyNgkE2n7JI5pqroDOyfG6Oa.jpg?r=a0a',
-        movieLink: ''
-    },{
-        id: 9,
-        movieName: 'Breaking Bad',
-        artworkLink: 'https://occ-0-325-58.1.nflxso.net/dnm/api/v6/X194eJsgWBDE2aQbaNdmCXGUP-Y/AAAABUr3Y1-NF-H2vxX46gBEwdYqSlvDsY126karuPPoXnHjijxuk1cXPIb8lrLk8TfN3YXWzniCLhrTOROMXuLaKcji8lI.jpg?r=01d',
-        movieLink: ''
-    },{
-        id: 10,
-        movieName: 'The Umbrella Academy',
-        artworkLink: 'https://occ-0-395-325.1.nflxso.net/dnm/api/v6/X194eJsgWBDE2aQbaNdmCXGUP-Y/AAAABVp2asRLMqBDtgNX3bwzallgbvVwPg5d8BWUMuJjnesDoy8BJjjcirT4IRdWrCopjNdbNpCPdUE0OJgqe6x5va-SB5rn9rDEYtFtFCMg1hLGNmIJ7oszYvXw-opz.jpg?r=9a7',
-        movieLink: ''
-    },{
-        id: 11,
-        movieName: 'Godzilla: King of the Monsters',
-        artworkLink: 'https://occ-0-325-58.1.nflxso.net/dnm/api/v6/X194eJsgWBDE2aQbaNdmCXGUP-Y/AAAABS-F1qZzItis6jCP5eKTw6jrmDkHLXu3lBO6iCwcnhKSDkQsi0VfW3SgQkrHpgKOgExdaG69LdDN0Cefd2LwKCd8LD103PB8Im-hTfKz7Gy0MjbfSebxjpiJZXz-Oq3tMWLK2gtQuKWw3-GhWy4H3znYLQE.jpg?r=b5a',
-        movieLink: ''
-    },{
-        id: 12,
-        movieName: 'Kingdom: Ashin of the North',
-        artworkLink: 'https://occ-0-325-58.1.nflxso.net/dnm/api/v6/X194eJsgWBDE2aQbaNdmCXGUP-Y/AAAABT_UlHwcT0fMIads2P9v2NFwQru5M7tOqYqcfDMYfCpCBpWLDti9-w-Ww8-pul8-mMNasGt6Cy7Q-TEjuT7BxctOqj2jJMMANa2SgHYuqzi3JZG2hAu9g5wLs7-7.jpg?r=799',
-        movieLink: ''
     }]
 },{
     id: 2,
-    sliderTitle: 'Action & Adventure',
+    sliderTitle: '',
     sliderMovieList: [{
         id: 1,
         movieName: 'Stranger Things',
@@ -169,7 +109,7 @@ const movieData = [{
     }]
 }]
 
-const Homepage = (props) => {
+const MyPlaylist = (props) => {
     //const [showed, setShowed] = useState(false)
     const history = useHistory();
     const showed = useSelector((state) => state.isPopUp)
@@ -228,11 +168,11 @@ const Homepage = (props) => {
     }, [handleScroll, handlePopState]);
     return (
         <div className="overflow-x-hidden" ref={homePageRef} style={showed ? styles.fixed : styles.sticky}>
-            <BigBanner handleMoreInfo={handleMoreInfo} />
-            {movieData.map(item => (<Slider id={item.id} sliderTitle={item.sliderTitle} sliderMovieList={item.sliderMovieList} handleMoreInfo={handleMoreInfo}/>))}
+            <div class="sub-header"><div><div class="sub-header-wrapper"><div class="galleryHeader"><div class="title">My List</div></div></div></div></div>
+            {movieData.map(item => (<Slider id={item.id} sliderMovieList={item.sliderMovieList} handleMoreInfo={handleMoreInfo}/>))}
             <Footer/>
         </div>
     );
 };
 
-export default Homepage;
+export default MyPlaylist;

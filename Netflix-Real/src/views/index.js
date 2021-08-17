@@ -8,6 +8,8 @@ import LanguageSetup from './LanguageSetup'
 import OnboardingMovies from './OnboardingMovies'
 import VideoPlayer from './VideoPlayer'
 import Homepage from './Homepage'
+import MyPlaylist from './MyPlaylist'
+import PopularPage from './PopularPage'
 export {
-    SignIn,SignUp,ForgotPassword,Registration,RegistrationForm,PlanForm,LanguageSetup,OnboardingMovies,VideoPlayer,Homepage
+    SignIn,SignUp,ForgotPassword,Registration,RegistrationForm,PlanForm,LanguageSetup,OnboardingMovies,VideoPlayer,Homepage,MyPlaylist,PopularPage
 }
