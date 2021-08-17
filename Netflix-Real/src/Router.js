@@ -7,7 +7,8 @@ import {
     Link,
     useRouteMatch,
     useParams,
-    useHistory
+    useHistory,
+    Redirect
 } from "react-router-dom";
 
 import './App.css'
@@ -74,7 +75,7 @@ export default function WebRouter() {
                     <Route path="/">
 
                         <NavigationBar />
-
+                        <Redirect to="/home" />
 
                         <Switch>
                             <Route path="/tvshow">
@@ -89,18 +90,8 @@ export default function WebRouter() {
                             <Route path="/popular">
                                 <NewAndPopular />
                             </Route>
-                            <Route path='/home' 
-                            // children={({ match }) => {
-                            //     return (
-                            //         <Dialog onClose={history.goBack} open={Boolean(match)}>
-                            //             <PreviewPopup />
-                            //         </Dialog>
-
-
-                            //     );
-                            // }}
-                            >
-                                <Home />
+                            <Route path='/home' component={Slider}>
+                                {/* <Home /> */}
                             </Route>
                             <Route path="/registration">
                                 <Registration />
@@ -108,6 +99,8 @@ export default function WebRouter() {
 
 
                         </Switch>
+                        <Route path = '/' component = {PreviewPopup} />
+
                     </Route>
                 </Switch>
             </div>

@@ -256,19 +256,7 @@ body {
     }
 }
 
-.pop-up {
-    position:relative;
-    visibility: hidden;
-    opacity: 0;
 
-    box-sizing: border-box;
-    transition: all 0.5s;
-    &.showed {
-        z-index: 2;
-        visibility: visible;
-        opacity: 1;
-    }
-}
 
 .PreviewButton__container_preview {
     display: flex;

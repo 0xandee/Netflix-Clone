@@ -63,7 +63,7 @@ const NavigationBar = (props) => {
         };
 
         window.addEventListener("scroll", handleScroll, { passive: true });
-        history.push('/home')
+        // history.push('/home')
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
 

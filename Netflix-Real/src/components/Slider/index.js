@@ -22,52 +22,79 @@ import LikeButton from "../LikeButton";
 import PreviewPopup from "../PreviewPopup";
 import { useSelector, useDispatch } from 'react-redux';
 import { showPopUpInfo } from "../../services/redux/actions";
+import { Link, useHistory, useLocation } from "react-router-dom";
 
 
 
 // install Swiper modules
 SwiperCore.use([Navigation]);
 
-const Slider = () => {
+const Slider = (props) => {
     //const [showed, setShowed] = useState(false)
+    const history = useHistory();
     const showed = useSelector((state) => state.isPopUp)
     const homePageRef = useRef(null)
     const [currentScrollY, setCurrentScrollY] = useState(0);
     const dispatch = useDispatch()
     const handleMoreInfo = () => {
         dispatch(showPopUpInfo(!showed))
-        console.log("🚀 ~ file: index.js ~ line 44 ~ handleMoreInfo ~ currentScrollY", currentScrollY)
-
         if (!showed) {
-            console.log("🚀 ~ file: index.js ~ line 40 ~ handleMoreInfo ~ showed", showed)
 
-            homePageRef.current.style.position = 'fixed'
+
             homePageRef.current.style.top = -currentScrollY + 'px'
-           
-            // window.scroll(0,0)
+
+
+            history.push({
+                pathname: props.match.url,
+                search: `jbv=${'detailId'}`,
+                state: { scrollY: currentScrollY }
+            })
+            window.scroll(0,0)
         }
         else {
-            console.log("🚀 ~ file: index.js ~ line 40 ~ handleMoreInfo ~ showed 2", showed)
-            homePageRef.current.style.position = 'relative'
-            homePageRef.current.style.top =null
+            homePageRef.current.style.top = -currentScrollY + 'px'
         
+
         }
 
     }
+    const styles = ({
+        fixed: {
+            position: 'fixed',
+        },
+        sticky: {
+            position: 'sticky',
+        }
+    })
+
     const handleScroll = useCallback(() => {
         setCurrentScrollY(window.scrollY)
-        console.log("🚀 ~ file: index.js ~ line 59 ~ handleScroll ~ currentScrollY", currentScrollY)
-    }, [currentScrollY]);
+
+    }, []);
+
+    const handlePopState = useCallback(() => {
+        window.scroll(0,76)
+        dispatch(showPopUpInfo(false))
+        console.log("🚀 ~ file: index.js ~ line 84 ~ handlePopState ~ dispatch", showed)
+
+    }, [dispatch]);
 
     useEffect(() => {
 
 
         window.addEventListener("scroll", handleScroll);
-        return () => window.removeEventListener("scroll", handleScroll);
-    }, [handleScroll]);
+        window.addEventListener('popstate', handlePopState);
+        return () => {
+      
+            window.removeEventListener("scroll", handleScroll);
+            window.removeEventListener('onpopstate ', handlePopState);
+        }
+
+    }, [handleScroll,handlePopState]);
     return (
-        <div style={{position:'relative',}}>
-            <div ref={homePageRef} className={`blackBg  ${showed && 'shown-pop-up'} `}>
+        <div style={{ position: 'relative', }}>
+            <div ref={homePageRef} className={`blackBg`}
+                style={showed ? styles.fixed : styles.sticky}>
                 <div className={`billboard `}>
                     <div className="hero-image-wrapper">
                         <img class="hero static-image image-layer" src="https://occ-0-395-325.1.nflxso.net/dnm/api/v6/6AYY37jfdO6hpXcMjf9Yu5cnmO0/AAAABYc72Xn4KxiSlpUDG8BMuyUWBb_6o7OR-51Nz0ucjOemsjDqJRkKgPpGDeuCJIZM9mrNoChvYsV-EERaCnryX0IqbOXs.jpg?r=37c" alt="aaa" />
@@ -85,8 +112,12 @@ const Slider = () => {
                                     <PlayButton />
                                 </div>
                                 <div className="PreviewButton__container" >
+
                                     <span onClick={handleMoreInfo}>  More Info
                                     </span>
+
+
+
 
                                 </div>
                             </div>
@@ -223,9 +254,7 @@ const Slider = () => {
                     </section>
                 </div>
             </div>
-            <div className={`pop-up ${showed && 'showed'}`}>
-                <PreviewPopup onCloseButton={handleMoreInfo} />
-            </div>
+           
 
         </div>
 
