@@ -112,7 +112,10 @@
     color: white;
     cursor: pointer;
     border: 0.1em solid white;
-    border-radius: 0.2em;
+    
+    &::after{
+        margin-left: 1.5em;
+    }
 }
 
 .section__container {
