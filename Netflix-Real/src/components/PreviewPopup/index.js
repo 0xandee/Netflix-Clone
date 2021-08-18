@@ -17,6 +17,7 @@ const PreviewPopup = (props) => {
 
     const handleOncloseButtonClick = () => {
         //props.onCloseButton.history.push(props.onCloseButton.location.pathname)
+       
         setOpen(!open)
         dispatch(showPopUpInfo(!showed))
         history.goBack()
@@ -25,8 +26,8 @@ const PreviewPopup = (props) => {
   
 
     return (params.get('jbv') &&
-        <dia   className="pop-up__container">
-            <div  className="pop-up__dialog ">
+        <dia ref={popUpRef}  className="pop-up__container">
+            <div  className={`pop-up__dialog ${showed ?'pop-up' : 'pop-out'}`}>
                 <div className="background max-width">
                     <PreviewPlayer onCloseButton={handleOncloseButtonClick} />
                     <PreviewInfo />

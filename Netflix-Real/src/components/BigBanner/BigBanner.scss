@@ -86,7 +86,8 @@ body {
     right: 0;
     top: 0;
     bottom: 0;
-    width: 100%;
+    width: 100vw;
+    height:100%;
     opacity: 1;
     transition: opacity .4s cubic-bezier(.665,.235,.265,.8) 0s;
 }
@@ -94,8 +95,8 @@ body {
 .info {
     position: absolute;
     top: 15vh;
-    left: 4%;
-    width: 36%;
+    left: 4vw;
+    width: 36vw;
     z-index: 99;
 }
 
@@ -129,6 +130,7 @@ body {
 
 .billboard{
     height: 80vh;
+    width:100vw;
 }
 
 .billboard-links{
