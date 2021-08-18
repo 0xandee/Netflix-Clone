@@ -1,13 +1,16 @@
 import React from 'react';
 import EpisodeItem from '../EpisodeItem';
-import EpisodeSelector from '../EpisodeSelector';
+import DropdownSelector from '../DropdownSelector';
 import './Episodes.scss';
 
 
 const Episodes = () => {
     return (
         <div>
-            <EpisodeSelector/>
+            <div className="episodesSelector__header">
+                <h3 className="episodesSelector__label">Episodes</h3>
+                <DropdownSelector dropdownTitle={'Season 1'}/>
+            </div>
             <div className="episodesSelector__container">
                 <EpisodeItem/><EpisodeItem/><EpisodeItem/>
             </div>

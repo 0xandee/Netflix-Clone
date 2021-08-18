@@ -9,7 +9,7 @@ import "swiper/components/navigation/navigation.min.css"
 import SwiperCore, {
     Navigation
 } from 'swiper/core';
-
+import { Link, useHistory, useLocation } from "react-router-dom";
 import './Slider.scss';
 
 // install Swiper modules

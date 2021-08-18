@@ -167,7 +167,7 @@ const MyPlaylist = (props) => {
 
     }, [handleScroll, handlePopState]);
     return (
-        <div className="overflow-x-hidden" ref={homePageRef} style={showed ? styles.fixed : styles.sticky}>
+        <div className="overflow-x-hidden bg-black" ref={homePageRef} style={showed ? styles.fixed : styles.sticky}>
             <div class="sub-header"><div><div class="sub-header-wrapper"><div class="galleryHeader"><div class="title">My List</div></div></div></div></div>
             {movieData.map(item => (<Slider id={item.id} sliderMovieList={item.sliderMovieList} handleMoreInfo={handleMoreInfo}/>))}
             <Footer/>

@@ -6,7 +6,7 @@ const PlayButton = () => {
     return (
             <NavLink to='/watch'>              
                 <button className="PlayButton__primary-color PlayButton__primary-button">
-                    <div className="PlayIcon_icon-container">
+                    <div className="PlayIcon_icon-container px-2">
                         <div id="PlayIcon" className="PlayIcon_icon">
                             <svg viewBox="0 0 24 24">
                                 <path d="M6 4l15 8-15 8z" fill="currentColor"></path>

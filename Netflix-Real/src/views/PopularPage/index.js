@@ -227,8 +227,8 @@ const PopularPage = (props) => {
 
     }, [handleScroll, handlePopState]);
     return (
-        <div className="overflow-x-hidden" ref={homePageRef} style={showed ? styles.fixed : styles.sticky}>
-            <div class="sub-header"><div><div class="sub-header-wrapper"><div class="galleryHeader"><div class="title"> </div></div></div></div></div>
+        <div className="overflow-x-hidden bg-black" ref={homePageRef} style={showed ? styles.fixed : styles.sticky}>
+            <div class="sub-header"><div><div class="sub-header-wrapper"><div class="galleryHeader"><div class="title"></div></div></div></div></div>
             {movieData.map(item => (<Slider id={item.id} sliderTitle={item.sliderTitle} sliderMovieList={item.sliderMovieList} handleMoreInfo={handleMoreInfo}/>))}
             <Footer/>
         </div>

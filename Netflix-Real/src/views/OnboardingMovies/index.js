@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import './onboardingMovies.scss';
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useHistory } from "react-router-dom";
 import { Footer, OnboardingMovieItem } from "../../components";
 
 const artworkData = [{
@@ -41,7 +41,50 @@ const artworkData = [{
     artLink: 'https://occ-0-395-325.1.nflxso.net/dnm/api/v6/evlCitJPPCVCry0BZlEFb5-QjKc/AAAABX-_GKy3ey9eeZwZflmrwgeko8lLWIpkZq8jziWBi1FYOAJsqBr3XHvGlkV-4-rKqxW-bNBe-CbudVzreQI-q-aj4w.jpg?r=8aa'
 }]
 
+const ChoosePersonalizedItem = (props) => {
+    return (
+        <div >
+            <span className="registration__body__content__main__step-indicator" >STEP <b>3</b> OF <b>3</b>
+            </span>
+            <h1 className="registration__body__content__main__step-title">
+            Andy Vo, choose 3 you like.</h1>
+            <div className="registration__body__content__main__step-content">
+            It will help us find TV shows &amp; movies you'll love! Click the ones you like!
+            </div>
+            <button className={`registration__body__content__main__button-next`} onClick={props.triggerFinished}>
+                <span>Next</span>
+            </button>
+        </div>
+    )
+}
+
+const LoadingPersonalization = () => {
+    return (
+        <div className='mb-3'>
+            <span className="registration__body__content__main__step-indicator" >STEP <b>3</b> OF <b>3</b></span>
+            <h1 className="registration__body__content__main__step-title">Personalizing for Andy Vo.</h1>
+            <div className="registration__body__content__main__waiting-spinner">
+                <div className="basic-spinner center-absolute"></div>
+            </div>
+            <div className="registration__body__content__main__step-content">
+                We're looking for movies and TV shows we think you'll love.
+            </div>
+        </div>
+    )
+}
+
 const OnboardingMovies = () => {
+    const [isFinished, setIsFinished] = useState(false);
+    const history = useHistory();
+
+    const triggerFinished = () => {
+        setIsFinished(!isFinished);
+        setTimeout(()=>{
+            history.push({
+                pathname: '/home',
+            })
+        }, 3000);
+    }
     return (
         <div id='langSetup'>
             <div className={`registration`}>
@@ -50,22 +93,22 @@ const OnboardingMovies = () => {
                 <div className={`registration__body`}>
                     <div className={`registration__body__content`}>
                         <div className={`registration__body__content__main`}>
+                                { isFinished ? <LoadingPersonalization /> : <ChoosePersonalizedItem triggerFinished={triggerFinished} /> }
                             {/* Uncomment to show choose 3 you like */}
-                            <div >
+                            {/* <div >
                                 <span className="registration__body__content__main__step-indicator" >STEP <b>3</b> OF <b>3</b>
                                 </span>
                                 <h1 className="registration__body__content__main__step-title">
-
                                 Andy Vo, choose 3 you like.</h1>
                                 <div className="registration__body__content__main__step-content">
                                 It will help us find TV shows &amp; movies you'll love! Click the ones you like!
                                 </div>
-                                <NavLink to='/signup/regform' className='submitBtnContainer'>
-                                    <button className={`registration__body__content__main__button-next`} >
-                                        <span>Next</span>
-                                    </button>
-                                </NavLink>
-                            </div>
+                                <button className={`registration__body__content__main__button-next`} onclick={triggerFinished} >
+                                    <span>Next</span>
+                                </button>
+                            </div> */}
+
+                            {/* Uncomment to loading personalization */}
                             {/* <div className='mb-3'>
                                 <span className="registration__body__content__main__step-indicator" >STEP <b>3</b> OF <b>3</b></span>
                                 <h1 className="registration__body__content__main__step-title">Personalizing for Andy Vo.</h1>

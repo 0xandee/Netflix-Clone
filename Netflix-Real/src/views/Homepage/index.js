@@ -7,7 +7,7 @@ import { Link, useHistory, useLocation } from "react-router-dom";
 
 const movieData = [{
     id: 1,
-    sliderTitle: 'Popular Now',
+    sliderTitle: 'Recommend For You',
     sliderMovieList: [{
         id: 1,
         movieName: 'Stranger Things',
@@ -71,7 +71,7 @@ const movieData = [{
     }]
 },{
     id: 2,
-    sliderTitle: 'Action & Adventure',
+    sliderTitle: 'Popular Now',
     sliderMovieList: [{
         id: 1,
         movieName: 'Stranger Things',
@@ -227,7 +227,7 @@ const Homepage = (props) => {
 
     }, [handleScroll, handlePopState]);
     return (
-        <div className="overflow-x-hidden" ref={homePageRef} style={showed ? styles.fixed : styles.sticky}>
+        <div className="overflow-x-hidden bg-black" ref={homePageRef} style={showed ? styles.fixed : styles.sticky}>
             <BigBanner handleMoreInfo={handleMoreInfo} />
             {movieData.map(item => (<Slider id={item.id} sliderTitle={item.sliderTitle} sliderMovieList={item.sliderMovieList} handleMoreInfo={handleMoreInfo}/>))}
             <Footer/>

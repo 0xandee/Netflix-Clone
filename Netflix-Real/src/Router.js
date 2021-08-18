@@ -23,7 +23,7 @@ export default function WebRouter() {
             <div >
                 <Switch>
                     <Route path="/signin">
-                        {/* <SignIn /> */}
+                        <SignIn />
                         {/* <LanguageSetup /> */}
                         {/* <ForgotPassword /> */}
                     </Route>
@@ -72,10 +72,7 @@ export default function WebRouter() {
                         <RegistrationForm />
                     </Route>
                     <Route path="/">
-
                         <NavigationBar />
-                        <Redirect to="/home" />
-
                         <Switch>
                             <Route path="/tvshow">
                                 <TVShow />

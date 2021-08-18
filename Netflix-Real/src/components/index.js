@@ -10,7 +10,7 @@ import DislikeButton from './DislikeButton';
 import Dropdown from './Dropdown';
 import Episodes from './Episodes';
 import EpisodeItem from './EpisodeItem';
-import EpisodeSelector from './EpisodeSelector';
+import DropdownSelector from './DropdownSelector';
 import Footer from './Footer';
 import LikeButton from './LikeButton';
 import MoreLikeThisItem from './MoreLikeThisItem';
@@ -31,7 +31,7 @@ export {
     About, AddButton, 
     CloseButton, CustomInput, CustomNotification,
     DetailInfoMetadata, DetailInfoTags, DetailInfo, DislikeButton, Dropdown,
-    Episodes, EpisodeItem, EpisodeSelector, LanguageItem, OnboardingMovieItem, BigBanner,
+    Episodes, EpisodeItem, DropdownSelector, LanguageItem, OnboardingMovieItem, BigBanner,
     Footer,
     LikeButton,
     MoreLikeThis, MoreLikeThisItem, MuteButton,
