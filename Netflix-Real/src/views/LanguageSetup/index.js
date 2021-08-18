@@ -5,40 +5,40 @@ import { Footer, LanguageItem } from "../../components";
 
 const langData = [{
     id: 1,
-    language: 'Chinese'
+    language: 'Action'
 },{
     id: 2,
-    language: 'Spanish'
+    language: 'Comedy'
 },{
     id: 3,
-    language: 'English'
+    language: 'Drama'
 },{
     id: 4,
-    language: 'Arabic'
+    language: 'Fantasy'
 },{
     id: 5,
-    language: 'Hindi'
+    language: 'Horror'
 },{
     id: 6,
-    language: 'Vietnamese'
+    language: 'Mystery'
 },{
     id: 7,
-    language: 'Portuguese'
+    language: 'Romance'
 },{
     id: 8,
-    language: 'Russian'
+    language: 'Thriller'
 },{
     id: 9,
-    language: 'Japanese'
+    language: 'Western'
 },{
     id: 10,
-    language: 'Korean'
+    language: 'Musical'
 },{
     id: 11,
-    language: 'Italian'
+    language: 'Historical'
 },{
     id: 12,
-    language: 'French'
+    language: 'Hyrid Genre'
 }]
 
 const LanguageSetup = () => {
@@ -55,9 +55,9 @@ const LanguageSetup = () => {
                                 </span>
                                 <h1 className="registration__body__content__main__step-title">
 
-                                Which languages do you like to watch shows and movies in?</h1>
+                                Which genre do you like to watch shows and movies in?</h1>
                                 <div className="registration__body__content__main__step-content">
-                                    Letting us know helps set up your personalization and audio, subtitles.
+                                    Letting us know helps set up your personalization.
                                 </div>
                             </div>
 
