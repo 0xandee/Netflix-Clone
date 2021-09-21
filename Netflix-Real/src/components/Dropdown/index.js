@@ -84,7 +84,7 @@ const CustomDropdown = () => {
                   </Link>
                 </div>
                 <div className="dropdown-item">
-                  <Link to={userProfile} className='profile-link account-link'>
+                  <Link to='/signin' className='profile-link account-link'>
                     <span className='profile-name'>
                       Sign out
                     </span>

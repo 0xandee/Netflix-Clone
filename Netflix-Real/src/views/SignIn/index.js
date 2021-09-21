@@ -3,6 +3,7 @@ import './signIn.scss'
 import * as Icon from 'react-feather';
 import { NavLink } from "react-router-dom";
 import { CustomInput, Footer } from "../../components";
+import { IconNetflix } from "../../assets/Icon";
 
 const SignIn = () => {
     const backgroudUrl = 'https://assets.nflxext.com/ffe/siteui/vlv3/9c5457b8-9ab0-4a04-9fc1-e608d5670f1a/f50f46d7-13f0-4412-a37c-34808af2dd0c/VN-en-20210719-popsignuptwoweeks-perspective_alpha_website_small.jpg'
@@ -13,9 +14,10 @@ const SignIn = () => {
                     <img className={`sign-in__background-image__image-style`} src="https://assets.nflxext.com/ffe/siteui/vlv3/9c5457b8-9ab0-4a04-9fc1-e608d5670f1a/f50f46d7-13f0-4412-a37c-34808af2dd0c/VN-en-20210719-popsignuptwoweeks-perspective_alpha_website_small.jpg" srcset="https://assets.nflxext.com/ffe/siteui/vlv3/9c5457b8-9ab0-4a04-9fc1-e608d5670f1a/f50f46d7-13f0-4412-a37c-34808af2dd0c/VN-en-20210719-popsignuptwoweeks-perspective_alpha_website_small.jpg 1000w, https://assets.nflxext.com/ffe/siteui/vlv3/9c5457b8-9ab0-4a04-9fc1-e608d5670f1a/f50f46d7-13f0-4412-a37c-34808af2dd0c/VN-en-20210719-popsignuptwoweeks-perspective_alpha_website_medium.jpg 1500w, https://assets.nflxext.com/ffe/siteui/vlv3/9c5457b8-9ab0-4a04-9fc1-e608d5670f1a/f50f46d7-13f0-4412-a37c-34808af2dd0c/VN-en-20210719-popsignuptwoweeks-perspective_alpha_website_large.jpg 1800w" alt="" />
                 </div>
                 <div className={`sign-in__header`}>
-                    <img className={`sign-in__header__logo`}
+                    {/* <img className={`sign-in__header__logo`}
                         src='https://pixinvent.com/demo/vuexy-vuejs-admin-dashboard-template/demo-1/img/logo.36f34a9f.svg' alt='logo'
-                    />
+                    /> */}
+                    <IconNetflix className={`sign-in__header__logo`}/>
                 </div>
                 <div className={`sign-in__body`}>
                     <div className={`sign-in__body__content`}>
@@ -30,11 +32,12 @@ const SignIn = () => {
                                 placeHolder='Your password must contain between 4 and 60 characters.'
                                 label='Password'
                                 type='password' />
-
-                            <button className={`sign-in__body__content__main__button-sign-in`}>
-                                <span> Sign In
-                                </span>
-                            </button>
+                            <NavLink to='/home' >
+                                <button className={`sign-in__body__content__main__button-sign-in`}>
+                                    <span> Sign In
+                                    </span>
+                                </button>
+                            </NavLink>
                             <span>
                                 <span>
                                     <input type='checkbox' />

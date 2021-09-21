@@ -1,110 +1,72 @@
 import React, { useRef, useState, useCallback, useEffect, createRef } from "react";
 import './Slider.scss';
-import { BigBanner, Slider, Footer } from "../../components";
+import { BigBanner, SliderGrid, Footer } from "../../components";
 import { useSelector, useDispatch } from 'react-redux';
 import { showPopUpInfo } from "../../services/redux/actions";
 import { Link, useHistory, useLocation } from "react-router-dom";
 
 const movieData = [{
     id: 1,
-    sliderTitle: '',
+    sliderTitle: 'Recommend For You',
     sliderMovieList: [{
         id: 1,
         movieName: 'Stranger Things',
-        artworkLink: 'https://occ-0-395-325.1.nflxso.net/dnm/api/v6/X194eJsgWBDE2aQbaNdmCXGUP-Y/AAAABW0hEyNvRlA9VItn8gFnqsw98MxPkuDFVajE1R4XI-afTllo0E0alvKE1IK_J3IjTmZ0mLYGHItLqzA_CLp-6ygrH-XueNNRhZzN4AuzoRXHBChinBDhypgGGPjO.jpg?r=da1',
+        artworkLink: 'https://static.fptplay.net/static/img/share/video/19_01_2020/qwokfcgiolef3km9owva93rywac19-01-2020_15g12-59.jpg?w=282&mode=scale',
         movieLink: ''
     },{
         id: 2,
         movieName: `The Queen's Gambit`,
-        artworkLink: 'https://occ-0-395-325.1.nflxso.net/dnm/api/v6/X194eJsgWBDE2aQbaNdmCXGUP-Y/AAAABTkLaJLrR7faXhHg_plP0nXDQ4L2Uy4QWERQL58jtuB2yp7l3AoXr41P6QY-XzvkS-lQpOqBqvq21jjipSZ6zHK8IRVKqf2bTJ61Lir5CXBI7Vi-Q3GD4PlAwaZz.jpg?r=93f',
+        artworkLink: 'https://static.fptplay.net/static/img/share/video/26_06_2021/abd2uxiv1jxh8odcpovzlygri8s26-06-2021_11g33-45.jpg?w=282&mode=scale',
         movieLink: ''
     },{
         id: 3,
         movieName: 'Girl from Nowhere',
-        artworkLink: 'https://occ-0-395-325.1.nflxso.net/dnm/api/v6/X194eJsgWBDE2aQbaNdmCXGUP-Y/AAAABVu0lndH33ByfgLDg-WrwQTvDojoNk8ScnfTqtT7hTkmhrvoNNWxCCNtFzg2HfiZjB-8t8QcXn0o9at8bOj3O0ZGWomJ2uTk19uwyDGrUb-_sPJ-o1DqZ6PqYUuQ.jpg?r=335',
+        artworkLink: 'https://static.fptplay.net/static/img/share/video/19_08_2021/h8u0akgj52sqeekw4d56rwr2xlx19-08-2021_18g02-5719-08-2021_18g07-36.jpg?w=282&mode=scale',
         movieLink: ''
     },{
         id: 4,
         movieName: 'Sweet Home',
-        artworkLink: 'https://occ-0-395-325.1.nflxso.net/dnm/api/v6/X194eJsgWBDE2aQbaNdmCXGUP-Y/AAAABbmGaD5018rVP_nUYVzupsK32kNp9ysby23NrjLdbr8RgbRl6vLcVqAQatGSiowON_vyr43O70NAtytCtQReeE6HWJYfZ4d720L3-g2ULJUhWotqNlL7oGH7Du_-.jpg?r=0e9',
+        artworkLink: 'https://static.fptplay.net/static/img/share/video/19_08_2021/d7vvxps5tg14gyz2czzjoxmggvn19-08-2021_17g50-45.jpg?w=282&mode=scale',
         movieLink: ''
     },{
         id: 5,
         movieName: 'Sweet Tooth',
-        artworkLink: 'https://occ-0-395-325.1.nflxso.net/dnm/api/v6/X194eJsgWBDE2aQbaNdmCXGUP-Y/AAAABSXmhtJ6JRKnBgJFnmvAhKsxeNkf1fqHW5v-ODTpVymAZ4ZGvJQHcsioelP5-GWq7yumfK7TDXvhPskB896I-GtHcF-C9KgFcfQmDsGnFfZ_KfkgPROx9VOl-ChJ.jpg?r=f59',
+        artworkLink: 'https://static.fptplay.net/static/img/share/video/10_12_2020/attack-on-titan-ss4-fpt-play-dai-chien-nguoi-khong-lo-phan-4-fpt-play-210-12-2020_15g31-47.jpg?w=282&mode=scale',
         movieLink: ''
     },{
         id: 6,
         movieName: 'Love, Death & Robots',
-        artworkLink: 'https://occ-0-395-325.1.nflxso.net/dnm/api/v6/X194eJsgWBDE2aQbaNdmCXGUP-Y/AAAABQvxXNAtHZO0L3elCihVEFr9kUl58LC4hz89kuhtxCpLtRlo099P722G-xO_L3vCpPV9zJt8UwjaLkd0n-j5ZFrWucMP0a-YMLYvO9uO14slVUVj3nZa4t51E2Av.jpg?r=4a1',
-        movieLink: ''
-    }]
-},{
-    id: 2,
-    sliderTitle: '',
-    sliderMovieList: [{
-        id: 1,
-        movieName: 'Stranger Things',
-        artworkLink: 'https://occ-0-395-325.1.nflxso.net/dnm/api/v6/X194eJsgWBDE2aQbaNdmCXGUP-Y/AAAABW0hEyNvRlA9VItn8gFnqsw98MxPkuDFVajE1R4XI-afTllo0E0alvKE1IK_J3IjTmZ0mLYGHItLqzA_CLp-6ygrH-XueNNRhZzN4AuzoRXHBChinBDhypgGGPjO.jpg?r=da1',
+        artworkLink: 'https://static.fptplay.net/static/img/share/video/04_09_2020/one-punch-man-season-2-fpt-play04-09-2020_01g05-08.jpg?w=282&mode=scale',
         movieLink: ''
     },{
-        id: 2,
-        movieName: `The Queen's Gambit`,
-        artworkLink: 'https://occ-0-395-325.1.nflxso.net/dnm/api/v6/X194eJsgWBDE2aQbaNdmCXGUP-Y/AAAABTkLaJLrR7faXhHg_plP0nXDQ4L2Uy4QWERQL58jtuB2yp7l3AoXr41P6QY-XzvkS-lQpOqBqvq21jjipSZ6zHK8IRVKqf2bTJ61Lir5CXBI7Vi-Q3GD4PlAwaZz.jpg?r=93f',
+        id: 7,
+        movieName: 'The Umbrella Academy',
+        artworkLink: 'https://static.fptplay.net/static/img/share/video/14_05_2021/ixvawbxmypk4kzgzk5ggdgfiemx14-05-2021_20g36-12.jpg?w=282&mode=scale',
         movieLink: ''
     },{
-        id: 3,
-        movieName: 'Girl from Nowhere',
-        artworkLink: 'https://occ-0-395-325.1.nflxso.net/dnm/api/v6/X194eJsgWBDE2aQbaNdmCXGUP-Y/AAAABVu0lndH33ByfgLDg-WrwQTvDojoNk8ScnfTqtT7hTkmhrvoNNWxCCNtFzg2HfiZjB-8t8QcXn0o9at8bOj3O0ZGWomJ2uTk19uwyDGrUb-_sPJ-o1DqZ6PqYUuQ.jpg?r=335',
+        id: 8,
+        movieName: 'Money Heist',
+        artworkLink: 'https://static.fptplay.net/static/img/share/video/23_02_2021/8vk5w80nasqmy544affdqzi3rrz23-02-2021_15g52-22.jpg?w=282&mode=scale',
         movieLink: ''
     },{
-        id: 4,
-        movieName: 'Sweet Home',
-        artworkLink: 'https://occ-0-395-325.1.nflxso.net/dnm/api/v6/X194eJsgWBDE2aQbaNdmCXGUP-Y/AAAABbmGaD5018rVP_nUYVzupsK32kNp9ysby23NrjLdbr8RgbRl6vLcVqAQatGSiowON_vyr43O70NAtytCtQReeE6HWJYfZ4d720L3-g2ULJUhWotqNlL7oGH7Du_-.jpg?r=0e9',
+        id: 9,
+        movieName: 'Breaking Bad',
+        artworkLink: 'https://static.fptplay.net/static/img/share/video/07_04_2021/gia-tien-tvod07-04-2021_10g52-51.jpg?w=282&mode=scale',
         movieLink: ''
     },{
-        id: 5,
-        movieName: 'Sweet Tooth',
-        artworkLink: 'https://occ-0-395-325.1.nflxso.net/dnm/api/v6/X194eJsgWBDE2aQbaNdmCXGUP-Y/AAAABSXmhtJ6JRKnBgJFnmvAhKsxeNkf1fqHW5v-ODTpVymAZ4ZGvJQHcsioelP5-GWq7yumfK7TDXvhPskB896I-GtHcF-C9KgFcfQmDsGnFfZ_KfkgPROx9VOl-ChJ.jpg?r=f59',
+        id: 10,
+        movieName: 'The Umbrella Academy',
+        artworkLink: 'https://static.fptplay.net/static/img/share/video/24_04_2020/gia-tien-tvod24-04-2020_14g47-34.jpg?w=282&mode=scale',
         movieLink: ''
     },{
-        id: 6,
-        movieName: 'Love, Death & Robots',
-        artworkLink: 'https://occ-0-395-325.1.nflxso.net/dnm/api/v6/X194eJsgWBDE2aQbaNdmCXGUP-Y/AAAABQvxXNAtHZO0L3elCihVEFr9kUl58LC4hz89kuhtxCpLtRlo099P722G-xO_L3vCpPV9zJt8UwjaLkd0n-j5ZFrWucMP0a-YMLYvO9uO14slVUVj3nZa4t51E2Av.jpg?r=4a1',
-        movieLink: ''
-    }]
-},{
-    id: 2,
-    sliderTitle: '',
-    sliderMovieList: [{
-        id: 1,
-        movieName: 'Stranger Things',
-        artworkLink: 'https://occ-0-395-325.1.nflxso.net/dnm/api/v6/X194eJsgWBDE2aQbaNdmCXGUP-Y/AAAABW0hEyNvRlA9VItn8gFnqsw98MxPkuDFVajE1R4XI-afTllo0E0alvKE1IK_J3IjTmZ0mLYGHItLqzA_CLp-6ygrH-XueNNRhZzN4AuzoRXHBChinBDhypgGGPjO.jpg?r=da1',
+        id: 11,
+        movieName: 'Godzilla: King of the Monsters',
+        artworkLink: 'https://static.fptplay.net/static/img/share/video/28_06_2021/pho-ma-duong-than-yeu-fpt-play-doc-quyen-poster1_28-06-2021_01g22-35.jpg?w=282&mode=scale',
         movieLink: ''
     },{
-        id: 2,
-        movieName: `The Queen's Gambit`,
-        artworkLink: 'https://occ-0-395-325.1.nflxso.net/dnm/api/v6/X194eJsgWBDE2aQbaNdmCXGUP-Y/AAAABTkLaJLrR7faXhHg_plP0nXDQ4L2Uy4QWERQL58jtuB2yp7l3AoXr41P6QY-XzvkS-lQpOqBqvq21jjipSZ6zHK8IRVKqf2bTJ61Lir5CXBI7Vi-Q3GD4PlAwaZz.jpg?r=93f',
-        movieLink: ''
-    },{
-        id: 3,
-        movieName: 'Girl from Nowhere',
-        artworkLink: 'https://occ-0-395-325.1.nflxso.net/dnm/api/v6/X194eJsgWBDE2aQbaNdmCXGUP-Y/AAAABVu0lndH33ByfgLDg-WrwQTvDojoNk8ScnfTqtT7hTkmhrvoNNWxCCNtFzg2HfiZjB-8t8QcXn0o9at8bOj3O0ZGWomJ2uTk19uwyDGrUb-_sPJ-o1DqZ6PqYUuQ.jpg?r=335',
-        movieLink: ''
-    },{
-        id: 4,
-        movieName: 'Sweet Home',
-        artworkLink: 'https://occ-0-395-325.1.nflxso.net/dnm/api/v6/X194eJsgWBDE2aQbaNdmCXGUP-Y/AAAABbmGaD5018rVP_nUYVzupsK32kNp9ysby23NrjLdbr8RgbRl6vLcVqAQatGSiowON_vyr43O70NAtytCtQReeE6HWJYfZ4d720L3-g2ULJUhWotqNlL7oGH7Du_-.jpg?r=0e9',
-        movieLink: ''
-    },{
-        id: 5,
-        movieName: 'Sweet Tooth',
-        artworkLink: 'https://occ-0-395-325.1.nflxso.net/dnm/api/v6/X194eJsgWBDE2aQbaNdmCXGUP-Y/AAAABSXmhtJ6JRKnBgJFnmvAhKsxeNkf1fqHW5v-ODTpVymAZ4ZGvJQHcsioelP5-GWq7yumfK7TDXvhPskB896I-GtHcF-C9KgFcfQmDsGnFfZ_KfkgPROx9VOl-ChJ.jpg?r=f59',
-        movieLink: ''
-    },{
-        id: 6,
-        movieName: 'Love, Death & Robots',
-        artworkLink: 'https://occ-0-395-325.1.nflxso.net/dnm/api/v6/X194eJsgWBDE2aQbaNdmCXGUP-Y/AAAABQvxXNAtHZO0L3elCihVEFr9kUl58LC4hz89kuhtxCpLtRlo099P722G-xO_L3vCpPV9zJt8UwjaLkd0n-j5ZFrWucMP0a-YMLYvO9uO14slVUVj3nZa4t51E2Av.jpg?r=4a1',
+        id: 12,
+        movieName: 'Kingdom: Ashin of the North',
+        artworkLink: 'https://static.fptplay.net/static/img/share/video/26_02_2020/poster-126-02-2020_18g55-10.jpg?w=282&mode=scale',
         movieLink: ''
     }]
 }]
@@ -169,7 +131,7 @@ const MyPlaylist = (props) => {
     return (
         <div className="overflow-x-hidden bg-black" ref={homePageRef} style={showed ? styles.fixed : styles.sticky}>
             <div class="sub-header"><div><div class="sub-header-wrapper"><div class="galleryHeader"><div class="title">My List</div></div></div></div></div>
-            {movieData.map(item => (<Slider id={item.id} sliderMovieList={item.sliderMovieList} handleMoreInfo={handleMoreInfo}/>))}
+            {movieData.map(item => (<SliderGrid sliderMovieList={item.sliderMovieList} handleMoreInfo={handleMoreInfo}/>))}
             <Footer/>
         </div>
     );

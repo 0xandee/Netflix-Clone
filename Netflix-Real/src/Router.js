@@ -74,17 +74,17 @@ export default function WebRouter() {
                     <Route path="/">
                         <NavigationBar />
                         <Switch>
-                            <Route path="/tvshow">
-                                <TVShow />
+                            <Route path="/tvshow" component={TVShow}>
+                                {/* <TVShow /> */}
                             </Route>
-                            <Route path="/playlist">
-                                <MyPlaylist />
+                            <Route path="/playlist" component={MyPlaylist}>
+                                {/* <MyPlaylist /> */}
                             </Route>
-                            <Route path="/movies">
-                                <Movies />
+                            <Route path="/movies" component={Movies}>
+                                {/* <Movies /> */}
                             </Route>
-                            <Route path="/popular">
-                                <PopularPage/>
+                            <Route path="/popular" component={PopularPage}>
+                                {/* <PopularPage/> */}
                             </Route>
                             <Route path='/home' component={Homepage}>
                                 {/* <Home /> */}

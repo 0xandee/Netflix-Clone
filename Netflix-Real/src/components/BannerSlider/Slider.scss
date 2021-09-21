@@ -56,19 +56,21 @@ body {
     width: 20%;
 }
 
-.thumbTile__image {
-    width: 100%;
-    border-radius: var(--tileBorderRadius);
-}
-
-.swiper-button-prev,
-.swiper-button-next {
-    height: 100%;
-    width: 2%;
-    top: 0;
-    bottom: 0;
-    margin: 0;
-    background-color: rgba(20, 20, 20, 0.5);
+.bigBanner{
+    .thumbTile__image {
+        width: 100%;
+        border-radius: 0px;
+    }
+    .swiper-button-prev,
+    .swiper-button-next {
+        height: 30%;
+        transform: translateY(35vh);
+        width: 2%;
+        top: 0;
+        bottom: 0;
+        margin: 0;
+        background-color: rgba(20, 20, 20, 0.5);
+    }
 }
 
 .swiper-button-prev {

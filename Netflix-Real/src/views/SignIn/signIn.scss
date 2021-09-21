@@ -1,4 +1,4 @@
-$blackOpacity1: rgba(0, 0, 0, 0.75);
+$blackOpacity1: rgba(0, 0, 0, 0.8);
 $red: #e50914;
 $gray: #8c8c8c;
 
@@ -28,10 +28,12 @@ $gray: #8c8c8c;
         z-index: -1;
 
         background-size: cover;
+        background-color: black;
+        
         &__image-style {
             min-height: 100%;
             min-width: 100%;
-        
+            opacity: 0.7;
         }
     }
     &__header {
@@ -44,13 +46,16 @@ $gray: #8c8c8c;
 
         border-bottom: transparent;
         .sign-in__header__logo {
-            height: 90px;
+            height: 70px;
             margin-left: 3%;
+            margin-top: 1vh;
+            fill:red;
         }
     }
     &__body {
         min-width: 500px;
         width: 35vw;
+        max-width: 750px;
         min-height: 100vh;
 
         margin: 0 auto -236px;
@@ -60,12 +65,12 @@ $gray: #8c8c8c;
 
         &::before {
             content: "";
-            height: 91px;
+            height: 12vh;
             display: block;
         }
         &::after {
             content: "";
-            height: 236px;
+            height: 12vh;
             display: block;
         }
         &__content {
@@ -77,7 +82,7 @@ $gray: #8c8c8c;
             width: 100%;
 
             padding: 40px 68px;
-            margin-bottom: 90px;
+            margin-bottom: 290px;
 
             border-radius: 4px;
 
