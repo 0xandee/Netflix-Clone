@@ -92,10 +92,8 @@ export default function WebRouter() {
                             <Route path="/registration">
                                 <Registration />
                             </Route>
-
-
                         </Switch>
-                        <Route path = '/' component = {PreviewPopup} />
+                    <Route path = '/detail' component = {PreviewPopup} />
 
                     </Route>
                 </Switch>

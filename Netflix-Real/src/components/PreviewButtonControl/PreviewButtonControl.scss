@@ -1,3 +1,7 @@
+.b-15{
+    bottom: 1.5rem;
+}
+
 .PreviewButton__container{
     display: flex;
     -webkit-box-align: center;
@@ -10,8 +14,8 @@
 }
 
 .PreviewButton__float-left-container{
-    float: left;
-    position: absolute;
+    // float: left;
+    // position: absolute;
     left: 0px;
     bottom: 0px;
     z-index: 1000;
@@ -20,7 +24,7 @@
 
 .PreviewButton__float-right-container{
     float: right;
-    position: absolute;
+    // position: absolute;
     right: 0px;
     bottom: 0px;
     z-index: 1000;
@@ -39,6 +43,10 @@
 .PlayButton__primary-color{
     background-color: white;
     color: black;
+    &:hover{
+        opacity: 0.5;
+        transition: ease-in-out 0.3s;
+    }
 }
 
 .PlayButton__primary-button{
@@ -54,6 +62,10 @@
     background-color: rgba(109, 109, 110, 0.7);
     border-color: rgba(255,255,255,.5);
     color: white;
+    &:hover{
+        opacity: 0.5;
+        transition: ease-in-out 0.3s;
+    }
 }
 
 

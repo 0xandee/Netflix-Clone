@@ -9,7 +9,7 @@ import "swiper/components/navigation/navigation.min.css"
 import SwiperCore, {
     Navigation
 } from 'swiper/core';
-import { Link, useHistory, useLocation } from "react-router-dom";
+import { Link, useHistory, useLocation, NavLink } from "react-router-dom";
 import './Slider.scss';
 
 // install Swiper modules
@@ -33,7 +33,9 @@ const Slider = (props) => {
             {props.sliderMovieList.map(item => (
                 <SwiperSlide className="swiper-slide slide" onClick={props.handleMoreInfo}>
                     <a className="thumbTile cursor-pointer" >
-                        <img className="thumbTile__image" src={item.artworkLink} alt={item.movieName}/>
+                        <NavLink to='/detail'>
+                            <img className="thumbTile__image" src={item.artworkLink} alt={item.movieName}/>
+                        </NavLink>
                     </a>
                     {/* <div className="controlPlayer pl-4em"></div> */}
                 </SwiperSlide>))}

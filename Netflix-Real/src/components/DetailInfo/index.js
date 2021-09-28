@@ -8,7 +8,7 @@ import DetailInfoTags from '../DetailInfoTags';
 
 const DetailInfo = () => {
     return (
-        <div>
+        <div className="px-4 pb-4">
             <DetailInfoMetadata/>
             <DetailInfoTags/>
         </div>

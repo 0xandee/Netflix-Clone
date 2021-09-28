@@ -5,3 +5,9 @@
 .bg-black{
     background-color: #141414;
 }
+
+:root{
+    @media (prefers-reduced-motion: no-preference) {
+        scroll-behavior: unset !important;
+      }
+}

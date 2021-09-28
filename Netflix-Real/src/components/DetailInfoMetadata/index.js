@@ -5,6 +5,7 @@ const DetailInfoMetadata = () => {
     return (
         <div>
             <div className="preview-detail-metadata">
+                <h2 className="episodes__label">Mat Biec</h2>
                 <span className="match-score">98% Match</span>
                 <span className="year ml-2">2019</span>
                 <span className="maturiry-rating ml-2">

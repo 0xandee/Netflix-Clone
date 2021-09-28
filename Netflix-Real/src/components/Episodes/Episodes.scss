@@ -9,7 +9,7 @@
 .episodesSelector__label{
     font-weight: 700;
     font-size: 24px;
-    margin-top: 48px;
+    // margin-top: 48px;
     margin-bottom: 20px;
 }
 
@@ -32,6 +32,7 @@
     border-top: 1px solid #404040; //Only first one
     border-bottom: 1px solid #404040;
     padding: 1em;
+    padding-left: 0px;
     border-radius: .25em;
     overflow: hidden;
     cursor: pointer;
@@ -106,15 +107,32 @@
     align-items: center;
     min-width: 4em;
     position: relative;
-    font-size: 1.5em;
-    background-color: rgb(36, 36, 36);
-    padding: 0.5em 1em;
+    // font-size: 1.5em;
+    background-color: rgb(36, 36, 36) !important;
     color: white;
+    padding: 0.5em 1em;
     cursor: pointer;
     border: 0.1em solid white;
-    
+    &:hover, &:active{
+        opacity: 0.5;
+        transition: ease-in-out 0.3s;
+        background-color: rgb(36, 36, 36) !important;
+    }
+
     &::after{
         margin-left: 1.5em;
+    }
+}
+
+.dropdown-menu{
+    background-color: rgb(36, 36, 36) !important;
+    .dropdown-item{
+        color: white !important;
+        &:hover, &:active{
+            opacity: 0.3;
+            transition: ease-in-out 0.3s;
+            background: none !important;
+        }
     }
 }
 
@@ -128,7 +146,7 @@
     -webkit-box-align: stretch;
     align-items: stretch;
     justify-items: stretch;
-    grid-template-columns: repeat(3,1fr);
+    grid-template-columns: repeat(1,1fr);
 }
 
 .titleCard__container.more-like-this-item {

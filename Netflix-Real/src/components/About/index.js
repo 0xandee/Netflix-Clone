@@ -6,7 +6,7 @@ import '../Episodes/Episodes.scss';
 
 const About = () => {
     return (
-        <div>
+        <div className="px-3">
             <div className="episodesSelector__header">
                 <h3 className="episodesSelector__label">About Mat Biec</h3>
             </div>

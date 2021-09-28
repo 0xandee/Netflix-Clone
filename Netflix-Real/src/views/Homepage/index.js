@@ -256,58 +256,57 @@ const Homepage = (props) => {
     const homePageRef = useRef(null)
     const [currentScrollY, setCurrentScrollY] = useState(0);
     const dispatch = useDispatch()
-    const handleMoreInfo = () => {
-        dispatch(showPopUpInfo(!showed))
-        if (!showed) {
-            homePageRef.current.style.top = -currentScrollY + 'px';
-            history.push({
-                pathname: props.match.url,
-                search: `jbv=${'detailId'}`,
-                state: { scrollY: currentScrollY }
-            })
-            window.scroll(0, 0)
-        }
-        else {
-            homePageRef.current.style.top = null;
+    // const handleMoreInfo = () => {
+        // dispatch(showPopUpInfo(!showed))
+        // if (!showed) {
+        //     homePageRef.current.style.top = -currentScrollY + 'px';
+        //     history.push({
+        //         pathname: props.match.url,
+        //         search: `jbv=${'detailId'}`,
+        //         state: { scrollY: currentScrollY }
+        //     })
+        //     window.scroll(0, 0)
+        // }
+        // else {
+        //     homePageRef.current.style.top = null;
+        // }
 
-        }
+    // }
+    // const styles = ({
+    //     fixed: {
+    //         position: 'fixed',
+    //     },
+    //     sticky: {
+    //         position: 'static',
+    //     }
+    // })
 
-    }
-    const styles = ({
-        fixed: {
-            position: 'fixed',
-        },
-        sticky: {
-            position: 'static',
-        }
-    })
+    // const handleScroll = useCallback(() => {
+    //     setCurrentScrollY(window.scrollY)
 
-    const handleScroll = useCallback(() => {
-        setCurrentScrollY(window.scrollY)
+    // }, []);
 
-    }, []);
-
-    const handlePopState = useCallback(() => {
-        // window.scroll(0, 76)
-        dispatch(showPopUpInfo(false))
+    // const handlePopState = useCallback(() => {
+    //     // window.scroll(0, 76)
+    //     dispatch(showPopUpInfo(false))
         // console.log("🚀 ~ file: index.js ~ line 84 ~ handlePopState ~ dispatch", showed)
 
-    }, [dispatch]);
+    // }, [dispatch]);
 
-    useEffect(() => {
+    // useEffect(() => {
 
 
-        window.addEventListener("scroll", handleScroll);
-        window.addEventListener('popstate', handlePopState);
-        return () => {
+    //     window.addEventListener("scroll", handleScroll);
+    //     window.addEventListener('popstate', handlePopState);
+    //     return () => {
 
-            window.removeEventListener("scroll", handleScroll);
-            window.removeEventListener('onpopstate ', handlePopState);
-        }
+    //         window.removeEventListener("scroll", handleScroll);
+    //         window.removeEventListener('onpopstate ', handlePopState);
+    //     }
 
-    }, [handleScroll, handlePopState]);
+    // }, [handleScroll, handlePopState]);
     return (
-        <div className="overflow-x-hidden bg-black" ref={homePageRef} style={showed ? styles.fixed : styles.sticky}>
+        <div className="overflow-x-hidden bg-black" ref={homePageRef}>
             {/* <BigBanner handleMoreInfo={handleMoreInfo} /> */}
             {/* <div className="">
                 <Swiper navigation={true} pagination={true} className="mySwiper swiper-container ">
@@ -324,7 +323,7 @@ const Homepage = (props) => {
             </div> */}
             <BannerSlider bannerData={bannerData}/>
 
-            {movieData.map(item => (<Slider id={item.id} sliderTitle={item.sliderTitle} sliderMovieList={item.sliderMovieList} handleMoreInfo={handleMoreInfo}/>))}
+            {movieData.map(item => (<Slider id={item.id} sliderTitle={item.sliderTitle} sliderMovieList={item.sliderMovieList}/>))}
             <Footer/>
         </div>
     );

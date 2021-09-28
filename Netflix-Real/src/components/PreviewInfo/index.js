@@ -9,12 +9,12 @@ import './PreviewInfo.scss';
 
 const PreviewInfo = () => {
     return (
-        <div className="PreviewInfo__container">
+        <div className="PreviewInfo__container float-end w-25 py-4">
             <div className="DetailInfo__container">
-                <DetailInfo/>
-                <Episodes/>
+                {/* <DetailInfo/> */}
+                {/* <Episodes/> */}
                 <MoreLikeThis/>
-                <About/>
+                {/* <About/> */}
             </div>
         </div>
     );

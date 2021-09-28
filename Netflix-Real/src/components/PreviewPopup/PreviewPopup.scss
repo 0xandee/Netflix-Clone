@@ -58,17 +58,16 @@
     align-items: center;
     justify-content: center;
     color: #fff;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 1);
     font-size: 16px;
     border-radius: 6px;
-    overflow-y: auto;
+    padding: 0 11rem;
+    // overflow-y: auto;
 }
 
 .max-width {
     z-index: 3;
-    max-width: 665px;
-    // min-width: 665px;
-    // width:50%;
+    // max-width: 965px;
 }
 
 .preview-tags {
