@@ -10,6 +10,8 @@ import VideoPlayer from './VideoPlayer'
 import Homepage from './Homepage'
 import MyPlaylist from './MyPlaylist'
 import PopularPage from './PopularPage'
+import AccountProfile from './AccountProfile'
 export {
-    SignIn,SignUp,ForgotPassword,Registration,RegistrationForm,PlanForm,LanguageSetup,OnboardingMovies,VideoPlayer,Homepage,MyPlaylist,PopularPage
+    SignIn,SignUp,ForgotPassword,Registration,RegistrationForm,PlanForm,
+    LanguageSetup,OnboardingMovies,VideoPlayer,Homepage,MyPlaylist,PopularPage,AccountProfile
 }

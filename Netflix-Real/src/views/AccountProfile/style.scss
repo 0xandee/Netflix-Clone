@@ -1,0 +1,87 @@
+$blackOpacity1: rgba(0, 0, 0, 0.75);
+$red: #e50914;
+$gray: #8c8c8c;
+
+#accountProfile .profile {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+
+  height: 100vh;
+  width: 100%;
+
+  overflow: hidden;
+
+  z-index: 1;
+  background-color: rgba(231, 231, 231, 0.808);
+  &__header {
+    position: fixed;
+    top: 0;
+    box-sizing: border-box;
+
+    width: 100%;  
+    height: 4vw;
+    min-height: 40px;
+    max-height: 65px;
+
+    border-bottom: 1px solid #e6e6e6;
+    background-color: black;
+    &__container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-sizing: border-box;
+
+      width: 100%;
+
+      padding: 20px 2%;
+    }
+
+    &__logo {
+      height: 32px;
+      fill: #e50914;
+    }
+  }
+  &__body {
+    width: 100vw;
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    margin-top: 20px;
+    &__container {
+      width: 60%;
+      height: 100%;
+
+      .nav-item {
+        height: 40px;
+        width: 100%;
+
+        cursor: pointer;
+
+        display: flex;
+        box-sizing: border-box;
+        align-items: center;
+
+        text-decoration: none;
+        color: black ;
+
+        
+        .icon{
+          height: 18px;
+          width: 18px;
+          margin: 0 5px;
+          margin-right: 18px;
+        }
+        &:hover {
+         
+         
+        }
+      
+      }
+      
+    }
+  }
+}

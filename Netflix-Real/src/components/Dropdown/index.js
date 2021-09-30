@@ -43,7 +43,7 @@ const CustomDropdown = () => {
               <div className={`dropdown-content ${isOpen && 'open'}`}>
                 <div className='callout-arrow' />
                 {items.length !== 0 && items.map(item => (
-                  <div className="dropdown-item" id={item.id}>
+                  <div className="dropdown-account-item" id={item.id}>
                     <Link to={item.navLink} className='profile-link'>
                       <img className="profile-icon" src={item.avatar} alt="" />
                       <span className='profile-name'>
@@ -53,7 +53,7 @@ const CustomDropdown = () => {
                     </Link>
                   </div>
                 ))}
-                <div className="dropdown-item">
+                <div className="dropdown-account-item">
                   <Link to={userProfile} className='profile-link'>
                     <span className='profile-name'>
                       Manage Profiles
@@ -61,7 +61,7 @@ const CustomDropdown = () => {
                   </Link>
                 </div>
 
-                <div className="dropdown-item">
+                <div className="dropdown-account-item">
                   <Link to={userProfile} className='profile-link'>
                     <span className='profile-name'>
                       Exit Profile
@@ -69,21 +69,21 @@ const CustomDropdown = () => {
                   </Link>
                 </div>
                 <div className='reponsive-link' />
-                <div className="dropdown-item">
+                <div className="dropdown-account-item">
                   <Link to={userProfile} className='profile-link'>
                     <span className='profile-name account-link'>
                       Account
                     </span>
                   </Link>
                 </div>
-                <div className="dropdown-item">
+                <div className="dropdown-account-item">
                   <Link to={userProfile} className='profile-link'>
                     <span className='profile-name account-link'>
                       Help Center
                     </span>
                   </Link>
                 </div>
-                <div className="dropdown-item">
+                <div className="dropdown-account-item">
                   <Link to='/signin' className='profile-link account-link'>
                     <span className='profile-name'>
                       Sign out

@@ -4,16 +4,10 @@ import './navBar.scss'
 import { Link, NavLink, useHistory } from 'react-router-dom';
 
 import * as Icon from 'react-feather';
-import classnames from 'classnames'
-
-
 import CustomNotification from '../CustomNotification';
 import CustomDropdown from '../Dropdown';
 import { IconNetflix } from '../../assets/Icon';
 
-
-
-//import classnames from 'classnames'
 
 const navTabs = [{ id: 0, label: "Home", navLink: '/home' },
 { id: 1, label: "New & Popular", navLink: '/popular' },

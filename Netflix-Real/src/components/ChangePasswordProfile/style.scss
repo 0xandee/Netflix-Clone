@@ -1,0 +1,58 @@
+$input-focus-box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.1) !default;
+#changePasswordProfile .change-password-profile {
+  width: 100%;
+
+  border-radius: 6px;
+
+  padding: 20px;
+  padding-bottom: 30px;
+
+  background-color: white;
+  // input group merge
+  .input-group-merge {
+    .form-control {
+      &:not(:first-child) {
+        padding-left: 0;
+        border-left: 0;
+      }
+
+      &:not(:last-child) {
+        padding-right: 0;
+        border-right: 0;
+      }
+
+      &.is-valid {
+        ~ .input-group-append {
+          .input-group-text {
+            border-color: rgb(3, 218, 3);
+          }
+        }
+      }
+    }
+    .input-group-prepend {
+      ~ .form-control.is-valid {
+        .input-group-text & {
+          border-color: rgb(3, 218, 3);
+        }
+      }
+    }
+  }
+  .form-control {
+    background-color: white;
+    z-index: 5;
+    &::placeholder {
+      transition: all 0.2s ease;
+    }
+
+    &:focus {
+      &::placeholder {
+        transform: translate(5px);
+        transition: all 0.2s ease;
+      }
+      &:valid,
+      &.is-valid {
+        box-shadow: $input-focus-box-shadow;
+      }
+    }
+  }
+}

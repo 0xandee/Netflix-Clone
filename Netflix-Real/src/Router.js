@@ -13,7 +13,7 @@ import {
 import './App.css'
 import { Slider, NavBar, NavigationBar, SignUpNavigationBar, PreviewInfo, PreviewPopup } from "./components/index";
 
-import { ForgotPassword, PlanForm, Registration, RegistrationForm, SignUp, SignIn, LanguageSetup, OnboardingMovies, VideoPlayer, Homepage, MyPlaylist, PopularPage } from "./views/index";
+import { ForgotPassword, PlanForm, Registration, RegistrationForm, SignUp, SignIn, LanguageSetup,AccountProfile, OnboardingMovies, VideoPlayer, Homepage, MyPlaylist, PopularPage } from "./views/index";
 
 
 export default function WebRouter() {
@@ -66,7 +66,7 @@ export default function WebRouter() {
                     </Route>
 
                     <Route path="/profile">
-                        <Profile1 />
+                        <AccountProfile />
                     </Route>
                     <Route path="/regform">
                         <RegistrationForm />
@@ -93,7 +93,7 @@ export default function WebRouter() {
                                 <Registration />
                             </Route>
                         </Switch>
-                    <Route path = '/detail' component = {PreviewPopup} />
+                        <Route path='/detail' component={PreviewPopup} />
 
                     </Route>
                 </Switch>
