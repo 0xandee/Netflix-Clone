@@ -29,6 +29,10 @@ import OnboardingMovieItem from './OnboardingMovieItem';
 import BigBanner from './BigBanner';
 import SliderGrid from './SliderGrid';
 import BannerSlider from './BannerSlider';
+import GeneralProfile from './GeneralProfile'
+import ChangePasswordProfile from './ChangePasswordProfile'
+
+
 export {
     About, AddButton, 
     CloseButton, CustomInput, CustomNotification,
@@ -39,5 +43,6 @@ export {
     MoreLikeThis, MoreLikeThisItem, MuteButton,
     NavigationBar, SignUpNavigationBar,
     PlayButton, PreviewPopup, PreviewPlayer, PreviewButtonControl, PreviewInfo,
-    Slider, SliderGrid, BannerSlider
+    Slider, SliderGrid, BannerSlider,
+    GeneralProfile,ChangePasswordProfile
 }
