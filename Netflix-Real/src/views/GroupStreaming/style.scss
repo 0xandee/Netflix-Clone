@@ -1,0 +1,67 @@
+#groupStreaming .group-streaming {
+  display: flex !important;
+  flex-direction: row;
+  background-color: black;
+  width: 100vw;
+  height: 100vh;
+  box-sizing: border-box;
+
+  color: white;
+  
+  .group-chat-box {
+    display:block;
+    overflow-y: auto;
+    height: 100vh;
+    width: 0;
+    opacity: 0;
+   
+    background-color: blue !important;
+    float: right;
+    transition: all 0.5s;
+    &::-webkit-scrollbar {
+      display: none;
+      scrollbar-width: none;
+    }
+    &.active {
+      width: 15vw;
+      
+      opacity: 1;
+    }
+  }
+  .icon-chevron {
+    position: absolute;
+    top: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: solid 2px white;
+    border-radius: 50%;
+
+    z-index: 2;
+
+    transition: all 0.5s;
+    &--left {
+      @extend .icon-chevron;
+      left: 0;
+      &.active {
+        left: 0.5%;
+      }
+    }
+    &--right {
+      @extend .icon-chevron;
+      right: 0;
+      &.active {
+        right: 0.5%;
+      }
+    }
+    
+  }
+  .group-player {
+    height: 100vh;
+    flex-grow: 1;
+    width:min-content;
+    box-sizing: border-box;
+  }
+}

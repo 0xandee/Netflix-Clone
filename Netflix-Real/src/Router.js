@@ -13,7 +13,7 @@ import {
 import './App.css'
 import { Slider, NavBar, NavigationBar, SignUpNavigationBar, PreviewInfo, PreviewPopup } from "./components/index";
 
-import { ForgotPassword, PlanForm, Registration, RegistrationForm, SignUp, SignIn, LanguageSetup,AccountProfile, OnboardingMovies, VideoPlayer, Homepage, MyPlaylist, PopularPage } from "./views/index";
+import { ForgotPassword, PlanForm, Registration, RegistrationForm, SignUp, SignIn,GroupStreaming, LanguageSetup,AccountProfile, OnboardingMovies, VideoPlayer, Homepage, MyPlaylist, PopularPage } from "./views/index";
 
 
 export default function WebRouter() {
@@ -31,7 +31,9 @@ export default function WebRouter() {
                     <Route path="/watch">
                         <VideoPlayer />
                     </Route>
-
+                    <Route path="/watchgroup">
+                        <GroupStreaming />
+                    </Route>
                     <Route path="/signup">
                         <div className="App">
                             <SignUpNavigationBar />

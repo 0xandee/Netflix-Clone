@@ -11,6 +11,7 @@ let count = 0;
 //https://www.example.com/url_to_video.mp4
 ///https://player.vimeo.com/external/194837908.sd.mp4?s=c350076905b78c67f74d7ee39fdb4fef01d12420&profile_id=164
 // http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4
+//https://drive.google.com/uc?export=download&id=1Cvk2XhYdSKAST4ecGQ6s1ra4MilvXuLC
 const VideoPlayer = () => {
     const history = useHistory(); // Navigate back to the previous state
     const [played, setPlayed] = useState(0);
@@ -19,7 +20,7 @@ const VideoPlayer = () => {
 
     const [muted, setMuted] = useState(false);
     const [seeking, setSeeking] = useState(false);
-    const [url, setUrl] = useState('https://www.youtube.com/watch?v=K1QICrgxTjA&ab_channel=LoungeVFilms-RelaxingMusicandNatureSounds');
+    const [url, setUrl] = useState('https://drive.google.com/uc?export=download&id=1Cvk2XhYdSKAST4ecGQ6s1ra4MilvXuLC');
     const [duration, setDuration] = useState(0);
     const [volume, setVolume] = useState(0.8);
     const playerRef = useRef(null);
@@ -218,7 +219,7 @@ const VideoPlayer = () => {
                         url={url}
                         onReady={handleVideoOnReady}
                         playing={playing}
-                        controls={true}
+                        controls={false}
 
 
                         volume={volume}
@@ -240,7 +241,8 @@ const VideoPlayer = () => {
 
 
                 </div>
-                <div ref={controlRef} style={{ transition: 'all 0.5s' }}>
+                <div ref={controlRef} style={{ transition: 'all 0.5s'
+ }}>
 
                     <div className={`video-player__top`} onClick={() => history.goBack()}>
                         <div className={`video-player__top__icon-container`}>

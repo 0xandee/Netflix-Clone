@@ -20,10 +20,12 @@ import IconPauseCircle from "./ic_pauseCircle"
 import IconPlayCircle from "./ic_playCircle"
 import IconUser from "./ic_user"
 import IconAlertCircle from "./ic_alertCircle"
+import IconChevronLeft from "./ic_chevronLeft"
+import IconChevronRight from "./ic_chevronRight"
 
 export {
     IconCheckmark,IconComputer,IconNetflix,IconPhone,IconSearch,
     IconTablet,IconTV,IconBackArrow,IconNext10s,IconPlay,IconPause,IconVolumeMute,
     IconVolume,IconRewind10s,IconSkip,IconLayer,IconFullScreen,IconSetting,
-    IconPauseCircle,IconPlayCircle,IconUser,IconAlertCircle
+    IconPauseCircle,IconPlayCircle,IconUser,IconAlertCircle,IconChevronLeft,IconChevronRight
 }
