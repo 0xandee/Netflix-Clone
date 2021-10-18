@@ -1,10 +1,11 @@
 import { IS_INFO_POP_UP } from "./constrains";
 
-var initState = {
-        isPopUp : false,  
+var initialState = {
+        // isPopUp : false, 
+        currentUser: {} 
 };
 
-export const rootReducer = (state = initState, action) => {
+export const rootReducer = (state = initialState, action) => {
     switch (action.type) {
         case IS_INFO_POP_UP: {
             return {
@@ -17,3 +18,12 @@ export const rootReducer = (state = initState, action) => {
             return state;
     }
 }
+
+export default function reducer(state = initialState, action) {
+    switch (action.type) {
+      case 'LOGIN_USER':
+        return {...state, currentUser: action.payload}
+      default:
+        return state;
+    }
+  }

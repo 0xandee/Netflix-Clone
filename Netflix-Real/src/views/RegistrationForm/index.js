@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, Component } from "react";
 import './registrationForm.scss'
 import * as Icon from 'react-feather';
 import { Link, NavLink } from "react-router-dom";
@@ -8,9 +8,28 @@ import { FormGroup, Input, Label } from "reactstrap";
 import { IconNetflix } from "../../assets/Icon";
 import { CustomInput, Footer } from "../../components";
 
-const RegistrationForm = () => {
-    const nextClicked = () => {
+import {connect} from 'react-redux';
+import {userPostFetch} from '../../services/redux/actions';
 
+const RegistrationForm = () => {
+    const nextClicked = () => {}
+
+    var state = {
+        username: "",
+        password: "",
+        avatar: "",
+        bio: ""
+    }
+    
+    var handleChange = event => {
+    this.setState({
+        [event.target.name]: event.target.value
+    });
+    }
+
+    var handleSubmit = event => {
+    event.preventDefault()
+    this.props.userPostFetch(this.state)
     }
 
     return (
@@ -20,7 +39,7 @@ const RegistrationForm = () => {
                 </div>
                 <div className={`reg-form__body`}>
                     <div className={`reg-form__body__content`}>
-                        <div className={`reg-form__body__content__main`}>
+                        <form className={`reg-form__body__content__main`} onSubmit={this.handleSubmit}>
                             <div >
                                 <span className="reg-form__body__content__main__step-indicator" >STEP <b>1</b> OF <b>3</b>
                                 </span>
@@ -35,46 +54,46 @@ const RegistrationForm = () => {
                                     placeHolder={`Please enter a valid email`}
                                     label={`Enter your email`}
                                     style={{ background: '#fff', border: '1px solid gray', height: '60px' }}
-
                                     textStyle={{ color: 'black' }}
-                                    type='text' />
+                                    type='text'
+                                    value={this.state.username}
+                                    onChange={this.handleChange} />
                                 <CustomInput
                                     placeHolder={`Password is required`}
                                     label={`Password`}
                                     style={{ background: '#fff', border: '1px solid gray', height: '60px' }}
-
                                     textStyle={{ color: 'black' }}
-                                    type='password' />
+                                    type='password'
+                                    value={this.state.password}
+                                    onChange={this.handleChange} />
                                 <span>
                                     <input type='checkbox' size ='40' />
                                     <span> Please do not email me Netflix special offers.</span>
                                 </span>
                             </div>
-
-                            <NavLink to='/signup/chooseplan'>
-                                <button className={`reg-form__body__content__main__button-next`} >
+                            {/* <NavLink to='/signup/chooseplan'> */}
+                                <button className={`reg-form__body__content__main__button-next`} type='submit'>
                                     <span>Next
                                     </span>
                                 </button>
-                            </NavLink>
-
-
-
-
-
-                        </div>
-                        <div>
-
-                        </div>
-                    </div>
+                            {/* </NavLink> */}
+                        </form>
+                    <div>
                 </div>
-                <div>
-                    <Footer style={{ background: '#f3f3f3' }} />
-                </div>
-
             </div>
-
         </div>
+        <div>
+            <Footer style={{ background: '#f3f3f3' }} />
+        </div>
+    </div>
+    </div>
     )
 }
-export default RegistrationForm;
+
+const mapDispatchToProps = dispatch => ({
+    userPostFetch: userInfo => dispatch(userPostFetch(userInfo))
+  })
+  
+  export default connect(null, mapDispatchToProps)(RegistrationForm);
+
+// export default RegistrationForm;
