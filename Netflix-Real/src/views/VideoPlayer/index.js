@@ -17,6 +17,7 @@ const VideoPlayer = () => {
     const [played, setPlayed] = useState(0);
     const [loaded, setLoaded] = useState(0);
     const [playing, setPlaying] = useState(false);
+    const [focusing, setFocusing] = useState(false);
 
     const [muted, setMuted] = useState(false);
     const [seeking, setSeeking] = useState(false);
@@ -129,6 +130,14 @@ const VideoPlayer = () => {
         controlRef.current.style.opacity = '1'
     }
 
+    const handleMouseEnter = () => {
+        setFocusing(true)
+    }
+
+    const handleMouseLeave = () => {
+        setFocusing(false)
+    }
+
     const calcSliderPos = (e) => {
         return (e.nativeEvent.offsetX / e.target.clientWidth) * parseInt(e.target.getAttribute('max'), 10);
     }
@@ -144,59 +153,61 @@ const VideoPlayer = () => {
 
 
     const handleKeyDown = useCallback((e) => {
+        if (focusing) {
+            if (e.key === 'ArrowDown') {
+                if (volume <= 0.1) {
+                    setVolume(0)
+                }
 
-        if (e.key === 'ArrowDown') {
-
-
-            if (volume <= 0.1) {
-                setVolume(0)
+                else
+                    setVolume(parseFloat(volume) - 0.1);
+                handleVolumeChange()
             }
+            else if (e.key === 'ArrowUp') {
 
-            else
-                setVolume(parseFloat(volume) - 0.1);
-            handleVolumeChange()
-        }
-        else if (e.key === 'ArrowUp') {
+                if (volume >= 0.9) {
+                    setVolume(1);
+                }
+                else {
 
-            if (volume >= 0.9) {
-                setVolume(1);
+                    setVolume(parseFloat(volume) + 0.1);
+                }
+                handleVolumeChange()
             }
-            else {
-
-                setVolume(parseFloat(volume) + 0.1);
+            else if (e.key === 'ArrowLeft') {
+                setSeeking(true);
+                if (played < (10 / duration))
+                    setPlayed(0)
+                else
+                    setPlayed(played - (10 / duration))
             }
-            handleVolumeChange()
-        }
-        else if (e.key === 'ArrowLeft') {
-            setSeeking(true);
-            if (played < (10 / duration))
-                setPlayed(0)
-            else
-                setPlayed(played - (10 / duration))
-        }
-        else if (e.key === 'ArrowRight') {
-            setSeeking(true);
-            if (played + (10 / duration) > 1)
-                setPlayed(1)
-            else
-                setPlayed(played + (10 / duration))
-        }
-        else if (e.keyCode === 32) {
+            else if (e.key === 'ArrowRight') {
+                setSeeking(true);
+                if (played + (10 / duration) > 1)
+                    setPlayed(1)
+                else
+                    setPlayed(played + (10 / duration))
+            }
+            else if (e.keyCode === 32) {
 
-            handlePlayPause();
+                handlePlayPause();
+            }
         }
-    }, [setVolume, volume, handlePlayPause, played, duration])
+    }, [setVolume, volume, handlePlayPause, played, duration, focusing])
 
     const handleKeyUp = useCallback((e) => {
-        if (e.key === 'ArrowLeft') {
-            playerRef.current.seekTo(played, 'fraction')
-            setSeeking(false)
+        if (focusing) {
+            if (e.key === 'ArrowLeft') {
+                playerRef.current.seekTo(played, 'fraction')
+                setSeeking(false)
+            }
+            else if (e.key === 'ArrowRight') {
+                playerRef.current.seekTo(played, 'fraction')
+                setSeeking(false)
+            }
         }
-        else if (e.key === 'ArrowRight') {
-            playerRef.current.seekTo(played, 'fraction')
-            setSeeking(false)
-        }
-    }, [played])
+    }, [played,focusing])
+
     useEffect(() => {
 
         document.addEventListener("keydown", handleKeyDown)
@@ -208,7 +219,7 @@ const VideoPlayer = () => {
         }
     }, [handleKeyDown, handleKeyUp]);
     return (
-        <div id={`videoPlayer`} onMouseMove={handleMouseMove}  >
+        <div id={`videoPlayer`} onMouseMove={handleMouseMove} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
             <div ref={playerContainerRef} className={`video-player`} >
                 <div className={'video-container'} onClick={handlePlayPause}>
                     <ReactPlayer
@@ -241,8 +252,9 @@ const VideoPlayer = () => {
 
 
                 </div>
-                <div ref={controlRef} style={{ transition: 'all 0.5s'
- }}>
+                <div ref={controlRef} style={{
+                    transition: 'all 0.5s'
+                }}>
 
                     <div className={`video-player__top`} onClick={() => history.goBack()}>
                         <div className={`video-player__top__icon-container`}>
