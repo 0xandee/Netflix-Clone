@@ -11,11 +11,13 @@ import {
 } from "react-router-dom";
 
 import './App.css'
+import io from "socket.io-client";
 import { Slider, NavBar, NavigationBar, SignUpNavigationBar, PreviewInfo, PreviewPopup } from "./components/index";
 
 import { ForgotPassword, PlanForm, Registration, RegistrationForm, SignUp, SignIn,GroupStreaming, LanguageSetup,AccountProfile, OnboardingMovies, VideoPlayer, Homepage, MyPlaylist, PopularPage } from "./views/index";
 
-
+//const socket = io.connect('http://localhost:8000');
+const socket = io("localhost:8000", { transports: ["websocket"] });
 export default function WebRouter() {
     const history = useHistory();
     return (
@@ -31,8 +33,8 @@ export default function WebRouter() {
                     <Route path="/watch">
                         <VideoPlayer />
                     </Route>
-                    <Route path="/watchgroup">
-                        <GroupStreaming />
+                    <Route path="/watchgroup/:idgroup">
+                        <GroupStreaming socket={socket}/>
                     </Route>
                     <Route path="/signup">
                         <div className="App">

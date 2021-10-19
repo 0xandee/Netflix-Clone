@@ -31,22 +31,20 @@ const CustomInput = (props) => {
             <div className={`custom-input`}>
                 <div className={`custom-input__form`}>
                     <div className={`custom-input__form__input ${isError && `error`}`} style={{...props.style}} >
-                        <input type={props.type} ref={textInput} onFocus={onFocus} onBlur={onBlur}  style={props.textStyle} autoComplete="new-password"/>
+                        <input ref={textInput} type={props.type} value={props.value} onChange={e => props.onChange(e.target.value)} onFocus={onFocus} onBlur={onBlur}  style={props.textStyle} autoComplete="new-password"/>
 
                         <label className={`custom-input__form__input__placehoder-label ${isFocus && 'focus-input'}`}>{props.label}</label>
 
-                        {isError && <label  className={`custom-input__form__input__error-label`}>{props.placeHolder}</label>}
-
-                        {props.type ==='password' && <button className='mr-2' onClick={btnRevealClicked}>
+                        {props.type ==='password' && <div className='mr-2 btn-eye' style={{ backgroundColor: 'transparent'}} onClick={btnRevealClicked}>
                             {isReveal ?
                                 <Icon.EyeOff color='#8c8c8c' />
                                 :
                                 <Icon.Eye color='#8c8c8c' />
 
                             }
-
-                        </button>}
+                        </div>}
                     </div>
+                    {isError && <label  className={`custom-input__form__input__error-label`}>{props.placeHolder}</label>}
                 </div>
             </div>
 

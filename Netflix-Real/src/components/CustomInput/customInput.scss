@@ -20,7 +20,7 @@ $error: red;
             border-radius: 4px;
 
             background-color: $main-background;
-            button {
+            .btn-eye {
                 position: absolute;
                 right: 0;
                 top: 30%;
@@ -33,9 +33,7 @@ $error: red;
                 border-bottom: 2px solid $error;
             }
             &__error-label {
-                position: absolute;
-
-                bottom: -40%;
+                
 
                 font-size: 12px;
                 color: $error;

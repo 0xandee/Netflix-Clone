@@ -11,9 +11,7 @@ export default function App() {
     
     </Provider>
 
-    // <div style={{ backgroundColor: "black" }}>
-    //   <CustomNotification />
-    // </div>
+  
 
   );
 }
