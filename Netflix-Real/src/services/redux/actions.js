@@ -1,5 +1,8 @@
 import { IS_INFO_POP_UP } from "./constrains"
 
+require('dotenv').config();
+const url = process.env.REACT_APP_URL;
+
 export const showPopUpInfo = (isPopUp) => {
     return {
         type: IS_INFO_POP_UP,
@@ -11,7 +14,7 @@ export const showPopUpInfo = (isPopUp) => {
 
 export const userPostFetch = user => {
     return dispatch => {
-      return fetch("http://localhost:3000/api/v1/users", {
+      return fetch(`${url}/api/auth/register`, {
         method: "POST",
         headers: {
           'Content-Type': 'application/json',
@@ -32,7 +35,7 @@ export const userPostFetch = user => {
 
   export const userLoginFetch = user => {
     return dispatch => {
-      return fetch("http://localhost:3000/api/v1/login", {
+      return fetch(`${url}/api/auth/login`, {
         method: "POST",
         headers: {
           'Content-Type': 'application/json',

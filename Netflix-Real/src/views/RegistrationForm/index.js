@@ -14,24 +14,24 @@ import {userPostFetch} from '../../services/redux/actions';
 const RegistrationForm = () => {
     const nextClicked = () => {}
 
-    var state = {
-        username: "",
-        password: "",
-        avatar: "",
-        bio: ""
-    }
+    // const state = {
+    //     username: "",
+    //     password: "",
+    //     email: ""
+    // }
     
-    var handleChange = event => {
-    this.setState({
-        [event.target.name]: event.target.value
-    });
-    }
+    // const handleChange = event => {
+    //     this.setState({
+    //         [event.target.name]: event.target.value
+    //     });
+    // }
 
-    var handleSubmit = event => {
-    event.preventDefault()
-    this.props.userPostFetch(this.state)
-    }
-
+    // const handleClick = event => {
+    //     event.preventDefault();
+    //     this.props.userPostFetch(this.state)
+    // }
+    const [username, setUsername] = useState('')
+    const [password, setPassword] = useState('')
     return (
         <div id='regForm'>
             <div className={`reg-form`}>
@@ -39,7 +39,7 @@ const RegistrationForm = () => {
                 </div>
                 <div className={`reg-form__body`}>
                     <div className={`reg-form__body__content`}>
-                        <form className={`reg-form__body__content__main`} onSubmit={this.handleSubmit}>
+                        <div className={`reg-form__body__content__main`}>
                             <div >
                                 <span className="reg-form__body__content__main__step-indicator" >STEP <b>1</b> OF <b>3</b>
                                 </span>
@@ -56,28 +56,28 @@ const RegistrationForm = () => {
                                     style={{ background: '#fff', border: '1px solid gray', height: '60px' }}
                                     textStyle={{ color: 'black' }}
                                     type='text'
-                                    value={this.state.username}
-                                    onChange={this.handleChange} />
+                                    value={username}
+                                    onChange={setUsername} />
                                 <CustomInput
                                     placeHolder={`Password is required`}
                                     label={`Password`}
                                     style={{ background: '#fff', border: '1px solid gray', height: '60px' }}
                                     textStyle={{ color: 'black' }}
                                     type='password'
-                                    value={this.state.password}
-                                    onChange={this.handleChange} />
+                                    value={password}
+                                    onChange={setPassword} />
                                 <span>
                                     <input type='checkbox' size ='40' />
                                     <span> Please do not email me Netflix special offers.</span>
                                 </span>
                             </div>
                             {/* <NavLink to='/signup/chooseplan'> */}
-                                <button className={`reg-form__body__content__main__button-next`} type='submit'>
+                                <button className={`reg-form__body__content__main__button-next`} >
                                     <span>Next
                                     </span>
                                 </button>
                             {/* </NavLink> */}
-                        </form>
+                        </div>
                     <div>
                 </div>
             </div>
