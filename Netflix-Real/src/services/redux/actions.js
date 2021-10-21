@@ -26,8 +26,6 @@ export const userPostFetch = user => {
         .then(data => {
           if (data.message) {
           } else {
-            localStorage.setItem("token", data.jwt)
-            dispatch(loginUser(data.user))
           }
         })
     }
@@ -41,20 +39,44 @@ export const userPostFetch = user => {
           'Content-Type': 'application/json',
           Accept: 'application/json',
         },
-        body: JSON.stringify({user})
+        body: JSON.stringify(user)
       })
         .then(resp => resp.json())
         .then(data => {
           if (data.message) {
-          } else {
-            localStorage.setItem("token", data.jwt)
-            dispatch(loginUser(data.user))
-          }
-        })
+          } else if (data?.data?.access_token && data?.data?.refresh_token){
+              assignTokenObj(data.data.access_token, data.data.refresh_token);
+            }
+          })
     }
   }
+
+export const userLogout = () => {
+  return dispatch => {
+    return fetch(`${url}/api/auth/login`, {
+      method: "DELETE",
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+      body: JSON.stringify(tokenObj.refresh_token)
+    })
+      .then(resp => resp.json())
+      .then(data => {
+        if (data.message) {
+        } else {
+          assignTokenObj("", "");
+        }
+        })
+  }
+}
+
+const assignTokenObj = (access_token, refresh_token) => {
+  tokenObj.access_token = access_token;
+  tokenObj.refresh_token = refresh_token;
+}
   
-  const loginUser = userObj => ({
-      type: 'LOGIN_USER',
-      payload: userObj
+export var tokenObj = ({
+  access_token: "",
+  refresh_token: ""
   })

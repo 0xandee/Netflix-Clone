@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import './customdropdown.scss'
 import * as Icon from 'react-feather';
-import { Link } from "react-router-dom";
-
-
+import { Link,NavLink,Route  } from "react-router-dom";
+import {userLogout} from '../../services/redux/actions';
+import { SignIn } from "../../views/index";
 const data = [
   {
     id: 0, label: "Long long long long long long long name", navLink: '/profile',
@@ -29,6 +29,12 @@ const CustomDropdown = () => {
     setOpen(false);
 
   }
+
+  const signOutClick = event => {
+    event.preventDefault();
+    userLogout();
+    return (<Route path="/signin"><SignIn /></Route>)
+}
 
   return (
     <div id='customdropdown'
@@ -84,11 +90,11 @@ const CustomDropdown = () => {
                   </Link>
                 </div>
                 <div className="dropdown-account-item">
-                  <Link to='/signin' className='profile-link account-link'>
+                  <div onClick={signOutClick} className='profile-link account-link'>
                     <span className='profile-name'>
                       Sign out
                     </span>
-                  </Link>
+                  </div>
                 </div>
               </div>
 

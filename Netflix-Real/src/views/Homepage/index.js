@@ -9,6 +9,10 @@ import "swiper/swiper.min.css";
 import "swiper/components/navigation/navigation.min.css"
 import "swiper/components/pagination/pagination.min.css"
 import { Swiper, SwiperSlide } from "swiper/react";
+
+import {tokenObj} from '../../services/redux/actions';
+import { SignIn } from "../index";
+
 // import Swiper core and required modules
 import SwiperCore, {
     Navigation,
@@ -249,13 +253,24 @@ const movieData = [{
     }]
 }]
 
+function getToken() {
+    return tokenObj;
+}
+
 const Homepage = (props) => {
     //const [showed, setShowed] = useState(false)
     const history = useHistory();
     const showed = useSelector((state) => state.isPopUp)
     const homePageRef = useRef(null)
     const [currentScrollY, setCurrentScrollY] = useState(0);
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
+
+    const token = getToken();
+    console.log("token", token);
+
+    if(token.access_token == "" && token.refresh_token == "") {
+      return <SignIn/>
+    }
     // const handleMoreInfo = () => {
         // dispatch(showPopUpInfo(!showed))
         // if (!showed) {

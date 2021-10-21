@@ -1,7 +1,7 @@
 import React, { useState, Component } from "react";
 import './signIn.scss'
 import * as Icon from 'react-feather';
-import { NavLink } from "react-router-dom";
+import { NavLink, Redirect  } from "react-router-dom";
 import { CustomInput, Footer } from "../../components";
 import { IconNetflix } from "../../assets/Icon";
 
@@ -20,6 +20,7 @@ const SignIn = (props) => {
             username,
             password
         });
+        return <Redirect to='/home'/>
     }
 
     return (
@@ -53,10 +54,10 @@ const SignIn = (props) => {
                                 type='password' />
 
                             <div onClick={signInClick} className={`sign-in__body__content__main__button-sign-in`}>
-                                {/* <NavLink to='/home' > */}
-                                <span> Sign In
-                                </span>
-                                {/* </NavLink> */}
+                                <NavLink to='/home' >
+                                    <span> Sign In
+                                    </span>
+                                </NavLink>
                             </div>
 
                             <span>
