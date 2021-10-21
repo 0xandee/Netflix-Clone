@@ -36,7 +36,7 @@ export const userPostFetch = user => {
         if (data.message) {
         } else {
           localStorage.setItem("token", data.jwt)
-          dispatch(loginUser(data.user))
+          // dispatch(loginUser(data.user))
         }
       })
         .then(resp => resp.json())
@@ -47,7 +47,7 @@ export const userPostFetch = user => {
         })
     }
   }
-}
+
 
   export const userLoginFetch = user => {
     return dispatch => {
