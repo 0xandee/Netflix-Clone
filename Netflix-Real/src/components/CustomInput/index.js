@@ -4,7 +4,7 @@ import * as Icon from 'react-feather';
 import { NavLink } from "react-router-dom";
 const CustomInput = (props) => {
     const [isFocus, setIsFocus] = useState(false)
-    const [isError, setIsError] = useState(false)
+    // const [isError, setIsError] = useState(false)
     const [isReveal, setIsreveal] = useState(false)
     const textInput = createRef(null);
     const onFocus = () => setIsFocus(true)
@@ -12,12 +12,9 @@ const CustomInput = (props) => {
         const target = event.target;
         const value = target.value;
         if (value === '') {
-            setIsError(true);
+         
             setIsFocus(false)
-        }
-        else {
-            setIsError(false);
-        }
+        }       
     }
     const btnRevealClicked = () => {
         if (!isReveal)
@@ -30,7 +27,7 @@ const CustomInput = (props) => {
         <div id='customInput'>
             <div className={`custom-input`}>
                 <div className={`custom-input__form`}>
-                    <div className={`custom-input__form__input ${isError && `error`}`} style={{...props.style}} >
+                    <div className={`custom-input__form__input `} style={{...props.style}} >
                         <input ref={textInput} type={props.type} value={props.value} onChange={e => props.onChange(e.target.value)} onFocus={onFocus} onBlur={onBlur}  style={props.textStyle} autoComplete="new-password"/>
 
                         <label className={`custom-input__form__input__placehoder-label ${isFocus && 'focus-input'}`}>{props.label}</label>
@@ -44,7 +41,7 @@ const CustomInput = (props) => {
                             }
                         </div>}
                     </div>
-                    {isError && <label  className={`custom-input__form__input__error-label`}>{props.placeHolder}</label>}
+                 
                 </div>
             </div>
 

@@ -1,0 +1,18 @@
+#moviesPage .movie-page {
+  position: relative;
+  .header-genre{
+    position: relative;
+    height: 15vh;
+    .select-header {
+      position: absolute;
+      bottom: 0;
+      left: 3rem;
+      right: 0;
+
+      width: 200px;
+
+      z-index: 2;
+    }
+  }
+  
+}
