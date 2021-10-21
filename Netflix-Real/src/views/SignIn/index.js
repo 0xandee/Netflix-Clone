@@ -70,10 +70,10 @@ const SignIn = (props) => {
                             <div className={`error-label ${isPasswordError && 'visible'}`}> {errorTextPassword}</div>
 
                             <div onClick={signInClick} className={`sign-in__body__content__main__button-sign-in`}>
-                                <NavLink to='/home' >
+                                {/* <NavLink to='/home' > */}
                                     <span> Sign In
                                     </span>
-                                </NavLink>
+                                {/* </NavLink> */}
                             </div>
 
                             <span>
