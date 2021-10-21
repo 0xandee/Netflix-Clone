@@ -12,9 +12,10 @@ import MyPlaylist from './MyPlaylist'
 import PopularPage from './PopularPage'
 import AccountProfile from './AccountProfile'
 import GroupStreaming from './GroupStreaming'
+import MoviesPage from './MoviesPage'
 
 export {
     SignIn,SignUp,ForgotPassword,Registration,RegistrationForm,PlanForm,
     LanguageSetup,OnboardingMovies,VideoPlayer,Homepage,MyPlaylist,PopularPage,AccountProfile,
-    GroupStreaming
+    GroupStreaming,MoviesPage
 }

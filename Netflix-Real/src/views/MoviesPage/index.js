@@ -1,10 +1,11 @@
 import React, { useRef, useState, useCallback, useEffect, createRef } from "react";
-import './Slider.scss';
+import './style.scss';
 import { BigBanner, Slider, Footer } from "../../components";
 import { useSelector, useDispatch } from 'react-redux';
 import { showPopUpInfo } from "../../services/redux/actions";
 import { Link, useHistory, useLocation } from "react-router-dom";
-
+import { getMovieType } from "../../services/api/movie";
+import Select from 'react-select';
 const movieData = [{
     id: 1,
     sliderTitle: 'Popular Now',
@@ -199,76 +200,99 @@ const movieData = [{
     }]
 }]
 
-const PopularPage = (props) => {
+const MoviesPage = (props) => {
     //const [showed, setShowed] = useState(false)
     const history = useHistory();
-    const showed = useSelector((state) => state.isPopUp)
-    const homePageRef = useRef(null)
-    const [currentScrollY, setCurrentScrollY] = useState(0);
-    const dispatch = useDispatch()
-    const handleMoreInfo = () => {
-        dispatch(showPopUpInfo(!showed))
-        if (!showed) {
-            homePageRef.current.style.top = -currentScrollY + 'px';
-            history.push({
-                pathname: props.match.url,
-                search: `jbv=${'detailId'}`,
-                state: { scrollY: currentScrollY }
-            })
-            window.scroll(0, 0)
-        }
-        else {
-            homePageRef.current.style.top = null;
 
-        }
+    const [currentScrollY, setCurrentScrollY] = useState(0);
+    const [selectedGenre, setSelectedGenre] = useState(null);
+    const dispatch = useDispatch()
+    let dataTypes = useSelector((state) => state?.rootReducer.movieTypes)
+  
+
+    const onSelectGenreChange = (e) => {
+        setSelectedGenre(e)
+    }
+
+    const handleMoreInfo = () => {
+        history.push({
+            pathname: props.match.url,
+            search: `jbv=${'detailId'}`,
+            state: { scrollY: currentScrollY }
+        })
+
 
     }
-    const styles = ({
-        fixed: {
-            position: 'fixed',
-        },
-        sticky: {
-            position: 'static',
-        }
-    })
+
 
     const handleScroll = useCallback(() => {
         setCurrentScrollY(window.scrollY)
-
     }, []);
 
-    const handlePopState = useCallback(() => {
-        // window.scroll(0, 76)
-        dispatch(showPopUpInfo(false))
-        // console.log("🚀 ~ file: index.js ~ line 84 ~ handlePopState ~ dispatch", showed)
-
-    }, [dispatch]);
+    const convertDataSelect=()=>{
+        dataTypes= dataTypes.map(function (obj) {  
+            obj['value']= obj.id
+            obj['label']= obj.t_name
+            return obj;
+        });
+    }
 
     useEffect(() => {
         window.addEventListener("scroll", handleScroll);
-        window.addEventListener('popstate', handlePopState);
         return () => {
             window.removeEventListener("scroll", handleScroll);
-            window.removeEventListener('onpopstate ', handlePopState);
         }
-
-    }, [handleScroll, handlePopState]);
+    }, [handleScroll]);
+    useEffect(() => { 
+        convertDataSelect()
+        console.log(dataTypes);
+        setSelectedGenre(dataTypes[1])
+    }, [])
     return (
-        <div className="overflow-x-hidden bg-black" ref={homePageRef} style={showed ? styles.fixed : styles.sticky}>
-            <div class="sub-header">
-                <div>
-                    <div class="sub-header-wrapper">
-                        <div class="galleryHeader">
-                            <div class="title">
-                            </div>
-                        </div>
+        <div id='moviesPage' >
+
+            <div className="movie-page overflow-x-hidden bg-black"  >
+                <div class="header-genre">
+                    <div class="select-header">
+                        <Select
+                            className="react-select"
+                            classNamePrefix="select"
+                            value={selectedGenre}
+                            isSearchable={false}
+                            onChange={onSelectGenreChange}
+                            options={dataTypes}
+                            styles={{
+                                singleValue: (base) => ({
+                                    ...base,
+
+                                    color: 'white',
+                                }),
+                                option: (base) => ({
+                                    ...base,
+                                    color: 'white',
+                                }),
+                            }}
+                            theme={(theme) => ({
+                                ...theme,
+                                backgroundColor: 'black',
+
+                                colors: {
+                                    ...theme.colors,
+                                    primary:'#e50914',
+                                    primary25: 'gray',
+                                    neutral0: 'black'
+                                },
+                            })}
+                        />
                     </div>
+
+
                 </div>
+                {movieData.map(item => (<Slider id={item.id} sliderTitle={item.sliderTitle} sliderMovieList={item.sliderMovieList} handleMoreInfo={handleMoreInfo} />))}
+                <Footer />
             </div>
-            {movieData.map(item => (<Slider id={item.id} sliderTitle={item.sliderTitle} sliderMovieList={item.sliderMovieList} handleMoreInfo={handleMoreInfo} />))}
-            <Footer />
         </div>
     );
 };
 
-export default PopularPage;
+export default MoviesPage;

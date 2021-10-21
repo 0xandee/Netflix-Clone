@@ -14,12 +14,27 @@ import './App.css'
 import io from "socket.io-client";
 import { Slider, NavBar, NavigationBar, SignUpNavigationBar, PreviewInfo, PreviewPopup } from "./components/index";
 
-import { ForgotPassword, PlanForm, Registration, RegistrationForm, SignUp, SignIn,GroupStreaming, LanguageSetup,AccountProfile, OnboardingMovies, VideoPlayer, Homepage, MyPlaylist, PopularPage } from "./views/index";
+import { ForgotPassword, PlanForm, Registration, RegistrationForm, SignUp, SignIn,GroupStreaming, LanguageSetup,AccountProfile, OnboardingMovies, VideoPlayer, Homepage, MyPlaylist, PopularPage,MoviesPage } from "./views/index";
+import {  getMovieTypeAPI } from "./services/api/movie";
+import { useDispatch } from "react-redux";
+import { setMovieTypes } from "./services/redux/actions";
+import { useSelector } from "react-redux";
 
 //const socket = io.connect('http://localhost:8000');
 const socket = io("localhost:8000", { transports: ["websocket"] });
 export default function WebRouter() {
     const history = useHistory();
+    const dispatch = useDispatch();
+   
+    useEffect(() => {
+        getMovieTypeAPI(async (res) => {        
+            console.log("🚀 ~ file: index.js ~ line 260 ~ getMovieType ~ res", res.data)
+            if (res.status == 200) {
+                dispatch(setMovieTypes(res.data))
+                
+            }
+        });
+    },[])
     return (
         <Router>
             <div >
@@ -84,7 +99,7 @@ export default function WebRouter() {
                             <Route path="/playlist" component={MyPlaylist}>
                                 {/* <MyPlaylist /> */}
                             </Route>
-                            <Route path="/movies" component={Movies}>
+                            <Route path="/movies" component={MoviesPage}>
                                 {/* <Movies /> */}
                             </Route>
                             <Route path="/popular" component={PopularPage}>
@@ -121,9 +136,7 @@ function TVShow() {
 //     return <MyPlaylist />;
 // }
 
-function Movies() {
-    return <Homepage />;
-}
+
 function NewAndPopular() {
     return <h2>NewAndPopular</h2>;
 }

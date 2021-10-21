@@ -1,6 +1,7 @@
 var aes256 = require("aes256");
 //the secret key used for encrypting and decrypting messages
-var secret_key = "uI2ooxtwHeI6q69PS98fx9SWVGbpQohO";
+require('dotenv').config();
+var secret_key = process.SECRET_KEY;
 //returns the encrypted text
 export const to_Encrypt = (text) => {
   var encrypted = aes256.encrypt(secret_key, text);
