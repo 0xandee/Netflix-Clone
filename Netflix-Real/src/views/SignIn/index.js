@@ -1,16 +1,18 @@
 import React, { useState, Component } from "react";
 import './signIn.scss'
 import * as Icon from 'react-feather';
-import { NavLink, Redirect } from "react-router-dom";
+import { NavLink, useHistory, Redirect  } from "react-router-dom";
 import { CustomInput, Footer } from "../../components";
 import { IconNetflix } from "../../assets/Icon";
 
 import { connect } from 'react-redux';
 import { userLoginFetch } from '../../services/redux/actions';
+import { requestLogin } from "../../services/api/auth";
+import { to_Decrypt, to_Encrypt } from "../../services/aes256";
 
 const SignIn = (props) => {
     const backgroudUrl = 'https://assets.nflxext.com/ffe/siteui/vlv3/9c5457b8-9ab0-4a04-9fc1-e608d5670f1a/f50f46d7-13f0-4412-a37c-34808af2dd0c/VN-en-20210719-popsignuptwoweeks-perspective_alpha_website_small.jpg'
-
+    const history = useHistory()
     const [isEmailError, setIsEmailError] = useState(false)
     const [isPasswordError, setIsPasswordError] = useState(false)
     const [username, setUsername] = useState('')
@@ -19,20 +21,36 @@ const SignIn = (props) => {
     const [errorTextPassword, setErrorTextPassword] = useState('Password must be between 6 to 20 characters which contain at least one numeric digit, one uppercase and one lowercase letter')
 
     const signInClick = event => {
-        if (username == "" || !username.match('@gmail.com')) {
-            setIsEmailError(true)
+        var errorCheck = false;
+        if (username == "") {
+            setIsEmailError(true);
+            errorCheck = true;
+        } else {
+            setIsEmailError(false)
         }
-        var passw = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/;
-        if (password == "" || !password.match(passw)) {
-            setIsPasswordError(true)
+        // var passw = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/;
+        if (password == "") {
+            setIsPasswordError(true);
+            errorCheck = true;
+        } else {
+            setIsPasswordError(false)
         }
-        else {
-            event.preventDefault();
-            props.userLoginFetch({
-                username,
-                password
-            });
-            return <Redirect to='/home' />
+        if (!errorCheck) {
+        // const passEncrypt = to_Encrypt(password);
+        requestLogin(username, password, async (res) => {
+            console.log("🚀 ~ file: index.js ~ line 31 ~ requestLogin ~ res", res)
+            if (res.status == 200) {
+                localStorage.setItem("access_token", res.data.access_token);
+                localStorage.setItem("refresh_token", res.data.refresh_token);
+                
+                history.push('/home')
+            }
+            else {
+                setIsPasswordError(true)
+                setIsEmailError(false)
+                setErrorTextPassword("Username or password incorrect")
+            }
+        });
         }
     }
 

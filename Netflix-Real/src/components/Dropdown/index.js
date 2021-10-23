@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import './customdropdown.scss'
 import * as Icon from 'react-feather';
-import { Link,NavLink,Route  } from "react-router-dom";
+import { Link,NavLink,Route,useHistory  } from "react-router-dom";
 import {userLogout} from '../../services/redux/actions';
 import { SignIn } from "../../views/index";
+import { requestLogout } from "../../services/api/auth";
+
+
 const data = [
   {
     id: 0, label: "Long long long long long long long name", navLink: '/profile',
@@ -21,6 +24,7 @@ const CustomDropdown = () => {
   const avatar = 'https://occ-0-325-3996.1.nflxso.net/dnm/api/v6/K6hjPJd6cR6FpVELC5Pd6ovHRSk/AAAABYnnca7HCf0z4YHtIK5R8MIGCeMyodAsxBYSBmMkYHqjSw46VWWyNQirfwxT-CkbxPkp-G84Wu-iOMwGG-r9QAs.png?r=f71'
   const [items, setItem] = useState(data);
   const [selectedItem, setSelectedItem] = useState(null);
+  const history = useHistory()
 
   const toggleDropdown = () => setOpen(!isOpen);
 
@@ -32,9 +36,17 @@ const CustomDropdown = () => {
 
   const signOutClick = event => {
     event.preventDefault();
-    userLogout();
-    return (<Route path="/signin"><SignIn /></Route>)
-}
+    var refresh_token = localStorage.getItem('refresh_token');
+    requestLogout(refresh_token, async (res) => {
+    if (res.status == 200) {
+      localStorage.clear();
+      history.push('/signin')
+    }
+  });
+  }
+    
+//  return (<Route path="/signin"><SignIn /></Route>)
+
 
   return (
     <div id='customdropdown'

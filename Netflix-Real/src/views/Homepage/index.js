@@ -265,11 +265,12 @@ const Homepage = (props) => {
     const [currentScrollY, setCurrentScrollY] = useState(0);
     const dispatch = useDispatch();
 
-    const token = getToken();
-    console.log("token", token);
+    // const token = getToken();
+    // console.log("token", token);
 
-    if(token.access_token == "" && token.refresh_token == "") {
-      return <SignIn/>
+    if(localStorage.getItem('access_token') === null) {
+    //   return <SignIn/>
+        history.push('/signin')
     }
     // const handleMoreInfo = () => {
         // dispatch(showPopUpInfo(!showed))

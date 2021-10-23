@@ -12,6 +12,7 @@
     "axios": "^0.22.0",
     "axios-mock-adapter": "^1.20.0",
     "bootstrap": "^5.0.2",
+    "cookie-parser": "^1.4.5",
     "dotenv": "^10.0.0",
     "flatpickr": "^4.6.9",
     "jsonwebtoken": "^8.5.1",

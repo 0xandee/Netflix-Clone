@@ -1,12 +1,15 @@
 var aes256 = require("aes256");
 //the secret key used for encrypting and decrypting messages
 require('dotenv').config();
-var secret_key = process.SECRET_KEY;
+const secret_key = process.env.REACT_APP_SECRET_KEY;
 //returns the encrypted text
+
 export const to_Encrypt = (text) => {
+  console.log("secret_key", secret_key);
   var encrypted = aes256.encrypt(secret_key, text);
   return encrypted;
 };
+
 //welcome message is not decrypted
 export const to_Decrypt = (cipher, username) => {
   if (cipher.startsWith("Welcome")) {

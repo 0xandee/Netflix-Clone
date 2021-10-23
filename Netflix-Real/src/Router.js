@@ -39,82 +39,96 @@ export default function WebRouter() {
         <Router>
             <div >
                 <Switch>
+
+                    {/* Sign In */}
                     <Route path="/signin">
                         <SignIn />
-                        {/* <LanguageSetup /> */}
-                        {/* <ForgotPassword /> */}
                     </Route>
 
+                    {/* Watch Video Player */}
                     <Route path="/watch">
                         <VideoPlayer />
                     </Route>
+                    
+                    {/* Watch Video In Group */}
                     <Route path="/watchgroup/:idgroup">
                         <GroupStreaming socket={socket}/>
                     </Route>
+
+                    {/* Sign Up */}
                     <Route path="/signup">
                         <div className="App">
                             <SignUpNavigationBar />
                             <Switch>
+                                {/* Step 1 */}
                                 <Route path="/signup/registration">
-                                    {/* Step 1 */}
                                     <Registration />
                                 </Route>
+                                {/* Step 1.1 */}
                                 <Route path="/signup/registrationform">
-                                    {/* Step 1.1 */}
                                     <RegistrationForm />
                                 </Route>
+                                {/* Step 2 */}
                                 <Route path="/signup/chooseplan">
-                                    {/* Step 2 */}
                                     <ChoosePlan />
                                 </Route>
+                                {/* Step 3 */}
                                 <Route path="/signup/chooseplanform">
-                                    {/* Step 3 */}
                                     <PlanForm />
                                 </Route>
+                                {/* Step 4 */}
                                 <Route path="/signup/languagesetup">
-                                    {/* Step 4 */}
                                     <LanguageSetup />
                                 </Route>
+                                {/* Step 5 */}
                                 <Route path="/signup/choosemovies">
-                                    {/* Step 5 */}
                                     <OnboardingMovies />
                                 </Route>
                             </Switch>
                         </div>
-
                     </Route>
 
+                    {/* Profile Setting */}
                     <Route path="/profile">
                         <AccountProfile />
                     </Route>
-                    <Route path="/regform">
+
+                    {/* <Route path="/regform">
                         <RegistrationForm />
-                    </Route>
+                    </Route> */}
+
                     <Route path="/">
-                        <NavigationBar />
+                        {/* <NavigationBar /> */}
                         <Switch>
                             <Route path="/tvshow" component={TVShow}>
-                                {/* <TVShow /> */}
+                                <NavigationBar />
+                                <TVShow />
                             </Route>
+
                             <Route path="/playlist" component={MyPlaylist}>
-                                {/* <MyPlaylist /> */}
+                                <NavigationBar />
+                                <MyPlaylist />
                             </Route>
+
                             <Route path="/movies" component={MoviesPage}>
-                                {/* <Movies /> */}
+                                <NavigationBar />
+                                <MoviesPage />
                             </Route>
+
                             <Route path="/popular" component={PopularPage}>
-                                {/* <PopularPage/> */}
+                                <NavigationBar />
+                                <PopularPage/>
                             </Route>
+
                             <Route path='/home' component={Homepage}>
-                                {/* <Home /> */}
+                                <NavigationBar />
+                                <Home />
                             </Route>
-                            <Route path="/registration">
-                                <Registration />
-                            </Route>
+                            
                         </Switch>
                         <Route path='/detail' component={PreviewPopup} />
-
                     </Route>
+
                 </Switch>
             </div>
         </Router>
