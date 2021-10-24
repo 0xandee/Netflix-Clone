@@ -4,7 +4,6 @@ var myHeaders = new Headers();
 myHeaders.append("Content-Type", "application/json");
 
 export const getMovieAPI = async (idMovie, callback) => {
-
   var requestOptions = {
     method: 'GET',
     headers: myHeaders,
@@ -21,13 +20,28 @@ export const getMovieAPI = async (idMovie, callback) => {
 }
 
 export const getMovieTypeAPI = async (callback) => {
-
   var requestOptions = {
     method: 'GET',
     headers: myHeaders,
   };
 
   await fetch(movieApi.urlGetMovieType, requestOptions)
+    .then(response => response.text())
+    .then(result =>
+      callback(JSON.parse(result))
+    )
+    .catch(error => {
+      callback('error', error);
+    })
+}
+
+export const getMoviesByTypeAPI = async (genreId,callback) => {
+  var requestOptions = {
+    method: 'GET',
+    headers: myHeaders,
+  };
+
+  await fetch(movieApi.urlGetMovieType + `/${genreId}`, requestOptions)
     .then(response => response.text())
     .then(result =>
       callback(JSON.parse(result))
