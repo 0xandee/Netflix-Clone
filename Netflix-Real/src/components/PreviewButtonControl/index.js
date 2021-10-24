@@ -11,7 +11,7 @@ import './PreviewButtonControl.scss'
 
 const PreviewButtonControl = (props) => {
     return (
-        <div className="position-absolute b-15">
+        <div className="position-absolute b-15 ">
             <div className="PreviewButton__container PreviewButton__float-left-container px-4">
                 <PlayButton />
                 <AddButton/>

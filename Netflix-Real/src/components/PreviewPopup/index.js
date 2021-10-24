@@ -40,16 +40,17 @@ import { showPopUpInfo } from '../../services/redux/actions';
 // };
 
 const PreviewPopup = (props) => {
+    const {item} = props.location.state
     useEffect(() => {
-        window.scrollTo(0, 0)
+        console.log("🚀 ~ file: index.js ~ line 43 ~ PreviewPopup ~ props",item)
       }, [])
 
     return (
         <div className="pop-up__container pt-5">
             <div>
                 <div className="background max-width">
-                    <PreviewPlayer/>
-                    <PreviewInfo />
+                    <PreviewPlayer item = {item}/>
+                    <PreviewInfo item = {item} />
                 </div>
             </div>
         </div>
