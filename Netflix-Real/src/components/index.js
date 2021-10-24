@@ -4,8 +4,6 @@ import CloseButton from './CloseButton'
 import CustomInput from './CustomInput'
 import CustomNotification from './CustomNotification'
 import DetailInfo from './DetailInfo'
-import DetailInfoMetadata from './DetailInfoMetadata'
-import DetailInfoTags from './DetailInfoTags';
 import DislikeButton from './DislikeButton';
 import Dropdown from './Dropdown';
 import Episodes from './Episodes';
@@ -36,7 +34,7 @@ import ChangePasswordProfile from './ChangePasswordProfile'
 export {
     About, AddButton, 
     CloseButton, CustomInput, CustomNotification,
-    DetailInfoMetadata, DetailInfoTags, DetailInfo, DislikeButton, Dropdown,
+    DetailInfo, DislikeButton, Dropdown,
     Episodes, EpisodeItem, DropdownSelector, LanguageItem, OnboardingMovieItem, BigBanner,
     Footer,
     LikeButton,

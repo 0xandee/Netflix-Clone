@@ -1,46 +1,13 @@
-import React, { createRef, useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useHistory } from 'react';
 import './PreviewPopup.scss';
-import PreviewPlayer from '../PreviewPlayer';
-import PreviewInfo from '../PreviewInfo';
-import { useHistory, useRouteMatch } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { showPopUpInfo } from '../../services/redux/actions';
-
-// const PreviewPopup = (props) => {
-//     const params = new URLSearchParams(props.location.search)
-//     let tops = props.location.state;
-//     const history = useHistory()
-//     const dispatch = useDispatch()
-//     const showed = useSelector((state) => state.isPopUp)
-//     const [open, setOpen] = useState(showed);
-//     const popUpRef=createRef(null)
-
-//     const handleOncloseButtonClick = () => {
-//         //props.onCloseButton.history.push(props.onCloseButton.location.pathname)
-//         setOpen(!open)
-//         dispatch(showPopUpInfo(!showed))
-//         history.goBack()
-//     }
-  
-
-//     return (params.get('jbv') &&
-//         <dia ref={popUpRef}  className="pop-up__container">
-//             <div  className={`pop-up__dialog ${showed ?'pop-up' : 'pop-out'}`}>
-//                 <div className="background max-width">
-//                     <PreviewPlayer onCloseButton={handleOncloseButtonClick} />
-//                     <PreviewInfo />
-
-//                 </div>
-//             </div>
-//             <div  className="pop-up__background" onClick={handleOncloseButtonClick} >
-
-//             </div>
-//         </dia>
-//     );
-// };
+import '../PreviewInfo/PreviewInfo.scss';
+import '../PreviewPlayer/PreviewPlayer.scss';
+import { IconBackArrow } from "../../assets/Icon";
+import { PreviewButtonControl, Episodes, DetailInfo, MoreLikeThisItem } from "../index";
 
 const PreviewPopup = (props) => {
-    const {item} = props.location.state
+    const {item} = props.location.state;
+    // const history = useHistory();
     useEffect(() => {
         console.log("🚀 ~ file: index.js ~ line 43 ~ PreviewPopup ~ props",item)
       }, [])
@@ -49,8 +16,37 @@ const PreviewPopup = (props) => {
         <div className="pop-up__container pt-5">
             <div>
                 <div className="background max-width">
-                    <PreviewPlayer item = {item}/>
-                    <PreviewInfo item = {item} />
+                    <div className={`video-player__top`}>
+                        <div className={`video-player__top__icon-container`}>
+                            <IconBackArrow className={'video-player__top__icon-back '} />
+                            <span className={'ps-2'}>Back to Browse</span>
+                        </div>
+                    </div>
+                    {/* <PreviewPlayer item = {item}/> */}
+                    <div className="position-relative float-start w-75 pt-4">
+                        <div className="mask-image position-relative d-flex justify-content-center">
+                            <img style={{maxHeight:'510px'}} className='w-75 h-100' alt="playerArt" src={item.uri_thumbnail} />
+                            <PreviewButtonControl/>
+                        </div>
+                        <DetailInfo item={item}/>
+                        <Episodes />
+                    </div>
+                    {/* <PreviewInfo item = {item} /> */}
+                    <div className="PreviewInfo__container float-end w-25 py-4">
+                        <div className="DetailInfo__container">
+                            <div className="pb-3">
+                                <div className="episodesSelector__header">
+                                    <h3 className="episodesSelector__label">More Like This</h3>
+                                </div>
+                                <div className="section__container">
+                                    <div className="moreLikeThis__container">
+                                        <MoreLikeThisItem/><MoreLikeThisItem/><MoreLikeThisItem/><MoreLikeThisItem/>
+                                        <MoreLikeThisItem/><MoreLikeThisItem/><MoreLikeThisItem/><MoreLikeThisItem/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

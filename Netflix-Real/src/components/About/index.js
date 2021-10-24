@@ -1,5 +1,4 @@
 import React from 'react';
-import DetailInfoTags from '../DetailInfoTags';
 import '../Episodes/Episodes.scss';
 
 
@@ -11,7 +10,7 @@ const About = () => {
                 <h3 className="episodesSelector__label">About Mat Biec</h3>
             </div>
             <div className="section__container">
-                <DetailInfoTags/>
+                {/* <DetailInfoTags/> */}
             </div>
             <br/>
         </div>

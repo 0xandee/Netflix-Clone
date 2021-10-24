@@ -261,7 +261,6 @@ const VideoPlayer = () => {
                             <IconBackArrow className={'video-player__top__icon-back'} />
                             <span>Back to Browse</span>
                         </div>
-
                     </div>
                     <div className={`video-player__bottom`}>
                         <div className={`video-player__bottom__bar-container`}>
