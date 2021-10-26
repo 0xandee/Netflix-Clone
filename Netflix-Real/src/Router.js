@@ -14,8 +14,8 @@ import './App.css'
 import io from "socket.io-client";
 import { Slider, NavBar, NavigationBar, SignUpNavigationBar, PreviewInfo, PreviewPopup } from "./components/index";
 
-import { ForgotPassword, PlanForm, Registration, RegistrationForm, SignUp, SignIn,GroupStreaming, LanguageSetup,AccountProfile, OnboardingMovies, VideoPlayer, Homepage, MyPlaylist, PopularPage,MoviesPage } from "./views/index";
-import {  getMovieTypeAPI } from "./services/api/movie";
+import { ForgotPassword, PlanForm, Registration, RegistrationForm, SignUp, SignIn, GroupStreaming, LanguageSetup, AccountProfile, OnboardingMovies, VideoPlayer, Homepage, MyPlaylist, PopularPage, MoviesPage } from "./views/index";
+import { getMovieTypeAPI } from "./services/api/movie";
 import { useDispatch } from "react-redux";
 import { setMovieTypes } from "./services/redux/actions";
 import { useSelector } from "react-redux";
@@ -25,16 +25,16 @@ const socket = io("localhost:8000", { transports: ["websocket"] });
 export default function WebRouter() {
     const history = useHistory();
     const dispatch = useDispatch();
-   
+
     useEffect(() => {
-        getMovieTypeAPI(async (res) => {        
+        getMovieTypeAPI(async (res) => {
             console.log("🚀 ~ file: index.js ~ line 260 ~ getMovieType ~ res", res.data)
             if (res.status == 200) {
                 dispatch(setMovieTypes(res.data))
-                
+
             }
         });
-    },[])
+    }, [])
     return (
         <Router>
             <div >
@@ -49,10 +49,10 @@ export default function WebRouter() {
                     <Route path="/watch">
                         <VideoPlayer />
                     </Route>
-                    
+
                     {/* Watch Video In Group */}
                     <Route path="/watchgroup/:idgroup">
-                        <GroupStreaming socket={socket}/>
+                        <GroupStreaming socket={socket} />
                     </Route>
 
                     {/* Sign Up */}
@@ -110,23 +110,26 @@ export default function WebRouter() {
                                 <MyPlaylist />
                             </Route>
 
-                            <Route path="/movies" component={MoviesPage}>
+                            <Route path="/movies/:idGenre" component={MoviesPage}>
                                 <NavigationBar />
                                 <MoviesPage />
                             </Route>
 
                             <Route path="/popular" component={PopularPage}>
                                 <NavigationBar />
-                                <PopularPage/>
+                                <PopularPage />
                             </Route>
 
                             <Route path='/home' component={Homepage}>
                                 <NavigationBar />
                                 <Home />
                             </Route>
-                            
+
                         </Switch>
-                        <Route path='/detail' component={PreviewPopup} />
+                        <Route path='/detail/:idMovie' component={PreviewPopup} >
+                            {/* <NavigationBar /> */}
+                            {/* <PreviewPopup /> */}
+                        </Route>
                     </Route>
 
                 </Switch>

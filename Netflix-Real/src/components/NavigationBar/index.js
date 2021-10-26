@@ -12,7 +12,7 @@ import { IconNetflix } from '../../assets/Icon';
 const navTabs = [{ id: 0, label: "Home", navLink: '/home' },
 { id: 1, label: "New & Popular", navLink: '/popular' },
 { id: 2, label: "TV Show", navLink: '/tvshow' },
-{ id: 3, label: "Movies", navLink: '/movies' },
+{ id: 3, label: "Movies", navLink: '/movies/1' },
 { id: 4, label: "My Playlist", navLink: '/playlist' }];
 
 const NavigationBar = (props) => {

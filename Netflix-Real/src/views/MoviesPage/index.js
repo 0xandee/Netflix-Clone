@@ -1,16 +1,17 @@
 import React, { useRef, useState, useCallback, useEffect, createRef } from "react";
 import './style.scss';
 import { BigBanner, Slider, Footer } from "../../components";
+import { to_Decrypt, to_Encrypt } from "../../services/aes256";
 import { useSelector, useDispatch } from 'react-redux';
 import { showPopUpInfo } from "../../services/redux/actions";
-import { Link, useHistory, useLocation } from "react-router-dom";
+import { Link, useHistory, useLocation,useParams } from "react-router-dom";
 import { getMoviesByTypeAPI, getMovieType } from "../../services/api/movie";
 import Select, { createFilter } from 'react-select';
 import { Spinner } from 'reactstrap'
 
 
 const MoviesPage = (props) => {
-
+    const {idGenre} = useParams()
     const history = useHistory();
     const [currentScrollY, setCurrentScrollY] = useState(0);
     const [selectedGenre, setSelectedGenre] = useState(null);
@@ -22,22 +23,19 @@ const MoviesPage = (props) => {
 
 
     const onSelectGenreChange = (e) => {
-        setSelectedGenre(e)
-    }
-
-    const handleMoreInfo = () => {
+        //constsetSelectedGenre(e)
         history.push({
-            pathname: '/detail',
+            pathname: `/movies/${e.id.toString()}`,
             //search: `jbv=${'detailId'}`,
             state: { scrollY: currentScrollY }
         })
     }
 
     const itemClicked = (data) => () => {
-        console.log("🚀 ~ file: index.js ~ line 37 ~ ItemCLicked ~ item", data.age_tag)
+    console.log("🚀 ~ file: index.js ~ line 35 ~ itemClicked ~ data", data.id)
 
         history.push({
-            pathname: '/detail',
+            pathname: `/detail/${to_Encrypt(data.id.toString())}`,
             //search: `jbv=${data.id}`,
             state: { item: data }
         })
@@ -49,7 +47,6 @@ const MoviesPage = (props) => {
     }, []);
 
     function fetchMoreListItems() {
-        console.log("🚀 ~ file: index.js ~ line 54 ~ setTimeout ~ dataApiGenreMovies", dataApiGenreMovies)
 
         setTimeout(() => {
             setGenreMovies(prevState => ([...prevState, ...dataApiGenreMovies.slice(prevState.length, prevState.length + 60)]));
@@ -73,10 +70,11 @@ const MoviesPage = (props) => {
         }
     }, [handleScroll]);
 
-    useEffect(() => {
-        convertDataSelect()
-        setSelectedGenre(dataTypes[0])
-    }, [])
+    useEffect(() => {   
+        convertDataSelect()        
+        setSelectedGenre(dataTypes.find(item => item.value == idGenre))
+        console.log("🚀 ~ file: index.js ~ line 84 ~ useEffect ~ idGenre", idGenre)
+    }, [idGenre])
 
     useEffect(() => {
         if (!isFetching) return;
@@ -89,8 +87,6 @@ const MoviesPage = (props) => {
                 if (res.status == 200) {
                     setDataApiGenreMovies(res.data)
                     setGenreMovies(res.data.slice(0, 30))
-                    console.log("🚀 ~ file: index.js ~ line 52 ~ setTimeout ~ dataApiGenreMovies", dataApiGenreMovies)
-
                 }
                 else {
                     if (res.status == 400) {
@@ -153,8 +149,8 @@ const MoviesPage = (props) => {
                         {genreMovies.map(item =>
                             <div className='grid-container' onClick={itemClicked(item)}>
                                 <div className=' item-grid multi-landing-stack-space-holder w-100 h-100'>
-                                    <div className="multi-landing-stack-1"></div>
-                                    <div className="multi-landing-stack-2"></div>
+                                    {/* <div className="multi-landing-stack-1"></div>
+                                    <div className="multi-landing-stack-2"></div> */}
                                     <img style={{ borderRadius: '4px', }} className="title-card w-100 h-100" src={item.uri_avatar} alt={item.m_name} />
                                 </div>
                                 <div className='name-label'>

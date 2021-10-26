@@ -4,24 +4,27 @@ import '../PreviewInfo/PreviewInfo.scss';
 import '../PreviewPlayer/PreviewPlayer.scss';
 import { IconBackArrow } from "../../assets/Icon";
 import { PreviewButtonControl, Episodes, DetailInfo, MoreLikeThisItem } from "../index";
+import NavigationBar from '../NavigationBar';
 
 const PreviewPopup = (props) => {
     const {item} = props.location.state;
     // const history = useHistory();
+   
     useEffect(() => {
-        console.log("🚀 ~ file: index.js ~ line 43 ~ PreviewPopup ~ props",item)
+        console.log("🚀 ~ file: index.js ~ line 43 ~ PreviewPopup ~ props",props)
       }, [])
 
     return (
         <div className="pop-up__container pt-5">
+             <NavigationBar />
             <div>
                 <div className="background max-width">
-                    <div className={`video-player__top`}>
+                    {/* <div className={`video-player__top`}>
                         <div className={`video-player__top__icon-container`}>
                             <IconBackArrow className={'video-player__top__icon-back '} />
                             <span className={'ps-2'}>Back to Browse</span>
                         </div>
-                    </div>
+                    </div> */}
                     {/* <PreviewPlayer item = {item}/> */}
                     <div className="position-relative float-start w-75 pt-4">
                         <div className="mask-image position-relative d-flex justify-content-center">
