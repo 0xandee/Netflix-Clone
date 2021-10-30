@@ -23,15 +23,19 @@ import { useSelector } from "react-redux";
 //const socket = io.connect('http://localhost:8000');
 const socket = io("localhost:8000", { transports: ["websocket"] });
 export default function WebRouter() {
-    const history = useHistory();
     const dispatch = useDispatch();
-
+    const history = useHistory();
+    const checkToken = () => {
+        console.log("checkToken");
+        if (localStorage.getItem('access_token') === null) {
+            history.push('/signin')
+        }
+    }
     useEffect(() => {
         getMovieTypeAPI(async (res) => {
-            console.log("🚀 ~ file: index.js ~ line 260 ~ getMovieType ~ res", res.data)
+            // console.log("🚀 ~ file: index.js ~ line 260 ~ getMovieType ~ res", res.data)
             if (res.status == 200) {
                 dispatch(setMovieTypes(res.data))
-
             }
         });
     }, [])
@@ -120,15 +124,13 @@ export default function WebRouter() {
                                 <PopularPage />
                             </Route>
 
-                            <Route path='/home' component={Homepage}>
+                            <Route path='/home' component={Homepage}  >
                                 <NavigationBar />
-                                <Home />
+                                <Home/>
                             </Route>
 
                         </Switch>
                         <Route path='/detail/:idMovie' component={PreviewPopup} >
-                            {/* <NavigationBar /> */}
-                            {/* <PreviewPopup /> */}
                         </Route>
                     </Route>
 
@@ -149,6 +151,7 @@ function Home() {
 function TVShow() {
     return <Homepage />;
 }
+
 // function MyPlaylist() {
 //     return <MyPlaylist />;
 // }

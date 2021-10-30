@@ -34,7 +34,7 @@ const Slider = (props) => {
                 <SwiperSlide className="swiper-slide slide" onClick={props.handleMoreInfo}>
                     <a className="thumbTile cursor-pointer" >
                         <NavLink to='/detail'>
-                            <img className="thumbTile__image" src={item.artworkLink} alt={item.movieName}/>
+                            <img className="thumbTile__image" src={item.uri_avatar} alt={item.m_name}/>
                         </NavLink>
                     </a>
                     {/* <div className="controlPlayer pl-4em"></div> */}

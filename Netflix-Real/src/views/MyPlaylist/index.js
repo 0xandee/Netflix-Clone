@@ -73,6 +73,7 @@ const movieData = [{
 
 const MyPlaylist = (props) => {
     //const [showed, setShowed] = useState(false)
+    
     const history = useHistory();
     const showed = useSelector((state) => state.isPopUp)
     const homePageRef = useRef(null)

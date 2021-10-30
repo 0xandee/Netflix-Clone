@@ -2,7 +2,7 @@ import React, { useRef, useState, useCallback, useEffect, createRef } from "reac
 import { BigBanner, Slider, Footer, BannerSlider } from "../../components";
 import { useSelector, useDispatch } from 'react-redux';
 import { showPopUpInfo } from "../../services/redux/actions";
-import { Link, useHistory, useLocation } from "react-router-dom";
+import { Link, useHistory, useLocation, useParams } from "react-router-dom";
 import { getMoviesByTypeAPI } from "../../services/api/movie";
 import './Slider.scss';
 // Import Swiper styles
@@ -259,34 +259,36 @@ function getToken() {
 }
 
 const Homepage = (props) => {
+    const {idGenre} = useParams()
+    const [selectedGenre, setSelectedGenre] = useState(null);
     const [genreMovies, setGenreMovies] = useState([]);
     const history = useHistory();
     const homePageRef = useRef(null)
     const dispatch = useDispatch();
+    let dataTypes = useSelector((state) => state?.rootReducer.movieTypes)
+    
+    var movieDataGenres = [];
 
-    if (localStorage.getItem('access_token') === null) {
-        //   return <SignIn/>
-        history.push('/signin')
-    }
-   
-
-
-    useEffect(() => {       
-      
-            getMoviesByTypeAPI(1, async (res) => {
+    useEffect(() => {
+        dataTypes.map(item => {
+            getMoviesByTypeAPI(item.id, async (res) => {
                 if (res.status == 200) {
-                    // setDataApiGenreMovies(res.data)
-                    setGenreMovies(res.data.slice(0, 20))
-                }
-                else {
-                    if (res.status == 400) {
-
+                    var genreMovie = {
+                        id: item.id,
+                        sliderTitle: item.t_name,
+                        sliderMovieList: res.data.slice(0, 10)
                     }
+                    setGenreMovies(genreMovies => [...genreMovies, genreMovie]);
+                    movieDataGenres.push(genreMovie);
                 }
+                else {if (res.status == 400) {}}
             });
+        });
+        console.log("movieDataGenres", movieDataGenres);
+        console.log("genreMovies 1", genreMovies);
+    }, [dataTypes])
+    console.log("genreMovies 2", genreMovies);
 
-
-    }, [])
     return (
         <div className="overflow-x-hidden bg-black" ref={homePageRef}>
             {/* <BigBanner handleMoreInfo={handleMoreInfo} /> */}
@@ -305,7 +307,8 @@ const Homepage = (props) => {
             </div> */}
             <BannerSlider bannerData={bannerData} />
 
-            {movieData.map(item => (<Slider id={item.id} sliderTitle={item.sliderTitle} sliderMovieList={item.sliderMovieList} />))}
+            {genreMovies.map(item => (<Slider id={item.id} sliderTitle={item.sliderTitle} sliderMovieList={item.sliderMovieList} />))}
+            {/* {movieData.map(item => (<Slider id={item.id} sliderTitle={item.sliderTitle} sliderMovieList={item.sliderMovieList} />))} */}
             <Footer />
         </div>
     );
