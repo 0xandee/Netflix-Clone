@@ -32,8 +32,7 @@ const MoviesPage = (props) => {
     }
 
     const itemClicked = (data) => () => {
-    console.log("🚀 ~ file: index.js ~ line 35 ~ itemClicked ~ data", data.id)
-
+   
         history.push({
             pathname: `/detail/${to_Encrypt(data.id.toString())}`,
             //search: `jbv=${data.id}`,
@@ -72,8 +71,7 @@ const MoviesPage = (props) => {
 
     useEffect(() => {   
         convertDataSelect()        
-        setSelectedGenre(dataTypes.find(item => item.value == idGenre))
-        console.log("🚀 ~ file: index.js ~ line 84 ~ useEffect ~ idGenre", idGenre)
+        setSelectedGenre(dataTypes.find(item => item.value == idGenre))        
     }, [idGenre])
 
     useEffect(() => {
@@ -84,6 +82,7 @@ const MoviesPage = (props) => {
     useEffect(() => {       
         if (selectedGenre != null)
             getMoviesByTypeAPI(selectedGenre.value, async (res) => {
+                console.log("🚀 ~ file: index.js ~ line 85 ~ getMoviesByTypeAPI ~ res", res)
                 if (res.status == 200) {
                     setDataApiGenreMovies(res.data)
                     setGenreMovies(res.data.slice(0, 30))

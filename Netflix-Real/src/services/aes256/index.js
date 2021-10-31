@@ -5,7 +5,7 @@ const secret_key = process.env.REACT_APP_SECRET_KEY;
 //returns the encrypted text
 
 export const to_Encrypt = (text) => {
-  console.log("secret_key", secret_key);
+  
   var encrypted = aes256.encrypt(secret_key, text);
   return encrypted;
 };
