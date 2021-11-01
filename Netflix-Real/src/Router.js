@@ -34,6 +34,7 @@ export default function WebRouter() {
 
             }
         });
+        console.log('test local storage', localStorage.getItem('refresh_token'))
     }, [])
     return (
         <Router>
@@ -97,40 +98,51 @@ export default function WebRouter() {
                         <RegistrationForm />
                     </Route> */}
 
-                    <Route path="/">
-                        {/* <NavigationBar /> */}
-                        <Switch>
-                            <Route path="/tvshow" component={TVShow}>
-                                <NavigationBar />
-                                <TVShow />
-                            </Route>
 
-                            <Route path="/playlist" component={MyPlaylist}>
-                                <NavigationBar />
-                                <MyPlaylist />
-                            </Route>
+                    {/* <NavigationBar /> */}
+                    {localStorage.getItem('refresh_token') === null ?
+                        <Redirect
+                            to={{
+                                pathname: "/signin",
 
-                            <Route path="/movies/:idGenre" component={MoviesPage}>
-                                <NavigationBar />
-                                <MoviesPage />
-                            </Route>
+                            }}
+                        />
+                        :
+                        <Route path="/">
+                            <Switch>
+                                <Route path="/tvshow" component={TVShow}>
+                                    <NavigationBar />
+                                    <TVShow />
+                                </Route>
 
-                            <Route path="/popular" component={PopularPage}>
-                                <NavigationBar />
-                                <PopularPage />
-                            </Route>
+                                <Route path="/playlist" component={MyPlaylist}>
+                                    <NavigationBar />
+                                    <MyPlaylist />
+                                </Route>
 
-                            <Route path='/home' component={Homepage}>
-                                <NavigationBar />
-                                <Home />
-                            </Route>
+                                <Route path="/movies/:idGenre" component={MoviesPage}>
+                                    <NavigationBar />
+                                    <MoviesPage />
+                                </Route>
 
-                        </Switch>
-                        <Route path='/detail/:idMovie' component={PreviewPopup} >
-                            {/* <NavigationBar /> */}
-                            {/* <PreviewPopup /> */}
+                                <Route path="/popular" component={PopularPage}>
+                                    <NavigationBar />
+                                    <PopularPage />
+                                </Route>
+
+                                <Route path='/home' component={Homepage}>
+                                    <NavigationBar />
+                                    <Home />
+                                </Route>
+
+                            </Switch>
+
+                            <Route path='/detail/:idMovie' component={PreviewPopup} >
+                                {/* <NavigationBar /> */}
+                                {/* <PreviewPopup /> */}
+                            </Route>
                         </Route>
-                    </Route>
+                    }
 
                 </Switch>
             </div>

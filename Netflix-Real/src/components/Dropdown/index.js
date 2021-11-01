@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import './customdropdown.scss'
 import * as Icon from 'react-feather';
-import { Link,NavLink,Route,useHistory  } from "react-router-dom";
-import {userLogout} from '../../services/redux/actions';
+import { Link, NavLink, Route, useHistory } from "react-router-dom";
+import { userLogout } from '../../services/redux/actions';
 import { SignIn } from "../../views/index";
 import { requestLogout } from "../../services/api/auth";
 
@@ -35,17 +35,21 @@ const CustomDropdown = () => {
   }
 
   const signOutClick = event => {
+
     event.preventDefault();
     var refresh_token = localStorage.getItem('refresh_token');
+
     requestLogout(refresh_token, async (res) => {
-    if (res.status == 200) {
-      localStorage.clear();
-      history.push('/signin')
-    }
-  });
+      console.log("🚀 ~ file: index.js ~ line 47 ~ requestLogout ~ res", res)
+
+      if (res.status == 200) {
+        localStorage.clear();
+        history.push('/signin')
+      }
+    });
   }
-    
-//  return (<Route path="/signin"><SignIn /></Route>)
+
+  //  return (<Route path="/signin"><SignIn /></Route>)
 
 
   return (

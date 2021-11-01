@@ -14,7 +14,7 @@ export const requestRegister = async (username, password, email, callback) => {
         headers: requestHeaders,
         body: raw,
         redirect: 'follow'
-        };
+    };
 
     await fetch(authApi.urlRegister, requestOptions)
         .then(response => response.text())
@@ -36,7 +36,7 @@ export const requestLogin = async (username, password, callback) => {
         headers: requestHeaders,
         body: rawBody,
         redirect: 'follow'
-        };
+    };
 
     await fetch(authApi.urlLogin, requestOptions)
         .then(response => response.text())
@@ -49,6 +49,7 @@ export const requestLogin = async (username, password, callback) => {
 }
 
 export const requestLogout = async (refresh_token, callback) => {
+
     var rawBody = JSON.stringify({
         refresh_token
     });
@@ -57,12 +58,15 @@ export const requestLogout = async (refresh_token, callback) => {
         headers: requestHeaders,
         body: rawBody,
         redirect: 'follow'
-        };
+    };
 
     await fetch(authApi.urlLogout, requestOptions)
-        .then(response => response.text())
+        .then(response => {
+            response.text()
+        })
         .then(result =>
-            callback(JSON.parse(result))
+        (
+            callback(JSON.parse(result)))
         )
         .catch(error => {
             callback('error', error);
