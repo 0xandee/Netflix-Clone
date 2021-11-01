@@ -1,15 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import '../PreviewInfo/PreviewInfo.scss';
 
 const DetailInfo = (props) => {
-    const {item} = props;
-    const releaseYear = item.m_name.slice(item.m_name.length - 5, item.m_name.length - 1);
+    const { item } = props;
+
     return (
         <div className="px-4 pb-4">
             <div className="preview-detail-metadata">
                 <h2 className="episodes__label">{item.m_name}</h2>
                 <span className="match-score">98% Match</span>
-                <span className="year ml-2">{releaseYear}</span>
                 <span className="maturiry-rating ml-2">
                     <span className="maturity-number">13+</span>
                 </span>
@@ -24,17 +23,31 @@ const DetailInfo = (props) => {
             </div>
             <div>
                 <div className="preview-tags">
-                    <span className="preview-tags-label">Cast:</span>
-                    <span className="preview-tags-item"> Tran Nghia, Truc Anh, Tran Phong</span>
+                    <span className="preview-tags-item">
+                        <span className="preview-tags-label">Cast: </span>
+                        {item.actor}
+                    </span>
                 </div>
                 <div className="preview-tags">
-                    <span className="preview-tags-label">Genres:</span>
-                    <span className="preview-tags-item"> Vietnamese, Movies based on Books, Dramas</span>
+                    <span className="preview-tags-item">
+                        <span className="preview-tags-label">Director: </span>
+                        {item.director}
+                    </span>
                 </div>
-                <div className="preview-tags">
-                    <span className="preview-tags-label">This Movie is:</span>
-                    <span className="preview-tags-item"> Sentimental, Understated, Emotional</span>
+                <div className="preview-tags d-flex flex-row">
+                    <span className="preview-tags-item">
+                        <span className="preview-tags-label">Genres: </span>
+                        {item.t_type && item.t_type.map((item, i, a) => (
+                            i !== a.length - 1 ?
+                                ` ${item},`
+                                :
+                                ` ${item} `
+                        ))}
+
+                    </span>
+
                 </div>
+
             </div>
         </div>
     );
