@@ -7,10 +7,12 @@ import { PlayButton } from '../index';
 import LikeButton from '../LikeButton';
 import MuteButton from '../MuteButton';
 import './PreviewButtonControl.scss'
+import { favMoviePost } from '../../services/api/user';
 
 
 
 const PreviewButtonControl = (props) => {
+    const { item } = props;
     return (
         <div className="position-relative ">
             <div className="PreviewButton__container PreviewButton__float-left-container px-4 d-flex flex-row  align-items-center">
@@ -25,7 +27,7 @@ const PreviewButtonControl = (props) => {
                     <span className="PlayButton__primary-text PlayButton__primary-text-transform plr-2 ">Play</span>
                 </div>
                 <div style={{margin:'0 15px'}}>
-                    <button className="PlayButton__secondary-color PlayButton__secondary-button">
+                    <button className="PlayButton__secondary-color PlayButton__secondary-button" onClick={favMoviePost(item.id)}>
                         <div className="PlayIcon_icon-container">
                             <div id="AddIcon" className="AddIcon_icon">
                                 <svg viewBox="0 0 24 24">

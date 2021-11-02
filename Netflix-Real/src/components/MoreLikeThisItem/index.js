@@ -1,6 +1,6 @@
 import React from 'react';
 import '../Episodes/Episodes.scss';
-
+import { favMoviePost } from '../../services/api/user';
 const MoreLikeThisItem = (props) => {
     const { item } = props
     return (
@@ -17,7 +17,7 @@ const MoreLikeThisItem = (props) => {
                             </div>
                         </div>
                         <div>
-                            <div className="has-smaller-buttons d-flex justify-content-center">
+                            <div className="has-smaller-buttons d-flex justify-content-center" onClick={favMoviePost(item.id)}>
                                 <div className="small ltr-dguo2f" role="presentation">
                                     <svg viewBox="0 0 24 24"><path d="M13 11h8v2h-8v8h-2v-8H3v-2h8V3h2v8z" fill="currentColor"></path></svg>
                                 </div>

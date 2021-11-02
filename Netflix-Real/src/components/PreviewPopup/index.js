@@ -14,15 +14,16 @@ const PreviewPopup = (props) => {
     const { idMovie } = useParams()
     const [dataMovie, setDataMovie] = useState([]);
     // const history = useHistory();
-   
-
+    
+    
     useEffect(() => {
-        console.log("🚀 ~ file: index.js ~ line 21 ~ getMovieAPI ~ to_Decrypt(idMovie.toString())", to_Decrypt(idMovie.toString()))
+        // console.log("🚀 ~ file: index.js ~ line 21 ~ getMovieAPI ~ to_Decrypt(idMovie.toString())", to_Decrypt(idMovie.toString()))
 
         getMovieAPI(to_Decrypt(idMovie.toString()), async (res) => {
             console.log("🚀 ~ file: index.js ~ line 85 ~ getMoviesByTypeAPI ~ res", res)
             if (res.status == 200) {
                 setDataMovie(res.data)
+                console.log("dataMovie", dataMovie);
                
             }
             else {
@@ -47,11 +48,12 @@ const PreviewPopup = (props) => {
                     {/* <PreviewPlayer item = {item}/> */}
                     <div className="position-relative float-start w-75 pt-4 ">
                         <div className="mask-image position-relative d-flex flex-row  mb-5">
-                            <img style={{ maxHeight: '510px', marginRight: '2vh' }} className='w-25 h-100  ' alt="playerArt" src={dataMovie.uri_thumbnail} />
+                            <img style={{ maxHeight: '510px', marginRight: '2vh' }}
+                                className='w-25 h-100  ' alt="playerArt" src={dataMovie.uri_thumbnail} />
 
                             <div className='position-relative d-flex flex-column mb-5'>
                                 <DetailInfo item={dataMovie} />
-                                <PreviewButtonControl />
+                                <PreviewButtonControl item={dataMovie}/>
                             </div>
                         </div>
                         <Episodes item={dataMovie} />
