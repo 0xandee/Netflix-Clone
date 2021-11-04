@@ -32,7 +32,7 @@ const CustomNotification = () => {
     return (
         <div id='customNotification'>
             <div className='notification' onClick={toggleDropdown}>
-                <div className={`button-style`}>
+                <div className={`button-style position-relative`}>
                     <div className="number-notification">{numb != 0 && numb}</div>
                     <div >
                         <Icon.Bell className='icon-style' fill='white' size='16px' strokeWidth='4' color='white' />

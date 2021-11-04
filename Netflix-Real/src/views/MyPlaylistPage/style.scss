@@ -1,4 +1,4 @@
-#moviesPage .movie-page {
+#myPlaylistPage .myplaylist-page {
   position: relative;
   
   .header-genre {
@@ -11,8 +11,12 @@
       position: absolute;
       top: 5rem;
       left:3rem;
-      width: 200px;
+
+      width: max-content;
       z-index: 3;
+
+      color:#fff;
+      font-size: 20px;
       &::-webkit-scrollbar {
         display: none;
         scrollbar-width: none;
@@ -21,7 +25,7 @@
   }
   .body-content {
     padding: 0 3rem;
-    margin-top: 15vh;
+    margin-top: 10vh;
     min-height: 65vh;
     .list-grid {
       display: flex;

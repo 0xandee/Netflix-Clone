@@ -1,11 +1,7 @@
 import { userApi } from './configUrl'
 
-// var myHeaders = new Headers();
-// myHeaders.append("Content-Type", "application/json");
-
-// var myHeaderWithAuthorization = new Headers();
-// myHeaderWithAuthorization.append("Content-Type", "application/json");
-// myHeaderWithAuthorization.append("Authorization", "Bearer " + localStorage.getItem('access_token'));
+var myHeaders = new Headers();
+myHeaders.append("Content-Type", "application/json");
 
 export const favMoviePost = movieID => {
   return dispatch => {
@@ -27,3 +23,22 @@ export const favMoviePost = movieID => {
       })
     }
   }
+
+
+export const getUserFavoriteList = async (access_token, callback) => {
+  myHeaders.append("Authorization", "Bearer "+ access_token);
+  var requestOptions = {
+    method: 'GET',
+    headers: myHeaders,
+  };
+
+  await fetch(userApi.urlFavorite, requestOptions)
+    .then(response => response.text())
+    .then(result =>
+      callback(JSON.parse(result))
+    )
+    .catch(error => {
+      callback('error', error);
+    })
+}
+

@@ -8,28 +8,19 @@ import { Link, useHistory, useLocation, useParams } from "react-router-dom";
 import { getMoviesByTypeAPI, getMovieType } from "../../services/api/movie";
 import Select, { createFilter } from 'react-select';
 import { Spinner } from 'reactstrap'
+import { searchMovieByNameApi } from "../../services/api/search";
 
 
-const MoviesPage = (props) => {
+const SearchPage = (props) => {
+    const location = useLocation()
     const { idGenre } = useParams()
+    const query = new URLSearchParams(useLocation().search)
     const history = useHistory();
     const [currentScrollY, setCurrentScrollY] = useState(0);
-    const [selectedGenre, setSelectedGenre] = useState(null);
-    const [dataApiGenreMovies, setDataApiGenreMovies] = useState([]);
+    const [dataApiMovies, setDataApiMovies] = useState([]);
     const [genreMovies, setGenreMovies] = useState([]);
     const [isFetching, setIsFetching] = useState(false);
     const dispatch = useDispatch()
-    let dataTypes = useSelector((state) => state?.rootReducer.movieTypes)
-
-
-    const onSelectGenreChange = (e) => {
-        //constsetSelectedGenre(e)
-        history.push({
-            pathname: `/movies/${e.id.toString()}`,
-            //search: `jbv=${'detailId'}`,
-            state: { scrollY: currentScrollY }
-        })
-    }
 
     const itemClicked = (data) => () => {
 
@@ -48,19 +39,13 @@ const MoviesPage = (props) => {
     function fetchMoreListItems() {
 
         setTimeout(() => {
-            setGenreMovies(prevState => ([...prevState, ...dataApiGenreMovies.slice(prevState.length, prevState.length + 60)]));
+            setGenreMovies(prevState => ([...prevState, ...dataApiMovies.slice(prevState.length, prevState.length + 60)]));
             setIsFetching(false);
         }, 2000);
     }
 
 
-    const convertDataSelect = () => {
-        dataTypes = dataTypes.map(function (obj) {
-            obj['value'] = obj.id
-            obj['label'] = obj.t_name
-            return obj;
-        });
-    }
+
 
     useEffect(() => {
         window.addEventListener("scroll", handleScroll);
@@ -69,10 +54,7 @@ const MoviesPage = (props) => {
         }
     }, [handleScroll]);
 
-    useEffect(() => {
-        convertDataSelect()
-        setSelectedGenre(dataTypes.find(item => item.value == idGenre))
-    }, [idGenre, dataTypes])
+
 
     useEffect(() => {
         if (!isFetching) return;
@@ -80,11 +62,11 @@ const MoviesPage = (props) => {
     }, [isFetching]);
 
     useEffect(() => {
-        if (selectedGenre != null)
-            getMoviesByTypeAPI(selectedGenre.value, async (res) => {
+        if (query.get('value') != null)
+            searchMovieByNameApi(query.get('value'), async (res) => {
                 console.log("🚀 ~ file: index.js ~ line 85 ~ getMoviesByTypeAPI ~ res", res)
                 if (res.status == 200) {
-                    setDataApiGenreMovies(res.data)
+                    setDataApiMovies(res.data)
                     setGenreMovies(res.data.slice(0, 30))
                 }
                 else {
@@ -95,57 +77,19 @@ const MoviesPage = (props) => {
             });
 
 
-    }, [selectedGenre])
+    }, [query])
 
     return (
-        <div id='moviesPage' >
-            <div className="movie-page overflow-x-hidden bg-black"  >
+        <div id='searchPage' >
+            <div className="search-page overflow-x-hidden bg-black"  >
                 <div class="header-genre bg-black">
                     <div class="select-header">
-                        <Select
-                            className="react-select"
-                            classNamePrefix="select"
-                            value={selectedGenre}
-                            isSearchable={false}
-                            onChange={onSelectGenreChange}
-                            options={dataTypes}
-                            filterOption={createFilter({ ignoreAccents: false })}
-                            styles={{
-                                singleValue: (base) => ({
-                                    ...base,
-                                    color: 'white',
-                                }),
-                                option: (base) => ({
-                                    ...base,
-                                    color: 'white',
-                                }),
-                                menuList: (base) => ({
-                                    ...base,
-                                    "::-webkit-scrollbar": {
-                                        display: 'none'
-                                    },
-                                })
-
-                            }}
-                            theme={(theme) => ({
-                                ...theme,
-                                backgroundColor: 'black',
-
-                                colors: {
-                                    ...theme.colors,
-                                    primary: '#e50914',
-                                    primary25: 'gray',
-                                    neutral0: 'black'
-                                },
-                            })}
-                        />
+                        Results with "{query.get('value')}"
                     </div>
-
-
                 </div>
                 <div className='body-content'>
                     <div className='list-grid'>
-                        {genreMovies.map(item =>
+                        {genreMovies.length > 0 ? genreMovies.map(item =>
                             <div className='grid-container' onClick={itemClicked(item)}>
                                 <div className=' item-grid multi-landing-stack-space-holder w-100 h-100'>
                                     {/* <div className="multi-landing-stack-1"></div>
@@ -156,7 +100,10 @@ const MoviesPage = (props) => {
                                     {item.m_name}
                                 </div>
                             </div>
-                        )}
+                        )
+                            :
+                            <div style={{ color: 'white', fontWeight: "bold", fontSize: '24px' }} >You don't have any movie in your playlist yet</div>
+                        }
 
                     </div>
                     {isFetching &&
@@ -176,4 +123,4 @@ const MoviesPage = (props) => {
     );
 };
 
-export default MoviesPage;
+export default SearchPage;
