@@ -1,7 +1,7 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import './navBar.scss'
 
-import { Link, NavLink, useHistory } from 'react-router-dom';
+import { Link, NavLink, useHistory,useLocation } from 'react-router-dom';
 
 import * as Icon from 'react-feather';
 import CustomNotification from '../CustomNotification';
@@ -11,19 +11,19 @@ import { IconNetflix } from '../../assets/Icon';
 
 const navTabs = [{ id: 0, label: "Home", navLink: '/home' },
 { id: 1, label: "New & Popular", navLink: '/popular' },
-{ id: 2, label: "TV Show", navLink: '/tvshow' },
 { id: 3, label: "Movies", navLink: '/movies/1' },
 { id: 4, label: "My Playlist", navLink: '/playlist' }];
 
-const NavigationBar = (props) => {
+const NavigationBar = (props) => {   
     const history = useHistory();
     const [isShown, setIsShown] = useState(false);
     const [isOpen, setOpen] = useState(false);
     const textInput = React.createRef(null);
+    const [searchText, setSearchText] = useState('');
     const [items, setItem] = useState(navTabs);
     const [onToppage, setOnTopPage] = useState(false);
     var currentScrollY = useRef(0);
-    
+
     const useWindowSize = () => {
         const [size, setSize] = useState([0, 0]);
         useLayoutEffect(() => {
@@ -40,6 +40,7 @@ const NavigationBar = (props) => {
     const [width, height] = useWindowSize();
 
     const onBlurSearchInput = () => {
+        textInput.current.blur()
         setIsShown(false)
     }
     const btnSearchClicked = () => {
@@ -48,7 +49,20 @@ const NavigationBar = (props) => {
         }
         setIsShown(!isShown)
     }
-  
+    const onSearchKeyPress = (e) => {
+
+        if (e.key === "Enter") {   
+              
+               history.push({
+                pathname: '/search',
+                search: `value=${searchText}`,
+                
+            })
+            setSearchText('')
+        }
+
+    }
+
 
     useEffect(() => {
         const handleScroll = () => {
@@ -74,10 +88,10 @@ const NavigationBar = (props) => {
                     {width > 865 ?
                         <React.Fragment>
                             <div className='tab-navigation'>
-                         
+
                                 {
                                     items.map(item => (
-                                        <NavLink  to={item.navLink} className='nav-item' activeStyle={styles.activeStyle}>{item.label}</NavLink>
+                                        <NavLink to={item.navLink} className='nav-item' activeStyle={styles.activeStyle}>{item.label}</NavLink>
                                     ))
                                 }
                             </div>
@@ -114,12 +128,19 @@ const NavigationBar = (props) => {
                 <div className='secondary-navigation'>
                     <div className={`search-box nav-element ${isShown && 'input-search'}`} >
 
-                        <button>
+                        <div>
                             <Icon.Search className='icon-style' size='16px' strokeWidth='4' color='white' onClick={btnSearchClicked} />
-                        </button>
+                        </div>
 
                         <React.Fragment>
-                            <input onBlur={onBlurSearchInput} ref={textInput} id='searchInput' type={'text'} name="search" placeholder="Search.." >
+                            <input 
+                            onKeyPress={onSearchKeyPress} 
+                            onBlur={onBlurSearchInput} 
+                            ref={textInput} value={searchText} 
+                            type={'text'} 
+                            name="search" 
+                            placeholder="Search.."
+                            onChange={(e) => setSearchText(e.target.value)} >
                             </input>
                         </React.Fragment>
 

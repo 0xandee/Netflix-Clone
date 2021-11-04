@@ -41,7 +41,8 @@ const CustomDropdown = () => {
 
     requestLogout(refresh_token, async (res) => {
       console.log("🚀 ~ file: index.js ~ line 47 ~ requestLogout ~ res", res)
-
+      localStorage.clear();
+      history.push('/signin')
       if (res.status == 200) {
         localStorage.clear();
         history.push('/signin')

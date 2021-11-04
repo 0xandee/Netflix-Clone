@@ -14,7 +14,7 @@ import './App.css'
 import io from "socket.io-client";
 import { Slider, NavBar, NavigationBar, SignUpNavigationBar, PreviewInfo, PreviewPopup } from "./components/index";
 
-import { ForgotPassword, PlanForm, Registration, RegistrationForm, SignUp, SignIn, GroupStreaming, LanguageSetup, AccountProfile, OnboardingMovies, VideoPlayer, Homepage, MyPlaylist, PopularPage, MoviesPage } from "./views/index";
+import { ForgotPassword, PlanForm, Registration, RegistrationForm, SignUp, SignIn, GroupStreaming, LanguageSetup, AccountProfile, OnboardingMovies, VideoPlayer, Homepage, MyPlaylistPage, PopularPage, MoviesPage, SearchPage } from "./views/index";
 import { getMovieTypeAPI } from "./services/api/movie";
 import { useDispatch } from "react-redux";
 import { setMovieTypes } from "./services/redux/actions";
@@ -33,13 +33,13 @@ export default function WebRouter() {
     }
     useEffect(() => {
         getMovieTypeAPI(async (res) => {
-            // console.log("🚀 ~ file: index.js ~ line 260 ~ getMovieType ~ res", res.data)
+             console.log("🚀 ~ file: index.js ~ line 260 ~ getMovieType ~ res", res.data)
             if (res.status == 200) {
                 dispatch(setMovieTypes(res.data))
             }
         });
-        console.log('test local storage', localStorage.getItem('refresh_token'))
-    }, [])
+
+    }, [dispatch])
     return (
         <Router>
             <div >
@@ -75,7 +75,7 @@ export default function WebRouter() {
                                 </Route>
                                 {/* Step 2 */}
                                 <Route path="/signup/chooseplan">
-                                    <ChoosePlan />
+                                    <SignUp />
                                 </Route>
                                 {/* Step 3 */}
                                 <Route path="/signup/chooseplanform">
@@ -108,20 +108,14 @@ export default function WebRouter() {
                         <Redirect
                             to={{
                                 pathname: "/signin",
-
                             }}
                         />
                         :
                         <Route path="/">
-                            <Switch>
-                                <Route path="/tvshow" component={TVShow}>
+                            <Switch>                            
+                                <Route path="/playlist" component={MyPlaylistPage}>
                                     <NavigationBar />
-                                    <TVShow />
-                                </Route>
-
-                                <Route path="/playlist" component={MyPlaylist}>
-                                    <NavigationBar />
-                                    <MyPlaylist />
+                                    <MyPlaylistPage />
                                 </Route>
 
                                 <Route path="/movies/:idGenre" component={MoviesPage}>
@@ -136,7 +130,7 @@ export default function WebRouter() {
 
                                 <Route path='/home' component={Homepage}>
                                     <NavigationBar />
-                                    <Home />
+                                    <Homepage />
                                 </Route>
 
                             </Switch>
@@ -144,6 +138,11 @@ export default function WebRouter() {
                             <Route path='/detail/:idMovie' component={PreviewPopup} >
                                 {/* <NavigationBar /> */}
                                 {/* <PreviewPopup /> */}
+                            </Route>
+
+                            <Route path='/search' component={SearchPage} >
+                                <NavigationBar />
+                                <SearchPage />
                             </Route>
                         </Route>
                     }
@@ -154,68 +153,3 @@ export default function WebRouter() {
     );
 }
 
-function ChoosePlan() {
-    return <SignUp />;
-}
-
-function Home() {
-    return <Homepage />;
-}
-
-function TVShow() {
-    return <Homepage />;
-}
-
-// function MyPlaylist() {
-//     return <MyPlaylist />;
-// }
-
-
-function NewAndPopular() {
-    return <h2>NewAndPopular</h2>;
-}
-function Profile1() {
-    return <h2>Profile1</h2>;
-}
-function Profile2() {
-    return <h2>Profile1</h2>;
-}
-
-
-// function Topics() {
-//     let match = useRouteMatch();
-
-//     return (
-//         <div>
-//             <h2>Topics</h2>
-//             <ul>
-//                 <li>
-//                     <Link to={`${match.url}/components`}>Components</Link>
-//                 </li>
-//                 <li>
-//                     <Link to={`${match.url}/props-v-state`}>
-//                         Props v. State
-//                     </Link>
-//                 </li>
-//             </ul>
-
-//             {/* The Topics page has its own <Switch> with more routes
-//           that build on the /topics URL path. You can think of the
-//           2nd <Route> here as an "index" page for all topics, or
-//           the page that is shown when no topic is selected */}
-//             <Switch>
-//                 <Route path={`${match.path}/:topicId`}>
-//                     <Topic />
-//                 </Route>
-//                 <Route path={match.path}>
-//                     <h3>Please select a topic.</h3>
-//                 </Route>
-//             </Switch>
-//         </div>
-//     );
-// }
-
-// function Topic() {
-//     let { topicId } = useParams();
-//     return <h3>Requested topic ID: {topicId}</h3>;
-// }

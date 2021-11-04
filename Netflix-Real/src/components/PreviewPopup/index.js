@@ -17,7 +17,6 @@ const PreviewPopup = (props) => {
    
 
     useEffect(() => {
-        console.log("🚀 ~ file: index.js ~ line 21 ~ getMovieAPI ~ to_Decrypt(idMovie.toString())", to_Decrypt(idMovie.toString()))
 
         getMovieAPI(to_Decrypt(idMovie.toString()), async (res) => {
             console.log("🚀 ~ file: index.js ~ line 85 ~ getMoviesByTypeAPI ~ res", res)
