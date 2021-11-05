@@ -1,7 +1,7 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import './navBar.scss'
 
-import { Link, NavLink, useHistory,useLocation } from 'react-router-dom';
+import { Link, NavLink, useHistory, useLocation } from 'react-router-dom';
 
 import * as Icon from 'react-feather';
 import CustomNotification from '../CustomNotification';
@@ -14,7 +14,7 @@ const navTabs = [{ id: 0, label: "Home", navLink: '/home' },
 { id: 3, label: "Movies", navLink: '/movies/1' },
 { id: 4, label: "My Playlist", navLink: '/playlist' }];
 
-const NavigationBar = (props) => {   
+const NavigationBar = (props) => {
     const history = useHistory();
     const [isShown, setIsShown] = useState(false);
     const [isOpen, setOpen] = useState(false);
@@ -51,18 +51,21 @@ const NavigationBar = (props) => {
     }
     const onSearchKeyPress = (e) => {
 
-        if (e.key === "Enter") {   
-              
-               history.push({
+        if (e.key === "Enter") {
+
+            history.push({
                 pathname: '/search',
                 search: `value=${searchText}`,
-                
+
             })
             setSearchText('')
         }
 
     }
 
+    const logoClicked = ()=>{
+        history.push('/home')
+    }
 
     useEffect(() => {
         const handleScroll = () => {
@@ -70,21 +73,19 @@ const NavigationBar = (props) => {
             currentScrollY > 0 ? setOnTopPage(true) : setOnTopPage(false);
         };
 
-        window.addEventListener("scroll", handleScroll, { passive: true });
-        // history.push('/home')
+        window.addEventListener("scroll", handleScroll, { passive: true });    
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
 
 
     return (
         <div id='navbar' >
-            <div className={`nav-bar ${onToppage && 'top-page'} ${isOpen && 'top-page'}`}
-            >
+            <div className={`nav-bar ${onToppage && 'top-page'} ${isOpen && 'top-page'}`}>
                 <div className='div-navigation'>
-                    {/* <img className='brand-logo'
-                        src='https://pixinvent.com/demo/vuexy-vuejs-admin-dashboard-template/demo-1/img/logo.36f34a9f.svg' alt='logo'
-                    /> */}
-                    <IconNetflix className='brand-logo' />
+                    <div onClick={logoClicked}>
+                        <IconNetflix className='brand-logo' />
+                    </div>
+
                     {width > 865 ?
                         <React.Fragment>
                             <div className='tab-navigation'>
@@ -133,14 +134,14 @@ const NavigationBar = (props) => {
                         </div>
 
                         <React.Fragment>
-                            <input 
-                            onKeyPress={onSearchKeyPress} 
-                            onBlur={onBlurSearchInput} 
-                            ref={textInput} value={searchText} 
-                            type={'text'} 
-                            name="search" 
-                            placeholder="Search.."
-                            onChange={(e) => setSearchText(e.target.value)} >
+                            <input
+                                onKeyPress={onSearchKeyPress}
+                                onBlur={onBlurSearchInput}
+                                ref={textInput} value={searchText}
+                                type={'text'}
+                                name="search"
+                                placeholder="Search.."
+                                onChange={(e) => setSearchText(e.target.value)} >
                             </input>
                         </React.Fragment>
 

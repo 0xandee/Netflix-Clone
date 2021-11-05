@@ -1,36 +1,24 @@
-import React, { useRef, useState, useCallback, useEffect, createRef } from "react";
+import React, { useState, useCallback, useEffect, createRef } from "react";
 import './style.scss';
-import { BigBanner, Slider, Footer } from "../../components";
+import { Footer, NavigationBar } from "../../components";
 import { to_Decrypt, to_Encrypt } from "../../services/aes256";
-import { useSelector, useDispatch } from 'react-redux';
-import { showPopUpInfo } from "../../services/redux/actions";
-import { Link, useHistory, useLocation, useParams } from "react-router-dom";
-import { getMoviesByTypeAPI, getMovieType } from "../../services/api/movie";
-import Select, { createFilter } from 'react-select';
-import { Spinner } from 'reactstrap'
-import { searchMovieByNameApi } from "../../services/api/search";
+import { useHistory } from "react-router-dom";
+
 import { requestRefreshToken } from "../../services/api/auth";
 import { getUserFavoriteList } from "../../services/api/user";
 
 
 const MyPlaylistPage = (props) => {
-    const location = useLocation()
-    const { idGenre } = useParams()
-    const query = new URLSearchParams(useLocation().search)
     const history = useHistory();
-    const [currentScrollY, setCurrentScrollY] = useState(0);
     const [dataApiMovies, setDataApiMovies] = useState([]);
     const [genreMovies, setGenreMovies] = useState([]);
     const [isFetching, setIsFetching] = useState(false);
-    const access_token = localStorage.getItem("access_token")
+    const [accessToken, setAccessToken] = useState(localStorage.getItem("access_token"))
     const refresh_token = localStorage.getItem("refresh_token")
 
-
     const itemClicked = (data) => () => {
-
         history.push({
             pathname: `/detail/${to_Encrypt(data.id.toString())}`,
-            //search: `jbv=${data.id}`,
             state: { item: data }
         })
     }
@@ -48,9 +36,6 @@ const MyPlaylistPage = (props) => {
         }, 2000);
     }
 
-
-
-
     useEffect(() => {
         window.addEventListener("scroll", handleScroll);
         return () => {
@@ -58,52 +43,46 @@ const MyPlaylistPage = (props) => {
         }
     }, [handleScroll]);
 
-
-
     useEffect(() => {
         if (!isFetching) return;
         fetchMoreListItems();
     }, [isFetching]);
 
     useEffect(() => {
-
-        getUserFavoriteList(access_token, async (res) => {
-            console.log("🚀 ~ file: index.js ~ line 85 ~ getUserFavoriteList ~ res", res)
-            if (res.status == 200) {
+        getUserFavoriteList(accessToken, async (res) => {
+            console.log("🚀 ~ file: index.js ~ line 53 ~ getUserFavoriteList ~ accessToken", accessToken)
+            console.log("🚀 ~ file: index.js ~ line 53 ~ getUserFavoriteList ~ res", res)
+            if (res.status === 200) {
                 setDataApiMovies(res.data)
                 setGenreMovies(res.data.slice(0, 30))
             }
             else {
-                if (res.status == 403) {
-                    
+                if (res.status === 403) {
                     requestRefreshToken(refresh_token, async (res) => {
-                        console.log("🚀 ~ file: index.js ~ line 84 ~ requestRefreshToken ~ res", res)
-                        if(res.status == 200)
-                        {
-                            localStorage.setItem("access_token", res.data.access_token);                       
+                        console.log("🚀 ~ file: index.js ~ line 62 ~ requestRefreshToken ~ refresh_token", refresh_token)
+                        console.log("🚀 ~ file: index.js ~ line 62 ~ requestRefreshToken ~ refresh_token", res.data.access_token)
+                        console.log("🚀 ~ file: index.js ~ line 66 ~ requestRefreshToken ~ res", res)
+                        if (res.status == 200) {
+                            setAccessToken(res.data.access_token)
+                            localStorage.setItem("access_token", res.data.access_token);
                         }
-                      
                     })
-
 
                 }
             }
         });
-
-
-    }, [access_token])
+    }, [accessToken])
 
     return (
         <div id='myPlaylistPage' >
             <div className="myplaylist-page overflow-x-hidden bg-black"  >
+                <NavigationBar />
                 <div className='body-content'>
                     {genreMovies.length > 0 ?
                         <div className='list-grid'>
                             {genreMovies.map(item =>
                                 <div className='grid-container' onClick={itemClicked(item)}>
                                     <div className=' item-grid multi-landing-stack-space-holder w-100 h-100'>
-                                        {/* <div className="multi-landing-stack-1"></div>
-                                    <div className="multi-landing-stack-2"></div> */}
                                         <img style={{ borderRadius: '4px', }} className="title-card w-100 h-100" src={item.uri_avatar} alt={item.m_name} />
                                     </div>
                                     <div className='name-label'>
@@ -119,13 +98,10 @@ const MyPlaylistPage = (props) => {
                     {isFetching && genreMovies.length > 0 &&
                         <div style={{ display: 'flex', marginBottom: '10px', width: '100%', justifyContent: 'center' }}>
                             <div class="spinner-border spinner-color" role="status">
-
                             </div>
                         </div>
-
                     }
                 </div>
-
                 <Footer />
 
             </div>

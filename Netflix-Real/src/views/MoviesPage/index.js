@@ -1,6 +1,6 @@
 import React, { useRef, useState, useCallback, useEffect, createRef } from "react";
 import './style.scss';
-import { BigBanner, Slider, Footer } from "../../components";
+import { BigBanner, Slider, Footer, NavigationBar } from "../../components";
 import { to_Decrypt, to_Encrypt } from "../../services/aes256";
 import { useSelector, useDispatch } from 'react-redux';
 import { showPopUpInfo } from "../../services/redux/actions";
@@ -8,6 +8,7 @@ import { Link, useHistory, useLocation, useParams } from "react-router-dom";
 import { getMoviesByTypeAPI, getMovieType } from "../../services/api/movie";
 import Select, { createFilter } from 'react-select';
 import { Spinner } from 'reactstrap'
+import DefaultImage from '../../assets/Images/defaultImage.png';
 
 
 const MoviesPage = (props) => {
@@ -51,6 +52,10 @@ const MoviesPage = (props) => {
             setGenreMovies(prevState => ([...prevState, ...dataApiGenreMovies.slice(prevState.length, prevState.length + 60)]));
             setIsFetching(false);
         }, 2000);
+    }
+
+    const OnErrorImage = (e) => {
+        e.targets.src = DefaultImage
     }
 
 
@@ -100,6 +105,7 @@ const MoviesPage = (props) => {
     return (
         <div id='moviesPage' >
             <div className="movie-page overflow-x-hidden bg-black"  >
+                <NavigationBar />
                 <div class="header-genre bg-black">
                     <div class="select-header">
                         <Select
@@ -146,16 +152,18 @@ const MoviesPage = (props) => {
                 <div className='body-content'>
                     <div className='list-grid'>
                         {genreMovies.map(item =>
+                        (item.uri_avatar != null &&
                             <div className='grid-container' onClick={itemClicked(item)}>
                                 <div className=' item-grid multi-landing-stack-space-holder w-100 h-100'>
                                     {/* <div className="multi-landing-stack-1"></div>
                                     <div className="multi-landing-stack-2"></div> */}
-                                    <img style={{ borderRadius: '4px', }} className="title-card w-100 h-100" src={item.uri_avatar} alt={item.m_name} />
+                                    <img onError={OnErrorImage} style={{ borderRadius: '4px', }} className="title-card w-100 h-100" src={item.uri_avatar != null ? item.uri_avatar : DefaultImage} alt={item.m_name} />
                                 </div>
                                 <div className='name-label'>
                                     {item.m_name}
                                 </div>
                             </div>
+                        )
                         )}
 
                     </div>
