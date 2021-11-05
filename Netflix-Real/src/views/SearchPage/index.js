@@ -1,6 +1,6 @@
 import React, { useRef, useState, useCallback, useEffect, createRef } from "react";
 import './style.scss';
-import { BigBanner, Slider, Footer } from "../../components";
+import { BigBanner, Slider, Footer, NavigationBar } from "../../components";
 import { to_Decrypt, to_Encrypt } from "../../services/aes256";
 import { useSelector, useDispatch } from 'react-redux';
 import { showPopUpInfo } from "../../services/redux/actions";
@@ -82,6 +82,7 @@ const SearchPage = (props) => {
     return (
         <div id='searchPage' >
             <div className="search-page overflow-x-hidden bg-black"  >
+                <NavigationBar />
                 <div class="header-genre bg-black">
                     <div class="select-header">
                         Results with "{query.get('value')}"

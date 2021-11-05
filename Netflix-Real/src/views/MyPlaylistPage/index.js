@@ -1,6 +1,6 @@
-import React, {  useState, useCallback, useEffect, createRef } from "react";
+import React, { useState, useCallback, useEffect, createRef } from "react";
 import './style.scss';
-import {  Footer } from "../../components";
+import { Footer, NavigationBar } from "../../components";
 import { to_Decrypt, to_Encrypt } from "../../services/aes256";
 import { useHistory } from "react-router-dom";
 
@@ -50,6 +50,8 @@ const MyPlaylistPage = (props) => {
 
     useEffect(() => {
         getUserFavoriteList(accessToken, async (res) => {
+            console.log("🚀 ~ file: index.js ~ line 53 ~ getUserFavoriteList ~ accessToken", accessToken)
+            console.log("🚀 ~ file: index.js ~ line 53 ~ getUserFavoriteList ~ res", res)
             if (res.status === 200) {
                 setDataApiMovies(res.data)
                 setGenreMovies(res.data.slice(0, 30))
@@ -57,11 +59,15 @@ const MyPlaylistPage = (props) => {
             else {
                 if (res.status === 403) {
                     requestRefreshToken(refresh_token, async (res) => {
+                        console.log("🚀 ~ file: index.js ~ line 62 ~ requestRefreshToken ~ refresh_token", refresh_token)
+                        console.log("🚀 ~ file: index.js ~ line 62 ~ requestRefreshToken ~ refresh_token", res.data.access_token)
+                        console.log("🚀 ~ file: index.js ~ line 66 ~ requestRefreshToken ~ res", res)
                         if (res.status == 200) {
                             setAccessToken(res.data.access_token)
                             localStorage.setItem("access_token", res.data.access_token);
                         }
                     })
+
                 }
             }
         });
@@ -70,12 +76,13 @@ const MyPlaylistPage = (props) => {
     return (
         <div id='myPlaylistPage' >
             <div className="myplaylist-page overflow-x-hidden bg-black"  >
+                <NavigationBar />
                 <div className='body-content'>
                     {genreMovies.length > 0 ?
                         <div className='list-grid'>
                             {genreMovies.map(item =>
                                 <div className='grid-container' onClick={itemClicked(item)}>
-                                    <div className=' item-grid multi-landing-stack-space-holder w-100 h-100'>                               
+                                    <div className=' item-grid multi-landing-stack-space-holder w-100 h-100'>
                                         <img style={{ borderRadius: '4px', }} className="title-card w-100 h-100" src={item.uri_avatar} alt={item.m_name} />
                                     </div>
                                     <div className='name-label'>

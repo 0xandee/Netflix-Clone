@@ -14,7 +14,7 @@ import './App.css'
 import io from "socket.io-client";
 import { Slider, NavBar, NavigationBar, SignUpNavigationBar, PreviewInfo, PreviewPopup } from "./components/index";
 
-import { ForgotPassword, PlanForm, Registration, RegistrationForm, SignUp, SignIn, GroupStreaming, LanguageSetup, AccountProfile, OnboardingMovies, VideoPlayer, Homepage, MyPlaylistPage, PopularPage, MoviesPage, SearchPage } from "./views/index";
+import { ForgotPassword, PlanForm, Registration, RegistrationForm, SignUp, SignIn, GroupStreaming, LanguageSetup, AccountProfile, OnboardingMovies, VideoPlayer, Homepage, MyPlaylistPage, PopularPage, MoviesPage, SearchPage, ErrorPage } from "./views/index";
 import { getMovieTypeAPI } from "./services/api/movie";
 import { useDispatch } from "react-redux";
 import { setMovieTypes } from "./services/redux/actions";
@@ -33,7 +33,7 @@ export default function WebRouter() {
     }
     useEffect(() => {
         getMovieTypeAPI(async (res) => {
-             console.log("🚀 ~ file: index.js ~ line 260 ~ getMovieType ~ res", res.data)
+            console.log("🚀 ~ file: index.js ~ line 260 ~ getMovieType ~ res", res.data)
             if (res.status == 200) {
                 dispatch(setMovieTypes(res.data))
             }
@@ -93,17 +93,10 @@ export default function WebRouter() {
                         </div>
                     </Route>
 
-                    {/* Profile Setting */}
                     <Route path="/profile">
                         <AccountProfile />
                     </Route>
 
-                    {/* <Route path="/regform">
-                        <RegistrationForm />
-                    </Route> */}
-
-
-                    {/* <NavigationBar /> */}
                     {localStorage.getItem('refresh_token') === null ?
                         <Redirect
                             to={{
@@ -112,41 +105,22 @@ export default function WebRouter() {
                         />
                         :
                         <Route path="/">
-                            <Switch>                            
-                                <Route path="/playlist" component={MyPlaylistPage}>
-                                    <NavigationBar />
-                                    <MyPlaylistPage />
-                                </Route>
-
-                                <Route path="/movies/:idGenre" component={MoviesPage}>
-                                    <NavigationBar />
-                                    <MoviesPage />
-                                </Route>
-
-                                <Route path="/popular" component={PopularPage}>
-                                    <NavigationBar />
-                                    <PopularPage />
-                                </Route>
-
-                                <Route path='/home' component={Homepage}>
-                                    <NavigationBar />
-                                    <Homepage />
-                                </Route>
-
+                            <Switch>
+                                <Route exact path="/playlist" component={MyPlaylistPage} />
+                                <Route exact path="/movies/:idGenre" component={MoviesPage} />
+                                <Route exact path="/popular" component={PopularPage} />
+                                <Route exact path='/home' component={Homepage} />
+                                
+                                <Route exact path='/detail/:idMovie' component={PreviewPopup} />
+                                <Route exact path='/search' component={SearchPage} />
+                                <Route component={ErrorPage} />
                             </Switch>
 
-                            <Route path='/detail/:idMovie' component={PreviewPopup} >
-                                {/* <NavigationBar /> */}
-                                {/* <PreviewPopup /> */}
-                            </Route>
 
-                            <Route path='/search' component={SearchPage} >
-                                <NavigationBar />
-                                <SearchPage />
-                            </Route>
                         </Route>
                     }
 
+                    <Route component={ErrorPage} />
                 </Switch>
             </div>
         </Router>

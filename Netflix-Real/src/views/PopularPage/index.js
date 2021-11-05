@@ -1,6 +1,6 @@
 import React, { useRef, useState, useCallback, useEffect, createRef } from "react";
 import './Slider.scss';
-import { BigBanner, Slider, Footer } from "../../components";
+import { BigBanner, Slider, Footer, NavigationBar } from "../../components";
 import { useSelector, useDispatch } from 'react-redux';
 import { showPopUpInfo } from "../../services/redux/actions";
 import { Link, useHistory, useLocation } from "react-router-dom";
@@ -255,6 +255,7 @@ const PopularPage = (props) => {
     }, [handleScroll, handlePopState]);
     return (
         <div className="overflow-x-hidden bg-black" ref={homePageRef} style={showed ? styles.fixed : styles.sticky}>
+            <NavigationBar />
             <div class="sub-header">
                 <div>
                     <div class="sub-header-wrapper">
