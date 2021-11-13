@@ -43,6 +43,11 @@ const NavigationBar = (props) => {
         textInput.current.blur()
         setIsShown(false)
     }
+
+    const btnGroupAddClicked = () => {
+        history.push('/watchgroup/1')
+    }
+
     const btnSearchClicked = () => {
         if (!isShown) {
             textInput.current.focus()
@@ -127,8 +132,10 @@ const NavigationBar = (props) => {
                     }
                 </div>
                 <div className='secondary-navigation'>
+                    <div style={{paddingRight: '3rem', cursor: 'pointer'}}>
+                        <Icon.Plus className='icon-style' size='16px' strokeWidth='4' color='white' onClick={btnGroupAddClicked} />
+                    </div>
                     <div className={`search-box nav-element ${isShown && 'input-search'}`} >
-
                         <div>
                             <Icon.Search className='icon-style' size='16px' strokeWidth='4' color='white' onClick={btnSearchClicked} />
                         </div>

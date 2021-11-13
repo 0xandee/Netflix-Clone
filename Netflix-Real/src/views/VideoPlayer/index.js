@@ -219,7 +219,7 @@ const VideoPlayer = () => {
         }
     }, [handleKeyDown, handleKeyUp]);
     return (
-        <div id={`videoPlayer`} onMouseMove={handleMouseMove} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+        <div id={`videoPlayer`} onMouseMove={handleMouseMove} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}  style={{position: 'absolute', width: '100%', height: '100%'}}>
             <div ref={playerContainerRef} className={`video-player`} >
                 <div className={'video-container'} onClick={handlePlayPause}>
                     <ReactPlayer
