@@ -15,7 +15,7 @@ const GroupStreaming = ({ socket }) => {
   const [roomname, setroomname] = useState("idgroup");
   const [openedChatBox, setOpenedChatBox] = useState(false);
 
-  const [openedMovieRecommend, setOpenedMovieRecommend] = useState(false);
+  const [openedMovieRecommend, setOpenedMovieRecommend] = useState(true);
   const [genreMovies, setGenreMovies] = useState([]);
 
   let dataTypes = useSelector((state) => state?.rootReducer.movieTypes)
