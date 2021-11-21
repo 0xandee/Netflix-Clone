@@ -21,7 +21,7 @@ import { setMovieTypes } from "./services/redux/actions";
 import { useSelector } from "react-redux";
 
 //const socket = io.connect('http://localhost:8000');
-const socket = io("localhost:8000", { transports: ["websocket"] });
+// const socket = io("localhost:8000", { transports: ["websocket"] });
 export default function WebRouter() {
     const dispatch = useDispatch();
     const history = useHistory();
@@ -57,7 +57,7 @@ export default function WebRouter() {
 
                     {/* Watch Video In Group */}
                     <Route path="/watchgroup/:idgroup">
-                        <GroupStreaming socket={socket} />
+                        <GroupStreaming />
                     </Route>
 
                     {/* Sign Up */}

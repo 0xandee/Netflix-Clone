@@ -75,9 +75,7 @@ const SearchPage = (props) => {
                     }
                 }
             });
-
-
-    }, [query])
+    }, [])
 
     return (
         <div id='searchPage' >

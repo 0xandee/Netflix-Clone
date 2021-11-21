@@ -15,6 +15,7 @@
     "cookie-parser": "^1.4.5",
     "dotenv": "^10.0.0",
     "flatpickr": "^4.6.9",
+    "jquery": "^3.6.0",
     "jsonwebtoken": "^8.5.1",
     "node-sass": "^6.0.1",
     "prop-types": "^15.7.2",

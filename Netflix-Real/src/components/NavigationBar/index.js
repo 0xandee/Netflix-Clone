@@ -7,6 +7,8 @@ import * as Icon from 'react-feather';
 import CustomNotification from '../CustomNotification';
 import CustomDropdown from '../Dropdown';
 import { IconNetflix } from '../../assets/Icon';
+import $ from 'jquery'; 
+import io from "socket.io-client";
 
 
 const navTabs = [{ id: 0, label: "Home", navLink: '/home' },
@@ -43,10 +45,7 @@ const NavigationBar = (props) => {
         textInput.current.blur()
         setIsShown(false)
     }
-
-    const btnGroupAddClicked = () => {
-        history.push('/watchgroup/1')
-    }
+    
 
     const btnSearchClicked = () => {
         if (!isShown) {
@@ -82,6 +81,66 @@ const NavigationBar = (props) => {
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
 
+    const btnGroupAddClicked = () => {
+        const socket = io("http://localhost:8000", { transports: ['websocket']});
+        
+        socket.on("connect", () => {
+            console.log(socket.id); // "G5p5..."
+          });
+
+        var username = Math.random().toString(36).substr(2, 12);
+        // This sets the room number on the client
+        var roomnum = Math.random().toString(36).substr(2, 12);
+
+        console.log("username", username);
+        console.log("roomnum", roomnum);
+        console.log("HOLY SHIT");
+
+        socket.emit("new user", username, function(data) {
+            console.log("data", data);
+            if (data) {
+                // history.pushState('', 'Vynchronize', roomnum);
+            }
+        });
+        // Join room
+        socket.emit('new room', roomnum, function(data) {
+            // This should only call back if the client is the host
+            if (data) {
+                console.log("Host is syncing the new socket!")
+                // syncVideo(roomnum)
+            }
+        });
+    }
+    // var $userForm = $('#user-form');
+    // $userForm.submit(function(e) {
+    //     e.preventDefault();
+    //     const socket = io("http://localhost:8000", { transports: ['websocket']});
+    //     socket.on("connect", () => {
+    //         console.log(socket.id); // "G5p5..."
+    //       });
+    //     var username = Math.random().toString(36).substr(2, 12);
+    //     // This sets the room number on the client
+    //     var roomnum = Math.random().toString(36).substr(2, 12);
+
+    //     console.log("username", username);
+    //     console.log("roomnum", roomnum);
+    //     console.log("HOLY SHIT");
+
+    //     socket.emit("new user", username, function(data) {
+    //         console.log("data", data);
+    //         if (data) {
+    //             // history.pushState('', 'Vynchronize', roomnum);
+    //         }
+    //     });
+    //     // Join room
+    //     socket.emit('new room', roomnum, function(data) {
+    //         // This should only call back if the client is the host
+    //         if (data) {
+    //             console.log("Host is syncing the new socket!")
+    //             // syncVideo(roomnum)
+    //         }
+    //     });
+    // })
 
     return (
         <div id='navbar' >
@@ -133,8 +192,11 @@ const NavigationBar = (props) => {
                 </div>
                 <div className='secondary-navigation'>
                     <div style={{paddingRight: '3rem', cursor: 'pointer'}}>
-                        <Icon.Plus className='icon-style' size='16px' strokeWidth='4' color='white' onClick={btnGroupAddClicked} />
+                        <Icon.Plus onClick={btnGroupAddClicked} className='icon-style' style={{color: 'white'}}/>
                     </div>
+                    {/* <form id='user-form' style={{paddingRight: '3rem', cursor: 'pointer'}}>
+                        <input type="submit" value="Create Room" className='icon-style' style={{color: 'white'}}/>
+                    </form> */}
                     <div className={`search-box nav-element ${isShown && 'input-search'}`} >
                         <div>
                             <Icon.Search className='icon-style' size='16px' strokeWidth='4' color='white' onClick={btnSearchClicked} />

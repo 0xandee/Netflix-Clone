@@ -7,6 +7,8 @@ import screenfull from "screenfull";
 import { IconBackArrow, IconFullScreen, IconLayer, IconNext10s, IconPause, IconPauseCircle, IconPlay, IconPlayCircle, IconRewind10s, IconSetting, IconSkip, IconVolume, IconVolumeMute } from "../../assets/Icon";
 import { Duration, Format } from "../../services/function/Duration";
 import './style.scss'
+import * as Icon from 'react-feather';
+
 let count = 0;
 //https://www.example.com/url_to_video.mp4
 ///https://player.vimeo.com/external/194837908.sd.mp4?s=c350076905b78c67f74d7ee39fdb4fef01d12420&profile_id=164
@@ -32,13 +34,43 @@ const VideoPlayer = () => {
     const titlePlayedRef = useRef(null);
     const [iconRewind, setIconRewind] = useState(false);
     const [iconNext, setIconNext] = useState(false);
+    const [isShown, setIsShown] = useState(false);
+    const textInput = React.createRef(null);
+
     let valueHover = 0;
+
+    const onBlurSearchInput = () => {
+        textInput.current.blur()
+        setIsShown(false)
+    }
+
+    
+    const btnSearchClicked = () => {
+        if (!isShown) {
+            textInput.current.focus()
+        }
+        setIsShown(!isShown)
+    }
 
     const toggleRewind = () => setIconRewind(!iconRewind);
     const toggleNext = () => setIconNext(!iconNext);
     const handleStop = () => {
         setUrl(null);
         setPlaying(false);
+    }
+    const [searchText, setSearchText] = useState('');
+    const onSearchKeyPress = (e) => {
+
+        if (e.key === "Enter") {
+
+            history.push({
+                pathname: '/search',
+                search: `value=${searchText}`,
+
+            })
+            setSearchText('')
+        }
+
     }
 
     const handleVideoOnReady = () => {
@@ -256,12 +288,30 @@ const VideoPlayer = () => {
                     transition: 'all 0.5s'
                 }}>
 
-                    <div className={`video-player__top`} onClick={() => history.goBack()}>
+                    <div className={`video-player__top`} onClick={() => history.goBack()} style={{zIndex: '4', justifyContent: "space-between"}}>
                         <div className={`video-player__top__icon-container`}>
                             <IconBackArrow className={'video-player__top__icon-back'} />
                             <span>Back to Browse</span>
                         </div>
+                        <div className={`search-box ${isShown && 'input-search'}`} style={{marginRight: "4rem"}}>
+                            <div>
+                                <Icon.Search className='icon-style' size='16px' strokeWidth='4' color='white' onClick={btnSearchClicked} style={{cursor: 'pointer', marginRight: "1rem"}} />
+                            </div>
+                            <React.Fragment>
+                                <input
+                                    onKeyPress={onSearchKeyPress}
+                                    onBlur={onBlurSearchInput}
+                                    ref={textInput} value={searchText}
+                                    type={'text'}
+                                    name="search"
+                                    placeholder="Search.."
+                                    onChange={(e) => setSearchText(e.target.value)} >
+                                </input>
+                            </React.Fragment>
+                        </div>
                     </div>
+
+
                     <div className={`video-player__bottom`}>
                         <div className={`video-player__bottom__bar-container`}>
                             <div className={`video-player__bottom__bar-container__bar`}>

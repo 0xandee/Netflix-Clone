@@ -7,6 +7,7 @@ import VideoPlayer from "../VideoPlayer";
 import { IconChevronLeft, IconChevronRight } from "../../assets/Icon";
 import AppChat from "../../components/Chat";
 import Chat from "../../components/Chat";
+import io from "socket.io-client";
 
 import { getMoviesByTypeAPI } from "../../services/api/movie";
 
@@ -21,7 +22,7 @@ const GroupStreaming = ({ socket }) => {
   let dataTypes = useSelector((state) => state?.rootReducer.movieTypes)
   var movieDataGenres = [];
   useEffect(() => {
-      dataTypes.map(item => {
+      dataTypes.slice(0, 4).map(item => {
           getMoviesByTypeAPI(item.id, async (res) => {
               if (res.status == 200) {
                   var genreMovie = {
@@ -46,6 +47,7 @@ const GroupStreaming = ({ socket }) => {
     console.log("openedMovieRecommend", openedMovieRecommend);
   }
   useEffect(() => {
+    const socket = io("localhost:8000", { transports: ["websocket"] });
     socket.emit("joinRoom", { username, roomname });
   }, []);
   return (
@@ -64,10 +66,8 @@ const GroupStreaming = ({ socket }) => {
 
           <div id="movieRecommend"
             className={`${openedMovieRecommend ? '' : 'd-none'}`}
-            style={{position: 'absolute', width: '100%', height: '100%', backgroundColor: '#242526', zIndex: 3, overflowX: 'hidden'}}>
-            {/* <div className="movie-recommend" style={{overflowX: 'hidden'}}> */}
+            style={{position: 'absolute', width: '100%', height: '100%', backgroundColor: '#242526', zIndex: 3, overflowX: 'hidden', paddingTop: '40px'}}>
               {genreMovies.map(item => (<Slider id={item.id} sliderTitle={item.sliderTitle} sliderMovieList={item.sliderMovieList} />))}
-            {/* </div> */}
           </div>
 
         </div>
