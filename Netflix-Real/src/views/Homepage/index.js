@@ -23,27 +23,29 @@ import SwiperCore, {
 // install Swiper modules
 SwiperCore.use([Navigation]);
 
-const bannerData = [{
-    id: 1,
-    movieName: 'Stranger Things',
-    artworkLink: 'https://static.fptplay.net/static/img/share/video/17_08_2021/nu-nhi-nha-ho-kieu-fpt-play-93017-08-2021_21g01-08.jpg?w=1280&mode=scale',
-    movieLink: ''
-}, {
-    id: 2,
-    movieName: `The Queen's Gambit`,
-    artworkLink: 'https://static.fptplay.net/static/img/share/video/02_07_2021/mat-na-hanh-phuc-fpt-play-93002-07-2021_17g56-41.jpg?w=1280&mode=scale',
-    movieLink: ''
-}, {
-    id: 3,
-    movieName: 'Girl from Nowhere',
-    artworkLink: 'https://static.fptplay.net/static/img/share/video/03_08_2021/930-103-08-2021_19g39-21.jpg?w=1280&mode=scale',
-    movieLink: ''
-}];
+// const bannerData = [{
+//     id: 1,
+//     movieName: 'Stranger Things',
+//     artworkLink: 'https://static.fptplay.net/static/img/share/video/17_08_2021/nu-nhi-nha-ho-kieu-fpt-play-93017-08-2021_21g01-08.jpg?w=1280&mode=scale',
+//     movieLink: ''
+// }, {
+//     id: 2,
+//     movieName: `The Queen's Gambit`,
+//     artworkLink: 'https://static.fptplay.net/static/img/share/video/02_07_2021/mat-na-hanh-phuc-fpt-play-93002-07-2021_17g56-41.jpg?w=1280&mode=scale',
+//     movieLink: ''
+// }, {
+//     id: 3,
+//     movieName: 'Girl from Nowhere',
+//     artworkLink: 'https://static.fptplay.net/static/img/share/video/03_08_2021/930-103-08-2021_19g39-21.jpg?w=1280&mode=scale',
+//     movieLink: ''
+// }];
 
 
 function getToken() {
     return tokenObj;
 }
+
+
 
 const Homepage = (props) => {
     const {idGenre} = useParams()
@@ -75,6 +77,7 @@ const Homepage = (props) => {
     }, [dataTypes])
 
 
+
     return (
         <div className="overflow-x-hidden bg-black" ref={homePageRef}>
             <NavigationBar />
@@ -92,8 +95,8 @@ const Homepage = (props) => {
                     </div>
                 </Swiper>
             </div> */}
-            <BannerSlider bannerData={bannerData} />
-
+            {/* <BannerSlider bannerData={bannerData} /> */}
+            <br/>
             {genreMovies.map(item => (<Slider id={item.id} sliderTitle={item.sliderTitle} sliderMovieList={item.sliderMovieList} />))}
             {/* {movieData.map(item => (<Slider id={item.id} sliderTitle={item.sliderTitle} sliderMovieList={item.sliderMovieList} />))} */}
             <Footer />

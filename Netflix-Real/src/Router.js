@@ -20,6 +20,8 @@ import { useDispatch } from "react-redux";
 import { setMovieTypes } from "./services/redux/actions";
 import { useSelector } from "react-redux";
 
+// import {socket} from "./services/socket/socket"
+
 //const socket = io.connect('http://localhost:8000');
 // const socket = io("localhost:8000", { transports: ["websocket"] });
 export default function WebRouter() {

@@ -11,9 +11,16 @@ import io from "socket.io-client";
 
 import { getMoviesByTypeAPI } from "../../services/api/movie";
 
-const GroupStreaming = ({ socket }) => {
-  const [username, setusername] = useState( Math.random());
-  const [roomname, setroomname] = useState("idgroup");
+// const socket = io("http://localhost:8000", { transports: ['websocket']});
+
+// This sets the room number on the client
+// var username = Math.random().toString(36).substr(2, 12);
+// var roomnum = Math.random().toString(36).substr(2, 12);
+import {socket} from "../../services/socket/socket"
+
+const GroupStreaming = () => {
+  const [username, setusername] = useState("Andy - " + Math.random().toString(36).substr(2, 5));
+  const [roomnum, setroomnum] = useState("22");
   const [openedChatBox, setOpenedChatBox] = useState(false);
 
   const [openedMovieRecommend, setOpenedMovieRecommend] = useState(true);
@@ -36,7 +43,6 @@ const GroupStreaming = ({ socket }) => {
               else {if (res.status == 400) {}}
           });
       });
-     
   }, [dataTypes])
 
   const handleOpenChatBox = () => {
@@ -47,8 +53,19 @@ const GroupStreaming = ({ socket }) => {
     console.log("openedMovieRecommend", openedMovieRecommend);
   }
   useEffect(() => {
-    const socket = io("localhost:8000", { transports: ["websocket"] });
-    socket.emit("joinRoom", { username, roomname });
+    // Join room
+    console.log("roomnum", roomnum);
+    socket.emit("joinRoom", { username, roomnum });
+    socket.emit('new room', { username, roomnum }, function(data) {
+        // // This should only call back if the client is the host
+        // console.log("data", data);
+        if (data) {
+            console.log("Host is syncing the new socket!")
+            // syncVideo(roomnum)
+        }
+    });
+
+  
   }, []);
   return (
     <div id='groupStreaming'>
@@ -62,7 +79,7 @@ const GroupStreaming = ({ socket }) => {
             }
           </div>
 
-          <VideoPlayer/>
+          <VideoPlayer socket={socket} roomnum={roomnum}/>
 
           <div id="movieRecommend"
             className={`${openedMovieRecommend ? '' : 'd-none'}`}
@@ -76,7 +93,7 @@ const GroupStreaming = ({ socket }) => {
 
           <Chat
             username={username}
-            roomname={roomname}
+            roomnum={roomnum}
             socket={socket}
             handleOpenMovieRecommend={handleOpenMovieRecommend}
           />

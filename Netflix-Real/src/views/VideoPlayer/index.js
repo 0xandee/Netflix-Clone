@@ -14,7 +14,7 @@ let count = 0;
 ///https://player.vimeo.com/external/194837908.sd.mp4?s=c350076905b78c67f74d7ee39fdb4fef01d12420&profile_id=164
 // http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4
 //https://drive.google.com/uc?export=download&id=1Cvk2XhYdSKAST4ecGQ6s1ra4MilvXuLC
-const VideoPlayer = () => {
+const VideoPlayer = ({socket, roomnum}) => {
     const history = useHistory(); // Navigate back to the previous state
     const [played, setPlayed] = useState(0);
     const [loaded, setLoaded] = useState(0);
@@ -23,7 +23,8 @@ const VideoPlayer = () => {
 
     const [muted, setMuted] = useState(false);
     const [seeking, setSeeking] = useState(false);
-    const [url, setUrl] = useState('https://drive.google.com/uc?export=download&id=1Cvk2XhYdSKAST4ecGQ6s1ra4MilvXuLC');
+    // const [url, setUrl] = useState('https://drive.google.com/uc?export=download&id=1Cvk2XhYdSKAST4ecGQ6s1ra4MilvXuLC');
+    const [url, setUrl] = useState('https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4');
     const [duration, setDuration] = useState(0);
     const [volume, setVolume] = useState(0.8);
     const playerRef = useRef(null);
@@ -250,6 +251,63 @@ const VideoPlayer = () => {
             document.removeEventListener("keyup", handleKeyUp)
         }
     }, [handleKeyDown, handleKeyUp]);
+
+
+
+    useEffect(() => {
+        let currTime = played
+        let state = playing
+
+        socket.emit('get host data', {
+            room: roomnum,
+            currTime: currTime,
+            state: state,
+            caller: socket.id
+        });
+
+        socket.on('getPlayerData', function(data) {
+            console.log("getPlayerData");
+            var roomnum = data.room
+            var caller = data.caller
+        
+            var currTime = played
+            var state = playing
+            console.log("currTime", currTime);
+            console.log("state", state);
+            socket.emit('get host data', {
+                room: roomnum,
+                currTime: currTime,
+                state: state,
+                caller: caller
+            });
+        });
+
+            // Uses the host data to compare
+        socket.on('compareHost', function(data) {
+            console.log("compareHost");
+            // The host data
+            var hostTime = data.currTime
+            var hostState = data.state
+
+            var currTime = played
+            var state = playing
+
+            // If out of sync
+            console.log("curr: " + currTime + " Host: " + hostTime)
+            if (currTime != hostTime) {
+                // disconnected()
+                console.log("CHANGE TIME");
+
+                setPlayed(hostTime);
+                setPlaying(hostState)
+            }
+        });
+
+        
+
+    })
+
+
     return (
         <div id={`videoPlayer`} onMouseMove={handleMouseMove} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}  style={{position: 'absolute', width: '100%', height: '100%'}}>
             <div ref={playerContainerRef} className={`video-player`} >

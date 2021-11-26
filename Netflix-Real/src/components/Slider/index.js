@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState, history } from "react";
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
 
@@ -15,7 +15,16 @@ import './Slider.scss';
 // install Swiper modules
 SwiperCore.use([Navigation]);
 
+
 const Slider = (props) => {
+    const history = useHistory();
+    const itemClicked = (data) => () => {
+        history.push({
+            pathname: `/detail/${data.id.toString()}`,
+            //search: `jbv=${data.id}`,
+            state: { item: data }
+        })
+    }
     return (
     <section className="thumbSection mb-3">
         <h2 className="thumbTitle my-3 ps-5 position-relative cursor-pointer d-inline">{props.sliderTitle}</h2>
@@ -31,11 +40,9 @@ const Slider = (props) => {
         className="swiper-container mt-3 px-5">  
         <div>
             {props.sliderMovieList.map(item => (
-                <SwiperSlide className="swiper-slide slide" onClick={props.handleMoreInfo}>
+                <SwiperSlide className="swiper-slide slide"  onClick={itemClicked(item)}>
                     <a className="thumbTile cursor-pointer" >
-                        <NavLink to='/detail'>
                             <img className="thumbTile__image" src={item.uri_avatar} alt={item.m_name}/>
-                        </NavLink>
                     </a>
                     {/* <div className="controlPlayer pl-4em"></div> */}
                 </SwiperSlide>))}

@@ -76,29 +76,33 @@ const NavigationBar = (props) => {
     }
 
     useEffect(() => {
-        
         const handleScroll = () => {
             currentScrollY = window.scrollY
             currentScrollY > 0 ? setOnTopPage(true) : setOnTopPage(false);
         };
-        
         window.addEventListener("scroll", handleScroll, { passive: true }); 
-        
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, []);
+
+
+    const btnGroupAddClicked = () => {
         ///////////////////////////////////////////////////////////////////
-        const socket = io("http://localhost:8000", { transports: ['websocket']});
-        
-        socket.on("connect", () => {
-            console.log("socket_id", socket.id); // "G5p5..."
-          });
+        // const socket = io("http://localhost:8000", { transports: ['websocket']});
 
-        var username = Math.random().toString(36).substr(2, 12);
-        // This sets the room number on the client
-        // var roomnum = Math.random().toString(36).substr(2, 12);
-        var roomnum = "NICEROOM";
-
-        console.log("username", username);
-        console.log("roomnum", roomnum);
-        console.log("HOLY SHIT");
+        // // This sets the room number on the client
+        // // var username = Math.random().toString(36).substr(2, 12);
+        // // var roomnum = Math.random().toString(36).substr(2, 12);
+        // var username = "Andy" + Math.random().toString(36).substr(1, 3);
+        // var roomnum = "VIP-1";
+        // // Join room
+        // socket.emit('new room', {username, roomnum}, function(data) {
+        //     // This should only call back if the client is the host
+        //     console.log("data", data);
+        //     if (data) {
+        //         console.log("Host is syncing the new socket!")
+        //         // syncVideo(roomnum)
+        //     }
+        // });
         
         // socket.emit("joinRoom", { username, roomname });
 
@@ -109,50 +113,6 @@ const NavigationBar = (props) => {
         //     }
         // });
 
-        // Join room
-        socket.emit('new room', {username, roomnum}, function(data) {
-            // This should only call back if the client is the host
-            console.log("data", data);
-            if (data) {
-                console.log("Host is syncing the new socket!")
-                // syncVideo(roomnum)
-            }
-        });
-
-        return () => window.removeEventListener("scroll", handleScroll);
-    }, []);
-
-
-    const btnGroupAddClicked = () => {
-    //     const socket = io("http://localhost:8000", { transports: ['websocket']});
-        
-    //     socket.on("connect", () => {
-    //         console.log(socket.id); // "G5p5..."
-    //       });
-
-    //     var username = Math.random().toString(36).substr(2, 12);
-    //     // This sets the room number on the client
-    //     var roomnum = Math.random().toString(36).substr(2, 12);
-
-    //     console.log("username", username);
-    //     console.log("roomnum", roomnum);
-    //     console.log("HOLY SHIT");
-        
-    //     socket.emit("joinRoom", { username, roomname });
-    //     socket.emit("new user", username, function(data) {
-    //         console.log("data", data);
-    //         if (data) {
-    //             // history.pushState('', 'Vynchronize', roomnum);
-    //         }
-    //     });
-    //     // Join room
-    //     socket.emit('new room', roomnum, function(data) {
-    //         // This should only call back if the client is the host
-    //         if (data) {
-    //             console.log("Host is syncing the new socket!")
-    //             // syncVideo(roomnum)
-    //         }
-    //     });
     }
     // var $userForm = $('#user-form');
     // $userForm.submit(function(e) {
@@ -234,9 +194,11 @@ const NavigationBar = (props) => {
                     }
                 </div>
                 <div className='secondary-navigation'>
-                    <div style={{paddingRight: '3rem', cursor: 'pointer'}}>
-                        <Icon.Plus onClick={btnGroupAddClicked} className='icon-style' style={{color: 'white'}}/>
-                    </div>
+                    <Link to='/watchgroup/1'>
+                        <div style={{paddingRight: '3rem', cursor: 'pointer'}}>
+                            <Icon.Plus onClick={btnGroupAddClicked} className='icon-style' style={{color: 'white'}}/>
+                        </div>
+                    </Link>
                     {/* <form id='user-form' style={{paddingRight: '3rem', cursor: 'pointer'}}>
                         <input type="submit" value="Create Room" className='icon-style' style={{color: 'white'}}/>
                     </form> */}
