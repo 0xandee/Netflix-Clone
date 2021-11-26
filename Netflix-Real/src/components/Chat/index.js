@@ -5,7 +5,8 @@ import React, { useState, useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
 import io from "socket.io-client";
 //gets the data from the action object and reducers defined earlier
-function Chat({ username, roomname, socket, handleOpenMovieRecommend}) {
+function Chat({ username, roomnum, socket, handleOpenMovieRecommend}) {
+  console.log("roomnum", roomnum);
   console.log("socket", socket.id);
   const [text, setText] = useState("");
   const [messages, setMessages] = useState([]);
@@ -49,10 +50,12 @@ function Chat({ username, roomname, socket, handleOpenMovieRecommend}) {
   }, [socket]);
 
   const sendData = () => {
+
+    console.log("text", text);
     if (text !== "") {
       //encrypt the message here
-      // const ans = to_Encrypt(text, username, roomname);
-      socket.emit("chat", text, username, roomname);
+      // const ans = to_Encrypt(text, username, roomnum);
+      socket.emit("chat", text, username, roomnum);
       // socket.emit("chat", ans);
       setText("");
     }
