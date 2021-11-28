@@ -75,7 +75,7 @@ const VideoPlayer = ({socket, roomnum}) => {
     }
 
     const handleVideoOnReady = () => {
-        console.log('loading')
+        // console.log('loading')
     }
 
     const handleVolumeChange = () => {
@@ -255,57 +255,62 @@ const VideoPlayer = ({socket, roomnum}) => {
 
 
     useEffect(() => {
-        let currTime = played
-        let state = playing
-
-        socket.emit('get host data', {
-            room: roomnum,
-            currTime: currTime,
-            state: state,
-            caller: socket.id
-        });
-
-        socket.on('getPlayerData', function(data) {
-            console.log("getPlayerData");
-            var roomnum = data.room
-            var caller = data.caller
         
-            var currTime = played
-            var state = playing
-            console.log("currTime", currTime);
-            console.log("state", state);
-            socket.emit('get host data', {
-                room: roomnum,
-                currTime: currTime,
-                state: state,
-                caller: caller
-            });
-        });
-
-            // Uses the host data to compare
-        socket.on('compareHost', function(data) {
-            console.log("compareHost");
-            // The host data
-            var hostTime = data.currTime
-            var hostState = data.state
-
-            var currTime = played
-            var state = playing
-
-            // If out of sync
-            console.log("curr: " + currTime + " Host: " + hostTime)
-            if (currTime != hostTime) {
-                // disconnected()
-                console.log("CHANGE TIME");
-
-                setPlayed(hostTime);
-                setPlaying(hostState)
-            }
-        });
-
         
+    }, [played, playing])
+    
+    let currTime = played
+    let state = playing
 
-    })
+    console.log("played 1 ", played);
+    socket.emit('get host data', {
+        room: roomnum,
+        currTime: currTime,
+        state: state,
+        caller: socket.id
+    });
+    console.log("played 2 ", played);
+
+    // Uses the host data to compare
+    socket.on('compareHost', function(data) {
+        console.log("compareHost");
+        // The host data
+        var hostTime = data.currTime
+        var hostState = data.state
+
+        var currTime = played
+        var state = playing
+
+        console.log("FIRST curr: " + currTime + " Host: " + hostTime + " State: " + data.state)
+        // If out of sync
+        if (currTime != hostTime) {
+            // disconnected()
+            setPlayed(parseInt(hostTime));
+            setPlaying(hostState);
+            console.log("AFTER curr: " + played + " Host: " + hostTime + " State: " + playing)
+        }
+    });
+
+    // useEffect(() => {
+    //     socket.on('getPlayerData', function(data) {
+    //         console.log("getPlayerData");
+    //         var roomnum = data.room
+    //         var caller = data.caller
+        
+    //         var currTime = played
+    //         var state = playing
+    //         console.log("currTime", currTime);
+    //         console.log("state", state);
+    //         socket.emit('get host data', {
+    //             room: roomnum,
+    //             currTime: currTime,
+    //             state: state,
+    //             caller: caller
+    //         });
+    //     });
+    // })
+
+
 
 
     return (

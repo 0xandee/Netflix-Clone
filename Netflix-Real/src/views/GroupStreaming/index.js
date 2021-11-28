@@ -18,9 +18,11 @@ import { getMoviesByTypeAPI } from "../../services/api/movie";
 // var roomnum = Math.random().toString(36).substr(2, 12);
 import {socket} from "../../services/socket/socket"
 
+
 const GroupStreaming = () => {
-  const [username, setusername] = useState("Andy - " + Math.random().toString(36).substr(2, 5));
-  const [roomnum, setroomnum] = useState("22");
+  const random = "Andy" + Math.random().toString(36).substr(2, 5);
+  const [username, setusername] = useState(random);
+  const [roomnum, setroomnum] = useState("26");
   const [openedChatBox, setOpenedChatBox] = useState(false);
 
   const [openedMovieRecommend, setOpenedMovieRecommend] = useState(true);

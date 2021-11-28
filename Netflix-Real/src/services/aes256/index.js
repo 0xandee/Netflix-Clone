@@ -12,9 +12,9 @@ export const to_Encrypt = (text) => {
 
 //welcome message is not decrypted
 export const to_Decrypt = (cipher, username) => {
-  // if (cipher === undefined){
-  //   return;
-  // }
+  if (cipher === undefined){
+    return;
+  }
   if (cipher.startsWith("Welcome")) {
     return cipher;
   }
