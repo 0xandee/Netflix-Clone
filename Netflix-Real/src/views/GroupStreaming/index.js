@@ -1,6 +1,6 @@
 import React, { createRef, useCallback, useEffect, useRef, useState } from "react";
 import { useSelector, useDispatch } from 'react-redux';
-import { MoreLikeThis, Slider } from "../../components";
+import { MoreLikeThis, SliderStreaming } from "../../components";
 import { Row, Col, Container } from 'reactstrap'
 import './style.scss';
 import VideoPlayer from "../VideoPlayer";
@@ -28,6 +28,8 @@ const GroupStreaming = () => {
   const [openedMovieRecommend, setOpenedMovieRecommend] = useState(true);
   const [genreMovies, setGenreMovies] = useState([]);
 
+  const [movieURL, setMovieURL] = useState('')
+
   let dataTypes = useSelector((state) => state?.rootReducer.movieTypes)
   var movieDataGenres = [];
   useEffect(() => {
@@ -54,6 +56,14 @@ const GroupStreaming = () => {
     setOpenedMovieRecommend(!openedMovieRecommend)
     console.log("openedMovieRecommend", openedMovieRecommend);
   }
+  const handleMovieUrlClick = (data) => {
+    // setMovieURL(data);
+    setMovieURL('https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4');
+    let movieURL = 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4';
+    socket.emit('set movie', { username, roomnum, movieURL});
+    handleOpenMovieRecommend()
+  }
+  
   useEffect(() => {
     // Join room
     console.log("roomnum", roomnum);
@@ -66,6 +76,13 @@ const GroupStreaming = () => {
             // syncVideo(roomnum)
         }
     });
+    
+    socket.on('isHost', function(data) {
+      console.log("I am not a host");
+      if (!data.isHost) {
+        handleOpenMovieRecommend()
+      }
+    })
 
   
   }, []);
@@ -81,12 +98,12 @@ const GroupStreaming = () => {
             }
           </div>
 
-          <VideoPlayer socket={socket} roomnum={roomnum}/>
+          <VideoPlayer socket={socket} roomnum={roomnum} movieURL={movieURL}/>
 
           <div id="movieRecommend"
             className={`${openedMovieRecommend ? '' : 'd-none'}`}
             style={{position: 'absolute', width: '100%', height: '100%', backgroundColor: '#242526', zIndex: 3, overflowX: 'hidden', paddingTop: '40px'}}>
-              {genreMovies.map(item => (<Slider id={item.id} sliderTitle={item.sliderTitle} sliderMovieList={item.sliderMovieList} />))}
+              {genreMovies.map(item => (<SliderStreaming id={item.id} sliderTitle={item.sliderTitle} sliderMovieList={item.sliderMovieList} handleMovieUrlClick={handleMovieUrlClick} />))}
           </div>
 
         </div>
