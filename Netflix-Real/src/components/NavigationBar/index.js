@@ -7,7 +7,7 @@ import * as Icon from 'react-feather';
 import CustomNotification from '../CustomNotification';
 import CustomDropdown from '../Dropdown';
 import { IconNetflix } from '../../assets/Icon';
-import $ from 'jquery'; 
+
 import io from "socket.io-client";
 
 
@@ -87,9 +87,7 @@ const NavigationBar = (props) => {
         ///////////////////////////////////////////////////////////////////
         const socket = io("http://localhost:8000", { transports: ['websocket']});
         
-        socket.on("connect", () => {
-            console.log("socket_id", socket.id); // "G5p5..."
-          });
+      
 
         var username = Math.random().toString(36).substr(2, 12);
         // This sets the room number on the client

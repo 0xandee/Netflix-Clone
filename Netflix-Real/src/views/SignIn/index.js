@@ -103,8 +103,8 @@ const SignIn = (props) => {
                                     <input type='checkbox' />
                                     <span> Remember Me</span>
                                 </span>
-                                <NavLink to='/help' >
-                                    Need Help?
+                                <NavLink to='/forgot-password' >
+                                    Forgot password ?
                                 </NavLink>
                             </span>
                             <div style={{ display: 'flex', flexDirection: 'row', color: '#c8c8c8', size: '14', marginTop: '40px', justifyContent: 'center' }}>

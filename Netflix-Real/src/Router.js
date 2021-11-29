@@ -55,6 +55,10 @@ export default function WebRouter() {
                         <VideoPlayer />
                     </Route>
 
+                    <Route path="/forgot-password">
+                        <ForgotPassword />
+                    </Route>
+
                     {/* Watch Video In Group */}
                     <Route path="/watchgroup/:idgroup">
                         <GroupStreaming />

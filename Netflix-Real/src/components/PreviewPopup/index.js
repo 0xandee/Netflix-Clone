@@ -17,11 +17,7 @@ const PreviewPopup = (props) => {
     const history = useHistory();
 
 
-    useEffect(() => {
-        if (idMovie.toString().length < 17)
-            history.push('/error')
-        else
-
+    useEffect(() => {     
             getMovieAPI(to_Decrypt(idMovie.toString()), async (res) => {
                 console.log("🚀 ~ file: index.js ~ line 85 ~ getMoviesByTypeAPI ~ res", res)
                 if (res.status == 200) {

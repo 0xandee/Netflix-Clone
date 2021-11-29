@@ -10,9 +10,7 @@ const SignUpNavigationBar = (props) => {
             <div className={`registration__header__container`}>
                 <IconNetflix className={'registration__header__logo'} />
             </div>
-            <Link >
-                Sign Out
-            </Link>
+           
         </div>
     );
 
