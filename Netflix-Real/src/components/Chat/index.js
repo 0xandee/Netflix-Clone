@@ -3,8 +3,11 @@ import { to_Decrypt, to_Encrypt } from "../../services/aes256";
 import { process } from "./store/actions";
 import React, { useState, useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
+import io from "socket.io-client";
 //gets the data from the action object and reducers defined earlier
-function Chat({ username, roomname, socket, handleOpenMovieRecommend}) {
+function Chat({ username, roomnum, socket, handleOpenMovieRecommend}) {
+  console.log("roomnum", roomnum);
+  console.log("socket", socket.id);
   const [text, setText] = useState("");
   const [messages, setMessages] = useState([]);
   const avatar = 'https://occ-0-325-3996.1.nflxso.net/dnm/api/v6/K6hjPJd6cR6FpVELC5Pd6ovHRSk/AAAABYnnca7HCf0z4YHtIK5R8MIGCeMyodAsxBYSBmMkYHqjSw46VWWyNQirfwxT-CkbxPkp-G84Wu-iOMwGG-r9QAs.png?r=f71'
@@ -28,15 +31,32 @@ function Chat({ username, roomname, socket, handleOpenMovieRecommend}) {
         text: ans,
       });
       setMessages([...temp]);
+      console.log("[...temp]", [...temp]);
+    });
+
+    socket.on("new message", (data) => {
+      //decypt the message
+      // const ans = to_Decrypt(data.text, data.username);
+      // dispatchProcess(false, ans, data.text);
+      // console.log(ans);
+      // let temp = messages;
+      // temp.push({
+      //   userId: data.userId,
+      //   username: data.username,
+      //   text: ans,
+      // });
+      // setMessages([...temp]);
     });
   }, [socket]);
 
   const sendData = () => {
+
+    console.log("text", text);
     if (text !== "") {
-      
       //encrypt the message here
-      const ans = to_Encrypt(text);
-      socket.emit("chat", ans);
+      // const ans = to_Encrypt(text, username, roomnum);
+      socket.emit("chat", text, username, roomnum);
+      // socket.emit("chat", ans);
       setText("");
     }
   };

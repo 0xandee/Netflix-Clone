@@ -14,7 +14,7 @@ let count = 0;
 ///https://player.vimeo.com/external/194837908.sd.mp4?s=c350076905b78c67f74d7ee39fdb4fef01d12420&profile_id=164
 // http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4
 //https://drive.google.com/uc?export=download&id=1Cvk2XhYdSKAST4ecGQ6s1ra4MilvXuLC
-const VideoPlayer = () => {
+const VideoPlayer = ({socket, roomnum, videoURL}) => {
     const history = useHistory(); // Navigate back to the previous state
     const [played, setPlayed] = useState(0);
     const [loaded, setLoaded] = useState(0);
@@ -23,7 +23,9 @@ const VideoPlayer = () => {
 
     const [muted, setMuted] = useState(false);
     const [seeking, setSeeking] = useState(false);
-    const [url, setUrl] = useState('https://drive.google.com/uc?export=download&id=1Cvk2XhYdSKAST4ecGQ6s1ra4MilvXuLC');
+    // const [url, setUrl] = useState('https://drive.google.com/uc?export=download&id=1Cvk2XhYdSKAST4ecGQ6s1ra4MilvXuLC');
+    // const [url, setUrl] = useState('https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4');
+    const [url, setUrl] = useState(videoURL);
     const [duration, setDuration] = useState(0);
     const [volume, setVolume] = useState(0.8);
     const playerRef = useRef(null);
@@ -74,7 +76,7 @@ const VideoPlayer = () => {
     }
 
     const handleVideoOnReady = () => {
-        console.log('loading')
+        // console.log('loading')
     }
 
     const handleVolumeChange = () => {
@@ -134,7 +136,9 @@ const VideoPlayer = () => {
     }
 
     const handleVideoDuration = (duration) => {
-        setDuration(duration);
+        if (typeof(url) != 'undefined'){
+            setDuration(duration);
+        }
     }
 
     const handlePlayedDown = () => {
@@ -142,6 +146,12 @@ const VideoPlayer = () => {
 
     const handlePlayedUp = (e) => {
         playerRef.current.seekTo(parseFloat(e.target.value))
+        // socket.emit('get host data', {
+        //     room: roomnum,
+        //     currTime: e.target.value,
+        //     state: playing,
+        //     caller: socket.id
+        // });
     }
 
     const handleRewind = useCallback(() => {
@@ -250,6 +260,88 @@ const VideoPlayer = () => {
             document.removeEventListener("keyup", handleKeyUp)
         }
     }, [handleKeyDown, handleKeyUp]);
+    
+    useEffect(() => {
+        socket.emit('get host data', {
+            room: roomnum,
+            currTime: played,
+            state: playing,
+            caller: socket.id
+        });
+    }, [seeking, playing])
+    // })
+    
+
+    // const syncHost = () => {
+        // socket.emit('get host data', {
+        //     room: roomnum,
+        //     currTime: played,
+        //     state: playing,
+        //     caller: socket.id
+        // });
+    // }
+
+    // Uses the host data to compare
+    socket.on('compareHost', function(data) {
+        console.log("compareHost");
+        // // The host data
+        var hostTime = data.currTime
+        var hostState = data.state
+
+        var clientTime = played
+        var clientState = playing
+
+        var isHost = data.host == socket.id
+
+        if (data.currVideo != url){
+            setUrl(data.currVideo)
+        }
+
+        // // If out of sync
+        // console.log("currTime != hostTime", clientTime != hostTime);
+        // console.log("state != hostState", clientState != hostState);
+        // console.log("isHost", isHost);
+        // console.log("CURRENT curr: " + clientTime + " State: " + clientState)
+        // console.log("HOST curr: " + hostTime + " State: " + hostState)
+        if (clientTime != hostTime || clientState != hostState) {
+            if (!isHost) {
+                // disconnected()
+                console.log("playerRef", playerRef);
+                console.log("duration", duration);
+                if (playerRef.current !== null && duration !== undefined){
+                    console.log("played", played);
+                    console.log("hostTime", hostTime);
+                    setPlayed(hostTime);
+                    playerRef.current.seekTo(hostTime, 'fraction')
+                    setPlaying(hostState);
+                }
+                // console.log("AFTER CHANGE curr: " + played + " State: " + playing)
+            }
+        }
+    });
+
+    // useEffect(() => {
+    //     socket.on('getPlayerData', function(data) {
+    //         console.log("getPlayerData");
+    //         var roomnum = data.room
+    //         var caller = data.caller
+        
+    //         var currTime = played
+    //         var state = playing
+    //         console.log("currTime", currTime);
+    //         console.log("state", state);
+    //         socket.emit('get host data', {
+    //             room: roomnum,
+    //             currTime: currTime,
+    //             state: state,
+    //             caller: caller
+    //         });
+    //     });
+    // })
+
+
+
+
     return (
         <div id={`videoPlayer`} onMouseMove={handleMouseMove} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}  style={{position: 'absolute', width: '100%', height: '100%'}}>
             <div ref={playerContainerRef} className={`video-player`} >
@@ -263,7 +355,6 @@ const VideoPlayer = () => {
                         onReady={handleVideoOnReady}
                         playing={playing}
                         controls={false}
-
 
                         volume={volume}
                         muted={muted}
@@ -288,8 +379,8 @@ const VideoPlayer = () => {
                     transition: 'all 0.5s'
                 }}>
 
-                    <div className={`video-player__top`} onClick={() => history.goBack()} style={{zIndex: '4', justifyContent: "space-between"}}>
-                        <div className={`video-player__top__icon-container`}>
+                    <div className={`video-player__top`} style={{zIndex: '4', justifyContent: "space-between"}}>
+                        <div className={`video-player__top__icon-container`} onClick={() => history.goBack()}>
                             <IconBackArrow className={'video-player__top__icon-back'} />
                             <span>Back to Browse</span>
                         </div>
@@ -381,6 +472,13 @@ const VideoPlayer = () => {
                                             onChange={handleVolumeChange}
                                             onMouseUp={handleVolumeUp} />
                                     </div>
+                                    {/* <div style={{padding: '6px 6px'}}>
+                                        <button
+                                            style={{ fontSize: "1rem",fontWeight: "bold",paddingRight: "0.5rem", float: "right", borderRadius: "8px", backgroundColor: "rgb(183, 7, 16)", padding: "12px 12px", border: "none", color: 'white' }}
+                                            onClick={syncHost}>
+                                            Sync
+                                        </button>
+                                    </div> */}
 
 
                                 </div>

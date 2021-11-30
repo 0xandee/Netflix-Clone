@@ -1,6 +1,6 @@
 import React, { createRef, useCallback, useEffect, useRef, useState } from "react";
 import { useSelector, useDispatch } from 'react-redux';
-import { MoreLikeThis, Slider } from "../../components";
+import { MoreLikeThis, SliderStreaming } from "../../components";
 import { Row, Col, Container } from 'reactstrap'
 import './style.scss';
 import VideoPlayer from "../VideoPlayer";
@@ -11,13 +11,24 @@ import io from "socket.io-client";
 
 import { getMoviesByTypeAPI } from "../../services/api/movie";
 
-const GroupStreaming = ({ socket }) => {
-  const [username, setusername] = useState( Math.random());
-  const [roomname, setroomname] = useState("idgroup");
+// const socket = io("http://localhost:8000", { transports: ['websocket']});
+
+// This sets the room number on the client
+// var username = Math.random().toString(36).substr(2, 12);
+// var roomnum = Math.random().toString(36).substr(2, 12);
+import {socket} from "../../services/socket/socket"
+
+
+const GroupStreaming = () => {
+  const random = "Andy" + Math.random().toString(36).substr(2, 5);
+  const [username, setusername] = useState(random);
+  const [roomnum, setroomnum] = useState("26");
   const [openedChatBox, setOpenedChatBox] = useState(false);
 
   const [openedMovieRecommend, setOpenedMovieRecommend] = useState(true);
   const [genreMovies, setGenreMovies] = useState([]);
+
+  const [movieURL, setMovieURL] = useState('')
 
   let dataTypes = useSelector((state) => state?.rootReducer.movieTypes)
   var movieDataGenres = [];
@@ -36,7 +47,6 @@ const GroupStreaming = ({ socket }) => {
               else {if (res.status == 400) {}}
           });
       });
-     
   }, [dataTypes])
 
   const handleOpenChatBox = () => {
@@ -46,9 +56,35 @@ const GroupStreaming = ({ socket }) => {
     setOpenedMovieRecommend(!openedMovieRecommend)
     console.log("openedMovieRecommend", openedMovieRecommend);
   }
+  const handleMovieUrlClick = (data) => {
+    // setMovieURL(data);
+    setMovieURL('https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4');
+    let movieURL = 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4';
+    socket.emit('set movie', { username, roomnum, movieURL});
+    handleOpenMovieRecommend()
+  }
+  
   useEffect(() => {
-    const socket = io("localhost:8000", { transports: ["websocket"] });
-    socket.emit("joinRoom", { username, roomname });
+    // Join room
+    console.log("roomnum", roomnum);
+    socket.emit("joinRoom", { username, roomnum });
+    socket.emit('new room', { username, roomnum }, function(data) {
+        // // This should only call back if the client is the host
+        // console.log("data", data);
+        if (data) {
+            console.log("Host is syncing the new socket!")
+            // syncVideo(roomnum)
+        }
+    });
+    
+    socket.on('isHost', function(data) {
+      console.log("I am not a host");
+      if (!data.isHost) {
+        handleOpenMovieRecommend()
+      }
+    })
+
+  
   }, []);
   return (
     <div id='groupStreaming'>
@@ -62,12 +98,12 @@ const GroupStreaming = ({ socket }) => {
             }
           </div>
 
-          <VideoPlayer/>
+          <VideoPlayer socket={socket} roomnum={roomnum} movieURL={movieURL}/>
 
           <div id="movieRecommend"
             className={`${openedMovieRecommend ? '' : 'd-none'}`}
             style={{position: 'absolute', width: '100%', height: '100%', backgroundColor: '#242526', zIndex: 3, overflowX: 'hidden', paddingTop: '40px'}}>
-              {genreMovies.map(item => (<Slider id={item.id} sliderTitle={item.sliderTitle} sliderMovieList={item.sliderMovieList} />))}
+              {genreMovies.map(item => (<SliderStreaming id={item.id} sliderTitle={item.sliderTitle} sliderMovieList={item.sliderMovieList} handleMovieUrlClick={handleMovieUrlClick} />))}
           </div>
 
         </div>
@@ -76,7 +112,7 @@ const GroupStreaming = ({ socket }) => {
 
           <Chat
             username={username}
-            roomname={roomname}
+            roomnum={roomnum}
             socket={socket}
             handleOpenMovieRecommend={handleOpenMovieRecommend}
           />

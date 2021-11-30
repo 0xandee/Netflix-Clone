@@ -33,7 +33,6 @@ const MoviesPage = (props) => {
     }
 
     const itemClicked = (data) => () => {
-
         history.push({
             pathname: `/detail/${data.id.toString()}`,
             //search: `jbv=${data.id}`,

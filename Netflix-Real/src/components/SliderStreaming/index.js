@@ -17,13 +17,10 @@ SwiperCore.use([Navigation]);
 
 
 const Slider = (props) => {
-    const history = useHistory();
+    
     const itemClicked = (data) => () => {
-        history.push({
-            pathname: `/detail/${data.id.toString()}`,
-            //search: `jbv=${data.id}`,
-            state: { item: data }
-        })
+        props.handleMovieUrlClick(data.m_name);
+        // console.log("data", data);
     }
     return (
     <section className="thumbSection mb-3">

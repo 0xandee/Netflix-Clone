@@ -100,7 +100,7 @@ const CustomDropdown = () => {
                   </Link>
                 </div>
                 <div className="dropdown-account-item">
-                  <Link to='/watchgroup' className='profile-link'>
+                  <Link to={userProfile} className='profile-link'>
                     <span className='profile-name account-link'>
                       Help Center
                     </span>

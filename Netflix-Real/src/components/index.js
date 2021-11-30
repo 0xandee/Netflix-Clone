@@ -21,6 +21,7 @@ import PreviewInfo from './PreviewInfo';
 import PreviewPlayer from './PreviewPlayer';
 import PreviewPopup from './PreviewPopup';
 import Slider from './Slider';
+import SliderStreaming from './SliderStreaming';
 import SignUpNavigationBar from './SignUpNavigationBar';
 import LanguageItem from './LanguageItem';
 import OnboardingMovieItem from './OnboardingMovieItem';
@@ -41,6 +42,6 @@ export {
     MoreLikeThis, MoreLikeThisItem, MuteButton,
     NavigationBar, SignUpNavigationBar,
     PlayButton, PreviewPopup, PreviewPlayer, PreviewButtonControl, PreviewInfo,
-    Slider, SliderGrid, BannerSlider,
+    Slider, SliderStreaming, SliderGrid, BannerSlider,
     GeneralProfile,ChangePasswordProfile
 }

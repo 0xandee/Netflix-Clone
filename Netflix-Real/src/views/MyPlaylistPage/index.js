@@ -59,13 +59,13 @@ const MyPlaylistPage = (props) => {
             else {
                 if (res.status === 403) {
                     requestRefreshToken(refresh_token, async (res) => {
-                        console.log("🚀 ~ file: index.js ~ line 62 ~ requestRefreshToken ~ refresh_token", refresh_token)
-                        console.log("🚀 ~ file: index.js ~ line 62 ~ requestRefreshToken ~ refresh_token", res.data.access_token)
-                        console.log("🚀 ~ file: index.js ~ line 66 ~ requestRefreshToken ~ res", res)
-                        if (res.status == 200) {
-                            setAccessToken(res.data.access_token)
-                            localStorage.setItem("access_token", res.data.access_token);
-                        }
+                        // console.log("🚀 ~ file: index.js ~ line 62 ~ requestRefreshToken ~ refresh_token", refresh_token)
+                        // console.log("🚀 ~ file: index.js ~ line 62 ~ requestRefreshToken ~ refresh_token", res.data.access_token)
+                        // console.log("🚀 ~ file: index.js ~ line 66 ~ requestRefreshToken ~ res", res)
+                        // if (res.status == 200) {
+                        //     setAccessToken(res.data.access_token)
+                        //     localStorage.setItem("access_token", res.data.access_token);
+                        // }
                     })
 
                 }
