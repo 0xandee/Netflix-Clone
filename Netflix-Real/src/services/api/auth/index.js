@@ -3,31 +3,7 @@ import { authApi } from './configUrl'
 var requestHeaders = new Headers();
 requestHeaders.append("Content-Type", "application/json");
 
-export const requestRegister = async (dataRegister, callback) => {
-    // var raw = JSON.stringify({
-    //     email: dataRegister.email,
-    //     password: dataRegister.password,
-    //     gender: dataRegister.gender.value,
-    //     dob: dataRegister.dob,
-    //     role: 1,
-    //     country: dataRegister.country.value
-    // });
-    // var requestOptions = {
-    //     method: 'POST',
-    //     headers: requestHeaders,
-    //     body: raw,
-    //     redirect: 'follow'
-    // };
-    // console.log("🚀 ~ file: index.js ~ line 23 ~ requestRegister ~ requestOptions", requestOptions)
-
-    // await fetch(authApi.urlRegister, requestOptions)
-    //     .then(response => response.text())
-    //     .then(result =>
-    //         callback(JSON.parse(result))
-    //     )
-    //     .catch(error => {
-    //         callback('error', error)
-    //     })
+export const requestRegister = async (dataRegister) => {
     return new Promise((resolve, reject) => {
         fetch(authApi.urlRegister, {
             crossDomain: true,
@@ -44,8 +20,6 @@ export const requestRegister = async (dataRegister, callback) => {
             })
         })
             .then(response => {
-                // console.log("🚀 ~ file: index.js ~ line 47 ~ returnnewPromise ~ response", response)
-                //     if (!response.ok) return reject(response.ok)
                 resolve(response)
             })
             .catch(error => {
@@ -54,26 +28,25 @@ export const requestRegister = async (dataRegister, callback) => {
     })
 }
 
-export const requestLogin = async (username, password, callback) => {
-    var rawBody = JSON.stringify({
-        username,
-        password
-    });
-    var requestOptions = {
-        method: 'POST',
-        headers: requestHeaders,
-        body: rawBody,
-        redirect: 'follow'
-    };
-
-    await fetch(authApi.urlLogin, requestOptions)
-        .then(response => response.text())
-        .then(result =>
-            callback(JSON.parse(result))
-        )
-        .catch(error =>
-            callback('error', error)
-        )
+export const requestLogin = async (username, password) => {
+    return new Promise((resolve, reject) => {
+        fetch(authApi.urlLogin, {
+            crossDomain: true,
+            method: "POST",
+            mode: 'cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                email : username,
+                password
+            })
+        })
+            .then(response => {
+                resolve(response)
+            })
+            .catch(error => {
+                reject(error)
+            });
+    })
 }
 
 export const requestLogout = async (refresh_token, callback) => {

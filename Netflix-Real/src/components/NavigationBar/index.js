@@ -46,6 +46,7 @@ const NavigationBar = (props) => {
     const [width, height] = useWindowSize();
 
     const onBlurSearchInput = () => {
+
         textInput.current.blur()
         setIsShown(false)
     }

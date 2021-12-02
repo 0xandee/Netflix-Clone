@@ -91,8 +91,7 @@ const RegistrationForm = () => {
             setIsPasswordError(true)
         }
 
-        else {
-            console.log("🚀 ~ file: index.js ~ line 133 ~ nextClicked ~ else")
+        else {         
             try {
                 setIsPasswordError(false)
                 // const passEncrypt = to_Encrypt(password);

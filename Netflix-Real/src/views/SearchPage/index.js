@@ -12,11 +12,8 @@ import { searchMovieByNameApi } from "../../services/api/search";
 
 
 const SearchPage = (props) => {
-    const location = useLocation()
-    const { idGenre } = useParams()
     const query = new URLSearchParams(useLocation().search)
     const history = useHistory();
-    const [currentScrollY, setCurrentScrollY] = useState(0);
     const [dataApiMovies, setDataApiMovies] = useState([]);
     const [genreMovies, setGenreMovies] = useState([]);
     const [isFetching, setIsFetching] = useState(false);
@@ -25,7 +22,7 @@ const SearchPage = (props) => {
     const itemClicked = (data) => () => {
 
         history.push({
-            pathname: `/detail/${to_Encrypt(data.id.toString())}`,
+            pathname: `/detail/${data.id.toString()}`,
             //search: `jbv=${data.id}`,
             state: { item: data }
         })
@@ -101,7 +98,7 @@ const SearchPage = (props) => {
                             </div>
                         )
                             :
-                            <div style={{ color: 'white', fontWeight: "bold", fontSize: '24px' }} >You don't have any movie in your playlist yet</div>
+                            <div style={{ color: 'white', fontWeight: "bold", fontSize: '24px' }} >No results found</div>
                         }
 
                     </div>

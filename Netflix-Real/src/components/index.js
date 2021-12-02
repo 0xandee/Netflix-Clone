@@ -23,7 +23,7 @@ import PreviewPopup from './PreviewPopup';
 import Slider from './Slider';
 import SliderStreaming from './SliderStreaming';
 import SignUpNavigationBar from './SignUpNavigationBar';
-import LanguageItem from './LanguageItem';
+import GenreItem from './GenreItem';
 import OnboardingMovieItem from './OnboardingMovieItem';
 import BigBanner from './BigBanner';
 import SliderGrid from './SliderGrid';
@@ -36,7 +36,7 @@ export {
     About, AddButton, 
     CloseButton, CustomInput, CustomNotification,
     DetailInfo, DislikeButton, Dropdown,
-    Episodes, EpisodeItem, DropdownSelector, LanguageItem, OnboardingMovieItem, BigBanner,
+    Episodes, EpisodeItem, DropdownSelector, GenreItem, OnboardingMovieItem, BigBanner,
     Footer,
     LikeButton,
     MoreLikeThis, MoreLikeThisItem, MuteButton,
