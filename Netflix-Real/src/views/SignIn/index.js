@@ -1,7 +1,7 @@
 import React, { useState, Component } from "react";
 import './signIn.scss'
 import * as Icon from 'react-feather';
-import { NavLink, useHistory, Redirect  } from "react-router-dom";
+import { NavLink, useHistory, Redirect } from "react-router-dom";
 import { CustomInput, Footer } from "../../components";
 import { IconNetflix } from "../../assets/Icon";
 
@@ -20,7 +20,7 @@ const SignIn = (props) => {
     const [errorTextEmail, setErrorTextEmail] = useState('Please enter a valid email')
     const [errorTextPassword, setErrorTextPassword] = useState('Password must be between 6 to 20 characters which contain at least one numeric digit, one uppercase and one lowercase letter')
 
-    const signInClick = event => {
+    const signInClick = async () => {
         var errorCheck = false;
         if (username == "") {
             setIsEmailError(true);
@@ -36,25 +36,26 @@ const SignIn = (props) => {
             setIsPasswordError(false)
         }
         if (!errorCheck) {
-        // const passEncrypt = to_Encrypt(password);
-        requestLogin(username, password, async (res) => {
-            
-            console.log("🚀 ~ file: index.js ~ line 31 ~ requestLogin ~ res", res)
-            localStorage.setItem("access_token", 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZHVzZXIiOjEyLCJ1c2VybmFtZSI6ImFkbWluIiwiaWF0IjoxNjM2MDEwMzIyLCJleHAiOjE2MzYwMTM5MjJ9.j6x19WI_Y8iNNnAXskq4sPM4mqTigoi-01sMYQnE_K4');
-            localStorage.setItem("refresh_token", 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZHVzZXIiOjEyLCJ1c2VybmFtZSI6ImFkbWluIiwiaWF0IjoxNjM2MDEwMzIyfQ._7pUcZP4UUN6VP6GHb1wH_HiAH0n6Wn6x9f-0USaSeU');
-            history.push('/home')
-            if (res.status == 200) {
-                localStorage.setItem("access_token", res.data.access_token);
-                localStorage.setItem("refresh_token", res.data.refresh_token);
-                
-                history.push('/home')
+             const passEncrypt = to_Encrypt(password);
+            try {
+                const response = await requestLogin(username, password)
+                if (response.status === 200) {
+                    const data = await response.json()
+                    localStorage.setItem("access_token", data.accessToken);
+                    history.push('/choosetype')
+                }
+                else {
+                    setIsPasswordError(true)
+                    setIsEmailError(false)
+                    setErrorTextPassword("Username or password incorrect")
+                }
             }
-            else {
+            catch {
                 setIsPasswordError(true)
                 setIsEmailError(false)
                 setErrorTextPassword("Username or password incorrect")
             }
-        });
+
         }
     }
 
@@ -93,8 +94,8 @@ const SignIn = (props) => {
 
                             <div onClick={signInClick} className={`sign-in__body__content__main__button-sign-in`}>
                                 {/* <NavLink to='/home' > */}
-                                    <span> Sign In
-                                    </span>
+                                <span> Sign In
+                                </span>
                                 {/* </NavLink> */}
                             </div>
 
@@ -103,8 +104,8 @@ const SignIn = (props) => {
                                     <input type='checkbox' />
                                     <span> Remember Me</span>
                                 </span>
-                                <NavLink to='/help' >
-                                    Need Help?
+                                <NavLink to='/forgot-password' >
+                                    Forgot password ?
                                 </NavLink>
                             </span>
                             <div style={{ display: 'flex', flexDirection: 'row', color: '#c8c8c8', size: '14', marginTop: '40px', justifyContent: 'center' }}>

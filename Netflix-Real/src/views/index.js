@@ -4,7 +4,7 @@ import PlanForm from './PlanForm'
 import RegistrationForm from './RegistrationForm'
 import ForgotPassword from './ForgotPassword'
 import Registration from './Registration'
-import LanguageSetup from './LanguageSetup'
+import ChooseTypeStart from './ChooseTypeStart'
 import OnboardingMovies from './OnboardingMovies'
 import VideoPlayer from './VideoPlayer'
 import Homepage from './Homepage'
@@ -18,6 +18,6 @@ import ErrorPage from './ErrorPage'
 
 export {
     SignIn,SignUp,ForgotPassword,Registration,RegistrationForm,PlanForm,
-    LanguageSetup,OnboardingMovies,VideoPlayer,Homepage,MyPlaylistPage,PopularPage,AccountProfile,
+    ChooseTypeStart,OnboardingMovies,VideoPlayer,Homepage,MyPlaylistPage,PopularPage,AccountProfile,
     GroupStreaming,MoviesPage,SearchPage,ErrorPage
 }

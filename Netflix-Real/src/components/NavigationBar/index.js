@@ -7,7 +7,7 @@ import * as Icon from 'react-feather';
 import CustomNotification from '../CustomNotification';
 import CustomDropdown from '../Dropdown';
 import { IconNetflix } from '../../assets/Icon';
-import $ from 'jquery'; 
+
 import io from "socket.io-client";
 
 
@@ -46,6 +46,7 @@ const NavigationBar = (props) => {
     const [width, height] = useWindowSize();
 
     const onBlurSearchInput = () => {
+
         textInput.current.blur()
         setIsShown(false)
     }

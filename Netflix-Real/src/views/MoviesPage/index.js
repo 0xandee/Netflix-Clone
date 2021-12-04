@@ -18,8 +18,7 @@ const MoviesPage = (props) => {
     const [selectedGenre, setSelectedGenre] = useState(null);
     const [dataApiGenreMovies, setDataApiGenreMovies] = useState([]);
     const [genreMovies, setGenreMovies] = useState([]);
-    const [isFetching, setIsFetching] = useState(false);
-    const dispatch = useDispatch()
+    const [isFetching, setIsFetching] = useState(false);   
     let dataTypes = useSelector((state) => state?.rootReducer.movieTypes)
 
 
@@ -45,7 +44,7 @@ const MoviesPage = (props) => {
         setIsFetching(true);
     }, []);
 
-    function fetchMoreListItems() {
+    const  fetchMoreListItems = ()=> {
 
         setTimeout(() => {
             setGenreMovies(prevState => ([...prevState, ...dataApiGenreMovies.slice(prevState.length, prevState.length + 60)]));

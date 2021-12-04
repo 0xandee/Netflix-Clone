@@ -14,7 +14,7 @@ import './App.css'
 import io from "socket.io-client";
 import { Slider, NavBar, NavigationBar, SignUpNavigationBar, PreviewInfo, PreviewPopup } from "./components/index";
 
-import { ForgotPassword, PlanForm, Registration, RegistrationForm, SignUp, SignIn, GroupStreaming, LanguageSetup, AccountProfile, OnboardingMovies, VideoPlayer, Homepage, MyPlaylistPage, PopularPage, MoviesPage, SearchPage, ErrorPage } from "./views/index";
+import { ForgotPassword, PlanForm, Registration, RegistrationForm, SignUp, SignIn, GroupStreaming, ChooseTypeStart, AccountProfile, OnboardingMovies, VideoPlayer, Homepage, MyPlaylistPage, PopularPage, MoviesPage, SearchPage, ErrorPage } from "./views/index";
 import { getMovieTypeAPI } from "./services/api/movie";
 import { useDispatch } from "react-redux";
 import { setMovieTypes } from "./services/redux/actions";
@@ -57,6 +57,10 @@ export default function WebRouter() {
                         <VideoPlayer />
                     </Route>
 
+                    <Route path="/forgot-password">
+                        <ForgotPassword />
+                    </Route>
+
                     {/* Watch Video In Group */}
                     <Route path="/watchgroup/:idgroup">
                         <GroupStreaming />
@@ -75,22 +79,8 @@ export default function WebRouter() {
                                 <Route path="/signup/registrationform">
                                     <RegistrationForm />
                                 </Route>
-                                {/* Step 2 */}
-                                <Route path="/signup/chooseplan">
-                                    <SignUp />
-                                </Route>
-                                {/* Step 3 */}
-                                <Route path="/signup/chooseplanform">
-                                    <PlanForm />
-                                </Route>
-                                {/* Step 4 */}
-                                <Route path="/signup/languagesetup">
-                                    <LanguageSetup />
-                                </Route>
-                                {/* Step 5 */}
-                                <Route path="/signup/choosemovies">
-                                    <OnboardingMovies />
-                                </Route>
+
+
                             </Switch>
                         </div>
                     </Route>
@@ -98,7 +88,13 @@ export default function WebRouter() {
                     <Route path="/profile">
                         <AccountProfile />
                     </Route>
+                    <Route path="/choosetype">
+                        <ChooseTypeStart />
+                    </Route>
 
+                    <Route path="/choosemovies">
+                        <OnboardingMovies />
+                    </Route>
                     {localStorage.getItem('refresh_token') === null ?
                         <Redirect
                             to={{
@@ -112,7 +108,6 @@ export default function WebRouter() {
                                 <Route exact path="/movies/:idGenre" component={MoviesPage} />
                                 <Route exact path="/popular" component={PopularPage} />
                                 <Route exact path='/home' component={Homepage} />
-                                
                                 <Route exact path='/detail/:idMovie' component={PreviewPopup} />
                                 <Route exact path='/search' component={SearchPage} />
                                 <Route component={ErrorPage} />

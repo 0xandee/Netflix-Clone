@@ -12,7 +12,6 @@ const CustomInput = (props) => {
         const target = event.target;
         const value = target.value;
         if (value === '') {
-         
             setIsFocus(false)
         }       
     }
@@ -30,7 +29,7 @@ const CustomInput = (props) => {
                     <div className={`custom-input__form__input `} style={{...props.style}} >
                         <input ref={textInput} type={props.type} value={props.value} onChange={e => props.onChange(e.target.value)} onFocus={onFocus} onBlur={onBlur}  style={props.textStyle} autoComplete="new-password"/>
 
-                        <label className={`custom-input__form__input__placehoder-label ${isFocus && 'focus-input'}`}>{props.label}</label>
+                        <label className={`placehoder-label ${isFocus && 'focus-input'}`}>{props.label}</label>
 
                         {props.type ==='password' && <div className='mr-2 btn-eye' style={{ backgroundColor: 'transparent'}} onClick={btnRevealClicked}>
                             {isReveal ?

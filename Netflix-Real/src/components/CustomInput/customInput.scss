@@ -38,7 +38,7 @@ $error: red;
                 font-size: 12px;
                 color: $error;
             }
-            &__placehoder-label {
+             .placehoder-label {
                 position: absolute;
 
                 top: 30%;
@@ -81,6 +81,7 @@ $error: red;
                 &:focus  {
                     outline: none;
                 }
+                
                 &::-ms-reveal,
                 &::-ms-clear {
                     display: none;

@@ -36,23 +36,11 @@ const VideoPlayer = ({socket, roomnum, videoURL}) => {
     const titlePlayedRef = useRef(null);
     const [iconRewind, setIconRewind] = useState(false);
     const [iconNext, setIconNext] = useState(false);
-    const [isShown, setIsShown] = useState(false);
-    const textInput = React.createRef(null);
+    
 
     let valueHover = 0;
 
-    const onBlurSearchInput = () => {
-        textInput.current.blur()
-        setIsShown(false)
-    }
-
     
-    const btnSearchClicked = () => {
-        if (!isShown) {
-            textInput.current.focus()
-        }
-        setIsShown(!isShown)
-    }
 
     const toggleRewind = () => setIconRewind(!iconRewind);
     const toggleNext = () => setIconNext(!iconNext);
@@ -60,20 +48,7 @@ const VideoPlayer = ({socket, roomnum, videoURL}) => {
         setUrl(null);
         setPlaying(false);
     }
-    const [searchText, setSearchText] = useState('');
-    const onSearchKeyPress = (e) => {
-
-        if (e.key === "Enter") {
-
-            history.push({
-                pathname: '/search',
-                search: `value=${searchText}`,
-
-            })
-            setSearchText('')
-        }
-
-    }
+    
 
     const handleVideoOnReady = () => {
         // console.log('loading')
@@ -384,22 +359,7 @@ const VideoPlayer = ({socket, roomnum, videoURL}) => {
                             <IconBackArrow className={'video-player__top__icon-back'} />
                             <span>Back to Browse</span>
                         </div>
-                        <div className={`search-box ${isShown && 'input-search'}`} style={{marginRight: "4rem"}}>
-                            <div>
-                                <Icon.Search className='icon-style' size='16px' strokeWidth='4' color='white' onClick={btnSearchClicked} style={{cursor: 'pointer', marginRight: "1rem"}} />
-                            </div>
-                            <React.Fragment>
-                                <input
-                                    onKeyPress={onSearchKeyPress}
-                                    onBlur={onBlurSearchInput}
-                                    ref={textInput} value={searchText}
-                                    type={'text'}
-                                    name="search"
-                                    placeholder="Search.."
-                                    onChange={(e) => setSearchText(e.target.value)} >
-                                </input>
-                            </React.Fragment>
-                        </div>
+                       
                     </div>
 
 

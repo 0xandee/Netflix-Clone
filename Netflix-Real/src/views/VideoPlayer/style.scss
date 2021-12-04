@@ -5,36 +5,6 @@ $icon-color: white;
 
 }
 
-.input-search {
-    width: 230px;
-}
-
-.search-box {
-    position: static;
-    display: flex;
-    height: 95%;
-    width: 20px;
-    align-items: center;
-    box-sizing: border-box;
-    transition: width 0.4s ease-in-out;
-    input {
-        box-sizing: border-box;
-        border: none;
-        width: 0px;
-        padding: 0;
-        border-radius: 4px;
-        height: 30px;
-        transition: width 0.4s ease-in-out;
-        border-radius: 4px;
-        opacity: 1;
-        background-color: #141414;
-        float: right;
-        color: #fff;
-    }
-    input:focus {
-        width: 230px;
-    }
-}
 
 #videoPlayer .video-player {
     background-color: black;
