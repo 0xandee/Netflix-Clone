@@ -9,7 +9,7 @@ import AppChat from "../../components/Chat";
 import Chat from "../../components/Chat";
 import io from "socket.io-client";
 import * as Icon from 'react-feather';
-
+import $ from "jquery"
 import { getAllMovies } from "../../services/api/movie";
 
 // const socket = io("http://localhost:8000", { transports: ['websocket']});
@@ -36,6 +36,8 @@ const GroupStreaming = () => {
   const [openedMovieRecommend, setOpenedMovieRecommend] = useState(true);
   const [movieURL, setMovieURL] = useState('')
 
+  const [offset, setOffset] = useState(0);
+
   const onValueSearchChange = (e) => {
     const value = e.target.value
       let updatedData = []
@@ -58,11 +60,26 @@ const GroupStreaming = () => {
         setSearchText(value) 
       }
   }
+  const onScroll = () => {
+    console.log("scrolling");
+  }
+  $(".chat-message").onscroll = () => {
+    // setOffset(window.pageYOffset)
+    // console.log("useEFF", offset); 
+    // if (window.innerHeight + document.documentElement.scrollTop !== document.documentElement.offsetHeight || isFetching) return;
+    // setIsFetching(true);
+    // console.log("scrolling");
+  }
 
-  const handleScroll = useCallback(() => {
-    if (window.innerHeight + document.documentElement.scrollTop !== document.documentElement.offsetHeight || isFetching) return;
-    setIsFetching(true);
-  }, []);
+  const handleScroll = () => {
+    console.log("scrolling");
+
+  }
+
+  // const handleScroll = useCallback(() => {
+  //   if (window.innerHeight + document.documentElement.scrollTop !== document.documentElement.offsetHeight || isFetching) return;
+  //   setIsFetching(true);
+  // }, []);
 
   const fetchMoreListItems = () => {
     setTimeout(() => {
@@ -111,18 +128,18 @@ const GroupStreaming = () => {
     setIsShown(!isShown)
   }
 
-  useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    }
-  }, [handleScroll]);
+  // useEffect(() => {
+  //   window.addEventListener("scroll", handleScroll);
+  //   return () => {
+  //     window.removeEventListener("scroll", handleScroll);
+  //   }
+  // }, [handleScroll]);
 
-  useEffect(async () => {
-    const response = await getAllMovies()
-    let data = await response.json()
-    setMovies(data)
-  }, []);
+  // useEffect(async () => {
+  //   const response = await getAllMovies()
+  //   let data = await response.json()
+  //   setMovies(data)
+  // }, []);
 
   useEffect(() => {
     if (!isFetching) return;
@@ -132,7 +149,6 @@ const GroupStreaming = () => {
 
   useEffect(() => {
     // Join room
-    console.log("roomnum", roomnum);
     socket.emit("joinRoom", { username, roomnum });
     socket.emit('new room', { username, roomnum }, function (data) {
       // // This should only call back if the client is the host
@@ -182,7 +198,7 @@ const GroupStreaming = () => {
           </div>
           <VideoPlayer socket={socket} roomnum={roomnum} movieURL={movieURL} />
 
-          <div id="movieRecommend"
+          <div id="movieRecommend" onScroll={onScroll}
             className={`${openedMovieRecommend ? '' : 'd-none'}`}
             style={{ position: 'absolute', width: '100%', height: '100%', backgroundColor: '#242526', zIndex: 3, overflowX: 'hidden', paddingTop: '40px' }}>
             <div className='body-content'>

@@ -4,10 +4,9 @@ import { process } from "./store/actions";
 import React, { useState, useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
 import io from "socket.io-client";
+import $ from 'jquery';
 //gets the data from the action object and reducers defined earlier
 function Chat({ username, roomnum, socket, handleOpenMovieRecommend}) {
-  console.log("roomnum", roomnum);
-  console.log("socket", socket.id);
   const [text, setText] = useState("");
   const [messages, setMessages] = useState([]);
   const avatar = 'https://occ-0-325-3996.1.nflxso.net/dnm/api/v6/K6hjPJd6cR6FpVELC5Pd6ovHRSk/AAAABYnnca7HCf0z4YHtIK5R8MIGCeMyodAsxBYSBmMkYHqjSw46VWWyNQirfwxT-CkbxPkp-G84Wu-iOMwGG-r9QAs.png?r=f71'
@@ -68,7 +67,9 @@ function Chat({ username, roomnum, socket, handleOpenMovieRecommend}) {
 
   useEffect(scrollToBottom, [messages]);
 
-  console.log(messages, "mess");
+  // $(".chat-message").onscroll = () => {
+  //   console.log("scrolling");
+  // }
 
   return (
     <div className="chat">
