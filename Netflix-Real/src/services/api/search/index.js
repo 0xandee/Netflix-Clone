@@ -1,21 +1,23 @@
 import { searchApi } from './configUrl'
 
-var myHeaders = new Headers();
-myHeaders.append("Content-Type", "application/json");
 
-export const searchMovieByNameApi = async (movieName, callback) => {
-  var requestOptions = {
-    method: 'GET',
-    headers: myHeaders,
-  };
-
-  await fetch(searchApi.urlSearch + `/${movieName}`, requestOptions)
-    .then(response => response.text())
-    .then(result =>
-      callback(JSON.parse(result))
-    )
-    .catch(error => {
-      callback('error', error);
+export const searchMovieByNameApi = async (movieName, token) => {
+    return new Promise((resolve, reject) => {
+      fetch(searchApi.urlSearch + `/${movieName}`, {
+        crossDomain: true,
+        method: "GET",
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': "Bearer " + token,
+        },
+      })
+        .then(response => {  
+          resolve(response)
+        })
+        .catch(error => {
+          return reject(error)
+        });
     })
 }
 

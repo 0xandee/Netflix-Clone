@@ -5,7 +5,7 @@ import Select from 'react-select';
 import { useHistory } from "react-router-dom";
 import Flatpickr from "react-flatpickr";
 import 'flatpickr/dist/flatpickr.css';
-import { CustomInput, Footer } from "../../components";
+import { CustomInput, Footer, SignUpNavigationBar } from "../../components";
 import { to_Decrypt, to_Encrypt } from "../../services/aes256";
 import { connect } from 'react-redux';
 import { userPostFetch } from '../../services/redux/actions';
@@ -91,7 +91,7 @@ const RegistrationForm = () => {
             setIsPasswordError(true)
         }
 
-        else {         
+        else {
             try {
                 setIsPasswordError(false)
                 // const passEncrypt = to_Encrypt(password);
@@ -124,11 +124,12 @@ const RegistrationForm = () => {
 
     return (
         <div id='regForm'>
-            <div className={`reg-form`}>
-                <div className='reg-form__background-image'>
+            <div className={`registration`}>
+                    <SignUpNavigationBar />         
+                <div className='registration__background-image'>
                 </div>
 
-                <div className={`reg-form__body`}>
+                <div className={`registration__body`}>
                     {isSucess ?
                         <div className=' align-self-center justify-content-center text-center '>
                             <h1>
@@ -139,13 +140,13 @@ const RegistrationForm = () => {
                             </h2>
                         </div>
                         :
-                        <div className={`reg-form__body__content`}>
-                            <div className={`reg-form__body__content__main`}>
+                        <div className={`registration__body__content`}>
+                            <div className={`registration__body__content__main`}>
                                 <div >
-                                    
-                                    <h1 className="reg-form__body__content__main__step-title">
+
+                                    <h1 className="registration__body__content__main__step-title">
                                         Create a password to start your membership</h1>
-                                    <div className="reg-form__body__content__main__step-content">
+                                    <div className="registration__body__content__main__step-content">
                                         Just a few more steps and you're done!
                                         We hate paperwork, too.
                                     </div>
@@ -222,7 +223,7 @@ const RegistrationForm = () => {
 
                                 </div>
                                 {/* <NavLink to='/signup/chooseplan'> */}
-                                <div className={`reg-form__body__content__main__button-next`} onClick={nextClicked}>
+                                <div className={`registration__body__content__main__button-next`} onClick={nextClicked}>
                                     <span>Next
                                     </span>
                                 </div>
@@ -244,10 +245,6 @@ const RegistrationForm = () => {
     )
 }
 
-const mapDispatchToProps = dispatch => ({
-    userPostFetch: userInfo => dispatch(userPostFetch(userInfo))
-})
-
-export default connect(null, mapDispatchToProps)(RegistrationForm);
+export default RegistrationForm;
 
 // export default RegistrationForm;

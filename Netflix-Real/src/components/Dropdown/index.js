@@ -7,51 +7,22 @@ import { SignIn } from "../../views/index";
 import { requestLogout } from "../../services/api/auth";
 
 
-const data = [
-  {
-    id: 0, label: "Long long long long long long long name", navLink: '/profile',
-    avatar: 'https://occ-0-325-3996.1.nflxso.net/dnm/api/v6/K6hjPJd6cR6FpVELC5Pd6ovHRSk/AAAABYnnca7HCf0z4YHtIK5R8MIGCeMyodAsxBYSBmMkYHqjSw46VWWyNQirfwxT-CkbxPkp-G84Wu-iOMwGG-r9QAs.png?r=f71'
-  },
-  {
-    id: 1, label: "Long long long long long name", navLink: '/home',
-    avatar: 'https://occ-0-325-3996.1.nflxso.net/dnm/api/v6/K6hjPJd6cR6FpVELC5Pd6ovHRSk/AAAABYnnca7HCf0z4YHtIK5R8MIGCeMyodAsxBYSBmMkYHqjSw46VWWyNQirfwxT-CkbxPkp-G84Wu-iOMwGG-r9QAs.png?r=f71'
-  }
-];
-
 const CustomDropdown = () => {
   const [isOpen, setOpen] = useState(false);
   const userProfile = '/profile'
   const avatar = 'https://occ-0-325-3996.1.nflxso.net/dnm/api/v6/K6hjPJd6cR6FpVELC5Pd6ovHRSk/AAAABYnnca7HCf0z4YHtIK5R8MIGCeMyodAsxBYSBmMkYHqjSw46VWWyNQirfwxT-CkbxPkp-G84Wu-iOMwGG-r9QAs.png?r=f71'
-  const [items, setItem] = useState(data);
-  const [selectedItem, setSelectedItem] = useState(null);
   const history = useHistory()
 
-  const toggleDropdown = () => setOpen(!isOpen);
 
-
-  const onMouseLeave = () => {
-    setOpen(false);
-
-  }
-
-  const signOutClick = event => {
-
+  const signOutClick =async (event) => {
     event.preventDefault();
-    var refresh_token = localStorage.getItem('refresh_token');
-
-    requestLogout(refresh_token, async (res) => {
-      console.log("🚀 ~ file: index.js ~ line 47 ~ requestLogout ~ res", res)
-      localStorage.clear();
-      history.push('/signin')
-      if (res.status == 200) {
+    const response = await requestLogout(localStorage.getItem('access_token'))
+    console.log("🚀 ~ file: index.js ~ line 64 ~ nextClicked ~ response", response)
+    if (response.status >= 200 && response.status <= 299) {
         localStorage.clear();
         history.push('/signin')
-      }
-    });
+    }
   }
-
-  //  return (<Route path="/signin"><SignIn /></Route>)
-
 
   return (
     <div id='customdropdown'
@@ -65,29 +36,11 @@ const CustomDropdown = () => {
             <React.Fragment>
               <div className={`dropdown-content ${isOpen && 'open'}`}>
                 <div className='callout-arrow' />
-                {items.length !== 0 && items.map(item => (
-                  <div className="dropdown-account-item" id={item.id}>
-                    <Link to={item.navLink} className='profile-link'>
-                      <img className="profile-icon" src={item.avatar} alt="" />
-                      <span className='profile-name'>
-                        {item.label}
-                      </span>
-                      <Icon.Lock size='16px' className='icon' />
-                    </Link>
-                  </div>
-                ))}
+                
                 <div className="dropdown-account-item">
                   <Link to={userProfile} className='profile-link'>
                     <span className='profile-name'>
                       Manage Profiles
-                    </span>
-                  </Link>
-                </div>
-
-                <div className="dropdown-account-item">
-                  <Link to={userProfile} className='profile-link'>
-                    <span className='profile-name'>
-                      Exit Profile
                     </span>
                   </Link>
                 </div>

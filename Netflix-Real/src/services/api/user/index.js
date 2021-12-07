@@ -1,46 +1,44 @@
 import { userApi } from './configUrl'
 
 
-export const favMoviePost = movieID => {
-  return dispatch => {
-    return fetch(`${userApi.urlAddFavorite}` + `/${movieID}`, {
+export const favMoviePost = (movieID, token) => {
+  return new Promise((resolve, reject) => {
+    fetch(`${userApi.urlAddFavorite}` + `/${movieID}`, {
+      crossDomain: true,
       method: "POST",
+      mode: 'cors',
       headers: {
         'Content-Type': 'application/json',
-        Accept: 'application/json',
-        'Authorization': "Bearer " + localStorage.getItem('access_token'),
-      }
+        'Authorization': "Bearer " + token,
+      },
     })
-    .then(resp => resp.json())
-    .then(data => {
-      if (data.message) {}
-      else {
-        console.log("data.message", data.message);
-        console.log("Bearer " + localStorage.getItem('access_token'));
-      }
+      .then(response => {
+        resolve(response)
       })
-    }
-  }
+      .catch(error => {
+        return reject(error)
+      });
+  })
+}
 
 
-export const getUserFavoriteList = async (access_token, callback) => {
-  var myHeaders = new Headers();
-  myHeaders.append("Content-Type", "application/json");
-  myHeaders.append("Authorization", "Bearer " + access_token);
-  
-  var requestOptions = {
-    method: 'GET',
-    headers: myHeaders,
-  };
-
-  await fetch(userApi.urlFavorite, requestOptions)
-    .then(response => response.text())
-    .then(result =>
-      callback(JSON.parse(result))
-    )
-    .catch(error => {
-
-      callback('error', error);
+export const getUserFavoriteList = async (token) => {
+  return new Promise((resolve, reject) => {
+    fetch(userApi.urlFavorite, {
+      crossDomain: true,
+      method: "GET",
+      mode: 'cors',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': "Bearer " + token,
+      },
     })
+      .then(response => {
+        resolve(response)
+      })
+      .catch(error => {
+        return reject(error)
+      });
+  })
 }
 

@@ -4,16 +4,32 @@ import { Link, NavLink, useHistory } from "react-router-dom";
 import { Footer, GenreItem, SignUpNavigationBar } from "../../components";
 import { useSelector } from "react-redux";
 import { postNewUserGenres } from '../../services/api/movie'
+import { Button } from "reactstrap";
 
 
 const ChooseTypeStart = () => {
     const history = useHistory()
     const [selectedGenre, setSelectedGenre] = useState([]);
+    const [isDisabled, setIsDisabled] = useState(false);
     let dataTypes = useSelector((state) => state?.rootReducer.movieTypes)
 
     const checkedGenresClicked = (data) => {
+        if (selectedGenre.length >= 2)
+            setIsDisabled(false);
+        else setIsDisabled(true);
         setSelectedGenre([...selectedGenre, data])
 
+    }
+
+    const notCheckedGenresClicked = (data) => {
+        let temp = selectedGenre;
+        let index = temp.indexOf(data);
+        if (index > -1) {
+            temp.splice(index, 1);
+        }
+        if (temp.length < 3)
+            setIsDisabled(true)
+        setSelectedGenre(temp)
     }
 
     const nextClicked = async () => {
@@ -26,7 +42,7 @@ const ChooseTypeStart = () => {
     }
     return (
         <div id='langSetup'>
-            <div className={`registration `}>
+            <div className={`registration`}>
                 <SignUpNavigationBar />
                 <div className='registration__background-image'>
                 </div>
@@ -43,14 +59,21 @@ const ChooseTypeStart = () => {
                             </div>
 
                             <ul className="languages-container mt-3 w-100">
-                                {dataTypes.map(item => (<GenreItem id={item.id} language={item.t_name} checkedGenresClicked={checkedGenresClicked} />))}
+                                {dataTypes.map(item => (
+                                    <GenreItem
+                                        id={item.id}
+                                        language={item.name}
+                                        checkedGenresClicked={checkedGenresClicked}
+                                        notCheckedGenresClicked={notCheckedGenresClicked}
+
+                                    />))}
                             </ul>
 
-                            <div className='submitBtnContainer w-75' onClick={nextClicked}>
-                                <div className={`registration__body__content__main__button-next`} >
+                            <div className='submitBtnContainer w-75' >
+                                <Button className={`registration__body__content__main__button-next`} onClick={nextClicked} disabled={isDisabled} >
                                     <span>Next
                                     </span>
-                                </div>
+                                </Button>
                             </div>
                         </div>
                         <div>
