@@ -24,102 +24,57 @@ import { useSelector } from "react-redux";
 
 //const socket = io.connect('http://localhost:8000');
 // const socket = io("localhost:8000", { transports: ["websocket"] });
+function PrivateRoute({ component: Component, ...rest }) {
+    return (
+        <Route
+            {...rest}
+            render={(props) => localStorage.getItem('access_token') !== null
+                ? <Component {...props} />
+                : <Redirect to={{ pathname: '/signin', state: { from: props.location } }} />}
+        />
+    )
+}
+
 export default function WebRouter() {
     const dispatch = useDispatch();
-    const history = useHistory();
-    const checkToken = () => {
-        console.log("checkToken");
-        if (localStorage.getItem('access_token') === null) {
-            history.push('/signin')
+
+    useEffect(async () => {
+        const response = await getMovieTypeAPI(localStorage.getItem('access_token'))
+        if (response.status === 200) {
+            let data = await response.json()
+            dispatch(setMovieTypes(data))
         }
-    }
-    useEffect(() => {
-        getMovieTypeAPI(async (res) => {
-            console.log("🚀 ~ file: index.js ~ line 260 ~ getMovieType ~ res", res.data)
-            if (res.status == 200) {
-                dispatch(setMovieTypes(res.data))
-            }
-        });
+
 
     }, [dispatch])
     return (
         <Router>
-            <div >
-                <Switch>
 
-                    {/* Sign In */}
-                    <Route path="/signin">
-                        <SignIn />
-                    </Route>
-
-                    {/* Watch Video Player */}
-                    <Route path="/watch">
-                        <VideoPlayer />
-                    </Route>
-
-                    <Route path="/forgot-password">
-                        <ForgotPassword />
-                    </Route>
-
-                    {/* Watch Video In Group */}
-                    <Route path="/watchgroup/:idgroup">
-                        <GroupStreaming />
-                    </Route>
-
-                    {/* Sign Up */}
-                    <Route path="/signup">
-                        <div className="App">
-                            <SignUpNavigationBar />
-                            <Switch>
-                                {/* Step 1 */}
-                                <Route path="/signup/registration">
-                                    <Registration />
-                                </Route>
-                                {/* Step 1.1 */}
-                                <Route path="/signup/registrationform">
-                                    <RegistrationForm />
-                                </Route>
-
-
-                            </Switch>
-                        </div>
-                    </Route>
-
-                    <Route path="/profile">
-                        <AccountProfile />
-                    </Route>
-                    <Route path="/choosetype">
-                        <ChooseTypeStart />
-                    </Route>
-
-                    <Route path="/choosemovies">
-                        <OnboardingMovies />
-                    </Route>
-                    {localStorage.getItem('refresh_token') === null ?
-                        <Redirect
-                            to={{
-                                pathname: "/signin",
-                            }}
-                        />
-                        :
-                        <Route path="/">
-                            <Switch>
-                                <Route exact path="/playlist" component={MyPlaylistPage} />
-                                <Route exact path="/movies/:idGenre" component={MoviesPage} />
-                                <Route exact path="/popular" component={PopularPage} />
-                                <Route exact path='/home' component={Homepage} />
-                                <Route exact path='/detail/:idMovie' component={PreviewPopup} />
-                                <Route exact path='/search' component={SearchPage} />
-                                <Route component={ErrorPage} />
-                            </Switch>
-
-
-                        </Route>
-                    }
-
-                    <Route component={ErrorPage} />
-                </Switch>
-            </div>
+            <Switch>
+                <Route
+                    exact
+                    path='/'
+                    render={() => {
+                        return localStorage.getItem('access_token') !== null ? <Redirect to='/home' /> : <Redirect to='/signin' />
+                    }}
+                />                
+                <Route path="/signin" component={SignIn} />
+                <Route path="/forgot-password" component={ForgotPassword} />
+                <Route path="/signup/registration" component={Registration} />
+                <Route path="/signup/registrationform" component={RegistrationForm} />
+                <Route path="/profile" component={AccountProfile} />
+                <Route path="/choosetype" component={ChooseTypeStart} />
+                <Route path="/choosemovies" component={OnboardingMovies} />
+                <PrivateRoute exact path="/playlist" component={MyPlaylistPage} />
+                <PrivateRoute exact path="/movies/:idGenre" component={MoviesPage} />
+                <PrivateRoute exact path="/popular" component={PopularPage} />
+                <PrivateRoute exact path='/home' component={Homepage} />
+                <PrivateRoute exact path='/detail/:idMovie' component={PreviewPopup} />
+                <PrivateRoute exact path='/search' component={SearchPage} />
+                <PrivateRoute path="/watch" component={VideoPlayer} />
+                <PrivateRoute path="/watchgroup/:idgroup" component={GroupStreaming} />
+                <Route component={ErrorPage} />
+            </Switch>
         </Router>
     );
 }

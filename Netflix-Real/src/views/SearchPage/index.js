@@ -58,20 +58,23 @@ const SearchPage = (props) => {
         fetchMoreListItems();
     }, [isFetching]);
 
-    useEffect(() => {
-        if (query.get('value') != null)
-            searchMovieByNameApi(query.get('value'), async (res) => {
-                console.log("🚀 ~ file: index.js ~ line 85 ~ getMoviesByTypeAPI ~ res", res)
-                if (res.status == 200) {
-                    setDataApiMovies(res.data)
-                    setGenreMovies(res.data.slice(0, 30))
-                }
-                else {
-                    if (res.status == 400) {
+    useEffect(async () => {
+        console.log("🚀 ~ file: index.js ~ line 64 ~ useEffect ~ localStorage.getItem('access_token')", localStorage.getItem('access_token'))
 
-                    }
+        if (query.get('value') != null) {
+            const res = await searchMovieByNameApi(query.get('value'),localStorage.getItem('access_token'))
+            if (res.status == 200) {
+                let data = await res.json()
+                setDataApiMovies(data)
+                setGenreMovies(data.slice(0, 30))
+            }
+            else {
+                if (res.status == 400) {
+
                 }
-            });
+            }
+        }
+
     }, [])
 
     return (

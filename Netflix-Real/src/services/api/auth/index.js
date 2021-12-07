@@ -49,29 +49,25 @@ export const requestLogin = async (username, password) => {
     })
 }
 
-export const requestLogout = async (refresh_token, callback) => {
+export const requestLogout = async (refresh_token) => {
 
-    var rawBody = JSON.stringify({
-        refresh_token
-    });
-    var requestOptions = {
-        method: 'DELETE',
-        headers: requestHeaders,
-        body: rawBody,
-        redirect: 'follow'
-    };
-
-    await fetch(authApi.urlLogout, requestOptions)
-        .then(response =>
-            response.text()
-        )
-        .then(result =>
-        (
-            callback(JSON.parse(result)))
-        )
-        .catch(error =>
-            callback('error', error)
-        )
+        return new Promise((resolve, reject) => {
+            fetch(authApi.urlLogout, {
+                crossDomain: true,
+                method: "DELETE",
+                mode: 'cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    token : refresh_token
+                })
+            })
+                .then(response => {
+                    resolve(response)
+                })
+                .catch(error => {
+                    reject(error)
+                });
+        })
 }
 
 export const requestRefreshToken = async (refresh_token, callback) => {

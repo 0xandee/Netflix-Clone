@@ -54,8 +54,6 @@ const OnboardingMovies = () => {
     const [movies, setMovies] = useState([]);
 
     const triggerFinished = async () => {
-        console.log("🚀 ~ file: index.js ~ line 50 ~ OnboardingMovies ~ query", selectedMovies)
-
         setIsFinished(!isFinished);
         try {
             const response = await postNewUserMovies(selectedMovies, localStorage.getItem('access_token'))
@@ -65,14 +63,10 @@ const OnboardingMovies = () => {
                         pathname: '/home',
                     })
                 }, 3000);
-
         }
         catch (error) {
             console.log("🚀 ~ file: index.js ~ line 69 ~ triggerFinished ~ error", error)
-
         }
-
-
     }
 
     const checkedMoviesClicked = (data) => {
@@ -98,8 +92,6 @@ const OnboardingMovies = () => {
         const response = await getMoviesByGenres(temp, localStorage.getItem('access_token'))
         if (response.status === 200) {
             setMovies(await response.json())
-
-
         }
 
     }, [])

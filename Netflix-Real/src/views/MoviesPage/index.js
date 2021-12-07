@@ -5,7 +5,7 @@ import { to_Decrypt, to_Encrypt } from "../../services/aes256";
 import { useSelector, useDispatch } from 'react-redux';
 import { showPopUpInfo } from "../../services/redux/actions";
 import { Link, useHistory, useLocation, useParams } from "react-router-dom";
-import { getMoviesByTypeAPI, getMovieType } from "../../services/api/movie";
+import { getMoviesByGenreAPI, getMoviesByTypeAPI, getMovieType } from "../../services/api/movie";
 import Select, { createFilter } from 'react-select';
 import { Spinner } from 'reactstrap'
 import DefaultImage from '../../assets/Images/defaultImage.png';
@@ -18,7 +18,7 @@ const MoviesPage = (props) => {
     const [selectedGenre, setSelectedGenre] = useState(null);
     const [dataApiGenreMovies, setDataApiGenreMovies] = useState([]);
     const [genreMovies, setGenreMovies] = useState([]);
-    const [isFetching, setIsFetching] = useState(false);   
+    const [isFetching, setIsFetching] = useState(false);
     let dataTypes = useSelector((state) => state?.rootReducer.movieTypes)
 
 
@@ -44,7 +44,7 @@ const MoviesPage = (props) => {
         setIsFetching(true);
     }, []);
 
-    const  fetchMoreListItems = ()=> {
+    const fetchMoreListItems = () => {
 
         setTimeout(() => {
             setGenreMovies(prevState => ([...prevState, ...dataApiGenreMovies.slice(prevState.length, prevState.length + 60)]));
@@ -52,15 +52,11 @@ const MoviesPage = (props) => {
         }, 2000);
     }
 
-    const OnErrorImage = (e) => {
-        e.targets.src = DefaultImage
-    }
-
 
     const convertDataSelect = () => {
         dataTypes = dataTypes.map(function (obj) {
             obj['value'] = obj.id
-            obj['label'] = obj.t_name
+            obj['label'] = obj.name
             return obj;
         });
     }
@@ -82,21 +78,20 @@ const MoviesPage = (props) => {
         fetchMoreListItems();
     }, [isFetching]);
 
-    useEffect(() => {
-        if (selectedGenre != null)
-            getMoviesByTypeAPI(selectedGenre.value, async (res) => {
-                console.log("🚀 ~ file: index.js ~ line 85 ~ getMoviesByTypeAPI ~ res", res)
-                if (res.status == 200) {
-                    setDataApiGenreMovies(res.data)
-                    setGenreMovies(res.data.slice(0, 30))
-                }
-                else {
-                    if (res.status == 400) {
+    useEffect(async () => {
+        if (selectedGenre != null) {
+            const res = await getMoviesByGenreAPI(selectedGenre.value, localStorage.getItem('access_token'))
+            if (res.status == 200) {
+                let data = await res.json()
+                setDataApiGenreMovies(data)
+                setGenreMovies(data.slice(0, 30))
+            }
+            else {
+                if (res.status == 400) {
 
-                    }
                 }
-            });
-
+            }
+        }
 
     }, [selectedGenre])
 
@@ -155,10 +150,10 @@ const MoviesPage = (props) => {
                                 <div className=' item-grid multi-landing-stack-space-holder w-100 h-100'>
                                     {/* <div className="multi-landing-stack-1"></div>
                                     <div className="multi-landing-stack-2"></div> */}
-                                    <img onError={OnErrorImage} style={{ borderRadius: '4px', }} className="title-card w-100 h-100" src={item.uri_avatar != null ? item.uri_avatar : DefaultImage} alt={item.m_name} />
+                                    <img  style={{ borderRadius: '4px', }} className="title-card w-100 h-100" src={item.uri_avatar} alt={item.m_name} />
                                 </div>
                                 <div className='name-label'>
-                                    {item.m_name}
+                                    {item.name}
                                 </div>
                             </div>
                         )

@@ -57,21 +57,21 @@ $gray: #8c8c8c;
         min-width: 500px;
         width: 35vw;
         max-width: 750px;
-        min-height: 100vh;
+        height: 75vh;
 
-        margin: 0 auto -236px;
+        margin: 0 auto ;
         padding: 0 5%;
 
         background-color: transparent;
 
         &::before {
             content: "";
-            height: 12vh;
+            height: 15vh;
             display: block;
         }
         &::after {
             content: "";
-            height: 12vh;
+            height: 5vh;
             display: block;
         }
         &__content {
@@ -79,7 +79,7 @@ $gray: #8c8c8c;
             flex-direction: column;
             display: flex;
 
-            min-height: 660px;
+            min-height: 500px;
             width: 100%;
 
             padding: 40px 68px;
@@ -115,7 +115,7 @@ $gray: #8c8c8c;
 
                     display: flex;
                     align-items: center;
-                    justify-content: space-between;
+                    justify-content: flex-end;
                 }
                 a {
                     text-decoration: none;

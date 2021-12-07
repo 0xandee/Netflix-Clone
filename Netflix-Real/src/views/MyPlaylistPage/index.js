@@ -48,29 +48,18 @@ const MyPlaylistPage = (props) => {
         fetchMoreListItems();
     }, [isFetching]);
 
-    useEffect(() => {
-        getUserFavoriteList(accessToken, async (res) => {
-            console.log("🚀 ~ file: index.js ~ line 53 ~ getUserFavoriteList ~ accessToken", accessToken)
-            console.log("🚀 ~ file: index.js ~ line 53 ~ getUserFavoriteList ~ res", res)
-            if (res.status === 200) {
-                setDataApiMovies(res.data)
-                setGenreMovies(res.data.slice(0, 30))
-            }
-            else {
-                if (res.status === 403) {
-                    requestRefreshToken(refresh_token, async (res) => {
-                        // console.log("🚀 ~ file: index.js ~ line 62 ~ requestRefreshToken ~ refresh_token", refresh_token)
-                        // console.log("🚀 ~ file: index.js ~ line 62 ~ requestRefreshToken ~ refresh_token", res.data.access_token)
-                        // console.log("🚀 ~ file: index.js ~ line 66 ~ requestRefreshToken ~ res", res)
-                        // if (res.status == 200) {
-                        //     setAccessToken(res.data.access_token)
-                        //     localStorage.setItem("access_token", res.data.access_token);
-                        // }
-                    })
+    useEffect(async () => {
+        const res = await getUserFavoriteList(accessToken)
+        if (res.status === 200) {
+            let data = await res.json()
+            setDataApiMovies(data)
+            setGenreMovies(data.slice(0, 30))
+        }
+        else {
+            if (res.status === 403) {
 
-                }
             }
-        });
+        }
     }, [accessToken])
 
     return (
@@ -86,7 +75,7 @@ const MyPlaylistPage = (props) => {
                                         <img style={{ borderRadius: '4px', }} className="title-card w-100 h-100" src={item.uri_avatar} alt={item.m_name} />
                                     </div>
                                     <div className='name-label'>
-                                        {item.m_name}
+                                        {item.name}
                                     </div>
                                 </div>
                             )

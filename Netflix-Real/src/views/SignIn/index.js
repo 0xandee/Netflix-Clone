@@ -36,13 +36,17 @@ const SignIn = (props) => {
             setIsPasswordError(false)
         }
         if (!errorCheck) {
-             const passEncrypt = to_Encrypt(password);
+            const passEncrypt = to_Encrypt(password);
             try {
                 const response = await requestLogin(username, password)
                 if (response.status === 200) {
                     const data = await response.json()
+                    console.log("🚀 ~ file: index.js ~ line 44 ~ signInClick ~ data", data)
                     localStorage.setItem("access_token", data.accessToken);
-                    history.push('/choosetype')
+                    if (data.first)
+                        history.push('/choosetype')
+                    else
+                        history.push('/home')
                 }
                 else {
                     setIsPasswordError(true)
@@ -75,14 +79,13 @@ const SignIn = (props) => {
                     <div className={`sign-in__body__content`}>
                         <div className={`sign-in__body__content__main`}>
                             <h1 className={`sign-in__body__content__main__title`}>Sign In</h1>
-
                             <CustomInput
                                 value={username}
                                 onChange={setUsername}
                                 placeHolder='Please enter a valid email or phone number.'
                                 label='Enter your email or phone'
                                 type='text' />
-                            <div className={`error-label ${isEmailError && 'visible'}`}> {errorTextEmail}</div>
+                            <div className={`error-label ${isEmailError && 'visible'}`}> {isEmailError && errorTextEmail}</div>
 
                             <CustomInput
                                 value={password}
@@ -90,7 +93,7 @@ const SignIn = (props) => {
                                 placeHolder='Your password must contain between 4 and 60 characters.'
                                 label='Password'
                                 type='password' />
-                            <div className={`error-label ${isPasswordError && 'visible'}`}> {errorTextPassword}</div>
+                            <div className={`error-label ${isPasswordError && 'visible'}`}> {isPasswordError && errorTextPassword}</div>
 
                             <div onClick={signInClick} className={`sign-in__body__content__main__button-sign-in`}>
                                 {/* <NavLink to='/home' > */}
@@ -99,11 +102,7 @@ const SignIn = (props) => {
                                 {/* </NavLink> */}
                             </div>
 
-                            <span>
-                                <span>
-                                    <input type='checkbox' />
-                                    <span> Remember Me</span>
-                                </span>
+                            <span>                  
                                 <NavLink to='/forgot-password' >
                                     Forgot password ?
                                 </NavLink>

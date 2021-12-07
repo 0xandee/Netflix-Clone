@@ -2,7 +2,7 @@ $blackOpacity1: rgba(0, 0, 0, 0.75);
 $red: #e50914;
 $gray: #8c8c8c;
 
-#regForm .reg-form {
+#regForm .registration {
     position: relative;
     display: flex;
     flex-direction: column;
@@ -46,6 +46,10 @@ $gray: #8c8c8c;
         padding: 10px 3%;
 
         border-bottom: 1px solid #e6e6e6;
+        &__container {
+            line-height: 90px;
+        }
+        
         &__logo {
             height: 45px;
             fill: #e50914;

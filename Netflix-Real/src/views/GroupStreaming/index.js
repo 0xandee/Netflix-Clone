@@ -36,50 +36,36 @@ const GroupStreaming = () => {
   const [openedMovieRecommend, setOpenedMovieRecommend] = useState(true);
   const [movieURL, setMovieURL] = useState('')
 
-  const [offset, setOffset] = useState(0);
-
   const onValueSearchChange = (e) => {
-    const value = e.target.value
-      let updatedData = []
+    const value = e.target.value    
+    let updatedData = []
+    setSearchText(value)
+    if (value.length) {
+      updatedData = movies.filter(item => {
+        const startsWith =
+          (item.name != null && item.name.toLowerCase().startsWith(value.toLowerCase()))
+
+        const includes =
+          (item.m_name != null && item.name.toLowerCase().includes(value.toLowerCase()))
+        if (startsWith) {
+          return startsWith
+        } else if (!startsWith && includes) {
+          return includes
+        } else return null
+      })
+      setFilteredMovies(updatedData)
+      setShowedMovies(updatedData.slice(0, 31))
       setSearchText(value)
-      if (value.length) {
-        updatedData = movies.filter(item => {
-          const startsWith =
-            (item.name != null && item.name.toLowerCase().startsWith(value.toLowerCase())) 
-           
-          const includes =
-            (item.m_name != null && item.name.toLowerCase().includes(value.toLowerCase()))
-          if (startsWith) {
-            return startsWith
-          } else if (!startsWith && includes) {
-            return includes
-          } else return null
-        })
-        console.log("🚀 ~ file: index.js ~ line 56 ~ onSearchKeyPress ~ updatedData", updatedData)
-        setFilteredMovies(updatedData)   
-        setSearchText(value) 
-      }
-  }
-  const onScroll = () => {
-    console.log("scrolling");
-  }
-  $(".chat-message").onscroll = () => {
-    // setOffset(window.pageYOffset)
-    // console.log("useEFF", offset); 
-    // if (window.innerHeight + document.documentElement.scrollTop !== document.documentElement.offsetHeight || isFetching) return;
-    // setIsFetching(true);
-    // console.log("scrolling");
+    }
+    else {
+      setShowedMovies(movies.slice(0, 31))
+    }
   }
 
-  const handleScroll = () => {
-    console.log("scrolling");
-
-  }
-
-  // const handleScroll = useCallback(() => {
-  //   if (window.innerHeight + document.documentElement.scrollTop !== document.documentElement.offsetHeight || isFetching) return;
-  //   setIsFetching(true);
-  // }, []);
+  const handleScroll = (e) => {
+    if (e.target.scrollHeight - e.target.scrollTop !== e.target.clientHeight || isFetching) return;
+    setIsFetching(true);
+  };
 
   const fetchMoreListItems = () => {
     setTimeout(() => {
@@ -92,7 +78,6 @@ const GroupStreaming = () => {
       setIsFetching(false);
     }, 2000);
   }
-
 
   const handleOpenChatBox = () => {
     setOpenedChatBox(!openedChatBox)
@@ -112,36 +97,28 @@ const GroupStreaming = () => {
   }
 
   const onBlurSearchInput = () => {
-    console.log("🚀 ~ file: index.js ~ line 52 ~ onBlurSearchInput ~ onBlurSearchInput", isShown)
-
     textInput.current.blur()
     setIsShown(false)
   }
 
 
   const btnSearchClicked = () => {
-    console.log("🚀 ~ file: index.js ~ line 78 ~ btnSearchClicked ~ isShown", isShown)
-
     if (!isShown) {
       textInput.current.focus()
     }
     setIsShown(!isShown)
   }
 
-  // useEffect(() => {
-  //   window.addEventListener("scroll", handleScroll);
-  //   return () => {
-  //     window.removeEventListener("scroll", handleScroll);
-  //   }
-  // }, [handleScroll]);
 
-  // useEffect(async () => {
-  //   const response = await getAllMovies()
-  //   let data = await response.json()
-  //   setMovies(data)
-  // }, []);
+  useEffect(async () => {
+    const response = await getAllMovies(localStorage.getItem('access_token'))
+    let data = await response.json()
+    setMovies(data)
+    setShowedMovies(data.slice(0, 31))
+  }, []);
 
   useEffect(() => {
+    console.log("🚀 ~ file: index.js ~ line 119 ~ useEffect ~ setShowedMovies", showedMovies.length)
     if (!isFetching) return;
     fetchMoreListItems();
   }, [isFetching]);
@@ -185,7 +162,7 @@ const GroupStreaming = () => {
                 <Icon.Search className='icon-style' size='16px' strokeWidth='4' color='white' onClick={btnSearchClicked} style={{ cursor: 'pointer', marginRight: "1rem" }} />
               </div>
               <React.Fragment>
-                <input           
+                <input
                   onBlur={onBlurSearchInput}
                   ref={textInput} value={searchText}
                   type={'text'}
@@ -198,44 +175,63 @@ const GroupStreaming = () => {
           </div>
           <VideoPlayer socket={socket} roomnum={roomnum} movieURL={movieURL} />
 
-          <div id="movieRecommend" onScroll={onScroll}
+          <div id="movieRecommend" onScroll={handleScroll}
             className={`${openedMovieRecommend ? '' : 'd-none'}`}
-            style={{ position: 'absolute', width: '100%', height: '100%', backgroundColor: '#242526', zIndex: 3, overflowX: 'hidden', paddingTop: '40px' }}>
+            style={{ position: 'absolute', width: '100%', height: '100%', backgroundColor: '#242526', zIndex: 3, overflowX: 'auto', paddingTop: '40px' }}>
             <div className='body-content'>
               <div className='list-grid'>
-                {!searchText.length ?
-                 movies.map(item =>
-                  (item.uri_avatar != null &&
-                    <div className='grid-container' onClick={handleMovieUrlClick(item)}>
-                      <div className=' item-grid multi-landing-stack-space-holder w-100 h-100'>
-                        {/* <div className="multi-landing-stack-1"></div>
-                                    <div className="multi-landing-stack-2"></div> */}
-                        <img style={{ borderRadius: '4px', }} className="title-card w-100 h-100" src={item.uri_avatar} alt={item.m_name} />
-                      </div>
-                      <div className='name-label'>
-                        {item.name}
-                      </div>
-                    </div>
-                  )
-                  )
-                  :
-                  filteredMovies.length ?
-                  filteredMovies.map(item =>
-                  (item.uri_avatar != null &&
-                    <div className='grid-container' onClick={handleMovieUrlClick(item)}>
-                      <div className=' item-grid multi-landing-stack-space-holder w-100 h-100'>
-                        {/* <div className="multi-landing-stack-1"></div>
-                                    <div className="multi-landing-stack-2"></div> */}
-                        <img style={{ borderRadius: '4px', }} className="title-card w-100 h-100" src={item.uri_avatar} alt={item.m_name} />
-                      </div>
-                      <div className='name-label'>
-                        {item.name}
-                      </div>
-                    </div>
-                  )
-                  )
-                  :
+                {searchText.length && !filteredMovies.length ?
                   <div style={{ color: 'white', fontWeight: "bold", fontSize: '24px' }} >No results found</div>
+                  :
+                  showedMovies.map(item =>
+                  (item.uri_avatar != null &&
+                    <div className='grid-container' onClick={handleMovieUrlClick(item)}>
+                      <div className=' item-grid multi-landing-stack-space-holder w-100 h-100'>
+                        {/* <div className="multi-landing-stack-1"></div>
+                                      <div className="multi-landing-stack-2"></div> */}
+                        <img style={{ borderRadius: '4px', }} className="title-card w-100 h-100" src={item.uri_avatar} alt={item.m_name} />
+                      </div>
+                      <div className='name-label'>
+                        {item.name}
+                      </div>
+                    </div>
+                  )
+                  )
+
+
+                  // !searchText.length ?
+                  //  movies.map(item =>
+                  //   (item.uri_avatar != null &&
+                  //     <div className='grid-container' onClick={handleMovieUrlClick(item)}>
+                  //       <div className=' item-grid multi-landing-stack-space-holder w-100 h-100'>
+                  //         {/* <div className="multi-landing-stack-1"></div>
+                  //                     <div className="multi-landing-stack-2"></div> */}
+                  //         <img style={{ borderRadius: '4px', }} className="title-card w-100 h-100" src={item.uri_avatar} alt={item.m_name} />
+                  //       </div>
+                  //       <div className='name-label'>
+                  //         {item.name}
+                  //       </div>
+                  //     </div>
+                  //   )
+                  //   )
+                  //   :
+                  //   filteredMovies.length ?
+                  //   filteredMovies.map(item =>
+                  //   (item.uri_avatar != null &&
+                  //     <div className='grid-container' onClick={handleMovieUrlClick(item)}>
+                  //       <div className=' item-grid multi-landing-stack-space-holder w-100 h-100'>
+                  //         {/* <div className="multi-landing-stack-1"></div>
+                  //                     <div className="multi-landing-stack-2"></div> */}
+                  //         <img style={{ borderRadius: '4px', }} className="title-card w-100 h-100" src={item.uri_avatar} alt={item.m_name} />
+                  //       </div>
+                  //       <div className='name-label'>
+                  //         {item.name}
+                  //       </div>
+                  //     </div>
+                  //   )
+                  //   )
+                  //   :
+                  // 
                 }
 
               </div>

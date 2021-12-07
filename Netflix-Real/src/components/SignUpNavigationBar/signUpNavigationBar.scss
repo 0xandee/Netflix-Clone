@@ -14,27 +14,9 @@ $gray: #8c8c8c;
     z-index: 4;
 
     background-color: $blackOpacity1;
-    &__background-image {
-        position: absolute;
-        display: block;
-
-        height: 100%;
-        min-height: 120vh;
-        width: 100%;
-
-        overflow: hidden;
-
-        z-index: -1;
-
-        background-color: white;
-        background-size: cover;
-        &__image-style {
-            min-height: 100%;
-            min-width: 100%;
-        }
-    }
+    
     &__header {
-         position: absolute;
+        position: absolute;
         display: flex;
         justify-content: space-between;
         box-sizing: border-box;

@@ -10,6 +10,7 @@ const GenreItem = (props) => {
             console.log("🚀 ~ file: index.js ~ line 10 ~ langChecked ~ isCheck", isCheck)
             props.checkedGenresClicked(item)
         }
+        else props.notCheckedGenresClicked(item)
     }
 
     return (

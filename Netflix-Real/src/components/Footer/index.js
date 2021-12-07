@@ -9,10 +9,7 @@ const languagesData = [
         label: 'English'
 
     },
-    {
-        id: 2,
-        label: 'Tiếng Việt'
-    }
+  
 ];
 const linkFooterData = [
     {
@@ -79,7 +76,7 @@ const Footer = (props) => {
 
 
                     </div>
-                    <div className={`footer__content--language-selection`} onClick={toggleDropdown}>
+                    {/* <div className={`footer__content--language-selection`} onClick={toggleDropdown}>
                         <div className='footer__content--language-selection__header' onClick={toggleDropdown}>
                             <Icon.Globe size='16px' />
                             <span>{selectedItem ? languages.find(item => item.id === selectedItem).label : languages[0].label}</span>
@@ -97,7 +94,7 @@ const Footer = (props) => {
 
 
 
-                    </div>
+                    </div> */}
                 </div>
             </div>
         </div>
