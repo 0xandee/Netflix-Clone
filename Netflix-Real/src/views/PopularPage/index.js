@@ -1,6 +1,6 @@
 import React, { useRef, useState, useCallback, useEffect, createRef } from "react";
 import './Slider.scss';
-import { BigBanner, Slider, Footer, NavigationBar } from "../../components";
+import { Slider, Footer, NavigationBar } from "../../components";
 import { useSelector, useDispatch } from 'react-redux';
 import { showPopUpInfo } from "../../services/redux/actions";
 import { Link, useHistory, useLocation } from "react-router-dom";

@@ -1,11 +1,5 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import AddButton from '../AddButton';
-import CloseButton from '../CloseButton';
-import DislikeButton from '../DislikeButton';
-import { PlayButton } from '../index';
-import LikeButton from '../LikeButton';
-import MuteButton from '../MuteButton';
 import './PreviewButtonControl.scss'
 import { favMoviePost } from '../../services/api/user';
 
@@ -58,9 +52,6 @@ const PreviewButtonControl = (props) => {
             </div>
             {/* <div className="PreviewButton__container PreviewButton__float-right-container px-3">
                 <MuteButton/>
-            </div> */}
-            {/* <div className="PreviewButton__container PreviewButton__float-top-right-container px-3 py-3">
-                <CloseButton onCloseButton = {props.onCloseButton}/>
             </div> */}
         </div>
     )

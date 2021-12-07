@@ -1,6 +1,6 @@
 import React, { createRef, useCallback, useEffect, useRef, useState } from "react";
 import { useSelector, useDispatch } from 'react-redux';
-import { MoreLikeThis, SliderStreaming } from "../../components";
+import { SliderStreaming } from "../../components";
 import { Row, Col, Container } from 'reactstrap'
 import './style.scss';
 import VideoPlayer from "../VideoPlayer";

@@ -1,5 +1,5 @@
 import React, { useRef, useState, useCallback, useEffect, createRef } from "react";
-import { BigBanner, Slider, Footer, BannerSlider, NavigationBar } from "../../components";
+import { Slider, Footer, NavigationBar } from "../../components";
 import { useSelector, useDispatch } from 'react-redux';
 import { setMovieTypes, showPopUpInfo } from "../../services/redux/actions";
 import { Link, useHistory, useLocation, useParams } from "react-router-dom";
@@ -69,7 +69,6 @@ const Homepage = (props) => {
     return (
         <div className="overflow-x-hidden bg-black" ref={homePageRef}>
             <NavigationBar />
-            {/* <BigBanner handleMoreInfo={handleMoreInfo} /> */}
             {/* <div className="">
                 <Swiper navigation={true} pagination={true} className="mySwiper swiper-container ">
                     <div>

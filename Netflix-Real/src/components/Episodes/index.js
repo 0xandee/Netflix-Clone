@@ -1,5 +1,4 @@
 import React from 'react';
-import EpisodeItem from '../EpisodeItem';
 import DropdownSelector from '../DropdownSelector';
 import './Episodes.scss';
 

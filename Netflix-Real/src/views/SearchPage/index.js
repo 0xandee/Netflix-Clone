@@ -1,6 +1,6 @@
 import React, { useRef, useState, useCallback, useEffect, createRef } from "react";
 import './style.scss';
-import { BigBanner, Slider, Footer, NavigationBar } from "../../components";
+import { Slider, Footer, NavigationBar } from "../../components";
 import { to_Decrypt, to_Encrypt } from "../../services/aes256";
 import { useSelector, useDispatch } from 'react-redux';
 import { showPopUpInfo } from "../../services/redux/actions";
