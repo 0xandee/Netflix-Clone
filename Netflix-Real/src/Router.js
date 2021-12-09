@@ -62,17 +62,17 @@ export default function WebRouter() {
                 <Route path="/forgot-password" component={ForgotPassword} />
                 <Route path="/signup/registration" component={Registration} />
                 <Route path="/signup/registrationform" component={RegistrationForm} />
-                <Route path="/profile" component={AccountProfile} />
                 <Route path="/choosetype" component={ChooseTypeStart} />
                 <Route path="/choosemovies" component={OnboardingMovies} />
                 <PrivateRoute exact path="/playlist" component={MyPlaylistPage} />
                 <PrivateRoute exact path="/movies/:idGenre" component={MoviesPage} />
                 <PrivateRoute exact path="/popular" component={PopularPage} />
-                <PrivateRoute exact path='/home' component={Homepage} />
+                <Route exact path='/home' component={Homepage} />
                 <PrivateRoute exact path='/detail/:idMovie' component={PreviewPopup} />
                 <PrivateRoute exact path='/search' component={SearchPage} />
                 <PrivateRoute path="/watch" component={VideoPlayer} />
                 <PrivateRoute path="/watchgroup/:idgroup" component={GroupStreaming} />
+                <Route path="/profile" component={AccountProfile} />
                 <Route component={ErrorPage} />
             </Switch>
         </Router>

@@ -107,7 +107,7 @@ const OnboardingMovies = () => {
                         <div className={`registration__body__content__main `}>
                             {isFinished ?
                                 <div className='mb-3 d-flex flex-column justify-content-center align-items-center'>
-                                    <h1 className="registration__body__content__main__step-title">Personalizing for Andy Vo.</h1>
+                                    <h1 className="registration__body__content__main__step-title">Personalizing for You.</h1>
                                     <div className="registration__body__content__main__waiting-spinner">
                                         <div className="basic-spinner center-absolute"></div>
                                     </div>

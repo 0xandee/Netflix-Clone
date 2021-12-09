@@ -2,19 +2,20 @@ import React, { useEffect, useState } from "react";
 import './languageSetup.scss';
 import { Link, NavLink, useHistory } from "react-router-dom";
 import { Footer, GenreItem, SignUpNavigationBar } from "../../components";
-import { useSelector } from "react-redux";
-import { postNewUserGenres } from '../../services/api/movie'
+import { useDispatch, useSelector } from "react-redux";
+import { getMovieTypeAPI, postNewUserGenres } from '../../services/api/movie'
 import { Button } from "reactstrap";
+import { setMovieTypes } from "../../services/redux/actions";
 
 
 const ChooseTypeStart = () => {
     const history = useHistory()
     const [selectedGenre, setSelectedGenre] = useState([]);
-    const [isDisabled, setIsDisabled] = useState(false);
+    const [isDisabled, setIsDisabled] = useState(true);
     let dataTypes = useSelector((state) => state?.rootReducer.movieTypes)
-
+    const dispatch = useDispatch();
     const checkedGenresClicked = (data) => {
-        if (selectedGenre.length >= 2)
+        if (selectedGenre.length >= 0)
             setIsDisabled(false);
         else setIsDisabled(true);
         setSelectedGenre([...selectedGenre, data])
@@ -27,10 +28,20 @@ const ChooseTypeStart = () => {
         if (index > -1) {
             temp.splice(index, 1);
         }
-        if (temp.length < 3)
+        if (temp.length < 1)
             setIsDisabled(true)
         setSelectedGenre(temp)
     }
+
+    useEffect(async () => {
+        const response = await getMovieTypeAPI(localStorage.getItem('access_token'))
+        console.log("🚀 ~ file: index.js ~ line 39 ~ useEffect ~ response", response)
+        if (response.status === 200) {
+            let data = await response.json()
+            dispatch(setMovieTypes(data))
+        }
+
+    }, [dispatch])
 
     const nextClicked = async () => {
         let removeDuplicate = [...new Set(selectedGenre)];

@@ -28,20 +28,20 @@ const SignIn = (props) => {
         } else {
             setIsEmailError(false)
         }
-        // var passw = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/;
-        if (password == "") {
+         var passw = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/;
+         if (password == "" || !password.match(passw)) {
             setIsPasswordError(true);
+            setErrorTextPassword('Password must be between 6 to 20 characters which contain at least one numeric digit, one uppercase and one lowercase letter')
+
             errorCheck = true;
         } else {
             setIsPasswordError(false)
         }
-        if (!errorCheck) {
-            const passEncrypt = to_Encrypt(password);
+        if (!errorCheck) {        
             try {
                 const response = await requestLogin(username, password)
                 if (response.status === 200) {
                     const data = await response.json()
-                    console.log("🚀 ~ file: index.js ~ line 44 ~ signInClick ~ data", data)
                     localStorage.setItem("access_token", data.accessToken);
                     if (data.first)
                         history.push('/choosetype')

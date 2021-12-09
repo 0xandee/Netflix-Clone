@@ -28,6 +28,64 @@ export const requestRegister = async (dataRegister) => {
     })
 }
 
+export const verifyEmail = async (email) => {
+    return new Promise((resolve, reject) => {
+        fetch(authApi.urlVerifyEmail + `/${email}`, {
+            crossDomain: true,
+            method: "GET",
+            mode: 'cors',
+            headers: { 'Content-Type': 'application/json' },
+        })
+            .then(response => {
+                resolve(response)
+            })
+            .catch(error => {
+                return reject(error)
+            });
+    })
+}
+
+export const requestForgotPassword = async (email) => {
+    return new Promise((resolve, reject) => {
+        fetch(authApi.urlForgotPassword + `/${email}`, {
+            crossDomain: true,
+            method: "GET",
+            mode: 'cors',
+            headers: { 'Content-Type': 'application/json' },
+        })
+            .then(response => {
+                resolve(response)
+            })
+            .catch(error => {
+                return reject(error)
+            });
+    })
+}
+
+export const requestChangePass = async (oldPassword, newPassword, token) => {
+    return new Promise((resolve, reject) => {
+        fetch(authApi.urlChangePassword, {
+            crossDomain: true,
+            method: "PUT",
+            mode: 'cors',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': "Bearer " + token,
+            },
+            body: JSON.stringify({
+                oldPassword,
+                newPassword
+            })
+        })
+            .then(response => {
+                resolve(response)
+            })
+            .catch(error => {
+                reject(error)
+            });
+    })
+}
+
 export const requestLogin = async (username, password) => {
     return new Promise((resolve, reject) => {
         fetch(authApi.urlLogin, {
@@ -36,7 +94,7 @@ export const requestLogin = async (username, password) => {
             mode: 'cors',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                email : username,
+                email: username,
                 password
             })
         })
@@ -50,24 +108,23 @@ export const requestLogin = async (username, password) => {
 }
 
 export const requestLogout = async (refresh_token) => {
-
-        return new Promise((resolve, reject) => {
-            fetch(authApi.urlLogout, {
-                crossDomain: true,
-                method: "DELETE",
-                mode: 'cors',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    token : refresh_token
-                })
+    return new Promise((resolve, reject) => {
+        fetch(authApi.urlLogout, {
+            crossDomain: true,
+            method: "DELETE",
+            mode: 'cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                token: refresh_token
             })
-                .then(response => {
-                    resolve(response)
-                })
-                .catch(error => {
-                    reject(error)
-                });
         })
+            .then(response => {
+                resolve(response)
+            })
+            .catch(error => {
+                reject(error)
+            });
+    })
 }
 
 export const requestRefreshToken = async (refresh_token, callback) => {

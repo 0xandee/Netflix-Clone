@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import Select from 'react-select';
 import { Button, Col, Form, FormGroup, Input, InputGroup, Label, Row } from "reactstrap";
 import { Controller } from "swiper";
@@ -7,14 +7,37 @@ import Flatpickr from "react-flatpickr";
 import 'flatpickr/dist/flatpickr.css';
 import './style.scss'
 
+const genderData = [
+  { value: 0, label: 'Male' },
+  { value: 1, label: 'Female' },
+  { value: 2, label: 'Other' },
+]
+
 const GeneralProfile = () => {
   let avatar = 'https://occ-0-325-3996.1.nflxso.net/dnm/api/v6/K6hjPJd6cR6FpVELC5Pd6ovHRSk/AAAABYnnca7HCf0z4YHtIK5R8MIGCeMyodAsxBYSBmMkYHqjSw46VWWyNQirfwxT-CkbxPkp-G84Wu-iOMwGG-r9QAs.png?r=f71'
-  const [isClearable, setIsClearable] = useState(false)
-  const [isDisabled, setIsDisabled] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
-  const [isRtl, setIsRtl] = useState(false)
-  const [isSearchable, setIsSearchable] = useState(true)
+  const [gender, setGender] = useState()
   const [dob, setDob] = useState(new Date())
+  const [user, setUser] = useState({})
+
+  const selectStyle = {
+    control: base => ({
+      ...base,
+      height: 60,
+      border: '1px solid gray'
+    })
+  };
+
+  useEffect(async () => {
+    try {
+      // let responseData = await getMovieByID(props.id)
+      // setMovie(responseData)
+      // setPicker(responseData.premiere_time)     
+      // setValueCountry(responseData.country)
+
+    } catch (error) {
+    }
+  }, [])
+
   return (
     <div id='generalProfile'>
       <div className="general-profile">
@@ -23,11 +46,10 @@ const GeneralProfile = () => {
           <Row className='mt-4'>
             <Col sm='6'>
               <FormGroup>
-                <Label for='username'>Username</Label>
+                <Label for='username'>Email</Label>
                 <Input
-                  name='username'
-                  placeholder='Username'
-
+                  name='email'
+                  placeholder='Email'
                 />
               </FormGroup>
             </Col>
@@ -54,10 +76,21 @@ const GeneralProfile = () => {
             </Col>
             <Col sm='6'>
               <FormGroup>
-                <Label for='username'>Phone Number</Label>
-                <Input
-                  name='phonenumber'
-                  placeholder='Phone Number'
+                <Label for='username'>Gender</Label>
+                <Select
+                  className="react-select"
+                  classNamePrefix="select"
+                  placeholder='Gender'
+                  isDisabled={false}
+                  isLoading={false}
+                  isClearable={false}
+                  isRtl={false}
+                  isSearchable={true}
+                  name="country"
+                  options={genderData}
+                  onChange={(prop) => setGender(prop)}
+                  selectValue={gender}
+                  styles={selectStyle}
                 />
               </FormGroup>
             </Col>
@@ -83,11 +116,11 @@ const GeneralProfile = () => {
                 className="react-select"
                 classNamePrefix="select"
                 defaultValue={countryListData[0]}
-                isDisabled={isDisabled}
-                isLoading={isLoading}
-                isClearable={isClearable}
-                isRtl={isRtl}
-                isSearchable={isSearchable}
+                isDisabled={false}
+                isLoading={false}
+                isClearable={false}
+                isRtl={false}
+                isSearchable={true}
                 name="country"
                 options={countryListData}
               />

@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import './forgotPassword.scss'
 import * as Icon from 'react-feather';
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useHistory } from "react-router-dom";
 import { IconNetflix } from '../../assets/Icon';
 import { FormGroup, Input, Label } from "reactstrap";
 import { CustomInput, Footer } from "../../components";
+import { requestForgotPassword } from "../../services/api/auth";
 
 const ForgotPassword = () => {
+    const history = useHistory()
     const backgroudUrl = 'https://assets.nflxext.com/ffe/siteui/acquisition/login/login-the-crown_2-1500x1000.jpg'
     const [email, setEmail] = useState('')
     const [isEmailError, setIsEmailError] = useState(false)
@@ -14,32 +16,22 @@ const ForgotPassword = () => {
     const [isCheckOTP, setIsCheckOTP] = useState(false);
     const [mailOTPCode, setMailOTPCode] = useState('');
     const [isOTPError, setIsOTPError] = useState(false)
-    const [isChangePassword, setIsChangePassword] = useState(false);
-    const [confirmPassword, setConfirmPassword] = useState('');
-    const [newPassword, setNewPassword] = useState('');
-    const [isNewPasswordError, setIsNewPasswordError] = useState(false)
-    const [isConfirmPasswordError, setIsConfirmPasswordError] = useState(false)
 
-    const forgotPasswordClicked = () => {
+
+    const forgotPasswordClicked = async () => {
         if (email == "" || !email.match('@gmail.com')) {
             setIsEmailError(true)
         }
         else {
             setIsEmailError(false)
-            setIsCheckOTP(true)
-
+            const res = await requestForgotPassword(email)
+            if (res.status == 200)
+                setIsCheckOTP(true)
         }
     }
-    const checkOTPClicked = () => {
-        setIsChangePassword(true)
-    }
 
-    const checkNewPassword = () => {
-        if(!newPassword.match(confirmPassword))
-        {
-            setIsConfirmPasswordError(true)
-           
-        }
+    const backToSignInClicked = () => {
+        history.push('/signin')
     }
 
     return (
@@ -55,9 +47,10 @@ const ForgotPassword = () => {
                 <div className={`forgot-password__body`}>
                     <div className={`forgot-password__body__content`}>
                         <div className={`forgot-password__body__content__main`}>
-                            <h1 className={`forgot-password__body__content__main__title`}>Forgot Password</h1>
+
                             {!isCheckOTP ?
                                 <div>
+                                    <h1 className={`forgot-password__body__content__main__title`}>Forgot Password</h1>
                                     <CustomInput
                                         label={`Enter your email`}
                                         style={{ background: '#fff' }}
@@ -75,45 +68,21 @@ const ForgotPassword = () => {
                                     </div>
                                 </div>
                                 :
-                                !isChangePassword ?
-                                    <div>
-                                        <CustomInput
-                                            label={`Enter your OTP code`}
-                                            style={{ background: '#fff' }}
-                                            textStyle={{ color: 'black' }}
-                                            type='text'
-                                            value={mailOTPCode}
-                                            onChange={setMailOTPCode} />
-                                        <div className={`error-label ${isOTPError && 'visible'}`}> {isOTPError && 'Wrong OTP Code'}</div>
-                                        <div className={`forgot-password__body__content__main__button-forgot-password`} onClick={checkOTPClicked}>
-                                            <span> Send
-                                            </span>
-                                        </div>
+                                <div className="d-flex flex-column text-xl-center font-weight-bold ">
+                                    <label>
+                                        We have send new password to your email.
+                                    </label>
+                                    <label>
+                                        Please check your email and log in again with new password.
+                                    </label>
+                                    <label>
+                                        If you want to change password, you can go to account section and change it there.
+                                    </label>
+                                    <div className={`forgot-password__body__content__main__button-forgot-password`} onClick={backToSignInClicked}>
+                                        <span> Back to Sign in
+                                        </span>
                                     </div>
-                                    :
-                                    <div>
-                                        <CustomInput
-                                            label={`Enter your new password`}
-                                            style={{ background: '#fff' }}
-                                            textStyle={{ color: 'black' }}
-                                            type='password'
-                                            value={newPassword}
-                                            onChange={setNewPassword} />
-                                        <div className={`error-label ${isNewPasswordError && 'visible'}`}> {isNewPasswordError && 'Password must be between 6 to 20 characters which contain at least one numeric digit, one uppercase and one lowercase letter'}</div>
-                                        <CustomInput
-                                            label={`Confirm your password`}
-                                            style={{ background: '#fff' }}
-                                            textStyle={{ color: 'black' }}
-                                            type='password'
-                                            value={confirmPassword}
-                                            onChange={setConfirmPassword} />
-                                        <div className={`error-label ${isConfirmPasswordError && 'visible'}`}> {isConfirmPasswordError  && 'Password is not matched'}</div>
-                                       
-                                        <div className={`forgot-password__body__content__main__button-forgot-password`} onClick={checkNewPassword}>
-                                            <span> Change Password
-                                            </span>
-                                        </div>
-                                    </div>
+                                </div>
                             }
                         </div>
                         <div>

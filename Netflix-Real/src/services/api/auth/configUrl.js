@@ -6,6 +6,8 @@ export const authApi = {
   urlLogin: `${url}/api/auth/login`,
   urlLogout: `${url}/api/auth/logout`,
   urlRefreshToken: `${url}/api/auth/refresh-token`,
-  urlChangePassword: `${url}/api/auth/change-password`,
+  urlChangePassword: `${url}/api/auth/change-pass`,
+  urlForgotPassword: `${url}/api/auth/forgot-pass`,
   urlLogoutAllUser: `${url}/api/auth/logout-all-user`,
+  urlVerifyEmail: `${url}/api/auth/verify-email`,
 }

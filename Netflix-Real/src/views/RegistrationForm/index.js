@@ -2,13 +2,10 @@ import React, { useState, Component, Fragment } from "react";
 import './registrationForm.scss'
 import { Row, Col, Label, Avatar, Button } from 'reactstrap'
 import Select from 'react-select';
-import { useHistory } from "react-router-dom";
+import { Link, NavLink, useHistory } from "react-router-dom";
 import Flatpickr from "react-flatpickr";
 import 'flatpickr/dist/flatpickr.css';
 import { CustomInput, Footer, SignUpNavigationBar } from "../../components";
-import { to_Decrypt, to_Encrypt } from "../../services/aes256";
-import { connect } from 'react-redux';
-import { userPostFetch } from '../../services/redux/actions';
 import { requestRegister } from "../../services/api/auth";
 import { countryListData } from "../../config/countryData";
 import { X, Check } from "react-feather";
@@ -24,7 +21,6 @@ const ErrorToast = (props) => (
     <Fragment>
         <div className='toastify-header'>
             <div className='title-wrapper'>
-
                 <h6 className='toast-title'>Error!</h6>
             </div>
             {/* <small className='text-muted'>11 Min Ago</small>   */}
@@ -72,8 +68,7 @@ const RegistrationForm = () => {
             setErrorDob(true)
         }
         else setErrorDob(false)
-        console.log("🚀 ~ file: index.js ~ line 77 ~ nextClicked ~ country", country)
-
+       
         if (country == null) {
             setErrorCountry(true)
         }
@@ -89,12 +84,12 @@ const RegistrationForm = () => {
         var passw = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/;
         if (password == "" || !password.match(passw)) {
             setIsPasswordError(true)
+            setErrorTextPassword('Password must be between 6 to 20 characters which contain at least one numeric digit, one uppercase and one lowercase letter')
         }
 
         else {
             try {
                 setIsPasswordError(false)
-                // const passEncrypt = to_Encrypt(password);
                 const response = await requestRegister({ email, password, gender, country, dob: dob.toISOString().slice(0, 10) })
                 console.log("🚀 ~ file: index.js ~ line 64 ~ nextClicked ~ response", response)
                 if (response.status >= 200 && response.status <= 299) {
@@ -120,12 +115,10 @@ const RegistrationForm = () => {
 
     }
 
-
-
     return (
         <div id='regForm'>
             <div className={`registration`}>
-                    <SignUpNavigationBar />         
+                <SignUpNavigationBar />
                 <div className='registration__background-image'>
                 </div>
 
@@ -136,8 +129,19 @@ const RegistrationForm = () => {
                                 Registered successfully !!
                             </h1>
                             <h2>
-                                Please close this page and check your registered email
+                                Please check your registered email to finish the registration process
                             </h2>
+                            <NavLink to='/signin' className=" text-decoration-none d-flex justify-content-center">
+                                <div className=" px-5 mt-4 w-75">
+                                    <div className={`registration__body__content__main__button-next `} onClick={nextClicked}>
+                                        <span> Back to log in page
+                                        </span>
+                                    </div>
+                                </div>
+
+                            </NavLink>
+
+
                         </div>
                         :
                         <div className={`registration__body__content`}>
