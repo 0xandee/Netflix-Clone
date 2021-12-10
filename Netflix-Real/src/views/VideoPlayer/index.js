@@ -14,11 +14,11 @@ let count = 0;
 ///https://player.vimeo.com/external/194837908.sd.mp4?s=c350076905b78c67f74d7ee39fdb4fef01d12420&profile_id=164
 // http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4
 //https://drive.google.com/uc?export=download&id=1Cvk2XhYdSKAST4ecGQ6s1ra4MilvXuLC
-const VideoPlayer = ({socket, roomnum, videoURL}) => {
+const VideoPlayer = ({ socket, roomnum, videoURL }) => {
     const history = useHistory(); // Navigate back to the previous state
     const [played, setPlayed] = useState(0);
     const [loaded, setLoaded] = useState(0);
-    const [playing, setPlaying] = useState(false);
+    const [playing, setPlaying] = useState(true);
     const [focusing, setFocusing] = useState(false);
 
     const [muted, setMuted] = useState(false);
@@ -36,11 +36,10 @@ const VideoPlayer = ({socket, roomnum, videoURL}) => {
     const titlePlayedRef = useRef(null);
     const [iconRewind, setIconRewind] = useState(false);
     const [iconNext, setIconNext] = useState(false);
-    
-
+    const [isHost, setIsHost] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const valuePlayed = useRef();
     let valueHover = 0;
-
-    
 
     const toggleRewind = () => setIconRewind(!iconRewind);
     const toggleNext = () => setIconNext(!iconNext);
@@ -48,10 +47,10 @@ const VideoPlayer = ({socket, roomnum, videoURL}) => {
         setUrl(null);
         setPlaying(false);
     }
-    
+
 
     const handleVideoOnReady = () => {
-        // console.log('loading')
+        console.log('loading')
     }
 
     const handleVolumeChange = () => {
@@ -77,9 +76,12 @@ const VideoPlayer = ({socket, roomnum, videoURL}) => {
     }
 
     const handlePlayPause = useCallback(() => {
-        controlRef.current.style.opacity = '1'
-        setPlaying(!playing)
-    }, [playing])
+
+        if (isHost) {
+            controlRef.current.style.opacity = '1'
+            setPlaying(!playing)
+        }
+    }, [playing, isHost])
 
     const handleVideoPlay = () => {
         setPlaying(true)
@@ -100,10 +102,9 @@ const VideoPlayer = ({socket, roomnum, videoURL}) => {
         }
         if (!seeking) {
             setPlayed(state.played);
+            valuePlayed.current = state.played;
             setLoaded(state.loaded)
         }
-
-
     }
 
     const handleVideoEnded = () => {
@@ -111,22 +112,18 @@ const VideoPlayer = ({socket, roomnum, videoURL}) => {
     }
 
     const handleVideoDuration = (duration) => {
-        if (typeof(url) != 'undefined'){
+        if (typeof (url) != 'undefined') {
             setDuration(duration);
         }
     }
 
     const handlePlayedDown = () => {
+        setSeeking(true)
     }
 
     const handlePlayedUp = (e) => {
         playerRef.current.seekTo(parseFloat(e.target.value))
-        // socket.emit('get host data', {
-        //     room: roomnum,
-        //     currTime: e.target.value,
-        //     state: playing,
-        //     caller: socket.id
-        // });
+        setSeeking(false)
     }
 
     const handleRewind = useCallback(() => {
@@ -142,10 +139,12 @@ const VideoPlayer = ({socket, roomnum, videoURL}) => {
         screenfull.toggle(playerContainerRef.current)
     }
 
-    const handleMouseMove = () => {
+    const handleMouseMove = useCallback(() => {
         // console.log('move')
-        controlRef.current.style.opacity = '1'
-    }
+        if (isHost)
+            controlRef.current.style.opacity = '1'
+        else controlRef.current.style.opacity = '0'
+    }, [isHost])
 
     const handleMouseEnter = () => {
         setFocusing(true)
@@ -166,8 +165,6 @@ const VideoPlayer = ({socket, roomnum, videoURL}) => {
         titlePlayedRef.current.textContent = Format((valueHover * duration).toFixed(0));
         titlePlayedRef.current.style.left = e.nativeEvent.offsetX + 'px';
     }
-
-
 
     const handleKeyDown = useCallback((e) => {
         if (focusing) {
@@ -223,10 +220,9 @@ const VideoPlayer = ({socket, roomnum, videoURL}) => {
                 setSeeking(false)
             }
         }
-    }, [played,focusing])
+    }, [played, focusing])
 
     useEffect(() => {
-
         document.addEventListener("keydown", handleKeyDown)
         document.addEventListener("keyup", handleKeyUp)
 
@@ -235,90 +231,116 @@ const VideoPlayer = ({socket, roomnum, videoURL}) => {
             document.removeEventListener("keyup", handleKeyUp)
         }
     }, [handleKeyDown, handleKeyUp]);
-    
+
     useEffect(() => {
-        socket.emit('get host data', {
+        console.log('get host data')
+        let data = {
             room: roomnum,
             currTime: played,
             state: playing,
             caller: socket.id
+        }
+        console.log("🚀 ~ file: index.js ~ line 253 ~ socket.on ~ data", data)
+        socket.emit('get host data', {
+            room: roomnum,
+            currTime:  played,
+            state: playing,
+            caller: socket.id
         });
-    }, [seeking, playing])
+    }, [seeking, playing, socket])
     // })
-    
+    useEffect(() => {
+        socket.on("getURLMovie", (data) => {
+            console.log("🚀 ~ file: index.js ~ line 246 ~ socket.on ~ data", data)
+            setUrl(data.movieURL)
+        })
 
-    // const syncHost = () => {
-        // socket.emit('get host data', {
-        //     room: roomnum,
-        //     currTime: played,
-        //     state: playing,
-        //     caller: socket.id
-        // });
-    // }
+    }, [url, socket])
+
+    useEffect(() => {
+        socket.on('isHost', function (data) {
+            console.log("🚀 ~ file: index.js ~ line 271 ~ data", data)
+            setIsHost(data.isHost)
+            if (!data.isHost) {
+                controlRef.current.style.opacity = '0'
+            }
+        })
+    }, [socket])
+
+    useEffect(() => {
+        socket.on("getData", () => {
+            console.log("New member get into the room")
+            let data = {
+                room: roomnum,
+                currTime: played,
+                state: playing,
+                caller: socket.id
+            }
+            console.log("🚀 ~ file: index.js ~ line 253 ~ socket.on ~ data", data)
+            socket.emit('get host data', {
+                room: roomnum,
+                currTime: played,
+                state: playing,
+                caller: socket.id
+            });
+        })
+
+    }, [socket])
+
 
     // Uses the host data to compare
-    socket.on('compareHost', function(data) {
-        console.log("compareHost");
-        // // The host data
-        var hostTime = data.currTime
-        var hostState = data.state
+    useEffect(() => {
+        socket.on('compareHost', function (data) {
+            console.log("🚀 ~ file: index.js ~ line 259 ~ data", data)
+            console.log("compareHost");
+            // // The host data
+            var hostTime = data.currTime
+            var hostState = data.state
+            console.log("🚀 ~ file: index.js ~ line 299 ~ hostState", hostState)
 
-        var clientTime = played
-        var clientState = playing
+            var clientTime = played
+            var clientState = playing
 
-        var isHost = data.host == socket.id
+            var host = data.host == socket.id
 
-        if (data.currVideo != url){
-            setUrl(data.currVideo)
-        }
-
-        // // If out of sync
-        // console.log("currTime != hostTime", clientTime != hostTime);
-        // console.log("state != hostState", clientState != hostState);
-        // console.log("isHost", isHost);
-        // console.log("CURRENT curr: " + clientTime + " State: " + clientState)
-        // console.log("HOST curr: " + hostTime + " State: " + hostState)
-        if (clientTime != hostTime || clientState != hostState) {
-            if (!isHost) {
-                // disconnected()
-                console.log("playerRef", playerRef);
-                console.log("duration", duration);
-                if (playerRef.current !== null && duration !== undefined){
-                    console.log("played", played);
-                    console.log("hostTime", hostTime);
-                    setPlayed(hostTime);
-                    playerRef.current.seekTo(hostTime, 'fraction')
-                    setPlaying(hostState);
-                }
-                // console.log("AFTER CHANGE curr: " + played + " State: " + playing)
+            if (data.currVideo != url) {
+                setUrl(data.currVideo)
             }
-        }
-    });
 
-    // useEffect(() => {
-    //     socket.on('getPlayerData', function(data) {
-    //         console.log("getPlayerData");
-    //         var roomnum = data.room
-    //         var caller = data.caller
-        
-    //         var currTime = played
-    //         var state = playing
-    //         console.log("currTime", currTime);
-    //         console.log("state", state);
-    //         socket.emit('get host data', {
-    //             room: roomnum,
-    //             currTime: currTime,
-    //             state: state,
-    //             caller: caller
-    //         });
-    //     });
-    // })
+            // // If out of sync
+            // console.log("currTime != hostTime", clientTime != hostTime);
+            // console.log("state != hostState", clientState != hostState);
+            // console.log("isHost", isHost);
+            // console.log("CURRENT curr: " + clientTime + " State: " + clientState)
+            // console.log("HOST curr: " + hostTime + " State: " + hostState)
+            setTimeout(() => {
+                if (clientTime != hostTime || clientState != hostState || clientTime > hostTime) {
+                    if (!host) {
+                        // disconnected()
+                         console.log("playerRef", playerRef);
+                        // console.log("duration", duration);
+                        if (playerRef.current !== null && duration !== undefined) {
+                             console.log("playing", playing);
+                             console.log("hostTime", hostTime);
+                            playerRef.current.seekTo(hostTime, 'fraction')
+                            setPlayed(hostTime);
+                            setPlaying(hostState);
+                        }
+                        // console.log("AFTER CHANGE curr: " + played + " State: " + playing)
+                    }
+                }
+            }, 50)
 
-
+        });
+    }, [socket])
 
 
     return (
-        <div id={`videoPlayer`} onMouseMove={handleMouseMove} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}  style={{position: 'absolute', width: '100%', height: '100%'}}>
+        <div id={`videoPlayer`} onMouseMove={handleMouseMove} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} style={{ position: 'absolute', width: '100%', height: '100%' }}>
+            {url !== undefined &&
+                <div className="position-absolute w-100 h-100"> CHua co URl
+                </div>
+            }
             <div ref={playerContainerRef} className={`video-player`} >
                 <div className={'video-container'} onClick={handlePlayPause}>
                     <ReactPlayer
@@ -330,10 +352,8 @@ const VideoPlayer = ({socket, roomnum, videoURL}) => {
                         onReady={handleVideoOnReady}
                         playing={playing}
                         controls={false}
-
                         volume={volume}
                         muted={muted}
-
                         onPlay={handleVideoPlay}
                         onEnded={handleVideoEnded}
                         onPause={handleVideoPause}
@@ -354,12 +374,12 @@ const VideoPlayer = ({socket, roomnum, videoURL}) => {
                     transition: 'all 0.5s'
                 }}>
 
-                    <div className={`video-player__top`} style={{zIndex: '4', justifyContent: "space-between"}}>
-                        <div className={`video-player__top__icon-container`} onClick={() => history.goBack()}>
+                    <div className={`video-player__top`} style={{ zIndex: '4', justifyContent: "space-between" }}>
+                        <div className={`video-player__top__icon-container`} onClick={() => history.push('/home')}>
                             <IconBackArrow className={'video-player__top__icon-back'} />
                             <span>Back to Browse</span>
                         </div>
-                       
+
                     </div>
 
 

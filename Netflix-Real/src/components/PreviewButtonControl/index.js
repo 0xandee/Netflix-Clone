@@ -6,7 +6,17 @@ import { favMoviePost } from '../../services/api/user';
 
 
 const PreviewButtonControl = (props) => {
-    const { item } = props;
+    const { item } = props
+    const addFavoriteClicked = async () => {
+        try {
+            const response = await favMoviePost(item.id, localStorage.getItem('access_token'))
+            console.log("🚀 ~ file: index.js ~ line 9 ~ addFavoriteClicked ~ response", response)
+        }
+        catch {
+
+        }
+
+    }
     return (
         <div className="position-relative ">
             <div className="PreviewButton__container PreviewButton__float-left-container px-4 d-flex flex-row  align-items-center">
@@ -21,7 +31,7 @@ const PreviewButtonControl = (props) => {
                     <span className="PlayButton__primary-text PlayButton__primary-text-transform plr-2 ">Play</span>
                 </div>
                 <div style={{margin:'0 15px'}}>
-                    <button className="PlayButton__secondary-color PlayButton__secondary-button" onClick={favMoviePost(item.id)}>
+                    <button className="PlayButton__secondary-color PlayButton__secondary-button" onClick={addFavoriteClicked}>
                         <div className="PlayIcon_icon-container">
                             <div id="AddIcon" className="AddIcon_icon">
                                 <svg viewBox="0 0 24 24">

@@ -28,15 +28,15 @@ const SignIn = (props) => {
         } else {
             setIsEmailError(false)
         }
-         var passw = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/;
-         if (password == "" || !password.match(passw)) {
-            setIsPasswordError(true);
-            setErrorTextPassword('Password must be between 6 to 20 characters which contain at least one numeric digit, one uppercase and one lowercase letter')
+        //  var passw = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/;
+        //  if (password == "" || !password.match(passw)) {
+        //     setIsPasswordError(true);
+        //     setErrorTextPassword('Password must be between 6 to 20 characters which contain at least one numeric digit, one uppercase and one lowercase letter')
 
-            errorCheck = true;
-        } else {
-            setIsPasswordError(false)
-        }
+        //     errorCheck = true;
+        // } else {
+        //     setIsPasswordError(false)
+        // }
         if (!errorCheck) {        
             try {
                 const response = await requestLogin(username, password)

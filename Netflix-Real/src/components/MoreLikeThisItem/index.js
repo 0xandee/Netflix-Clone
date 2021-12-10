@@ -4,7 +4,14 @@ import { favMoviePost } from '../../services/api/user';
 const MoreLikeThisItem = (props) => {
     const { item } = props
     const addFavoriteClicked = async () => {
-        await favMoviePost(item.id, localStorage.getItem('access_token'))
+        try {
+            const response = await favMoviePost(item.id, localStorage.getItem('access_token'))
+            console.log("🚀 ~ file: index.js ~ line 9 ~ addFavoriteClicked ~ response", response)
+        }
+        catch {
+
+        }
+
     }
     return (
         <div id='moreLikeThis'>
@@ -20,7 +27,7 @@ const MoreLikeThisItem = (props) => {
                             </div>
                         </div>
                         <div>
-                            <div className="has-smaller-buttons d-flex justify-content-center" onClick={addFavoriteClicked }>
+                            <div className="has-smaller-buttons d-flex justify-content-center" onClick={addFavoriteClicked}>
                                 <div className="small ltr-dguo2f" role="presentation">
                                     <svg viewBox="0 0 24 24"><path d="M13 11h8v2h-8v8h-2v-8H3v-2h8V3h2v8z" fill="currentColor"></path></svg>
                                 </div>

@@ -50,7 +50,7 @@ const Homepage = (props) => {
         dataTypes.map(async (item) => {
             try {
                 const res = await getMoviesByGenreAPI(item.id, localStorage.getItem('access_token'))
-                console.log("🚀 ~ file: index.js ~ line 50 ~ dataTypes.map ~ res", res)
+               
                 if (res.status == 200) {
                     let data = await res.json()
                     var genreMovie = {

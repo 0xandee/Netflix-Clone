@@ -12,8 +12,7 @@ const SuccessToast = (props) => (
     <div className='toastify-header'>
       <div className='title-wrapper'>
         <h6 className='toast-title'>Success!</h6>
-      </div>
-      {/* <small className='text-muted'>11 Min Ago</small>   */}
+      </div>    
     </div>
     <div className='toastify-body'>
       <span role='img' aria-label='toast-text'>
@@ -32,7 +31,6 @@ const ErrorToast = (props) => (
       <div className='title-wrapper'>
         <h6 className='toast-title'>Error!</h6>
       </div>
-      {/* <small className='text-muted'>11 Min Ago</small>   */}
     </div>
     <div className='toastify-body'>
       <span role='img' aria-label='toast-text'>
@@ -80,7 +78,6 @@ const ChangePasswordProfile = () => {
         setIsOldPassError(false)
         setIsNewPassError(false)
         const res = await requestChangePass(oldPass, newPass, localStorage.getItem('access_token'))
-        console.log("🚀 ~ file: index.js ~ line 74 ~ saveClicked ~ res", res)
         if (res.status === 200) {
           notifySuccess()
         }

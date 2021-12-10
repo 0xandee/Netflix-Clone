@@ -19,7 +19,6 @@
     width: 0;
     opacity: 0;
     border-left: 1px solid rgb(61, 61, 61);
-    background-color: blue !important;
     float: right;
     transition: all 0.5s;
     &::-webkit-scrollbar {
@@ -46,6 +45,8 @@
     z-index: 2;
 
     transition: all 0.5s;
+
+    cursor: pointer;
     &--left {
       @extend .icon-chevron;
       left: 0;

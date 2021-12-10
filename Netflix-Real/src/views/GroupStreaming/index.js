@@ -35,9 +35,10 @@ const GroupStreaming = () => {
   const [searchText, setSearchText] = useState('');
   const [openedMovieRecommend, setOpenedMovieRecommend] = useState(true);
   const [movieURL, setMovieURL] = useState('')
+  const [isHost, setIsHost] = useState(false);
 
   const onValueSearchChange = (e) => {
-    const value = e.target.value    
+    const value = e.target.value
     let updatedData = []
     setSearchText(value)
     if (value.length) {
@@ -80,6 +81,7 @@ const GroupStreaming = () => {
   }
 
   const handleOpenChatBox = () => {
+
     setOpenedChatBox(!openedChatBox)
   }
 
@@ -93,7 +95,7 @@ const GroupStreaming = () => {
     setMovieURL('https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4');
     let movieURL = 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4';
     socket.emit('set movie', { username, roomnum, movieURL });
-    handleOpenMovieRecommend()
+    handleOpenMovieRecommend(true)
   }
 
   const onBlurSearchInput = () => {
@@ -118,7 +120,6 @@ const GroupStreaming = () => {
   }, []);
 
   useEffect(() => {
-    console.log("🚀 ~ file: index.js ~ line 119 ~ useEffect ~ setShowedMovies", showedMovies.length)
     if (!isFetching) return;
     fetchMoreListItems();
   }, [isFetching]);
@@ -127,19 +128,13 @@ const GroupStreaming = () => {
   useEffect(() => {
     // Join room
     socket.emit("joinRoom", { username, roomnum });
-    socket.emit('new room', { username, roomnum }, function (data) {
-      // // This should only call back if the client is the host
-      // console.log("data", data);
-      if (data) {
-        console.log("Host is syncing the new socket!")
-        // syncVideo(roomnum)
-      }
-    });
+    socket.emit('new room', { username, roomnum });
 
     socket.on('isHost', function (data) {
-      console.log("I am not a host");
+      
       if (!data.isHost) {
-        handleOpenMovieRecommend()
+        handleOpenMovieRecommend(data.isHost)
+        setIsHost(data.isHost)
       }
     })
 
@@ -173,8 +168,13 @@ const GroupStreaming = () => {
               </React.Fragment>
             </div>
           </div>
-          <VideoPlayer socket={socket} roomnum={roomnum} movieURL={movieURL} />
-
+          {/* {!movieURL.length && !isHost ?
+            <div>
+              Host is choosing movie. So please wait
+            </div>
+            : */}
+            <VideoPlayer socket={socket} roomnum={roomnum} movieURL={movieURL} />
+          
           <div id="movieRecommend" onScroll={handleScroll}
             className={`${openedMovieRecommend ? '' : 'd-none'}`}
             style={{ position: 'absolute', width: '100%', height: '100%', backgroundColor: '#242526', zIndex: 3, overflowX: 'auto', paddingTop: '40px' }}>
@@ -197,41 +197,6 @@ const GroupStreaming = () => {
                     </div>
                   )
                   )
-
-
-                  // !searchText.length ?
-                  //  movies.map(item =>
-                  //   (item.uri_avatar != null &&
-                  //     <div className='grid-container' onClick={handleMovieUrlClick(item)}>
-                  //       <div className=' item-grid multi-landing-stack-space-holder w-100 h-100'>
-                  //         {/* <div className="multi-landing-stack-1"></div>
-                  //                     <div className="multi-landing-stack-2"></div> */}
-                  //         <img style={{ borderRadius: '4px', }} className="title-card w-100 h-100" src={item.uri_avatar} alt={item.m_name} />
-                  //       </div>
-                  //       <div className='name-label'>
-                  //         {item.name}
-                  //       </div>
-                  //     </div>
-                  //   )
-                  //   )
-                  //   :
-                  //   filteredMovies.length ?
-                  //   filteredMovies.map(item =>
-                  //   (item.uri_avatar != null &&
-                  //     <div className='grid-container' onClick={handleMovieUrlClick(item)}>
-                  //       <div className=' item-grid multi-landing-stack-space-holder w-100 h-100'>
-                  //         {/* <div className="multi-landing-stack-1"></div>
-                  //                     <div className="multi-landing-stack-2"></div> */}
-                  //         <img style={{ borderRadius: '4px', }} className="title-card w-100 h-100" src={item.uri_avatar} alt={item.m_name} />
-                  //       </div>
-                  //       <div className='name-label'>
-                  //         {item.name}
-                  //       </div>
-                  //     </div>
-                  //   )
-                  //   )
-                  //   :
-                  // 
                 }
 
               </div>
@@ -255,6 +220,7 @@ const GroupStreaming = () => {
             roomnum={roomnum}
             socket={socket}
             handleOpenMovieRecommend={handleOpenMovieRecommend}
+
           />
         </div>
 
