@@ -152,7 +152,7 @@ const GroupStreaming = () => {
           </div>
           <div className=" position-absolute" style={{ top: '0', right: '0', zIndex: '5' }} >
 
-            <div className={`search-box ${isShown && 'input-search'}`} style={{ marginRight: "4rem" }}>
+            <div className={`search-box ${isShown && 'input-search'} ${openedMovieRecommend ? '' : 'd-none'}`} style={{ marginRight: "4rem" }}>
               <div>
                 <Icon.Search className='icon-style' size='16px' strokeWidth='4' color='white' onClick={btnSearchClicked} style={{ cursor: 'pointer', marginRight: "1rem" }} />
               </div>

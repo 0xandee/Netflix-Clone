@@ -79,9 +79,12 @@ $icon-color: white;
             opacity: 0.7;
             color: red;
 
-            animation: fadeOut ease 1s;
-            -webkit-animation: fadeOut ease 1s;
-            animation-fill-mode: forwards;
+            
+            &.pause{
+                animation: fadeOut ease 1s;
+                -webkit-animation: fadeOut ease 1s;
+                animation-fill-mode: forwards;
+            }
         }
     }
 
