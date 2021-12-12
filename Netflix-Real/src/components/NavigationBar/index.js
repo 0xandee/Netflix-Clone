@@ -25,8 +25,10 @@ const NavigationBar = (props) => {
     const [items, setItem] = useState(navTabs);
     const [onToppage, setOnTopPage] = useState(false);
 
-    const [username, setusername] = useState(Math.random().toString(36).substr(2, 12));
-    const [roomname, setroomname] = useState("idgroup");
+    // const [username, setusername] = useState(Math.random().toString(36).substr(2, 12));
+    // const [roomname, setroomname] = useState("idgroup");
+
+    const idgroup = localStorage.getItem('username');
 
     var currentScrollY = useRef(0);
 
@@ -195,7 +197,7 @@ const NavigationBar = (props) => {
                     }
                 </div>
                 <div className='secondary-navigation'>
-                    <Link to='/watchgroup/1'>
+                    <Link to={`/watchgroup/${idgroup}`}>
                         <div style={{paddingRight: '3rem', cursor: 'pointer'}}>
                             <Icon.Plus onClick={btnGroupAddClicked} className='icon-style' style={{color: 'white'}}/>
                         </div>

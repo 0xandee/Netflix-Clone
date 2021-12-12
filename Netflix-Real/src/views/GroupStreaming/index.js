@@ -1,4 +1,5 @@
 import React, { createRef, useCallback, useEffect, useRef, useState } from "react";
+import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux';
 import { SliderStreaming } from "../../components";
 import { Row, Col, Container } from 'reactstrap'
@@ -21,9 +22,22 @@ import { socket } from "../../services/socket/socket"
 
 
 const GroupStreaming = () => {
-  const random = "Andy" + Math.random().toString(36).substr(2, 5);
-  const [username, setusername] = useState(random);
-  const [roomnum, setroomnum] = useState("26");
+  // Choose whenever JOIN room or CREATE new room
+  let { idgroup } = useParams();
+  let tempRoom = null;
+  let currentUsername = localStorage.getItem('username');
+  if (idgroup != currentUsername){
+    // JOIN
+    tempRoom = idgroup;
+  }
+  else{
+    // CREATE
+    tempRoom = currentUsername;
+  }
+  
+  const [username, setusername] = useState(currentUsername);
+  const [roomnum, setroomnum] = useState(tempRoom);
+
   const [openedChatBox, setOpenedChatBox] = useState(false);
   const [dataApiGenreMovies, setDataApiGenreMovies] = useState([]);
   const [movies, setMovies] = useState([]);

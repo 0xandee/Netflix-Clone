@@ -41,8 +41,15 @@ const SignIn = (props) => {
             try {
                 const response = await requestLogin(username, password)
                 if (response.status === 200) {
+                    console.log("response", response);
                     const data = await response.json()
                     localStorage.setItem("access_token", data.accessToken);
+
+                    var index = username.indexOf("@");
+                    if (index != -1) {
+                        localStorage.setItem("username", username.slice(0, index));
+                    }
+
                     if (data.first)
                         history.push('/choosetype')
                     else

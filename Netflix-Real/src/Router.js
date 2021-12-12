@@ -37,7 +37,6 @@ function PrivateRoute({ component: Component, ...rest }) {
 
 export default function WebRouter() {
     const dispatch = useDispatch();
-
     useEffect(async () => {
         const response = await getMovieTypeAPI(localStorage.getItem('access_token'))
         if (response.status === 200) {
