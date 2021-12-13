@@ -6,7 +6,7 @@ import { Link, NavLink, useHistory } from "react-router-dom";
 import Flatpickr from "react-flatpickr";
 import 'flatpickr/dist/flatpickr.css';
 import { CustomInput, Footer, SignUpNavigationBar } from "../../components";
-import { requestRegister } from "../../services/api/auth";
+import { requestRegister, verifyEmail } from "../../services/api/auth";
 import { countryListData } from "../../config/countryData";
 import { X, Check } from "react-feather";
 import { toast } from 'react-toastify'
@@ -93,6 +93,8 @@ const RegistrationForm = () => {
                 const response = await requestRegister({ email, password, gender, country, dob: dob.toISOString().slice(0, 10) })
                 console.log("🚀 ~ file: index.js ~ line 64 ~ nextClicked ~ response", response)
                 if (response.status >= 200 && response.status <= 299) {
+                    const res =  await verifyEmail(email)
+                    console.log("🚀 ~ file: index.js ~ line 97 ~ nextClicked ~ res", res)
                     setIsSucess(true)
                 }
                 else if (response.status == 422) {

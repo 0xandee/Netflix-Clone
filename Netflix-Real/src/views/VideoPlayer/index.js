@@ -98,15 +98,17 @@ const VideoPlayer = ({ socket, roomnum, videoURL }) => {
     }
 
     const handleVideoProgress = (state) => {
+        console.log("🚀 ~ file: index.js ~ line 101 ~ handleVideoProgress ~ state", muted)
 
         if (count > 3 && !seeking) {
-
             controlRef.current.style.opacity = '0'
             count = 0;
         }
         else if (controlRef.current.style.opacity == '1' && playing) {
             count += 1;
+            setMuted(false)
         }
+        if (playing && !muted) { setMuted(false) }
         if (!seeking && state.played != 0) {
             playedRef.current = state.played
             setPlayed(state.played);
@@ -120,9 +122,6 @@ const VideoPlayer = ({ socket, roomnum, videoURL }) => {
 
     const handleVideoDuration = useCallback((duration) => {
         if (typeof (url) != 'undefined') {
-            console.log("🚀 ~ file: index.js ~ line 133 ~ handleVideoDuration ~ url", url)
-            console.log("🚀 ~ file: index.js ~ line 132 ~ handleVideoDuration ~ duration", duration)
-
             setDuration(duration);
         }
     }, [url])
@@ -267,7 +266,7 @@ const VideoPlayer = ({ socket, roomnum, videoURL }) => {
             setUrl('https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4');
             setIsHost(true)
         }
-    }, [seeking, playing,muted])
+    }, [seeking, playing, muted])
     // })
     useEffect(() => {
         if (socket != undefined) {
@@ -298,7 +297,7 @@ const VideoPlayer = ({ socket, roomnum, videoURL }) => {
                     room: roomnum,
                     currTime: playedRef.current,
                     state: playingRef.current,
-                    muted: muted,
+                    muted: false,
                     caller: socket.id
                 }
                 console.log("🚀 ~ file: index.js ~ line 253 ~ socket.on ~ data", data)
@@ -311,6 +310,7 @@ const VideoPlayer = ({ socket, roomnum, videoURL }) => {
     // Uses the host data to compare
     useEffect(() => {
         if (socket != undefined) {
+            setMuted(true)
             socket.on('compareHost', function (data) {
                 console.log("compareHost");
                 console.log("🚀 ~ file: index.js ~ line 259 ~ data", data)
@@ -324,54 +324,31 @@ const VideoPlayer = ({ socket, roomnum, videoURL }) => {
                     setUrl(data.currVideo)
                 }
 
-                // // If out of sync
-                // console.log("currTime != hostTime", clientTime != hostTime);
-                // console.log("state != hostState", clientState != hostState);
-                // console.log("isHost", isHost);
-                // console.log("CURRENT curr: " + clientTime + " State: " + clientState)
-                // console.log("HOST curr: " + hostTime + " State: " + hostState)
-                console.log("🚀 ~ file: index.js ~ line 313 ~ playing", playing)
-                console.log("🚀 ~ file: index.js ~ line 313 ~ played", played)
                 if (playedRef.current != hostTime || playingRef.current != hostState) {
 
                     if (!host) {
-                        // disconnected()
-                        console.log("playerRef", playerRef);
-                        console.log("duration", duration);
 
-                        console.log("playing", playing);
-                        console.log("hostTime", hostTime);
                         volumeRef.current = data.muted
-                        setMuted(data.muted)
+
                         playedRef.current = hostTime
                         setPlayed(hostTime);
                         playingRef.current = hostState
                         setPlaying(hostState);
                         playerRef.current.seekTo(hostTime)
 
-
-
-                        // console.log("AFTER CHANGE curr: " + played + " State: " + playing)
                     }
                 }
             });
         }
     }, [socket])
 
-    // useEffect(() => {
-
-    //     console.log("useEffect catch playing played")
-    //     console.log("🚀 ~ file: index.js ~ line 344 ~ url", url)
-    //     console.log("🚀 ~ file: index.js ~ line 344 ~ seeking", seeking)
-    //     console.log("🚀 ~ file: index.js ~ line 344 ~ playing", playing)
-    //     console.log("🚀 ~ file: index.js ~ line 344 ~ played", played)
-
-    // }, [played, playing, seeking, url])
 
     return (
         <div id={`videoPlayer`} onMouseMove={handleMouseMove} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} style={{ position: 'absolute', width: '100%', height: '100%' }}>
             {url == undefined || url.length == 0 &&
-                <div className="position-absolute w-100 h-100"> CHua co URl
+                <div className="position-absolute d-flex w-100 h-100 justify-content-center align-items-center"
+                    style={{ zIndex: '10', backgroundColor: 'black', fontSize: '20px' }}>
+                    Host is choosing film. Please wait
                 </div>
             }
             <div ref={playerContainerRef} className={`video-player`} >

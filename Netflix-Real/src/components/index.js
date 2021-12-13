@@ -19,7 +19,7 @@ import OnboardingMovieItem from './OnboardingMovieItem';
 import SliderGrid from './SliderGrid';
 import GeneralProfile from './GeneralProfile'
 import ChangePasswordProfile from './ChangePasswordProfile'
-
+import CustomModal from './CustomModal'
 
 export {
     CustomInput, CustomNotification,
@@ -30,5 +30,6 @@ export {
     NavigationBar, SignUpNavigationBar,
     PreviewPopup, PreviewPlayer, PreviewButtonControl, PreviewInfo,
     Slider, SliderStreaming, SliderGrid,
-    GeneralProfile,ChangePasswordProfile
+    GeneralProfile,ChangePasswordProfile,
+    CustomModal
 }

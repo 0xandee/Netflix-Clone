@@ -1,5 +1,5 @@
 import React, { useRef, useState, useCallback, useEffect, createRef } from "react";
-import { Slider, Footer, NavigationBar } from "../../components";
+import { Slider, Footer, NavigationBar, CustomModal } from "../../components";
 import { useSelector, useDispatch } from 'react-redux';
 import { setMovieTypes, showPopUpInfo } from "../../services/redux/actions";
 import { getMoviesByGenreAPI, getMovieTypeAPI } from "../../services/api/movie";
@@ -29,14 +29,17 @@ const Homepage = (props) => {
     const dispatch = useDispatch();
     let dataTypes = useSelector((state) => state?.rootReducer.movieTypes)
     const [open, setOpen] = useState(false);
-    const toggleModal = () => history.push('/signin');
+    const toggleModal = () => {
+        localStorage.clear();
+        history.push('/signin')
+    };
 
     var movieDataGenres = [];
     useEffect(async () => {
         const response = await getMovieTypeAPI(localStorage.getItem('access_token'))
         console.log("🚀 ~ file: index.js ~ line 39 ~ useEffect ~ response", response)
-        if (response.status === 200) {
-            let data = await response.json()
+        if (response.status === 200 && dataTypes.length == 0) {
+            const data = await response.json()
             dispatch(setMovieTypes(data))
         }
         else if (response.status == 403) {
@@ -50,7 +53,6 @@ const Homepage = (props) => {
         dataTypes.map(async (item) => {
             try {
                 const res = await getMoviesByGenreAPI(item.id, localStorage.getItem('access_token'))
-               
                 if (res.status == 200) {
                     let data = await res.json()
                     var genreMovie = {
@@ -78,43 +80,30 @@ const Homepage = (props) => {
 
 
     return (
-        <div className="overflow-x-hidden bg-black" ref={homePageRef}>
+        <div className="overflow-x-hidden bg-black w-100" ref={homePageRef} style={{ minHeight: '100vh' }}>
             <NavigationBar />
-            {/* <div className="">
-                <Swiper navigation={true} pagination={true} className="mySwiper swiper-container ">
-                    <div>
-                        {bannerData.map(item => (
-                            <SwiperSlide className="">
-                                <a className="thumbTile cursor-pointer" >
-                                    <img className="thumbTile__image" src={item.artworkLink} alt={item.movieName}/>
-                                </a>
-                            </SwiperSlide>
-                        ))}
-                    </div>
-                </Swiper>
-            </div> */}
-            {/* <BannerSlider bannerData={bannerData} /> */}
-
-            {genreMovies.map(item => (<Slider id={item.id} sliderTitle={item.sliderTitle} sliderMovieList={item.sliderMovieList} />))}
-            {/* {movieData.map(item => (<Slider id={item.id} sliderTitle={item.sliderTitle} sliderMovieList={item.sliderMovieList} />))} */}
-            <Modal returnFocusAfterClose isOpen={open} className='modal-dialog-centered'  >
+            <div className="h-100" style={{ minHeight: '75vh' }}>
+                {genreMovies.map(item => (<Slider id={item.id} sliderTitle={item.sliderTitle} sliderMovieList={item.sliderMovieList} />))}
+            </div>
+            <CustomModal isOpen={open} onClick={toggleModal} headerText={"Session Timed out"} buttonText='Back to log in page' bodyText=
+                {"Look like your log in session have been timed out. So please log in again.\nWe are so sorry for this inconvenience"
+                } />
+            <Footer />
+            {/* <Modal  isOpen={open} className='modal-dialog-centered'  >
                 <ModalHeader >
-                    <p className="text-danger m-0"> Session Timed out</p>
+                    <p className="text-danger m-0"> headerText</p>
                 </ModalHeader>
                 <ModalBody className='text-center '>
-                    <h5>Look like your log in session have been timed out.
-                    </h5>
-                    <h5>So please log in again and sorry for this inconvenience 
-                    </h5>
-                    <img src='https://cdn-icons-png.flaticon.com/512/1642/1642337.png' alt='apology icon' style={{height:'90px'}} />
+                    <h5>bodyText</h5>
+                    <img src='https://cdn-icons-png.flaticon.com/512/1642/1642337.png' alt='apology icon' style={{ height: '90px' }} />
                 </ModalBody>
                 <ModalFooter className="d-flex justify-content-center">
                     <Button color="danger" onClick={toggleModal}>
                         Back to log in page
                     </Button>
                 </ModalFooter>
-            </Modal>
-            <Footer />
+            </Modal> */}
+
         </div>
     );
 };

@@ -15,7 +15,6 @@ export const rootReducer = (state = initialState, action) => {
             }
         }
         case SET_MOVIE_TYPES: {
-
           return {
               ...state,
               movieTypes: action.payload.movieTypes

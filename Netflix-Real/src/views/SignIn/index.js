@@ -121,11 +121,8 @@ const SignIn = (props) => {
                                     Sign Up
                                 </NavLink>
                             </div>
-
-
                         </div>
                         <div>
-
                         </div>
                     </div>
                 </div>

@@ -24,9 +24,9 @@ export const to_Decrypt = (cipher, username) => {
   }
 
   else {
-    return cipher;
+    var decrypted = aes256.decrypt(secret_key, cipher);
+    return decrypted;
   }
   //decryped message is returned
-  var decrypted = aes256.decrypt(secret_key, cipher);
-  return decrypted;
+ 
 };
