@@ -62,9 +62,29 @@ export const requestForgotPassword = async (email) => {
     })
 }
 
+export const getProfile = async (token) => {
+    return new Promise((resolve, reject) => {
+        fetch(authApi.urlProfile, {
+            crossDomain: true,
+            method: "GET",
+            mode: 'cors',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': "Bearer " + token,
+            },
+        })
+            .then(response => {
+                resolve(response)
+            })
+            .catch(error => {
+                return reject(error)
+            });
+    })
+}
+
 export const requestChangePass = async (oldPassword, newPassword, token) => {
     return new Promise((resolve, reject) => {
-        fetch(authApi.urlChangePassword, {
+        fetch(authApi.urlProfile, {
             crossDomain: true,
             method: "PUT",
             mode: 'cors',
@@ -75,6 +95,33 @@ export const requestChangePass = async (oldPassword, newPassword, token) => {
             body: JSON.stringify({
                 oldPassword,
                 newPassword
+            })
+        })
+            .then(response => {
+                resolve(response)
+            })
+            .catch(error => {
+                reject(error)
+            });
+    })
+}
+
+export const requestUpdateProfile = async (data, token) => {
+console.log("🚀 ~ file: index.js ~ line 110 ~ requestUpdateProfile ~ data", data)
+    return new Promise((resolve, reject) => {
+        fetch(authApi.urlProfile, {
+            crossDomain: true,
+            method: "PUT",
+            mode: 'cors',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': "Bearer " + token,
+            },
+            body: JSON.stringify({
+                gender: data.gender,
+                email: data.email,
+                dob: data.dob,
+                country: data.country,
             })
         })
             .then(response => {

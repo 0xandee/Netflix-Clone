@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Route, Router, Switch, useRouteMatch } from "react-router";
+import { Route, Router, Switch, useRouteMatch,useHistory } from "react-router";
 import { Link, NavLink } from "react-router-dom";
 import { Col, Row } from "reactstrap";
 import { IconAlertCircle, IconNetflix, IconUser } from "../../assets/Icon";
@@ -13,6 +13,7 @@ import { ChangePasswordProfile, GeneralProfile } from "../../components";
 
 const AccountProfile = () => {
   let { path, url } = useRouteMatch();
+  const history = useHistory();
   const routesprofile = [
     {
       path: `${url}`,
@@ -33,12 +34,16 @@ const AccountProfile = () => {
       color: 'white',
     }
   })
+
+  const logoClicked =() => {
+    history.push('/home')
+  }
   return (
     <div id='accountProfile'>
       <div className='profile'>
         <div className={`profile__header`}>
           <div className={`profile__header__container`}>
-            <IconNetflix className={'profile__header__logo'} />
+            <IconNetflix className={'profile__header__logo'} onClick={logoClicked}/>
             <div>
               <CustomDropdown />
             </div>

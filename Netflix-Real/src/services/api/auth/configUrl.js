@@ -10,4 +10,5 @@ export const authApi = {
   urlForgotPassword: `${url}/api/auth/forgot-pass`,
   urlLogoutAllUser: `${url}/api/auth/logout-all-user`,
   urlVerifyEmail: `${url}/api/auth/verify-email`,
+  urlProfile: `${url}/api/auth/profile`,
 }

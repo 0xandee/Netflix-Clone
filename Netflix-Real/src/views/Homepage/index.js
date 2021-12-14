@@ -82,28 +82,13 @@ const Homepage = (props) => {
     return (
         <div className="overflow-x-hidden bg-black w-100" ref={homePageRef} style={{ minHeight: '100vh' }}>
             <NavigationBar />
-            <div className="h-100" style={{ minHeight: '75vh' }}>
+            <div className="h-100" style={{ minHeight: '75vh',paddingTop: '2vh'}}>
                 {genreMovies.map(item => (<Slider id={item.id} sliderTitle={item.sliderTitle} sliderMovieList={item.sliderMovieList} />))}
             </div>
             <CustomModal isOpen={open} onClick={toggleModal} headerText={"Session Timed out"} buttonText='Back to log in page' bodyText=
                 {"Look like your log in session have been timed out. So please log in again.\nWe are so sorry for this inconvenience"
                 } />
             <Footer />
-            {/* <Modal  isOpen={open} className='modal-dialog-centered'  >
-                <ModalHeader >
-                    <p className="text-danger m-0"> headerText</p>
-                </ModalHeader>
-                <ModalBody className='text-center '>
-                    <h5>bodyText</h5>
-                    <img src='https://cdn-icons-png.flaticon.com/512/1642/1642337.png' alt='apology icon' style={{ height: '90px' }} />
-                </ModalBody>
-                <ModalFooter className="d-flex justify-content-center">
-                    <Button color="danger" onClick={toggleModal}>
-                        Back to log in page
-                    </Button>
-                </ModalFooter>
-            </Modal> */}
-
         </div>
     );
 };

@@ -84,7 +84,7 @@ const MoviesPage = (props) => {
             if (res.status == 200) {
                 let data = await res.json()
                 setDataApiGenreMovies(data)
-                setGenreMovies(data.slice(0, 30))
+                setGenreMovies(data.slice(0, 31))
             }
             else {
                 if (res.status == 400) {

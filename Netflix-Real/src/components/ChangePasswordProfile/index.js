@@ -12,7 +12,7 @@ const SuccessToast = (props) => (
     <div className='toastify-header'>
       <div className='title-wrapper'>
         <h6 className='toast-title'>Success!</h6>
-      </div>    
+      </div>
     </div>
     <div className='toastify-body'>
       <span role='img' aria-label='toast-text'>
@@ -91,17 +91,17 @@ const ChangePasswordProfile = () => {
       }
       catch (error) {
         notifyError()
-        console.log("🚀 ~ file: index.js ~ line 40 ~ cancelClicked ~ error", error)
+
       }
     }
   }
 
   const cancelClicked = () => {
     try {
-      history.goBack()
+      history.push('/home')
     }
     catch (error) {
-      console.log("🚀 ~ file: index.js ~ line 40 ~ cancelClicked ~ error", error)
+
     }
   }
 
@@ -117,7 +117,8 @@ const ChangePasswordProfile = () => {
                 className='input-group-merge mb-2'
                 label='Old Password'
                 placeholder='Old Password'
-                htmlFor='merge-password' />
+                style={{ background: '#fff',  height: '50px' }}
+                htmlFor='old-password' />
               <div className={`error-label ${isOldPassError && 'visible'}`}> {isOldPassError && errorTextOldPassword}</div>
 
             </Col>
@@ -131,7 +132,8 @@ const ChangePasswordProfile = () => {
                 className='input-group-merge mb-2'
                 label='New Password'
                 placeholder='New Password'
-                htmlFor='merge-password' />
+                style={{ background: '#fff', height: '50px' }}
+                htmlFor='new-password' />
               <div className={`error-label ${isNewPassError && 'visible'}`}> {isNewPassError && errorTextPassword}</div>
 
             </Col>
@@ -142,7 +144,8 @@ const ChangePasswordProfile = () => {
                 className='input-group-merge mb-2'
                 label='Confirm Password'
                 placeholder='Confirm Password'
-                htmlFor='merge-password' />
+                style={{ background: '#fff', height: '50px' }}
+                htmlFor='confirm-password' />
               <div className={`error-label ${isConfirmPassError && 'visible'}`}> {isConfirmPassError && 'Password is not matched'}</div>
 
             </Col>

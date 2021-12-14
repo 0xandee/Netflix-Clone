@@ -64,4 +64,8 @@ $input-focus-box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.1) !default;
       opacity: 1;
     }
   }
+  input[type="password"]::-ms-reveal,
+  input[type="password"]::-ms-clear {
+    display: none;
+  }
 }
