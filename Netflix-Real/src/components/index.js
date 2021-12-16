@@ -10,7 +10,6 @@ import NavigationBar from './NavigationBar';
 import PreviewButtonControl from './PreviewButtonControl';
 import PreviewInfo from './PreviewInfo';
 import PreviewPlayer from './PreviewPlayer';
-import PreviewPopup from './PreviewPopup';
 import Slider from './Slider';
 import SliderStreaming from './SliderStreaming';
 import SignUpNavigationBar from './SignUpNavigationBar';
@@ -28,7 +27,7 @@ export {
     Footer,
     MoreLikeThisItem, 
     NavigationBar, SignUpNavigationBar,
-    PreviewPopup, PreviewPlayer, PreviewButtonControl, PreviewInfo,
+    PreviewPlayer, PreviewButtonControl, PreviewInfo,
     Slider, SliderStreaming, SliderGrid,
     GeneralProfile,ChangePasswordProfile,
     CustomModal

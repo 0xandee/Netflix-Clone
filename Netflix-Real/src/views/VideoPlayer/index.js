@@ -192,7 +192,6 @@ const VideoPlayer = ({ socket, roomnum, videoURL }) => {
                     setVolume(1);
                 }
                 else {
-
                     setVolume(parseFloat(volume) + 0.1);
                 }
                 handleVolumeChange()

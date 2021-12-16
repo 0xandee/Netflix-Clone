@@ -25,6 +25,7 @@
     "react-feather": "^2.0.9",
     "react-flatpickr": "^3.10.7",
     "react-hot-loader": "^4.13.0",
+    "react-lazy-load-image-component": "^1.5.1",
     "react-perfect-scrollbar": "^1.5.8",
     "react-player": "^2.9.0",
     "react-redux": "^7.2.5",

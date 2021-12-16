@@ -1,4 +1,4 @@
-import React, { useState, Component } from "react";
+import React, { useState, Component, useCallback } from "react";
 import './signIn.scss'
 import * as Icon from 'react-feather';
 import { NavLink, useHistory, Redirect } from "react-router-dom";
@@ -9,6 +9,7 @@ import { connect } from 'react-redux';
 import { userLoginFetch } from '../../services/redux/actions';
 import { requestLogin } from "../../services/api/auth";
 import { to_Decrypt, to_Encrypt } from "../../services/aes256";
+import { useEffect } from "react";
 
 const SignIn = (props) => {
     const backgroudUrl = 'https://assets.nflxext.com/ffe/siteui/vlv3/9c5457b8-9ab0-4a04-9fc1-e608d5670f1a/f50f46d7-13f0-4412-a37c-34808af2dd0c/VN-en-20210719-popsignuptwoweeks-perspective_alpha_website_small.jpg'
@@ -20,9 +21,11 @@ const SignIn = (props) => {
     const [errorTextEmail, setErrorTextEmail] = useState('Please enter a valid email')
     const [errorTextPassword, setErrorTextPassword] = useState('Password must be between 6 to 20 characters which contain at least one numeric digit, one uppercase and one lowercase letter')
 
-    const signInClick = async () => {
+    const signInClick = useCallback(async () => {
         var errorCheck = false;
-        if (username == "") {
+        console.log("🚀 ~ file: index.js ~ line 27 ~ signInClick ~ username", username)
+        if (username == "" || !username.match('@gmail.com')) {
+
             setIsEmailError(true);
             errorCheck = true;
         } else {
@@ -37,7 +40,7 @@ const SignIn = (props) => {
         // } else {
         //     setIsPasswordError(false)
         // }
-        if (!errorCheck) {        
+        if (!errorCheck) {
             try {
                 const response = await requestLogin(username, password)
                 if (response.status === 200) {
@@ -68,7 +71,21 @@ const SignIn = (props) => {
             }
 
         }
-    }
+    }, [username, password])
+    const handleKeyDown = useCallback((e) => {
+        if (e.key === 'Enter') {
+            console.log("🚀 ~ file: index.js ~ line 75 ~ handleKeyDown ~ e.key", e.key)
+            signInClick()
+        }
+    }, [signInClick])
+
+    useEffect(() => {
+        document.addEventListener("keydown", handleKeyDown)
+        return () => {
+            document.removeEventListener("keydown", handleKeyDown)
+
+        }
+    }, [handleKeyDown]);
 
     return (
         <div id='signIn'>
@@ -109,7 +126,7 @@ const SignIn = (props) => {
                                 {/* </NavLink> */}
                             </div>
 
-                            <span>                  
+                            <span>
                                 <NavLink to='/forgot-password' >
                                     Forgot password ?
                                 </NavLink>

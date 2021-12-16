@@ -1,14 +1,15 @@
 import React, { useRef, useState, useCallback, useEffect, createRef } from "react";
 import './style.scss';
-import { Slider, Footer, NavigationBar } from "../../components";
+import { Slider, Footer, NavigationBar, CustomModal } from "../../components";
 import { to_Decrypt, to_Encrypt } from "../../services/aes256";
 import { useSelector, useDispatch } from 'react-redux';
-import { showPopUpInfo } from "../../services/redux/actions";
+import { setMovieTypes, showPopUpInfo } from "../../services/redux/actions";
 import { Link, useHistory, useLocation, useParams } from "react-router-dom";
-import { getMoviesByGenreAPI, getMoviesByTypeAPI, getMovieType } from "../../services/api/movie";
+import { getMoviesByGenreAPI, getMoviesByTypeAPI, getMovieType, getMovieTypeAPI } from "../../services/api/movie";
 import Select, { createFilter } from 'react-select';
 import { Spinner } from 'reactstrap'
 import DefaultImage from '../../assets/Images/defaultImage.png';
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
 
 const MoviesPage = (props) => {
@@ -19,8 +20,14 @@ const MoviesPage = (props) => {
     const [dataApiGenreMovies, setDataApiGenreMovies] = useState([]);
     const [genreMovies, setGenreMovies] = useState([]);
     const [isFetching, setIsFetching] = useState(false);
+    const [open, setOpen] = useState(false);
     let dataTypes = useSelector((state) => state?.rootReducer.movieTypes)
+    const dispatch = useDispatch();
 
+    const toggleModal = () => {
+        localStorage.clear();
+        history.push('/signin')
+    };
 
     const onSelectGenreChange = (e) => {
         //constsetSelectedGenre(e)
@@ -60,6 +67,17 @@ const MoviesPage = (props) => {
             return obj;
         });
     }
+    useEffect(async () => {
+        const response = await getMovieTypeAPI(localStorage.getItem('access_token'))
+        if (response.status === 200 && dataTypes.length == 0) {
+            const data = await response.json()
+            dispatch(setMovieTypes(data))
+        }
+        else if (response.status == 403) {
+            setOpen(true)
+        }
+
+    }, [dispatch])
 
     useEffect(() => {
         window.addEventListener("scroll", handleScroll);
@@ -88,11 +106,9 @@ const MoviesPage = (props) => {
             }
             else {
                 if (res.status == 400) {
-
                 }
             }
         }
-
     }, [selectedGenre])
 
     return (
@@ -150,7 +166,7 @@ const MoviesPage = (props) => {
                                 <div className=' item-grid multi-landing-stack-space-holder w-100 h-100'>
                                     {/* <div className="multi-landing-stack-1"></div>
                                     <div className="multi-landing-stack-2"></div> */}
-                                    <img  style={{ borderRadius: '4px', }} className="title-card w-100 h-100" src={item.uri_avatar} alt={item.m_name} />
+                                    <LazyLoadImage effect="blur"  style={{ borderRadius: '4px', }} className="title-card w-100 h-100" src={item.uri_avatar} alt={item.m_name} />
                                 </div>
                                 <div className='name-label'>
                                     {item.name}
@@ -169,7 +185,9 @@ const MoviesPage = (props) => {
 
                     }
                 </div>
-
+                <CustomModal isOpen={open} onClick={toggleModal} headerText={"Session Timed out"} buttonText='Back to log in page' bodyText=
+                {"Look like your log in session have been timed out. So please log in again.\nWe are so sorry for this inconvenience"
+                } />
                 <Footer />
 
             </div>

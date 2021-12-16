@@ -15,9 +15,10 @@ import GroupStreaming from './GroupStreaming'
 import MoviesPage from './MoviesPage'
 import SearchPage from './SearchPage'
 import ErrorPage from './ErrorPage'
+import DetailPage from './DetailPage'
 
 export {
     SignIn,SignUp,ForgotPassword,Registration,RegistrationForm,PlanForm,
     ChooseTypeStart,OnboardingMovies,VideoPlayer,Homepage,MyPlaylistPage,PopularPage,AccountProfile,
-    GroupStreaming,MoviesPage,SearchPage,ErrorPage
+    GroupStreaming,MoviesPage,SearchPage,ErrorPage,DetailPage
 }

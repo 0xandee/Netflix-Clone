@@ -29,6 +29,7 @@ const Homepage = (props) => {
     const dispatch = useDispatch();
     let dataTypes = useSelector((state) => state?.rootReducer.movieTypes)
     const [open, setOpen] = useState(false);
+    
     const toggleModal = () => {
         localStorage.clear();
         history.push('/signin')

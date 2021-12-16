@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import './PreviewPopup.scss';
-import '../PreviewInfo/PreviewInfo.scss';
-import '../PreviewPlayer/PreviewPlayer.scss';
+// import '../PreviewInfo/PreviewInfo.scss';
+// import '../PreviewPlayer/PreviewPlayer.scss';
 import { IconBackArrow } from "../../assets/Icon";
-import { PreviewButtonControl, Episodes, DetailInfo, MoreLikeThisItem } from "../index";
-import NavigationBar from '../NavigationBar';
+import { PreviewButtonControl, Episodes, DetailInfo, MoreLikeThisItem,NavigationBar } from "../../components";
 import { useParams } from 'react-router';
 import { to_Decrypt, to_Encrypt } from '../../services/aes256';
 import { getMovieAPI } from '../../services/api/movie';
 import { useHistory } from 'react-router-dom';
 
-const PreviewPopup = (props) => {
+const DetailPage = (props) => {
     // const { item } = props.location.state;
     const { idMovie } = useParams()
     const [dataMovie, setDataMovie] = useState([]);
@@ -65,4 +64,4 @@ const PreviewPopup = (props) => {
     );
 };
 
-export default PreviewPopup;
+export default DetailPage;
