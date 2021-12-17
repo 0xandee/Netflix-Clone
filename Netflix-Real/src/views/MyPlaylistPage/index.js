@@ -19,7 +19,7 @@ const MyPlaylistPage = (props) => {
 
     const itemClicked = (data) => () => {
         history.push({
-            pathname: `/detail/${to_Encrypt(data.id.toString())}`,
+            pathname: `/detail/${data.id.toString()}`,
             state: { item: data }
         })
     }

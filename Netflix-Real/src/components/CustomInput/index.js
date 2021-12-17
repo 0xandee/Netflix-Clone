@@ -13,7 +13,7 @@ const CustomInput = (props) => {
         const value = target.value;
         if (value === '') {
             setIsFocus(false)
-        }       
+        }
     }
     const btnRevealClicked = () => {
         if (!isReveal)
@@ -26,12 +26,19 @@ const CustomInput = (props) => {
         <div id='customInput'>
             <div className={`custom-input`}>
                 <div className={`custom-input__form`}>
-                    <div className={`custom-input__form__input `} style={{...props.style}} >
-                        <input ref={textInput} type={props.type} value={props.value} onChange={e => props.onChange(e.target.value)} onFocus={onFocus} onBlur={onBlur}  style={props.textStyle} autoComplete="new-password"/>
+                    <div className={`custom-input__form__input `} style={{ ...props.style }} >
+                        <input
+                            ref={textInput}
+                            type={props.type}
+                            value={props.value}
+                            onChange={e => props.onChange(e.target.value)}
+                            onFocus={onFocus} onBlur={onBlur}
+                            style={props.textStyle}
+                            autoComplete="new-password" />
 
                         <label className={`placehoder-label ${isFocus && 'focus-input'}`}>{props.label}</label>
 
-                        {props.type ==='password' && <div className='mr-2 btn-eye' style={{ backgroundColor: 'transparent'}} onClick={btnRevealClicked}>
+                        {props.type === 'password' && <div className='mr-2 btn-eye' style={{ backgroundColor: 'transparent' }} onClick={btnRevealClicked}>
                             {isReveal ?
                                 <Icon.EyeOff color='#8c8c8c' />
                                 :
@@ -40,7 +47,7 @@ const CustomInput = (props) => {
                             }
                         </div>}
                     </div>
-                 
+
                 </div>
             </div>
 
