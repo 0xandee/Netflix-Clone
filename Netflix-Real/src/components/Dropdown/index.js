@@ -5,6 +5,7 @@ import { Link, NavLink, Route, useHistory } from "react-router-dom";
 import { userLogout } from '../../services/redux/actions';
 import { SignIn } from "../../views/index";
 import { requestLogout } from "../../services/api/auth";
+import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
 
 
 const CustomDropdown = () => {
@@ -16,10 +17,12 @@ const CustomDropdown = () => {
 
   const signOutClick =async (event) => {
     event.preventDefault();
-    const response = await requestLogout(localStorage.getItem('access_token'))
+    const response = await requestLogout(read_cookie('access_token'))
     console.log("🚀 ~ file: index.js ~ line 64 ~ nextClicked ~ response", response)
     if (response.status >= 200 && response.status <= 299) {
-        localStorage.clear();
+        // localStorage.clear();
+        delete_cookie('username')
+        delete_cookie('access_token')
         history.push('/signin')
     }
   }

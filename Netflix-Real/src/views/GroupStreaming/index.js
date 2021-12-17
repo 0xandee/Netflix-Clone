@@ -11,6 +11,7 @@ import Chat from "../../components/Chat";
 import io from "socket.io-client";
 import * as Icon from 'react-feather';
 import { getAllMovies } from "../../services/api/movie";
+import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
 
 //  const socket = io("http://localhost:8000", { transports: ['websocket']});
 
@@ -24,7 +25,7 @@ const GroupStreaming = () => {
   // Choose whenever JOIN room or CREATE new room
   let { idgroup } = useParams();
   let tempRoom = null;
-  let currentUsername = localStorage.getItem('username');
+  let currentUsername = read_cookie('username');
   if (idgroup != currentUsername) {
     // JOIN
     tempRoom = idgroup;
@@ -135,7 +136,7 @@ const GroupStreaming = () => {
   }, [setSocket]);
 
   useEffect(async () => {
-    const response = await getAllMovies(localStorage.getItem('access_token'))
+    const response = await getAllMovies(read_cookie('access_token'))
     let data = await response.json()
     setMovies(data)
     setShowedMovies(data.slice(0, 31))

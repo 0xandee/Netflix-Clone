@@ -6,6 +6,7 @@ import { useHistory } from "react-router-dom";
 
 import { requestRefreshToken } from "../../services/api/auth";
 import { getUserFavoriteList } from "../../services/api/user";
+import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
 
 
 const MyPlaylistPage = (props) => {
@@ -13,8 +14,8 @@ const MyPlaylistPage = (props) => {
     const [dataApiMovies, setDataApiMovies] = useState([]);
     const [genreMovies, setGenreMovies] = useState([]);
     const [isFetching, setIsFetching] = useState(false);
-    const [accessToken, setAccessToken] = useState(localStorage.getItem("access_token"))
-    const refresh_token = localStorage.getItem("refresh_token")
+    const [accessToken, setAccessToken] = useState(read_cookie('access_token'))
+    // const refresh_token = localStorage.getItem("refresh_token")
 
     const itemClicked = (data) => () => {
         history.push({

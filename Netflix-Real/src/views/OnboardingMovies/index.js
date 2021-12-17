@@ -4,6 +4,7 @@ import { Link, NavLink, useHistory, useLocation } from "react-router-dom";
 import { Footer, OnboardingMovieItem, SignUpNavigationBar } from "../../components";
 import { Button } from "reactstrap";
 import { getMoviesByGenres, postNewUserMovies } from "../../services/api/movie";
+import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
 
 const artworkData = [{
     id: 1,
@@ -56,7 +57,7 @@ const OnboardingMovies = () => {
     const triggerFinished = async () => {
         setIsFinished(!isFinished);
         try {
-            const response = await postNewUserMovies(selectedMovies, localStorage.getItem('access_token'))
+            const response = await postNewUserMovies(selectedMovies, read_cookie('access_token'))
             if (response.status === 200)
                 setTimeout(() => {
                     history.push({
@@ -89,7 +90,7 @@ const OnboardingMovies = () => {
 
     useEffect(async () => {
         let temp = JSON.parse(query.get('value'))
-        const response = await getMoviesByGenres(temp, localStorage.getItem('access_token'))
+        const response = await getMoviesByGenres(temp,read_cookie('access_token'))
         if (response.status === 200) {
             setMovies(await response.json())
         }

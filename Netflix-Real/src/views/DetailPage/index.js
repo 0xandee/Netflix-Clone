@@ -8,6 +8,7 @@ import { useParams } from 'react-router';
 import { to_Decrypt, to_Encrypt } from '../../services/aes256';
 import { getMovieAPI } from '../../services/api/movie';
 import { useHistory } from 'react-router-dom';
+import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
 
 const DetailPage = (props) => {
     // const { item } = props.location.state;
@@ -17,7 +18,7 @@ const DetailPage = (props) => {
 
 
     useEffect(async () => {
-        const response = await getMovieAPI(idMovie.toString(), localStorage.getItem('access_token'))
+        const response = await getMovieAPI(idMovie.toString(), read_cookie('access_token'))
         if (response.status === 200) {
             let data = await response.json()
             setDataMovie(data)

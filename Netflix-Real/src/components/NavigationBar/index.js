@@ -7,6 +7,7 @@ import * as Icon from 'react-feather';
 import CustomNotification from '../CustomNotification';
 import CustomDropdown from '../Dropdown';
 import { IconNetflix } from '../../assets/Icon';
+import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
 
 import io from "socket.io-client";
 
@@ -28,7 +29,7 @@ const NavigationBar = (props) => {
     // const [username, setusername] = useState(Math.random().toString(36).substr(2, 12));
     // const [roomname, setroomname] = useState("idgroup");
 
-    const idgroup = localStorage.getItem('username');
+    const idgroup = read_cookie('access_token');
 
     var currentScrollY = useRef(0);
 

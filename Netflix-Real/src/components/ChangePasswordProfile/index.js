@@ -6,6 +6,7 @@ import { requestChangePass } from "../../services/api/auth";
 import InputPasswordToggle from "../InputPassword";
 import './style.scss'
 import { toast } from 'react-toastify'
+import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
 
 const SuccessToast = (props) => (
   <Fragment>
@@ -77,7 +78,7 @@ const ChangePasswordProfile = () => {
         setIsConfirmPassError(false)
         setIsOldPassError(false)
         setIsNewPassError(false)
-        const res = await requestChangePass(oldPass, newPass, localStorage.getItem('access_token'))
+        const res = await requestChangePass(oldPass, newPass, read_cookie('access_token'))
         if (res.status === 200) {
           notifySuccess()
         }

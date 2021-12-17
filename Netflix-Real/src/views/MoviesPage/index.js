@@ -10,6 +10,7 @@ import Select, { createFilter } from 'react-select';
 import { Spinner } from 'reactstrap'
 import DefaultImage from '../../assets/Images/defaultImage.png';
 import { LazyLoadImage } from "react-lazy-load-image-component";
+import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
 
 
 const MoviesPage = (props) => {
@@ -98,7 +99,7 @@ const MoviesPage = (props) => {
 
     useEffect(async () => {
         if (selectedGenre != null) {
-            const res = await getMoviesByGenreAPI(selectedGenre.value, localStorage.getItem('access_token'))
+            const res = await getMoviesByGenreAPI(selectedGenre.value, read_cookie('access_token'))
             if (res.status == 200) {
                 let data = await res.json()
                 setDataApiGenreMovies(data)

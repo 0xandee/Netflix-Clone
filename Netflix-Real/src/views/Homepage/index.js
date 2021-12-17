@@ -8,6 +8,7 @@ import './Slider.scss';
 import "swiper/swiper.min.css";
 import "swiper/components/navigation/navigation.min.css"
 import "swiper/components/pagination/pagination.min.css"
+import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
 
 
 // import Swiper core and required modules
@@ -31,13 +32,14 @@ const Homepage = (props) => {
     const [open, setOpen] = useState(false);
     
     const toggleModal = () => {
-        localStorage.clear();
+        delete_cookie('username')
+        delete_cookie('access_token')
         history.push('/signin')
     };
 
     var movieDataGenres = [];
     useEffect(async () => {
-        const response = await getMovieTypeAPI(localStorage.getItem('access_token'))
+        const response = await getMovieTypeAPI(read_cookie('access_token'))
         console.log("🚀 ~ file: index.js ~ line 39 ~ useEffect ~ response", response)
         if (response.status === 200 && dataTypes.length == 0) {
             const data = await response.json()
@@ -53,7 +55,7 @@ const Homepage = (props) => {
     useEffect(() => {
         dataTypes.map(async (item) => {
             try {
-                const res = await getMoviesByGenreAPI(item.id, localStorage.getItem('access_token'))
+                const res = await getMoviesByGenreAPI(item.id, read_cookie('access_token'))
                 if (res.status == 200) {
                     let data = await res.json()
                     var genreMovie = {

@@ -9,6 +9,8 @@ import { connect } from 'react-redux';
 import { userLoginFetch } from '../../services/redux/actions';
 import { requestLogin } from "../../services/api/auth";
 import { to_Decrypt, to_Encrypt } from "../../services/aes256";
+// import Cookies from 'universal-cookie';
+import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
 import { useEffect } from "react";
 
 const SignIn = (props) => {
@@ -43,16 +45,26 @@ const SignIn = (props) => {
         if (!errorCheck) {
             try {
                 const response = await requestLogin(username, password)
+                console.log("response", response);
                 if (response.status === 200) {
-                    console.log("response", response);
                     const data = await response.json()
-                    localStorage.setItem("access_token", data.accessToken);
+                    // localStorage.setItem("access_token", data.accessToken);
+                    
+                    // var index = username.indexOf("@");
+                    // if (index != -1) {
+                        //     localStorage.setItem("username", username.slice(0, index));
+                        // }
 
-                    var index = username.indexOf("@");
-                    if (index != -1) {
-                        localStorage.setItem("username", username.slice(0, index));
-                    }
+                    // cookies.set('access_token', data.accessToken, { path: '/' });
+                    // cookies.set('username', username.slice(0, username.indexOf("@")), { path: '/' });
+                    // cookies.get('access_token');
+                    // cookies.get('username');
 
+                    bake_cookie('access_token', data.accessToken);
+                    bake_cookie('username', username.slice(0, username.indexOf("@")));
+                    read_cookie('access_token')
+                    read_cookie('username')
+                    // delete_cookie(cookie_key);
                     if (data.first)
                         history.push('/choosetype')
                     else
@@ -108,7 +120,7 @@ const SignIn = (props) => {
                                 onChange={setUsername}
                                 placeHolder='Please enter a valid email or phone number.'
                                 label='Enter your email or phone'
-                                type='text' />
+                                type='email' />
                             <div className={`error-label ${isEmailError && 'visible'}`}> {isEmailError && errorTextEmail}</div>
 
                             <CustomInput

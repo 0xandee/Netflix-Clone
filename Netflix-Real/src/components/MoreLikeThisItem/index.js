@@ -1,11 +1,12 @@
 import React from 'react';
 import '../Episodes/Episodes.scss';
 import { favMoviePost } from '../../services/api/user';
+import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
 const MoreLikeThisItem = (props) => {
     const { item } = props
     const addFavoriteClicked = async () => {
         try {
-            const response = await favMoviePost(item.id, localStorage.getItem('access_token'))
+            const response = await favMoviePost(item.id, read_cookie('access_token'))
             console.log("🚀 ~ file: index.js ~ line 9 ~ addFavoriteClicked ~ response", response)
         }
         catch {

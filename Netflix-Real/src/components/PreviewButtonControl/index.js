@@ -2,6 +2,7 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import './PreviewButtonControl.scss'
 import { favMoviePost } from '../../services/api/user';
+import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
 
 
 
@@ -9,7 +10,7 @@ const PreviewButtonControl = (props) => {
     const { item } = props
     const addFavoriteClicked = async () => {
         try {
-            const response = await favMoviePost(item.id, localStorage.getItem('access_token'))
+            const response = await favMoviePost(item.id, read_cookie('access_token'))
             console.log("🚀 ~ file: index.js ~ line 9 ~ addFavoriteClicked ~ response", response)
         }
         catch {

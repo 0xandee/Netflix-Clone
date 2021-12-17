@@ -9,6 +9,7 @@ import './style.scss'
 import { getProfile, requestUpdateProfile } from "../../services/api/auth";
 import { toast } from 'react-toastify'
 import { useHistory } from "react-router-dom";
+import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
 
 const SuccessToast = (props) => (
   <Fragment>
@@ -76,7 +77,7 @@ const GeneralProfile = () => {
   const saveClicked = async () => {
     try {
     
-      const response = await requestUpdateProfile({ email, country: country.value, dob: dob.toISOString().slice(0, 10), gender: gender.value }, localStorage.getItem('access_token'))
+      const response = await requestUpdateProfile({ email, country: country.value, dob: dob.toISOString().slice(0, 10), gender: gender.value }, read_cookie('access_token'))
      if(response.status >= 200 && response.status <299)
      { 
        notifySuccess()
@@ -104,7 +105,7 @@ const GeneralProfile = () => {
 
   useEffect(async () => {
     try {
-      let response = await getProfile(localStorage.getItem('access_token'))
+      let response = await getProfile(read_cookie('access_token'))
       if (response.status === 200) {
         let data = await response.json()
         setEmail(data.email)
