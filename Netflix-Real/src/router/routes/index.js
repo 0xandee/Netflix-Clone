@@ -95,7 +95,30 @@ const Routes = [
     component: lazy(() => import('../../views/AccountProfile')),
     exact: true,
   },
- 
+  {
+    path: '/contactus',
+    component: lazy(() => import('../../views/FooterPage')),
+    exact: true,
+  },  
+  {
+    path: '/termsofuse',
+    component: lazy(() => import('../../views/FooterPage')),
+    exact: true,
+  },  
+  {
+    path: '/privacy',
+    component: lazy(() => import('../../views/FooterPage')),
+    exact: true,
+  },  
+  {
+    path: '/cookieprefer',
+    component: lazy(() => import('../../views/FooterPage')),
+    exact: true,
+  },  
+  {
+    path: '/corpinfo',
+    component: lazy(() => import('../../views/FooterPage')),
+    exact: true,
+  },
 ]
-
 export { DefaultRoute, TemplateTitle, Routes }
