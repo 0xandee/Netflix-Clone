@@ -38,7 +38,8 @@ const FinalRoute = (props) => {
     // ** Assign vars based on route meta
     console.log("🚀 ~ file: Router.js ~ line 40 ~ FinalRoute ~ read_cookie('access_token')", read_cookie('access_token').length)
 
-    if ( read_cookie('access_token').length == 0 && route.meta === undefined) {
+    if (route.meta === undefined && read_cookie('access_token').length == 0  ) {
+        console.log("🚀 ~ file: Router.js ~ line 42 ~ FinalRoute ~ route.meta", route.meta)
         return <Redirect to='/signin' />
 
     } else if (route.meta && route.meta.authRoute &&  read_cookie('access_token').length) {

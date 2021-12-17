@@ -99,26 +99,41 @@ const Routes = [
     path: '/contactus',
     component: lazy(() => import('../../views/FooterPage')),
     exact: true,
+    meta: {
+      authRoute: false
+    }
   },  
   {
     path: '/termsofuse',
     component: lazy(() => import('../../views/FooterPage')),
     exact: true,
+    meta: {
+      authRoute: false
+    }
   },  
   {
     path: '/privacy',
     component: lazy(() => import('../../views/FooterPage')),
     exact: true,
+    meta: {
+      authRoute: false
+    }
   },  
   {
     path: '/cookieprefer',
     component: lazy(() => import('../../views/FooterPage')),
     exact: true,
+    meta: {
+      authRoute: false
+    }
   },  
   {
     path: '/corpinfo',
     component: lazy(() => import('../../views/FooterPage')),
     exact: true,
+    meta: {
+      authRoute: false
+    }
   },
 ]
 export { DefaultRoute, TemplateTitle, Routes }
