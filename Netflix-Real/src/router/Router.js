@@ -11,16 +11,10 @@ import {
 } from "react-router-dom";
 
 import '../App.css'
-import io from "socket.io-client";
-import { Slider, NavBar, NavigationBar, SignUpNavigationBar, PreviewInfo, PreviewPopup } from "../components/index";
+import { ErrorPage } from "../views/index";
 
-import { ForgotPassword, PlanForm, Registration, RegistrationForm, SignUp, SignIn, GroupStreaming, ChooseTypeStart, AccountProfile, OnboardingMovies, VideoPlayer, Homepage, MyPlaylistPage, PopularPage, MoviesPage, SearchPage, ErrorPage } from "../views/index";
-import { getMovieTypeAPI } from "../services/api/movie";
-import { useDispatch } from "react-redux";
-import { setMovieTypes } from "../services/redux/actions";
-import { useSelector } from "react-redux";
 import { Routes, DefaultRoute } from "./routes";
-import { Spinner } from "reactstrap";
+import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
 
 // import {socket} from "./services/socket/socket"
 
@@ -31,21 +25,23 @@ const LoadingRoute = () => {
     return (
         <div className="d-flex justify-content-center align-items-center" style={{ height: '100vh', width: '100vw', backgroundColor: 'white' }}>
             <div class="spinner-border  text-danger" style={{ height: '10vh', width: '10vh', borderWidth:'15px'}} role="status" />
-
         </div>
 
     )
 }
 
 const FinalRoute = (props) => {
-
+   
+   
     const route = props.route
-    console.log("🚀 ~ file: Router.js ~ line 58 ~ FinalRoute ~ route", route)
+    console.log("🚀 ~ file: Router.js ~ line 37 ~ FinalRoute ~ route", route)
     // ** Assign vars based on route meta
-    if (localStorage.getItem('access_token') == null && route.meta === undefined) {
+    console.log("🚀 ~ file: Router.js ~ line 40 ~ FinalRoute ~ read_cookie('access_token')", read_cookie('access_token').length)
+
+    if ( read_cookie('access_token').length == 0 && route.meta === undefined) {
         return <Redirect to='/signin' />
 
-    } else if (route.meta && route.meta.authRoute && localStorage.getItem('access_token') != null) {
+    } else if (route.meta && route.meta.authRoute &&  read_cookie('access_token').length) {
         return <Redirect to='/' />
     }
     return <route.component {...props} >
@@ -61,7 +57,7 @@ export default function WebRouter() {
                     exact
                     path='/'
                     render={() => {
-                        return localStorage.getItem('access_token') !== null ? <Redirect to={DefaultRoute} /> : <Redirect to='/signin' />
+                        return read_cookie('access_token') !== null ? <Redirect to={DefaultRoute} /> : <Redirect to='/signin' />
                     }}
                 />
                 {Routes.map(route =>

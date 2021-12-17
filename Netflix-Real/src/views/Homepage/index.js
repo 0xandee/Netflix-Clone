@@ -32,6 +32,7 @@ const Homepage = (props) => {
     const [open, setOpen] = useState(false);
     
     const toggleModal = () => {
+        localStorage.clear()
         delete_cookie('username')
         delete_cookie('access_token')
         history.push('/signin')

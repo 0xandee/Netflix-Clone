@@ -21,6 +21,5 @@ import FooterPage from './FooterPage'
 export {
     SignIn,SignUp,ForgotPassword,Registration,RegistrationForm,PlanForm,
     ChooseTypeStart,OnboardingMovies,VideoPlayer,Homepage,MyPlaylistPage,PopularPage,AccountProfile,
-    GroupStreaming,MoviesPage,SearchPage,ErrorPage,DetailPage
-    GroupStreaming,MoviesPage,SearchPage,ErrorPage,FooterPage
+    GroupStreaming,MoviesPage,SearchPage,ErrorPage,DetailPage,FooterPage
 }

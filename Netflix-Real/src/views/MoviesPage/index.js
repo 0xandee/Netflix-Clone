@@ -69,7 +69,7 @@ const MoviesPage = (props) => {
         });
     }
     useEffect(async () => {
-        const response = await getMovieTypeAPI(localStorage.getItem('access_token'))
+        const response = await getMovieTypeAPI(read_cookie('access_token'))
         if (response.status === 200 && dataTypes.length == 0) {
             const data = await response.json()
             dispatch(setMovieTypes(data))

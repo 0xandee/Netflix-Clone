@@ -17,23 +17,38 @@ const Routes = [
   {
     path: '/forgot-password',
     component: lazy(() => import('../../views/ForgotPassword')),
+    meta: {
+      authRoute: true
+    }
     
   },
   {
     path: '/signup/registration',
-    component: lazy(() => import('../../views/Registration'))
+    component: lazy(() => import('../../views/Registration')),
+    meta: {
+      authRoute: true
+    }
   },
   {
     path: '/signup/registrationform',
-    component: lazy(() => import('../../views/RegistrationForm'))
+    component: lazy(() => import('../../views/RegistrationForm')),
+    meta: {
+      authRoute: true
+    }
   },
   {
     path: '/choosetype',
-    component: lazy(() => import('../../views/ChooseTypeStart'))
+    component: lazy(() => import('../../views/ChooseTypeStart')),
+    meta: {
+      authRoute: true
+    }
   },
   {
     path: '/choosemovies',
     component: lazy(() => import('../../views/OnboardingMovies')),
+    meta: {
+      authRoute: true
+    }
   },
   {
     path: '/movies/:idGenre',
