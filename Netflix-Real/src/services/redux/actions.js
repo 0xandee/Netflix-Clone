@@ -35,7 +35,7 @@ export const userPostFetch = user => {
       .then(data => {
         if (data.message) {
         } else {
-          localStorage.setItem("token", data.jwt)
+          // localStorage.setItem("token", data.jwt)
           // dispatch(loginUser(data.user))
         }
       })

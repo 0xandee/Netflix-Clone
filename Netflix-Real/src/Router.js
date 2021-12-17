@@ -14,11 +14,12 @@ import './App.css'
 import io from "socket.io-client";
 import { Slider, NavBar, NavigationBar, SignUpNavigationBar, PreviewInfo, PreviewPopup } from "./components/index";
 
-import { ForgotPassword, PlanForm, Registration, RegistrationForm, SignUp, SignIn, GroupStreaming, ChooseTypeStart, AccountProfile, OnboardingMovies, VideoPlayer, Homepage, MyPlaylistPage, PopularPage, MoviesPage, SearchPage, ErrorPage } from "./views/index";
+import { ForgotPassword, PlanForm, Registration, RegistrationForm, SignUp, SignIn, GroupStreaming, ChooseTypeStart, AccountProfile, OnboardingMovies, VideoPlayer, Homepage, MyPlaylistPage, PopularPage, MoviesPage, SearchPage, ErrorPage, FooterPage } from "./views/index";
 import { getMovieTypeAPI } from "./services/api/movie";
 import { useDispatch } from "react-redux";
 import { setMovieTypes } from "./services/redux/actions";
 import { useSelector } from "react-redux";
+import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
 
 // import {socket} from "./services/socket/socket"
 
@@ -28,7 +29,7 @@ function PrivateRoute({ component: Component, ...rest }) {
     return (
         <Route
             {...rest}
-            render={(props) => localStorage.getItem('access_token') !== null
+            render={(props) => read_cookie('access_token') !== null
                 ? <Component {...props} />
                 : <Redirect to={{ pathname: '/signin', state: { from: props.location } }} />}
         />
@@ -38,7 +39,7 @@ function PrivateRoute({ component: Component, ...rest }) {
 export default function WebRouter() {
     const dispatch = useDispatch();
     useEffect(async () => {
-        const response = await getMovieTypeAPI(localStorage.getItem('access_token'))
+        const response = await getMovieTypeAPI(read_cookie('access_token'))
         if (response.status === 200) {
             let data = await response.json()
             dispatch(setMovieTypes(data))
@@ -54,7 +55,7 @@ export default function WebRouter() {
                     exact
                     path='/'
                     render={() => {
-                        return localStorage.getItem('access_token') !== null ? <Redirect to='/home' /> : <Redirect to='/signin' />
+                        return read_cookie('access_token') !== null ? <Redirect to='/home' /> : <Redirect to='/signin' />
                     }}
                 />                
                 <Route path="/signin" component={SignIn} />
@@ -72,7 +73,13 @@ export default function WebRouter() {
                 <PrivateRoute path="/watch" component={VideoPlayer} />
                 <PrivateRoute path="/watchgroup/:idgroup" component={GroupStreaming} />
                 <Route path="/profile" component={AccountProfile} />
+                <Route path="/contactus" component={FooterPage} />
+                <Route path="/termsofuse" component={FooterPage} />
+                <Route path="/privacy" component={FooterPage} />
+                <Route path="/cookieprefer" component={FooterPage} />
+                <Route path="/corpinfo" component={FooterPage} />
                 <Route component={ErrorPage} />
+                
             </Switch>
         </Router>
     );

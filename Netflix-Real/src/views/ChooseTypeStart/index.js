@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getMovieTypeAPI, postNewUserGenres } from '../../services/api/movie'
 import { Button } from "reactstrap";
 import { setMovieTypes } from "../../services/redux/actions";
+import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
 
 
 const ChooseTypeStart = () => {
@@ -34,7 +35,7 @@ const ChooseTypeStart = () => {
     }
 
     useEffect(async () => {
-        const response = await getMovieTypeAPI(localStorage.getItem('access_token'))
+        const response = await getMovieTypeAPI(read_cookie('access_token'))
         console.log("🚀 ~ file: index.js ~ line 39 ~ useEffect ~ response", response)
         if (response.status === 200) {
             let data = await response.json()

@@ -10,6 +10,7 @@ import Select, { createFilter } from 'react-select';
 import { Spinner } from 'reactstrap'
 import { searchMovieByNameApi } from "../../services/api/search";
 
+import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
 
 const SearchPage = (props) => {
     const query = new URLSearchParams(useLocation().search)
@@ -59,10 +60,9 @@ const SearchPage = (props) => {
     }, [isFetching]);
 
     useEffect(async () => {
-        console.log("🚀 ~ file: index.js ~ line 64 ~ useEffect ~ localStorage.getItem('access_token')", localStorage.getItem('access_token'))
 
         if (query.get('value') != null) {
-            const res = await searchMovieByNameApi(query.get('value'),localStorage.getItem('access_token'))
+            const res = await searchMovieByNameApi(query.get('value'),read_cookie('access_token'))
             if (res.status == 200) {
                 let data = await res.json()
                 setDataApiMovies(data)
