@@ -26,7 +26,9 @@ const MoviesPage = (props) => {
     const dispatch = useDispatch();
 
     const toggleModal = () => {
-        localStorage.clear();
+        delete_cookie('username')
+        delete_cookie('id_user')
+        delete_cookie('access_token')
         history.push('/signin')
     };
 

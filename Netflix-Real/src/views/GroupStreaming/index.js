@@ -10,7 +10,7 @@ import AppChat from "../../components/Chat";
 import Chat from "../../components/Chat";
 import io from "socket.io-client";
 import * as Icon from 'react-feather';
-import { getAllMovies } from "../../services/api/movie";
+import { getAllMovies, getMoviesByListID, getRecommGroupMoviesState1 } from "../../services/api/movie";
 import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
 
 //  const socket = io("http://localhost:8000", { transports: ['websocket']});
@@ -41,7 +41,7 @@ const GroupStreaming = () => {
 
   const history = useHistory()
   const [openedChatBox, setOpenedChatBox] = useState(false);
-  const [dataApiGenreMovies, setDataApiGenreMovies] = useState([]);
+  const [recommendedMovies, setRecommendedMovies] = useState([]);
   const [movies, setMovies] = useState([]);
   const [filteredMovies, setFilteredMovies] = useState([]);
   const [showedMovies, setShowedMovies] = useState([]);
@@ -53,6 +53,9 @@ const GroupStreaming = () => {
   const [movieURL, setMovieURL] = useState('')
   const [open, setOpen] = useState(false);
   const [hostModal, setHostModal] = useState(false);
+  const [isHost, setIsHost] = useState(false);
+  const [isFetchingApi, setIsFetchingApi] = useState(true);
+
   const toggleModal = () => {
     history.push('/home')
   };
@@ -79,7 +82,7 @@ const GroupStreaming = () => {
       setSearchText(value)
     }
     else {
-      setShowedMovies(movies.slice(0, 31))
+      setShowedMovies(recommendedMovies.slice(0, 31))
     }
   }
 
@@ -94,7 +97,7 @@ const GroupStreaming = () => {
         setShowedMovies(prevState => ([...prevState, ...filteredMovies.slice(prevState.length, prevState.length + 60)]));
       }
       else {
-        setShowedMovies(prevState => ([...prevState, ...movies.slice(prevState.length, prevState.length + 60)]));
+        setShowedMovies(prevState => ([...prevState, ...recommendedMovies.slice(prevState.length, prevState.length + 60)]));
       }
       setIsFetching(false);
     }, 2000);
@@ -105,17 +108,23 @@ const GroupStreaming = () => {
     setOpenedChatBox(!openedChatBox)
   }
 
-  const handleOpenMovieRecommend = () => {
-    setOpenedMovieRecommend(!openedMovieRecommend)
+  const handleOpenMovieRecommend = (data) => {
+    if (data != null)
+      setOpenedMovieRecommend(data)
+    else
+      setOpenedMovieRecommend(!openedMovieRecommend)
     console.log("openedMovieRecommend", openedMovieRecommend);
   }
 
   const handleMovieUrlClick = (data) => () => {
     // setMovieURL(data);
-    setMovieURL('https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4');
-    let movieURL = 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4';
-    socket.emit('set movie', { username, roomnum, movieURL });
-    handleOpenMovieRecommend(true)
+    if (isHost) {
+      setMovieURL('https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4');
+      let movieURL = 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4';
+      socket.emit('set movie', { username, roomnum, movieURL });
+      handleOpenMovieRecommend(false)
+    }
+
   }
 
   const onBlurSearchInput = () => {
@@ -137,9 +146,27 @@ const GroupStreaming = () => {
 
   useEffect(async () => {
     const response = await getAllMovies(read_cookie('access_token'))
-    let data = await response.json()
-    setMovies(data)
-    setShowedMovies(data.slice(0, 31))
+    const res = await getRecommGroupMoviesState1(read_cookie('id_user'))
+    if (res.status === 200) {
+      let dataRecommend = await res.json()
+      const temp = await getMoviesByListID(dataRecommend.map((key) => key.id), read_cookie('access_token'))
+      let data2 = await temp.json()
+      console.log("🚀 ~ file: index.js ~ line 151 ~ useEffect ~ dataRecommend", data2)
+      setRecommendedMovies(data2)
+      setShowedMovies(data2.slice(0, 31))
+      setIsFetchingApi(false)
+    }
+    else {
+      if (response.status === 200) {
+        let data = await response.json()
+        console.log("🚀 ~ file: index.js ~ line 162 ~ useEffect ~ data", data)
+        setMovies(data)
+        setShowedMovies(data.slice(0, 31))
+        setIsFetchingApi(false)
+      }
+    }
+    
+
   }, []);
 
   useEffect(() => {
@@ -153,8 +180,7 @@ const GroupStreaming = () => {
     const newSocket = io("http://localhost:8000", { transports: ['websocket'] });
     setSocket(newSocket);
     if (newSocket) {
-      if (username != roomnum)
-        newSocket.emit("joinRoom", { username, roomnum });
+      newSocket.emit("joinRoom", { username, roomnum });
       newSocket.emit('new room', { username, roomnum });
     }
 
@@ -169,6 +195,9 @@ const GroupStreaming = () => {
       socket.on("hostDisconnect", () => {
         setOpen(true)
         setOpenedMovieRecommend(false)
+      })
+      socket.on('isHost', function (data) {
+        setIsHost(data.isHost)
       })
     }
   }, [socket])
@@ -185,76 +214,81 @@ const GroupStreaming = () => {
     <div id='groupStreaming'>
       {socket &&
         <div className='position-relative group-streaming h-100 w-100 ' >
-
-          <div className='group-player position-relative '>
-            <div className={`icon-chevron--right ${openedChatBox && 'active'}`} onClick={handleOpenChatBox}>
-              {!openedChatBox ?
-                <IconChevronRight />
-                :
-                <IconChevronLeft />
-              }
+          {isFetchingApi ?
+            <div style={{ display: 'flex', marginBottom: '10px', width: '100%', justifyContent: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+              <span className='text-light mb-3' style={{ fontSize: '24px' }}>
+                Personalizing for Your Group
+              </span>
+              <div class="spinner-border" role="status" style={{ height: '5vh', width: '5vh', color: '#e50914' }} />
             </div>
-            <div className=" position-absolute" style={{ top: '0', right: '0', zIndex: '5' }} >
 
-              <div className={`search-box ${isShown && 'input-search'} ${openedMovieRecommend ? '' : 'd-none'}`} style={{ marginRight: "4rem" }}>
-                <div>
-                  <Icon.Search className='icon-style' size='16px' strokeWidth='4' color='white' onClick={btnSearchClicked} style={{ cursor: 'pointer', marginRight: "1rem" }} />
-                </div>
-                <React.Fragment>
-                  <input
-                    onBlur={onBlurSearchInput}
-                    ref={textInput} value={searchText}
-                    type={'text'}
-                    name="search"
-                    placeholder="Search.."
-                    onChange={onValueSearchChange} >
-                  </input>
-                </React.Fragment>
-              </div>
-            </div>
-            {/* {!movieURL.length && !isHost ?
-            <div>
-              Host is choosing movie. So please wait
-            </div>
-            : */}
-
-            <VideoPlayer socket={socket} roomnum={roomnum} movieURL={movieURL} />
-
-            <div id="movieRecommend" onScroll={handleScroll}
-              className={`${openedMovieRecommend ? '' : 'd-none'}`}
-              style={{ position: 'absolute', width: '100%', height: '100%', backgroundColor: '#242526', zIndex: 3, overflowX: 'auto', paddingTop: '40px' }}>
-              <div className='body-content'>
-                <div className='list-grid'>
-                  {searchText.length && !filteredMovies.length ?
-                    <div style={{ color: 'white', fontWeight: "bold", fontSize: '24px' }} >No results found</div>
-                    :
-                    showedMovies.map(item =>
-                    (item.uri_avatar != null &&
-                      <div className='grid-container' onClick={handleMovieUrlClick(item)}>
-                        <div className=' item-grid multi-landing-stack-space-holder w-100 h-100'>
-                          {/* <div className="multi-landing-stack-1"></div>
-                                      <div className="multi-landing-stack-2"></div> */}
-                          <img style={{ borderRadius: '4px', }} className="title-card w-100 h-100" src={item.uri_avatar} alt={item.m_name} />
-                        </div>
-                        <div className='name-label'>
-                          {item.name}
-                        </div>
-                      </div>
-                    )
-                    )
-                  }
-
-                </div>
-                {isFetching &&
-                  <div style={{ display: 'flex', marginBottom: '10px', width: '100%', justifyContent: 'center' }}>
-                    <div class="spinner-border spinner-color" role="status">
-                    </div>
-                  </div>
+            :
+            <div className='group-player position-relative '>
+              <div className={`icon-chevron--right ${openedChatBox && 'active'}`} onClick={handleOpenChatBox}>
+                {!openedChatBox ?
+                  <IconChevronRight />
+                  :
+                  <IconChevronLeft />
                 }
               </div>
-            </div>
-          </div>
+              <div className=" position-absolute" style={{ top: '0', right: '0', zIndex: '5' }} >
 
+                <div className={`search-box ${isShown && 'input-search'} ${openedMovieRecommend ? '' : 'd-none'}`} style={{ marginRight: "4rem" }}>
+                  <div>
+                    <Icon.Search className='icon-style' size='16px' strokeWidth='4' color='white' onClick={btnSearchClicked} style={{ cursor: 'pointer', marginRight: "1rem" }} />
+                  </div>
+                  <React.Fragment>
+                    <input
+                      onBlur={onBlurSearchInput}
+                      ref={textInput} value={searchText}
+                      type={'text'}
+                      name="search"
+                      placeholder="Search.."
+                      onChange={onValueSearchChange} >
+                    </input>
+                  </React.Fragment>
+                </div>
+              </div>
+
+
+              <VideoPlayer socket={socket} roomnum={roomnum} movieURL={movieURL} handleOpenMovieRecommend={handleOpenMovieRecommend} />
+
+              <div id="movieRecommend" onScroll={handleScroll}
+                className={`${openedMovieRecommend ? '' : 'd-none'}`}
+                style={{ position: 'absolute', width: '100%', height: '100%', backgroundColor: '#242526', zIndex: 3, overflowX: 'auto', paddingTop: '40px' }}>
+                <div className='body-content'>
+                  <div className='list-grid'>
+                    {searchText.length && !filteredMovies.length ?
+                      <div style={{ color: 'white', fontWeight: "bold", fontSize: '24px' }} >No results found</div>
+                      :
+                      showedMovies.map(item =>
+                      (item.uri_avatar != null &&
+                        <div className='grid-container' onClick={handleMovieUrlClick(item)}>
+                          <div className=' item-grid multi-landing-stack-space-holder w-100 h-100'>
+                            {/* <div className="multi-landing-stack-1"></div>
+                                      <div className="multi-landing-stack-2"></div> */}
+                            <img style={{ borderRadius: '4px', }} className="title-card w-100 h-100" src={item.uri_avatar} alt={item.m_name} />
+                          </div>
+                          <div className='name-label'>
+                            {item.name}
+                          </div>
+                        </div>
+                      )
+                      )
+                    }
+
+                  </div>
+                  {isFetching &&
+                    <div style={{ display: 'flex', marginBottom: '10px', width: '100%', justifyContent: 'center' }}>
+                      <div class="spinner-border spinner-color" role="status">
+                      </div>
+                    </div>
+                  }
+                </div>
+              </div>
+
+            </div>
+          }
           <div className={`group-chat-box ${!openedChatBox && 'active'}`} >
             <Chat
               username={username}
@@ -267,10 +301,12 @@ const GroupStreaming = () => {
           <CustomModal isOpen={open} onClick={toggleModal} headerText={"Host disconnected"} buttonText='Back to home page' bodyText=
             {"Look like host is disconnect.\n So please press below button to back to home page."
             } />
-          <CustomModal isOpen={hostModal} onClick={toggleModal} headerText={"Host connect second time"} buttonText='Back to home page' bodyText=
-            {"Sorry but you can only have one room active at a time.\n So please close this page or press below button to back to home page."
+          <CustomModal isOpen={hostModal} onClick={toggleModal} headerText={"Host enter room"} buttonText='Back to home page' bodyText=
+            {"Sorry but you can only create one room at a time.\n So please close this page or press below button to back to home page."
             } />
+
         </div>
+
       }
     </div>
   )

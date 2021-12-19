@@ -2,7 +2,7 @@ import React, { useRef, useState, useCallback, useEffect, createRef } from "reac
 import { Slider, Footer, NavigationBar, CustomModal } from "../../components";
 import { useSelector, useDispatch } from 'react-redux';
 import { setMovieTypes, showPopUpInfo } from "../../services/redux/actions";
-import { getMoviesByGenreAPI, getMovieTypeAPI } from "../../services/api/movie";
+import { getMoviesByGenreAPI, getMoviesByListID, getMovieTypeAPI, getRecommUserMoviesState1 } from "../../services/api/movie";
 import './Slider.scss';
 // Import Swiper styles
 import "swiper/swiper.min.css";
@@ -26,22 +26,23 @@ SwiperCore.use([Navigation]);
 const Homepage = (props) => {
     const history = useHistory()
     const [genreMovies, setGenreMovies] = useState([]);
+    const [isFetching, setIsFetching] = useState(true);
     const homePageRef = useRef(null)
     const dispatch = useDispatch();
     let dataTypes = useSelector((state) => state?.rootReducer.movieTypes)
     const [open, setOpen] = useState(false);
-    
+
     const toggleModal = () => {
-        localStorage.clear()
         delete_cookie('username')
+        delete_cookie('id_user')
         delete_cookie('access_token')
         history.push('/signin')
     };
 
     var movieDataGenres = [];
+
     useEffect(async () => {
         const response = await getMovieTypeAPI(read_cookie('access_token'))
-        console.log("🚀 ~ file: index.js ~ line 39 ~ useEffect ~ response", response)
         if (response.status === 200 && dataTypes.length == 0) {
             const data = await response.json()
             dispatch(setMovieTypes(data))
@@ -49,20 +50,48 @@ const Homepage = (props) => {
         else if (response.status == 403) {
             setOpen(true)
         }
+    }, [])
 
 
-    }, [dispatch])
+
+    useEffect(async () => {
+        const response = await getRecommUserMoviesState1(read_cookie('id_user'))
+        console.log("🚀 ~ file: index.js ~ line 39 ~ useEffect ~ response", response)
+
+        if (response.status === 200) {
+            const data = await response.json()
+            const res = await getMoviesByListID(data.map((key) => key.id),read_cookie('access_token'))
+            const data2 = await res.json()
+            var genreMovie = {
+                id: 'recommend',
+                sliderTitle: 'Recommend for you',
+                sliderMovieList: data2
+            }
+            setGenreMovies(genreMovies => [genreMovie,...genreMovies ]);
+            setIsFetching(false)
+           
+        }
+        else if (response.status == 403) {
+            setOpen(true)
+        } 
+        else {
+            setIsFetching(false)
+        }
+
+
+    }, [])
 
     useEffect(() => {
+
         dataTypes.map(async (item) => {
             try {
                 const res = await getMoviesByGenreAPI(item.id, read_cookie('access_token'))
-                if (res.status == 200) {
+                if (res.status == 200 && !genreMovies.length) {
                     let data = await res.json()
                     var genreMovie = {
                         id: item.id,
                         sliderTitle: item.name,
-                        sliderMovieList: data.slice(0, 10)
+                        sliderMovieList: data.slice(0, 30)
                     }
                     setGenreMovies(genreMovies => [...genreMovies, genreMovie]);
                     movieDataGenres.push(genreMovie);
@@ -78,6 +107,7 @@ const Homepage = (props) => {
             }
 
         });
+        console.log("🚀 ~ file: index.js ~ line 104 ~ dataTypes.map ~ dataTypes", dataTypes)
 
     }, [dataTypes])
 
@@ -86,12 +116,23 @@ const Homepage = (props) => {
     return (
         <div className="overflow-x-hidden bg-black w-100" ref={homePageRef} style={{ minHeight: '100vh' }}>
             <NavigationBar />
-            <div className="h-100" style={{ minHeight: '75vh',paddingTop: '2vh'}}>
-                {genreMovies.map(item => (<Slider id={item.id} sliderTitle={item.sliderTitle} sliderMovieList={item.sliderMovieList} />))}
+            <div className="h-100" style={{ minHeight: '75vh', paddingTop: '5vh' }}>
+                {isFetching ?
+                    <div style={{ display: 'flex', marginBottom: '10px', width: '100%', justifyContent: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                        <span className='text-light mb-3' style={{ fontSize: '24px' }}>
+                            Personalizing for You
+                        </span>
+                        <div class="spinner-border" role="status" style={{ height: '5vh', width: '5vh', color: '#e50914' }} />
+                    </div>
+
+                    :
+                    genreMovies.map(item => (<Slider id={item.id} sliderTitle={item.sliderTitle} sliderMovieList={item.sliderMovieList} />))
+                }
             </div>
             <CustomModal isOpen={open} onClick={toggleModal} headerText={"Session Timed out"} buttonText='Back to log in page' bodyText=
                 {"Look like your log in session have been timed out. So please log in again.\nWe are so sorry for this inconvenience"
                 } />
+
             <Footer />
         </div>
     );

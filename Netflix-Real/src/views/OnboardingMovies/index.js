@@ -90,7 +90,7 @@ const OnboardingMovies = () => {
 
     useEffect(async () => {
         let temp = JSON.parse(query.get('value'))
-        const response = await getMoviesByGenres(temp,read_cookie('access_token'))
+        const response = await getMoviesByGenres(temp,read_cookie('access_token'),30)
         if (response.status === 200) {
             setMovies(await response.json())
         }

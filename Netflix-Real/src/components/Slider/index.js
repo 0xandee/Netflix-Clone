@@ -41,13 +41,17 @@ const Slider = (props) => {
                 }}
                 className="swiper-container mt-3 px-5">
                 <div>
-                    {props.sliderMovieList.map(item => (
-                        <SwiperSlide className="swiper-slide slide" onClick={itemClicked(item)}>
-                            <a className="thumbTile cursor-pointer" >
-                                <LazyLoadImage effect="blur" className="thumbTile__image" src={item.uri_avatar} alt={item.m_name} />
-                            </a>
-                            {/* <div className="controlPlayer pl-4em"></div> */}
-                        </SwiperSlide>))}
+                    {props.sliderMovieList.map(item => {
+                       
+                        return (
+                            item != null && item.uri_avatar != null &&
+                            <SwiperSlide className="swiper-slide slide" onClick={itemClicked(item)}>
+                                <a className="thumbTile cursor-pointer" >
+                                    <LazyLoadImage effect="blur" className="thumbTile__image" src={item.uri_avatar} alt={item.m_name} />
+                                </a>
+                                {/* <div className="controlPlayer pl-4em"></div> */}
+                            </SwiperSlide>)
+                    })}
                 </div>
             </Swiper>
         </section>

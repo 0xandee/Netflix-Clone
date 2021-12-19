@@ -15,7 +15,7 @@ let count = 0;
 ///https://player.vimeo.com/external/194837908.sd.mp4?s=c350076905b78c67f74d7ee39fdb4fef01d12420&profile_id=164
 // http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4
 //https://drive.google.com/uc?export=download&id=1Cvk2XhYdSKAST4ecGQ6s1ra4MilvXuLC
-const VideoPlayer = ({ socket, roomnum, videoURL }) => {
+const VideoPlayer = ({ socket, roomnum, videoURL, handleOpenMovieRecommend }) => {
     const history = useHistory(); // Navigate back to the previous state
     const [played, setPlayed] = useState(0);
     const [loaded, setLoaded] = useState(0);
@@ -271,6 +271,7 @@ const VideoPlayer = ({ socket, roomnum, videoURL }) => {
         if (socket != undefined) {
             socket.on("getURLMovie", (data) => {
                 console.log("🚀 ~ file: index.js ~ line 246 ~ socket.on ~ data", data)
+                handleOpenMovieRecommend(false)
                 setUrl(data.movieURL)
             })
         }
@@ -326,7 +327,7 @@ const VideoPlayer = ({ socket, roomnum, videoURL }) => {
                 if (playedRef.current != hostTime || playingRef.current != hostState) {
 
                     if (!host) {
-
+                        handleOpenMovieRecommend(false)
                         volumeRef.current = data.muted
 
                         playedRef.current = hostTime
@@ -344,12 +345,12 @@ const VideoPlayer = ({ socket, roomnum, videoURL }) => {
 
     return (
         <div id={`videoPlayer`} onMouseMove={handleMouseMove} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} style={{ position: 'absolute', width: '100%', height: '100%' }}>
-            {url == undefined || url.length == 0 &&
+            {/* {url == undefined || url.length == 0 &&
                 <div className="position-absolute d-flex w-100 h-100 justify-content-center align-items-center"
                     style={{ zIndex: '10', backgroundColor: 'black', fontSize: '20px' }}>
                     Host is choosing film. Please wait
                 </div>
-            }
+            } */}
             <div ref={playerContainerRef} className={`video-player`} >
                 <div className={'video-container'} onClick={handlePlayPause}>
                     <ReactPlayer

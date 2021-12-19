@@ -23,6 +23,7 @@ function Chat({ username, roomnum, socket, handleOpenMovieRecommend }) {
       //decypt the message
       if (data.text != undefined) {
         const ans = to_Decrypt(data.text, data.username);
+        console.log("🚀 ~ file: index.js ~ line 26 ~ socket.on ~ ans", ans)
 
         dispatchProcess(false, ans, data.text);
 
@@ -39,10 +40,10 @@ function Chat({ username, roomnum, socket, handleOpenMovieRecommend }) {
     });
     socket.on('isHost', function (data) {
       setIsHost(data.isHost)
-      if (!data.isHost) {
-        handleOpenMovieRecommend(data.isHost)
+      // if (!data.isHost) {
+      //   handleOpenMovieRecommend(data.isHost)
 
-      }
+      // }
     })
   }, [socket]);
 

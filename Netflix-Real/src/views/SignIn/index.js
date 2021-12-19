@@ -62,7 +62,9 @@ const SignIn = (props) => {
 
                     bake_cookie('access_token', data.accessToken);
                     bake_cookie('username', username.slice(0, username.indexOf("@")));
-                   
+                    bake_cookie('id_user', data.id);
+                    console.log("🚀 ~ file: index.js ~ line 62 ~ signInClick ~ cookies.get('username')", read_cookie('id_user'))
+
                     // delete_cookie(cookie_key);
                     if (data.first)
                         history.push('/choosetype')

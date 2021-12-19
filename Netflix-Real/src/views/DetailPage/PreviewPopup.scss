@@ -101,6 +101,12 @@
     overflow: hidden;
 }
 
+.more-like-this-container{
+    &::-webkit-scrollbar {
+        display: none;
+    }
+}
+
 @keyframes popup {
     0%{
      transform: scaleX(0.6) scaleY(0.8) ;

@@ -22,6 +22,7 @@ const CustomDropdown = () => {
     if (response.status >= 200 && response.status <= 299) {
         // localStorage.clear();
         delete_cookie('username')
+        delete_cookie('id_user')
         delete_cookie('access_token')
         history.push('/signin')
     }
