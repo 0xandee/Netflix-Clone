@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect, createRef } from "react";
 import './style.scss';
-import { Footer, NavigationBar } from "../../components";
+import { CustomModal, Footer, NavigationBar } from "../../components";
 import { to_Decrypt, to_Encrypt } from "../../services/aes256";
 import { useHistory } from "react-router-dom";
 
@@ -15,7 +15,14 @@ const MyPlaylistPage = (props) => {
     const [genreMovies, setGenreMovies] = useState([]);
     const [isFetching, setIsFetching] = useState(false);
     const [accessToken, setAccessToken] = useState(read_cookie('access_token'))
-    // const refresh_token = localStorage.getItem("refresh_token")
+    const [open, setOpen] = useState(false);
+
+    const toggleModal = () => {
+        delete_cookie('username')
+        delete_cookie('id_user')
+        delete_cookie('access_token')
+        history.push('/signin')
+    };
 
     const itemClicked = (data) => () => {
         history.push({
@@ -50,53 +57,64 @@ const MyPlaylistPage = (props) => {
     }, [isFetching]);
 
     useEffect(async () => {
-        const res = await getUserFavoriteList(accessToken)
-        if (res.status === 200) {
-            let data = await res.json()
-            setDataApiMovies(data)
-            setGenreMovies(data.slice(0, 30))
-        }
-        else {
-            if (res.status === 403) {
-
+        try {
+            const res = await getUserFavoriteList(accessToken)
+            if (res.status === 200) {
+                let data = await res.json()
+                setDataApiMovies(data)
+                setGenreMovies(data.slice(0, 30))
             }
+            else if (res.status === 500) {
+                history.push('/maintenance')
+            }
+            else {
+                if (res.status == 403) {
+                    setOpen(true)
+                }
+            }
+        }
+        catch {
+            history.push('/maintenance')
         }
     }, [accessToken])
 
-    return (
-        <div id='myPlaylistPage' >
-            <div className="myplaylist-page overflow-x-hidden bg-black"  >
-                <NavigationBar />
-                <div className='body-content'>
-                    {genreMovies.length > 0 ?
-                        <div className='list-grid'>
-                            {genreMovies.map(item =>
-                                <div className='grid-container' onClick={itemClicked(item)}>
-                                    <div className=' item-grid multi-landing-stack-space-holder w-100 h-100'>
-                                        <img style={{ borderRadius: '4px', }} className="title-card w-100 h-100" src={item.uri_avatar} alt={item.m_name} />
-                                    </div>
-                                    <div className='name-label'>
-                                        {item.name}
-                                    </div>
+return (
+    <div id='myPlaylistPage' >
+        <div className="myplaylist-page overflow-x-hidden bg-black"  >
+            <NavigationBar />
+            <div className='body-content'>
+                {genreMovies.length > 0 ?
+                    <div className='list-grid'>
+                        {genreMovies.map(item =>
+                            <div className='grid-container' onClick={itemClicked(item)}>
+                                <div className=' item-grid multi-landing-stack-space-holder w-100 h-100'>
+                                    <img style={{ borderRadius: '4px', }} className="title-card w-100 h-100" src={item.uri_avatar} alt={item.m_name} />
                                 </div>
-                            )
-                            }
-                        </div>
-                        :
-                        <div style={{ color: 'white', fontWeight: "bold", fontSize: '24px' }} >You don't have any movie in your playlist yet</div>
-                    }
-                    {isFetching && genreMovies.length > 0 &&
-                        <div style={{ display: 'flex', marginBottom: '10px', width: '100%', justifyContent: 'center' }}>
-                            <div class="spinner-border spinner-color" role="status">
+                                <div className='name-label'>
+                                    {item.name}
+                                </div>
                             </div>
+                        )
+                        }
+                    </div>
+                    :
+                    <div style={{ color: 'white', fontWeight: "bold", fontSize: '24px' }} >You don't have any movie in your playlist yet</div>
+                }
+                {isFetching && genreMovies.length > 0 &&
+                    <div style={{ display: 'flex', marginBottom: '10px', width: '100%', justifyContent: 'center' }}>
+                        <div class="spinner-border spinner-color" role="status">
                         </div>
-                    }
-                </div>
-                <Footer />
-
+                    </div>
+                }
             </div>
+            <CustomModal isOpen={open} onClick={toggleModal} headerText={"Session Timed out"} buttonText='Back to log in page' bodyText=
+                    {"Look like your log in session have been timed out. So please log in again.\nWe are so sorry for this inconvenience"
+                    } />
+            <Footer />
+
         </div>
-    );
+    </div>
+);
 };
 
 export default MyPlaylistPage;

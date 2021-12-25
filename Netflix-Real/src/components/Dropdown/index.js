@@ -15,16 +15,16 @@ const CustomDropdown = () => {
   const history = useHistory()
 
 
-  const signOutClick =async (event) => {
+  const signOutClick = async (event) => {
     event.preventDefault();
     const response = await requestLogout(read_cookie('access_token'))
     console.log("🚀 ~ file: index.js ~ line 64 ~ nextClicked ~ response", response)
     if (response.status >= 200 && response.status <= 299) {
-        // localStorage.clear();
-        delete_cookie('username')
-        delete_cookie('id_user')
-        delete_cookie('access_token')
-        history.push('/signin')
+      // localStorage.clear();
+      delete_cookie('username')
+      delete_cookie('id_user')
+      delete_cookie('access_token')
+      history.push('/signin')
     }
   }
 
@@ -40,15 +40,6 @@ const CustomDropdown = () => {
             <React.Fragment>
               <div className={`dropdown-content ${isOpen && 'open'}`}>
                 <div className='callout-arrow' />
-                
-                <div className="dropdown-account-item">
-                  <Link to={userProfile} className='profile-link'>
-                    <span className='profile-name'>
-                      Manage Profiles
-                    </span>
-                  </Link>
-                </div>
-                <div className='reponsive-link' />
                 <div className="dropdown-account-item">
                   <Link to={userProfile} className='profile-link'>
                     <span className='profile-name account-link'>
@@ -57,7 +48,7 @@ const CustomDropdown = () => {
                   </Link>
                 </div>
                 <div className="dropdown-account-item">
-                  <Link to={userProfile} className='profile-link'>
+                  <Link to='/contactus' className='profile-link'>
                     <span className='profile-name account-link'>
                       Help Center
                     </span>

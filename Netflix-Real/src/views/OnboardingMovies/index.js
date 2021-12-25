@@ -58,12 +58,14 @@ const OnboardingMovies = () => {
         setIsFinished(!isFinished);
         try {
             const response = await postNewUserMovies(selectedMovies, read_cookie('access_token'))
-            if (response.status === 200)
+            if (response.status === 200) {
+                bake_cookie('new_user', false);
                 setTimeout(() => {
                     history.push({
                         pathname: '/home',
                     })
                 }, 3000);
+            }
         }
         catch (error) {
             console.log("🚀 ~ file: index.js ~ line 69 ~ triggerFinished ~ error", error)
@@ -90,10 +92,18 @@ const OnboardingMovies = () => {
 
     useEffect(async () => {
         let temp = JSON.parse(query.get('value'))
-        const response = await getMoviesByGenres(temp,read_cookie('access_token'),30)
-        if (response.status === 200) {
-            setMovies(await response.json())
+        try {
+            const response = await getMoviesByGenres(temp, read_cookie('access_token'), 30)
+            
+            if (response.status === 200) {
+                setMovies(await response.json())
+            }
+
         }
+        catch (e) {
+
+        }
+
 
     }, [])
 

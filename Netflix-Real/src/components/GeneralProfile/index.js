@@ -76,16 +76,15 @@ const GeneralProfile = () => {
 
   const saveClicked = async () => {
     try {
-    
       const response = await requestUpdateProfile({ email, country: country.value, dob: dob.toISOString().slice(0, 10), gender: gender.value }, read_cookie('access_token'))
-     if(response.status >= 200 && response.status <299)
-     { 
-       notifySuccess()
-       setIsChange(false)
-     }
-     else {
-       notifyError()
-     }
+      console.log("🚀 ~ file: index.js ~ line 81 ~ saveClicked ~ response", response)
+      if (response.status >= 200 && response.status < 299) {
+        notifySuccess()
+        setIsChange(false)
+      }
+      else {
+        notifyError()
+      }
     }
     catch (error) {
       console.log("🚀 ~ file: index.js ~ line 77 ~ saveClicked ~ error", error)
@@ -113,8 +112,14 @@ const GeneralProfile = () => {
         setDob(new Date(data.dob))
         setValueCountry(countryListData.find(option => option.value === data.country))
       }
+      else if (response.status == 500) {
+        history.push('/maintenance')
+      }
 
     } catch (error) {
+
+      history.push('/maintenance')
+
     }
   }, [])
 

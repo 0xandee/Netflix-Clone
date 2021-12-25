@@ -1,27 +1,33 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink,useHistory } from 'react-router-dom';
 import './PreviewButtonControl.scss'
 import { favMoviePost } from '../../services/api/user';
 import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
 
-
-
 const PreviewButtonControl = (props) => {
     const { item } = props
+    const history = useHistory()
     const addFavoriteClicked = async () => {
         try {
             const response = await favMoviePost(item.id, read_cookie('access_token'))
             console.log("🚀 ~ file: index.js ~ line 9 ~ addFavoriteClicked ~ response", response)
+            if (response.status == 500) {
+                history.push('/maintenance')
+            }
         }
         catch {
-
+            history.push('/maintenance')
         }
 
+    }
+
+    const playClicked = () => {
+        history.push('/watch')
     }
     return (
         <div className="position-relative ">
             <div className="PreviewButton__container PreviewButton__float-left-container px-4 d-flex flex-row  align-items-center">
-                <div className="PlayButton__primary-color PlayButton__primary-button d-flex flex-row justify-content-center align-items-center">
+                <div className="PlayButton__primary-color PlayButton__primary-button d-flex flex-row justify-content-center align-items-center" onClick={playClicked} >
                     <div className="PlayIcon_icon-container px-2">
                         <div id="PlayIcon" className="PlayIcon_icon">
                             <svg viewBox="0 0 24 24">

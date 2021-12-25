@@ -45,42 +45,33 @@ const SignIn = (props) => {
         if (!errorCheck) {
             try {
                 const response = await requestLogin(username, password)
-                console.log("response", response);
+               
                 if (response.status === 200) {
                     const data = await response.json()
                     // localStorage.setItem("access_token", data.accessToken);
-                    
-                    // var index = username.indexOf("@");
-                    // if (index != -1) {
-                        //     localStorage.setItem("username", username.slice(0, index));
-                        // }
-
-                    // cookies.set('access_token', data.accessToken, { path: '/' });
-                    // cookies.set('username', username.slice(0, username.indexOf("@")), { path: '/' });
-                    // cookies.get('access_token');
-                    // cookies.get('username');
 
                     bake_cookie('access_token', data.accessToken);
                     bake_cookie('username', username.slice(0, username.indexOf("@")));
                     bake_cookie('id_user', data.id);
-                    console.log("🚀 ~ file: index.js ~ line 62 ~ signInClick ~ cookies.get('username')", read_cookie('id_user'))
-
+                    bake_cookie('new_user', data.first);
                     // delete_cookie(cookie_key);
-                    if (data.first)
+                    if (data.first) {
                         history.push('/choosetype')
-                    else
-                        history.push('/home')
+                    }
+                    else {                     
+                        history.push('/home') }
+                }
+                else if (response.status === 500) {
+                    history.push('/maintenance')
                 }
                 else {
                     setIsPasswordError(true)
                     setIsEmailError(false)
                     setErrorTextPassword("Username or password incorrect")
-                }
+                } 
             }
             catch {
-                setIsPasswordError(true)
-                setIsEmailError(false)
-                setErrorTextPassword("Username or password incorrect")
+                history.push('/maintenance')
             }
 
         }

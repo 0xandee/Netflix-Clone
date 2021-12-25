@@ -36,18 +36,16 @@ const FinalRoute = (props) => {
     const route = props.route
     console.log("🚀 ~ file: Router.js ~ line 37 ~ FinalRoute ~ route", route)
     // ** Assign vars based on route meta
-    console.log("🚀 ~ file: Router.js ~ line 40 ~ FinalRoute ~ read_cookie('access_token')", read_cookie('access_token').length)
+    console.log("🚀 ~ file: Router.js ~ line 40 ~ FinalRoute ~ read_cookie('access_token')", read_cookie('access_token'))
 
     if (route.meta === undefined && read_cookie('access_token').length == 0  ) {
-        console.log("🚀 ~ file: Router.js ~ line 42 ~ FinalRoute ~ route.meta", route.meta)
         return <Redirect to='/signin' />
 
-    } else if (route.meta && route.meta.authRoute &&  read_cookie('access_token').length) {
+    } else if (route.meta && route.meta.authRoute &&  read_cookie('access_token').length && !read_cookie('new_user')) {
         return <Redirect to='/' />
     }
-    return <route.component {...props} >
-        Loading routes
-    </route.component>
+    return <route.component {...props} />
+        
 }
 
 export default function WebRouter() {

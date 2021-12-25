@@ -42,42 +42,59 @@ const Homepage = (props) => {
     var movieDataGenres = [];
 
     useEffect(async () => {
-        const response = await getMovieTypeAPI(read_cookie('access_token'))
-        if (response.status === 200 && dataTypes.length == 0) {
-            const data = await response.json()
-            dispatch(setMovieTypes(data))
+        try {
+            const response = await getMovieTypeAPI(read_cookie('access_token'))
+            console.log("🚀 ~ file: index.js ~ line 47 ~ useEffect ~ response", response)
+            if (response.status === 200 && dataTypes.length == 0) {
+                const data = await response.json()
+                dispatch(setMovieTypes(data))
+            }
+            else if (response.status == 403) {
+                setOpen(true)
+            }
+            else if (response.status === 500) {
+                history.push('/maintenance')
+            }
         }
-        else if (response.status == 403) {
-            setOpen(true)
+        catch {
+            history.push('/maintenance')
         }
     }, [])
 
 
 
     useEffect(async () => {
-        const response = await getRecommUserMoviesState1(read_cookie('id_user'))
-        console.log("🚀 ~ file: index.js ~ line 39 ~ useEffect ~ response", response)
+        try {
+            const response = await getRecommUserMoviesState1(read_cookie('id_user'))
+            console.log("🚀 ~ file: index.js ~ line 39 ~ useEffect ~ response", response)
 
-        if (response.status === 200) {
-            const data = await response.json()
-            const res = await getMoviesByListID(data.map((key) => key.id),read_cookie('access_token'))
-            const data2 = await res.json()
-            var genreMovie = {
-                id: 'recommend',
-                sliderTitle: 'Recommend for you',
-                sliderMovieList: data2
+            if (response.status === 200) {
+                const data = await response.json()
+                const res = await getMoviesByListID(data.map((key) => key.id), read_cookie('access_token'))
+                const data2 = await res.json()
+                var genreMovie = {
+                    id: 'recommend',
+                    sliderTitle: 'Recommend for you',
+                    sliderMovieList: data2
+                }
+                setGenreMovies(genreMovies => [genreMovie, ...genreMovies]);
+                setIsFetching(false)
+
             }
-            setGenreMovies(genreMovies => [genreMovie,...genreMovies ]);
-            setIsFetching(false)
+            else if (response.status == 403) {
+                setOpen(true)
+            }
+            // else if (response.status === 500) {
+            //     history.push('/maintenance')
+            // }
+            else {
+                setIsFetching(false)
+            }
            
         }
-        else if (response.status == 403) {
-            setOpen(true)
-        } 
-        else {
-            setIsFetching(false)
+        catch {
+            // history.push('/maintenance')
         }
-
 
     }, [])
 
@@ -96,14 +113,17 @@ const Homepage = (props) => {
                     setGenreMovies(genreMovies => [...genreMovies, genreMovie]);
                     movieDataGenres.push(genreMovie);
                 }
+                else if (res.status === 500) {
+                    history.push('/maintenance')
+                }
                 else {
                     if (res.status == 403) {
                         setOpen(true)
                     }
                 }
             }
-            catch (error) {
-
+            catch {
+                history.push('/maintenance')
             }
 
         });

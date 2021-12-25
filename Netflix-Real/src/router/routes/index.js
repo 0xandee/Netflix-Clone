@@ -19,8 +19,7 @@ const Routes = [
     component: lazy(() => import('../../views/ForgotPassword')),
     meta: {
       authRoute: true
-    }
-    
+    } 
   },
   {
     path: '/signup/registration',
@@ -93,7 +92,7 @@ const Routes = [
   {
     path: '/profile',
     component: lazy(() => import('../../views/AccountProfile')),
-    exact: true,
+    
   },
   {
     path: '/contactus',
@@ -130,6 +129,14 @@ const Routes = [
   {
     path: '/corpinfo',
     component: lazy(() => import('../../views/FooterPage')),
+    exact: true,
+    meta: {
+      authRoute: false
+    }
+  },
+  {
+    path: '/maintenance',
+    component: lazy(() => import('../../views/MaintenancePage')),
     exact: true,
     meta: {
       authRoute: false

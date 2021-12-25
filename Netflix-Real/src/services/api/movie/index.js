@@ -119,13 +119,11 @@ export const getMoviesByGenres = async (arrIdGenre, token , number) => {
         'Authorization': "Bearer " + token,
       },
       body: JSON.stringify({
-        arr_id_movie: arrIdGenre,
+        arr_id_type: arrIdGenre,
         number
-      
     })
     })
       .then(response => {
-
         resolve(response)
       })
       .catch(error => {

@@ -1,16 +1,24 @@
 import React from 'react';
-import DropdownSelector from '../DropdownSelector';
+import { NavLink,useHistory } from 'react-router-dom';
+
 import './Episodes.scss';
 
 
 const Episodes = (props) => {
+    const history = useHistory()
+
+    const playClicked = () => {
+        history.push('/watch')
+    }
+    
+
     return (
         <div className="px-4">
             <div className="episodesSelector__header">
                 <h3 className="episodesSelector__label">Episodes</h3>
 
             </div>
-            <div className="episodesSelector__container">
+            <div className="episodesSelector__container" onClick={playClicked}>
                 <div className="titleCardList__container episode__item">
                     <div className="titleCard_title_index">1</div>
                     <div className="titleCard_imageWrapper">

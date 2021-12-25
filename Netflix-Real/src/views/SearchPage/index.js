@@ -62,16 +62,19 @@ const SearchPage = (props) => {
     useEffect(async () => {
 
         if (query.get('value') != null) {
-            const res = await searchMovieByNameApi(query.get('value'),read_cookie('access_token'))
-            if (res.status == 200) {
-                let data = await res.json()
-                setDataApiMovies(data)
-                setGenreMovies(data.slice(0, 30))
-            }
-            else {
-                if (res.status == 400) {
-
+            try {
+                const res = await searchMovieByNameApi(query.get('value'), read_cookie('access_token'))
+                if (res.status == 200) {
+                    let data = await res.json()
+                    setDataApiMovies(data)
+                    setGenreMovies(data.slice(0, 30))
                 }
+                else if (res.status === 500) {
+                    history.push('/maintenance')
+                }
+            }
+            catch {
+                history.push('/maintenance')
             }
         }
 

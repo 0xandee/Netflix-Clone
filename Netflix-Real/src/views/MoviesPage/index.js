@@ -71,14 +71,25 @@ const MoviesPage = (props) => {
         });
     }
     useEffect(async () => {
-        const response = await getMovieTypeAPI(read_cookie('access_token'))
-        if (response.status === 200 && dataTypes.length == 0) {
-            const data = await response.json()
-            dispatch(setMovieTypes(data))
+        try {
+            const response = await getMovieTypeAPI(read_cookie('access_token'))
+            if (response.status === 200 && dataTypes.length == 0) {
+                const data = await response.json()
+                dispatch(setMovieTypes(data))
+            }
+            else if (response.status === 500) {
+                history.push('/maintenance')
+            }
+            else {
+                if (response.status == 403) {
+                    setOpen(true)
+                }
+            }
         }
-        else if (response.status == 403) {
-            setOpen(true)
+        catch {
+            history.push('/maintenance')
         }
+
 
     }, [dispatch])
 
@@ -101,15 +112,24 @@ const MoviesPage = (props) => {
 
     useEffect(async () => {
         if (selectedGenre != null) {
-            const res = await getMoviesByGenreAPI(selectedGenre.value, read_cookie('access_token'))
-            if (res.status == 200) {
-                let data = await res.json()
-                setDataApiGenreMovies(data)
-                setGenreMovies(data.slice(0, 31))
-            }
-            else {
-                if (res.status == 400) {
+            try {
+                const res = await getMoviesByGenreAPI(selectedGenre.value, read_cookie('access_token'))
+                if (res.status == 200) {
+                    let data = await res.json()
+                    setDataApiGenreMovies(data)
+                    setGenreMovies(data.slice(0, 31))
                 }
+                else if (res.status === 500) {
+                    history.push('/maintenance')
+                }
+                else {
+                    if (res.status == 403) {
+                        setOpen(true)
+                    }
+                }
+            }
+            catch {
+                history.push('/maintenance')
             }
         }
     }, [selectedGenre])
@@ -169,7 +189,7 @@ const MoviesPage = (props) => {
                                 <div className=' item-grid multi-landing-stack-space-holder w-100 h-100'>
                                     {/* <div className="multi-landing-stack-1"></div>
                                     <div className="multi-landing-stack-2"></div> */}
-                                    <LazyLoadImage effect="blur"  style={{ borderRadius: '4px', }} className="title-card w-100 h-100" src={item.uri_avatar} alt={item.m_name} />
+                                    <LazyLoadImage effect="blur" style={{ borderRadius: '4px', }} className="title-card w-100 h-100" src={item.uri_avatar} alt={item.m_name} />
                                 </div>
                                 <div className='name-label'>
                                     {item.name}
@@ -189,8 +209,8 @@ const MoviesPage = (props) => {
                     }
                 </div>
                 <CustomModal isOpen={open} onClick={toggleModal} headerText={"Session Timed out"} buttonText='Back to log in page' bodyText=
-                {"Look like your log in session have been timed out. So please log in again.\nWe are so sorry for this inconvenience"
-                } />
+                    {"Look like your log in session have been timed out. So please log in again.\nWe are so sorry for this inconvenience"
+                    } />
                 <Footer />
 
             </div>

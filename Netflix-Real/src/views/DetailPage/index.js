@@ -26,6 +26,8 @@ const DetailPage = (props) => {
         history.push('/signin')
     };
 
+
+
     useEffect(async () => {
         const response = await getMovieAPI(idMovie.toString(), read_cookie('access_token'))
         if (response.status === 200) {
@@ -35,21 +37,28 @@ const DetailPage = (props) => {
     }, [setDataMovie])
 
     useEffect(async () => {
-        const response = await getRecommUserMoviesState2(read_cookie('id_user'))
-        console.log("🚀 ~ file: index.js ~ line 39 ~ useEffect ~ response", response)
+        try {
+            const response = await getRecommUserMoviesState2(read_cookie('id_user'))
+            console.log("🚀 ~ file: index.js ~ line 39 ~ useEffect ~ response", response)
 
-        if (response.status === 200) {
-            const data = await response.json()
-            const res = await getMoviesByListID(data.map((key) => key.id), read_cookie('access_token'))
-            const data2 = await res.json()
-            console.log("🚀 ~ file: index.js ~ line 45 ~ useEffect ~ data2", data2)
-            setRecommendedMovies(data2.slice(0, 5));
-            setIsFetching(false)
+            if (response.status === 200) {
+                const data = await response.json()
+                const res = await getMoviesByListID(data.map((key) => key.id), read_cookie('access_token'))
+                const data2 = await res.json()
+                console.log("🚀 ~ file: index.js ~ line 45 ~ useEffect ~ data2", data2)
+                setRecommendedMovies(data2.slice(0, 5));
+                setIsFetching(false)
+            }
+            else if (response.status == 403) {
+                setOpen(true)
+            }
+            else if (response.status == 500) {
+                history.push('/maintenance')
+            }
         }
-        else if (response.status == 403) {
-            setOpen(true)
+        catch {
+            history.push('/maintenance')
         }
-
 
     }, [])
 
@@ -67,7 +76,6 @@ const DetailPage = (props) => {
                 :
                 <div style={{ padding: '0 7vw', minWidth: '800px' }}>
                     <div className="position-relative  background max-width">
-
                         <div className="position-relative float-start w-75 pt-4 ">
                             <div className="mask-image position-relative d-flex flex-row  mb-5">
                                 <img style={{ maxHeight: '510px', marginRight: '2vh' }}

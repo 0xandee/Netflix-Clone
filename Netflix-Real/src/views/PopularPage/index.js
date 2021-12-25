@@ -50,14 +50,24 @@ const PopularPage = (props) => {
     }
 
     useEffect(async () => {
-        const response = await getMovieTypeAPI(read_cookie('access_token'))
-        if (response.status === 200 && dataTypes.length == 0) {
-            const data = await response.json()
-            dispatch(setMovieTypes(data))
+        try {
+            const response = await getMovieTypeAPI(read_cookie('access_token'))
+            if (response.status === 200 && dataTypes.length == 0) {
+                const data = await response.json()
+                dispatch(setMovieTypes(data))
+            }
+            else if (response.status == 403) {
+                setOpen(true)
+            }
+            else if (response.status == 500) {
+                history.push('/maintenance')
+            }
         }
-        else if (response.status == 403) {
-            setOpen(true)
+        catch (e) {
+            history.push('/maintenance')
+
         }
+
 
     }, [dispatch])
 
@@ -75,25 +85,27 @@ const PopularPage = (props) => {
     }, [isFetching]);
 
     useEffect(async () => {
-        const response = await getRecommUserMoviesState1(read_cookie('id_user'))
-        console.log("🚀 ~ file: index.js ~ line 39 ~ useEffect ~ response", response)
+        try {
+            const response = await getRecommUserMoviesState1(read_cookie('id_user'))
 
-        if (response.status === 200) {
-            const data = await response.json()
-            console.log("🚀 ~ file: index.js ~ line 61 ~ useEffect ~ data", data)
-            const res = await getMoviesByListID(data.map((key) => key.id))
-            console.log("🚀 ~ file: index.js ~ line 63 ~ useEffect ~ data.map((key) => key.id)", data.map((key) => key.id))
-            console.log("🚀 ~ file: index.js ~ line 63 ~ useEffect ~ res", res)
-            const data2 = await res.json()
+            if (response.status === 200) {
+                const data = await response.json()
+                const res = await getMoviesByListID(data.map((key) => key.id))
+                const data2 = await res.json()
+                setDataApiGenreMovies(data2)
+                setGenreMovies(data2.slice(0, 31))
+                setIsStart(false)
 
-            console.log("🚀 ~ file: index.js ~ line 61 ~ useEffect ~ data", data2)
-            setDataApiGenreMovies(data2)
-            setGenreMovies(data2.slice(0, 31))
-            setIsStart(false)
-
+            }
+            else if (response.status == 403) {
+                setOpen(true)
+            }
+            else if (response.status === 500) {
+                history.push('/maintenance')
+            }
         }
-        else if (response.status == 403) {
-            setOpen(true)
+        catch {
+            history.push('/maintenance')
         }
     }, [])
 

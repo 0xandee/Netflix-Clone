@@ -35,13 +35,20 @@ const ChooseTypeStart = () => {
     }
 
     useEffect(async () => {
-        const response = await getMovieTypeAPI(read_cookie('access_token'))
-        console.log("🚀 ~ file: index.js ~ line 39 ~ useEffect ~ response", response)
-        if (response.status === 200) {
-            let data = await response.json()
-            dispatch(setMovieTypes(data))
+        try {
+            const response = await getMovieTypeAPI(read_cookie('access_token'))
+            console.log("🚀 ~ file: index.js ~ line 39 ~ useEffect ~ response", response)
+            if (response.status === 200) {
+                let data = await response.json()
+                dispatch(setMovieTypes(data))
+            }
+            else if (response.status == 500) {
+                history.push('/maintenance')
+            }
         }
-
+        catch {
+            history.push('/maintenance')
+        }
     }, [dispatch])
 
     const nextClicked = async () => {

@@ -84,7 +84,7 @@ export const getProfile = async (token) => {
 
 export const requestChangePass = async (oldPassword, newPassword, token) => {
     return new Promise((resolve, reject) => {
-        fetch(authApi.urlProfile, {
+        fetch(authApi.urlChangePassword, {
             crossDomain: true,
             method: "PUT",
             mode: 'cors',
@@ -107,7 +107,6 @@ export const requestChangePass = async (oldPassword, newPassword, token) => {
 }
 
 export const requestUpdateProfile = async (data, token) => {
-console.log("🚀 ~ file: index.js ~ line 110 ~ requestUpdateProfile ~ data", data)
     return new Promise((resolve, reject) => {
         fetch(authApi.urlProfile, {
             crossDomain: true,

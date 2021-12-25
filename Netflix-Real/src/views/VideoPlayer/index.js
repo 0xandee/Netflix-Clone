@@ -289,7 +289,7 @@ const VideoPlayer = ({ socket, roomnum, videoURL, handleOpenMovieRecommend }) =>
         }
     }, [socket])
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         if (socket != undefined) {
             socket.on("getData", () => {
                 console.log("New member get into the room")
@@ -302,6 +302,14 @@ const VideoPlayer = ({ socket, roomnum, videoURL, handleOpenMovieRecommend }) =>
                 }
                 console.log("🚀 ~ file: index.js ~ line 253 ~ socket.on ~ data", data)
                 socket.emit('get host data', data);
+            })
+
+            socket.on('isHost', function (data) {
+                console.log("🚀 ~ file: index.js ~ line 271 ~ data", data)
+                setIsHost(data.isHost)
+                if (!data.isHost) {
+                    controlRef.current.style.opacity = '0'
+                }
             })
         }
     }, [socket])
@@ -345,12 +353,7 @@ const VideoPlayer = ({ socket, roomnum, videoURL, handleOpenMovieRecommend }) =>
 
     return (
         <div id={`videoPlayer`} onMouseMove={handleMouseMove} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} style={{ position: 'absolute', width: '100%', height: '100%' }}>
-            {/* {url == undefined || url.length == 0 &&
-                <div className="position-absolute d-flex w-100 h-100 justify-content-center align-items-center"
-                    style={{ zIndex: '10', backgroundColor: 'black', fontSize: '20px' }}>
-                    Host is choosing film. Please wait
-                </div>
-            } */}
+            
             <div ref={playerContainerRef} className={`video-player`} >
                 <div className={'video-container'} onClick={handlePlayPause}>
                     <ReactPlayer
@@ -392,8 +395,8 @@ const VideoPlayer = ({ socket, roomnum, videoURL, handleOpenMovieRecommend }) =>
                     transition: 'all 0.5s'
                 }}>
 
-                    <div className={`video-player__top`} style={{ zIndex: '4', justifyContent: "space-between" }}>
-                        <div className={`video-player__top__icon-container`} onClick={() => history.push('/home')}>
+                    <div className={`video-player__top`} style={{  justifyContent: "space-between" }}>
+                        <div className={`video-player__top__icon-container`} style={{zIndex: '5',}} onClick={() => history.push('/home')}>
                             <IconBackArrow className={'video-player__top__icon-back'} />
                             <span>Back to Browse</span>
                         </div>

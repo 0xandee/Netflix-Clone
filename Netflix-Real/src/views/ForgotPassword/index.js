@@ -14,19 +14,28 @@ const ForgotPassword = () => {
     const [isEmailError, setIsEmailError] = useState(false)
     const [errorTextEmail, setErrorTextEmail] = useState('Please enter a valid email')
     const [isCheckOTP, setIsCheckOTP] = useState(false);
-    const [mailOTPCode, setMailOTPCode] = useState('');
-    const [isOTPError, setIsOTPError] = useState(false)
-
 
     const forgotPasswordClicked = async () => {
         if (email == "" || !email.match('@gmail.com')) {
             setIsEmailError(true)
         }
         else {
-            setIsEmailError(false)
-            const res = await requestForgotPassword(email)
-            if (res.status == 200)
-                setIsCheckOTP(true)
+            try {
+                setIsEmailError(false)
+                const res = await requestForgotPassword(email)
+                if (res.status == 200)
+                    setIsCheckOTP(true)
+                else if (res.status == 302) {
+                    setIsEmailError(true)
+                    setErrorTextEmail('Account not exist in our web')
+                }
+                else if (res.status == 500) {
+                    history.push('/maintenance')
+                }
+            }
+            catch {
+                history.push('/maintenance')
+            }
         }
     }
 

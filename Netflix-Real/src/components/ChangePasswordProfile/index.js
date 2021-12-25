@@ -79,6 +79,7 @@ const ChangePasswordProfile = () => {
         setIsOldPassError(false)
         setIsNewPassError(false)
         const res = await requestChangePass(oldPass, newPass, read_cookie('access_token'))
+        console.log("🚀 ~ file: index.js ~ line 82 ~ saveClicked ~ res", res)
         if (res.status === 200) {
           notifySuccess()
         }
