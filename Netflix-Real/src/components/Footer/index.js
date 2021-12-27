@@ -70,7 +70,7 @@ const Footer = (props) => {
                     </div>
                     <div className={`footer__content--links`}>
                         {linkFooters.map(item => (
-                            <div className={`footer__content--links_item`}>
+                            <div key={item.id} className={`footer__content--links_item`}>
                                 <NavLink id={item.id} to={item.navLink}>
                                     {item.label}
                                 </NavLink>
@@ -86,7 +86,7 @@ const Footer = (props) => {
                             <span className={`caret ${isOpen && 'open'}`} />
                             <div className={`footer__content--language-selection__picker ${isOpen && 'open'} `}>
                                 {languages.map(item => (
-                                    <div className={`footer__content--language-selection__picker__item`}
+                                    <div key={item.id} className={`footer__content--language-selection__picker__item`}
                                     onClick={handleItemClick(item.id)}
                                     >
                                         {item.label}
