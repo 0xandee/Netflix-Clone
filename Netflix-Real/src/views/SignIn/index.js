@@ -20,6 +20,8 @@ const SignIn = (props) => {
     const [isPasswordError, setIsPasswordError] = useState(false)
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
+    const [isLogined, setLoginBool] = useState(false)
+    const [isReceivedCookie, setCookieBool] = useState(false)
     const [errorTextEmail, setErrorTextEmail] = useState('Please enter a valid email')
     const [errorTextPassword, setErrorTextPassword] = useState('Password must be between 6 to 20 characters which contain at least one numeric digit, one uppercase and one lowercase letter')
 
@@ -48,6 +50,7 @@ const SignIn = (props) => {
                
                 if (response.status === 200) {
                     const data = await response.json()
+                    setLoginBool(true);
                     // localStorage.setItem("access_token", data.accessToken);
 
                     bake_cookie('access_token', data.accessToken);
@@ -55,6 +58,10 @@ const SignIn = (props) => {
                     bake_cookie('id_user', data.id);
                     bake_cookie('new_user', data.first);
                     // delete_cookie(cookie_key);
+                    if (read_cookie('access_token') !== undefined || read_cookie('username') !== undefined || read_cookie('id_user') !== undefined || read_cookie('new_user') !== undefined){
+                        setCookieBool(true);
+                    }
+
                     if (data.first) {
                         history.push('/choosetype')
                     }
@@ -134,12 +141,12 @@ const SignIn = (props) => {
                                 {/* </NavLink> */}
                             </div>
 
-                            <span>
-                                <NavLink to='/forgot-password' >
+                            <span id='sign-in-forgot-password-button' >
+                                <NavLink to='/forgot-password'>
                                     Forgot password ?
                                 </NavLink>
                             </span>
-                            <div style={{ display: 'flex', flexDirection: 'row', color: '#c8c8c8', size: '14', marginTop: '40px', justifyContent: 'center' }}>
+                            <div id='sign-in-sign-up-button' style={{ display: 'flex', flexDirection: 'row', color: '#c8c8c8', size: '14', marginTop: '40px', justifyContent: 'center' }}>
                                 <span> Don't have account yet?
                                 </span>
                                 <NavLink className={`sign-up`} to='/signup/registration' >
@@ -165,4 +172,5 @@ const mapDispatchToProps = dispatch => ({
 })
 
 export default connect(null, mapDispatchToProps)(SignIn);
+export { SignIn }; // This export is useful in unit-tests 😉
 // export default SignIn;

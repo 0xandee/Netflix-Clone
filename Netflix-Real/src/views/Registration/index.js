@@ -7,10 +7,10 @@ import { Footer, SignUpNavigationBar } from "../../components";
 import { Button } from "reactstrap";
 
 const Registration = () => {
+    const [isNextClicked, setNextClicked] = useState(false)
     const backgroudUrl = 'https://assets.nflxext.com/ffe/siteui/acquisition/simplicity/Devices.png'
-
     const nextClicked = () => {
-
+        setNextClicked(true)
     }
 
     return (
@@ -18,7 +18,7 @@ const Registration = () => {
             <div className={`registration`}>
                 <SignUpNavigationBar />
                 <div className='registration__background-image' />
-                <div className={`registration__body`}>
+                <div id='registration-body' className={`registration__body`}>
                     <div className={`registration__body__content`}>
                         <div className={`registration__body__content__main`}>
                             <img className={`registration__body__content__main__image-devices`} src={backgroudUrl} />
@@ -30,16 +30,11 @@ const Registration = () => {
                                 </div>
                             </div>
                             <NavLink to='/signup/registrationform'>
-                                <Button className={`registration__body__content__main__button-next`} >
-                                    <span>Next
+                                <Button onClick={nextClicked} className={`registration__body__content__main__button-next`} >
+                                    <span id='registration-next-button'>Next
                                     </span>
                                 </Button>
                             </NavLink>
-
-
-
-
-
                         </div>
                         <div>
 

@@ -52,6 +52,7 @@ const RegistrationForm = () => {
     const [errorDob, setErrorDob] = useState(false)
     const [errorGenders, setErrorGenders] = useState(false)
     const [errorCountry, setErrorCountry] = useState(false)
+    const [isNextClicked, setNextClicked] = useState(false)
 
     const notifyError = (data) => toast.error(<ErrorToast data={data} />, { hideProgressBar: true })
 
@@ -64,6 +65,7 @@ const RegistrationForm = () => {
     };
 
     const nextClicked = async () => {
+        setNextClicked(true)
         if (dob == 'Invalid Date') {
             setErrorDob(true)
         }
@@ -157,6 +159,7 @@ const RegistrationForm = () => {
                                         We hate paperwork, too.
                                     </div>
                                     <CustomInput
+                                        id='registration-email'
                                         label={`Enter your email`}
                                         style={{ background: '#fff', border: '1px solid gray', height: '60px' }}
                                         textStyle={{ color: 'black' }}
@@ -165,6 +168,7 @@ const RegistrationForm = () => {
                                         onChange={setEmail} />
                                     <div className={`error-label ${isEmailError && 'visible'}`}> {isEmailError && errorTextEmail}</div>
                                     <CustomInput
+                                        id='registration-password'
                                         label={`Password`}
                                         style={{ background: '#fff', border: '1px solid gray', height: '60px' }}
                                         textStyle={{ color: 'black' }}
@@ -189,6 +193,7 @@ const RegistrationForm = () => {
                                         </Col>
                                         <Col sm='6'>
                                             <Select
+                                                id='gender-selector'
                                                 className="react-select"
                                                 classNamePrefix="select"
                                                 placeholder='Gender'
@@ -209,6 +214,7 @@ const RegistrationForm = () => {
                                     </Row>
                                     <Row >
                                         <Select
+                                            id='country-selector'
                                             className="react-select"
                                             classNamePrefix="select"
                                             placeholder='Country'
@@ -229,7 +235,7 @@ const RegistrationForm = () => {
 
                                 </div>
                                 {/* <NavLink to='/signup/chooseplan'> */}
-                                <div className={`registration__body__content__main__button-next`} onClick={nextClicked}>
+                                <div id='registration-next-button' className={`registration__body__content__main__button-next`} onClick={nextClicked}>
                                     <span>Next
                                     </span>
                                 </div>

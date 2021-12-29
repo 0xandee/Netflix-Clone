@@ -61,6 +61,7 @@ const ForgotPassword = () => {
                                 <div>
                                     <h1 className={`forgot-password__body__content__main__title`}>Forgot Password</h1>
                                     <CustomInput
+                                        id="email-input"
                                         label={`Enter your email`}
                                         style={{ background: '#fff' }}
                                         textStyle={{ color: 'black' }}
@@ -71,7 +72,7 @@ const ForgotPassword = () => {
                                     <div style={{ color: 'black' }}>
                                         We will text you a verification code to reset your password. Message and data rates may apply.
                                     </div>
-                                    <div className={`forgot-password__body__content__main__button-forgot-password`} onClick={forgotPasswordClicked}>
+                                    <div id="email-button" className={`forgot-password__body__content__main__button-forgot-password`} onClick={forgotPasswordClicked}>
                                         <span> Email Me
                                         </span>
                                     </div>
