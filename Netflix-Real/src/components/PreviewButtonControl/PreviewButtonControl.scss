@@ -1,6 +1,4 @@
-.b-15{
-    bottom: 1.5rem;
-}
+
 
 .PreviewButton__container{
     display: flex;
@@ -10,7 +8,7 @@
     align-items: center;
     margin-bottom: 1em;
     // margin-left: 1em;
-    min-height: 2em;
+    min-height: 1vw;
 }
 
 .PreviewButton__float-left-container{
@@ -33,9 +31,7 @@
 
 .PreviewButton__float-top-right-container{
     float: right;
-    position: absolute;
-    right: 0px;
-    top: 0px;
+    
     z-index: 1000;
     padding: 5px;
 }
@@ -53,7 +49,8 @@
     border: 0px;
     border-radius: 4px;
     cursor: pointer;
-    padding: 0.8rem;
+    padding: 1% 3%;
+    
     position: relative;
 }
 
@@ -72,7 +69,7 @@
 .PlayButton__secondary-button{
     border-radius: 80px;
     cursor: pointer;
-    padding: 0.8rem;
+    padding: 20%;
     position: relative;
 }
 
@@ -95,6 +92,7 @@
     font-size: 1.2rem;
     font-weight: bold;
     vertical-align: middle;
+    text-decoration: none;
 }
 
 .PlayButton__primary-text-transform{

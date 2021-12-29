@@ -1,40 +1,32 @@
 import React, { useState } from "react";
 import './customdropdown.scss'
 import * as Icon from 'react-feather';
-import { Link,NavLink,Route  } from "react-router-dom";
-import {userLogout} from '../../services/redux/actions';
+import { Link, NavLink, Route, useHistory } from "react-router-dom";
+import { userLogout } from '../../services/redux/actions';
 import { SignIn } from "../../views/index";
-const data = [
-  {
-    id: 0, label: "Long long long long long long long name", navLink: '/profile',
-    avatar: 'https://occ-0-325-3996.1.nflxso.net/dnm/api/v6/K6hjPJd6cR6FpVELC5Pd6ovHRSk/AAAABYnnca7HCf0z4YHtIK5R8MIGCeMyodAsxBYSBmMkYHqjSw46VWWyNQirfwxT-CkbxPkp-G84Wu-iOMwGG-r9QAs.png?r=f71'
-  },
-  {
-    id: 1, label: "Long long long long long name", navLink: '/home',
-    avatar: 'https://occ-0-325-3996.1.nflxso.net/dnm/api/v6/K6hjPJd6cR6FpVELC5Pd6ovHRSk/AAAABYnnca7HCf0z4YHtIK5R8MIGCeMyodAsxBYSBmMkYHqjSw46VWWyNQirfwxT-CkbxPkp-G84Wu-iOMwGG-r9QAs.png?r=f71'
-  }
-];
+import { requestLogout } from "../../services/api/auth";
+import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
+
 
 const CustomDropdown = () => {
   const [isOpen, setOpen] = useState(false);
   const userProfile = '/profile'
   const avatar = 'https://occ-0-325-3996.1.nflxso.net/dnm/api/v6/K6hjPJd6cR6FpVELC5Pd6ovHRSk/AAAABYnnca7HCf0z4YHtIK5R8MIGCeMyodAsxBYSBmMkYHqjSw46VWWyNQirfwxT-CkbxPkp-G84Wu-iOMwGG-r9QAs.png?r=f71'
-  const [items, setItem] = useState(data);
-  const [selectedItem, setSelectedItem] = useState(null);
-
-  const toggleDropdown = () => setOpen(!isOpen);
+  const history = useHistory()
 
 
-  const onMouseLeave = () => {
-    setOpen(false);
-
-  }
-
-  const signOutClick = event => {
+  const signOutClick = async (event) => {
     event.preventDefault();
-    userLogout();
-    return (<Route path="/signin"><SignIn /></Route>)
-}
+    const response = await requestLogout(read_cookie('access_token'))
+    console.log("🚀 ~ file: index.js ~ line 64 ~ nextClicked ~ response", response)
+    if (response.status >= 200 && response.status <= 299) {
+      // localStorage.clear();
+      delete_cookie('username')
+      delete_cookie('id_user')
+      delete_cookie('access_token')
+      history.push('/signin')
+    }
+  }
 
   return (
     <div id='customdropdown'
@@ -48,33 +40,6 @@ const CustomDropdown = () => {
             <React.Fragment>
               <div className={`dropdown-content ${isOpen && 'open'}`}>
                 <div className='callout-arrow' />
-                {items.length !== 0 && items.map(item => (
-                  <div className="dropdown-account-item" id={item.id}>
-                    <Link to={item.navLink} className='profile-link'>
-                      <img className="profile-icon" src={item.avatar} alt="" />
-                      <span className='profile-name'>
-                        {item.label}
-                      </span>
-                      <Icon.Lock size='16px' className='icon' />
-                    </Link>
-                  </div>
-                ))}
-                <div className="dropdown-account-item">
-                  <Link to={userProfile} className='profile-link'>
-                    <span className='profile-name'>
-                      Manage Profiles
-                    </span>
-                  </Link>
-                </div>
-
-                <div className="dropdown-account-item">
-                  <Link to={userProfile} className='profile-link'>
-                    <span className='profile-name'>
-                      Exit Profile
-                    </span>
-                  </Link>
-                </div>
-                <div className='reponsive-link' />
                 <div className="dropdown-account-item">
                   <Link to={userProfile} className='profile-link'>
                     <span className='profile-name account-link'>
@@ -83,7 +48,7 @@ const CustomDropdown = () => {
                   </Link>
                 </div>
                 <div className="dropdown-account-item">
-                  <Link to='/watchgroup' className='profile-link'>
+                  <Link to='/contactus' className='profile-link'>
                     <span className='profile-name account-link'>
                       Help Center
                     </span>

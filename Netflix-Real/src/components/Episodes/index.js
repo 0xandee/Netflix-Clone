@@ -1,18 +1,37 @@
 import React from 'react';
-import EpisodeItem from '../EpisodeItem';
-import DropdownSelector from '../DropdownSelector';
+import { NavLink,useHistory } from 'react-router-dom';
+
 import './Episodes.scss';
 
 
-const Episodes = () => {
+const Episodes = (props) => {
+    const history = useHistory()
+
+    const playClicked = () => {
+        history.push('/watch')
+    }
+    
+
     return (
         <div className="px-4">
             <div className="episodesSelector__header">
                 <h3 className="episodesSelector__label">Episodes</h3>
-                <DropdownSelector dropdownTitle={'Season 1'}/>
+
             </div>
-            <div className="episodesSelector__container">
-                <EpisodeItem/><EpisodeItem/><EpisodeItem/><EpisodeItem/><EpisodeItem/><EpisodeItem/>
+            <div className="episodesSelector__container" onClick={playClicked}>
+                <div className="titleCardList__container episode__item">
+                    <div className="titleCard_title_index">1</div>
+                    <div className="titleCard_imageWrapper">
+                        <img src={props.item.uri_avatar} alt="Episode 1" />
+                    </div>
+                    <div className="titleCardList__metadataWrapper">
+                        <div className="titleCardList__title">
+                            <span className="titleCard__title_text">Episode 1</span>
+                            <span><span className="duration ellipsized">82m</span></span>
+                        </div>
+                        <p className="titleCard-synopsis previewModal__small-text">{props.item.description}</p>
+                    </div>
+                </div>
             </div>
         </div>
     );

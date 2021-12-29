@@ -1,266 +1,170 @@
 import React, { useRef, useState, useCallback, useEffect, createRef } from "react";
-import './Slider.scss';
-import { BigBanner, Slider, Footer } from "../../components";
+import './style.scss';
+import { Slider, Footer, NavigationBar, CustomModal } from "../../components";
+import { to_Decrypt, to_Encrypt } from "../../services/aes256";
 import { useSelector, useDispatch } from 'react-redux';
-import { showPopUpInfo } from "../../services/redux/actions";
-import { Link, useHistory, useLocation } from "react-router-dom";
+import { setMovieTypes, showPopUpInfo } from "../../services/redux/actions";
+import { Link, useHistory, useLocation, useParams } from "react-router-dom";
+import { getMoviesByGenreAPI, getMoviesByListID, getMoviesByTypeAPI, getMovieType, getMovieTypeAPI, getRecommUserMoviesState1 } from "../../services/api/movie";
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
 
-const movieData = [{
-    id: 1,
-    sliderTitle: 'Popular Now',
-    sliderMovieList: [{
-        id: 1,
-        movieName: 'Stranger Things',
-        artworkLink: 'https://static.fptplay.net/static/img/share/video/19_01_2020/qwokfcgiolef3km9owva93rywac19-01-2020_15g12-59.jpg?w=282&mode=scale',
-        movieLink: ''
-    },{
-        id: 2,
-        movieName: `The Queen's Gambit`,
-        artworkLink: 'https://static.fptplay.net/static/img/share/video/26_06_2021/abd2uxiv1jxh8odcpovzlygri8s26-06-2021_11g33-45.jpg?w=282&mode=scale',
-        movieLink: ''
-    },{
-        id: 3,
-        movieName: 'Girl from Nowhere',
-        artworkLink: 'https://static.fptplay.net/static/img/share/video/19_08_2021/h8u0akgj52sqeekw4d56rwr2xlx19-08-2021_18g02-5719-08-2021_18g07-36.jpg?w=282&mode=scale',
-        movieLink: ''
-    },{
-        id: 4,
-        movieName: 'Sweet Home',
-        artworkLink: 'https://static.fptplay.net/static/img/share/video/19_08_2021/d7vvxps5tg14gyz2czzjoxmggvn19-08-2021_17g50-45.jpg?w=282&mode=scale',
-        movieLink: ''
-    },{
-        id: 5,
-        movieName: 'Sweet Tooth',
-        artworkLink: 'https://static.fptplay.net/static/img/share/video/10_12_2020/attack-on-titan-ss4-fpt-play-dai-chien-nguoi-khong-lo-phan-4-fpt-play-210-12-2020_15g31-47.jpg?w=282&mode=scale',
-        movieLink: ''
-    },{
-        id: 6,
-        movieName: 'Love, Death & Robots',
-        artworkLink: 'https://static.fptplay.net/static/img/share/video/04_09_2020/one-punch-man-season-2-fpt-play04-09-2020_01g05-08.jpg?w=282&mode=scale',
-        movieLink: ''
-    },{
-        id: 7,
-        movieName: 'The Umbrella Academy',
-        artworkLink: 'https://static.fptplay.net/static/img/share/video/14_05_2021/ixvawbxmypk4kzgzk5ggdgfiemx14-05-2021_20g36-12.jpg?w=282&mode=scale',
-        movieLink: ''
-    },{
-        id: 8,
-        movieName: 'Money Heist',
-        artworkLink: 'https://static.fptplay.net/static/img/share/video/23_02_2021/8vk5w80nasqmy544affdqzi3rrz23-02-2021_15g52-22.jpg?w=282&mode=scale',
-        movieLink: ''
-    },{
-        id: 9,
-        movieName: 'Breaking Bad',
-        artworkLink: 'https://static.fptplay.net/static/img/share/video/07_04_2021/gia-tien-tvod07-04-2021_10g52-51.jpg?w=282&mode=scale',
-        movieLink: ''
-    },{
-        id: 10,
-        movieName: 'The Umbrella Academy',
-        artworkLink: 'https://static.fptplay.net/static/img/share/video/24_04_2020/gia-tien-tvod24-04-2020_14g47-34.jpg?w=282&mode=scale',
-        movieLink: ''
-    },{
-        id: 11,
-        movieName: 'Godzilla: King of the Monsters',
-        artworkLink: 'https://static.fptplay.net/static/img/share/video/28_06_2021/pho-ma-duong-than-yeu-fpt-play-doc-quyen-poster1_28-06-2021_01g22-35.jpg?w=282&mode=scale',
-        movieLink: ''
-    },{
-        id: 12,
-        movieName: 'Kingdom: Ashin of the North',
-        artworkLink: 'https://static.fptplay.net/static/img/share/video/26_02_2020/poster-126-02-2020_18g55-10.jpg?w=282&mode=scale',
-        movieLink: ''
-    }]
-},{
-    id: 2,
-    sliderTitle: 'Action & Adventure',
-    sliderMovieList: [{
-        id: 1,
-        movieName: 'Stranger Things',
-        artworkLink: 'https://static.fptplay.net/static/img/share/video/19_01_2020/qwokfcgiolef3km9owva93rywac19-01-2020_15g12-59.jpg?w=282&mode=scale',
-        movieLink: ''
-    },{
-        id: 2,
-        movieName: `The Queen's Gambit`,
-        artworkLink: 'https://static.fptplay.net/static/img/share/video/26_06_2021/abd2uxiv1jxh8odcpovzlygri8s26-06-2021_11g33-45.jpg?w=282&mode=scale',
-        movieLink: ''
-    },{
-        id: 3,
-        movieName: 'Girl from Nowhere',
-        artworkLink: 'https://static.fptplay.net/static/img/share/video/19_08_2021/h8u0akgj52sqeekw4d56rwr2xlx19-08-2021_18g02-5719-08-2021_18g07-36.jpg?w=282&mode=scale',
-        movieLink: ''
-    },{
-        id: 4,
-        movieName: 'Sweet Home',
-        artworkLink: 'https://static.fptplay.net/static/img/share/video/19_08_2021/d7vvxps5tg14gyz2czzjoxmggvn19-08-2021_17g50-45.jpg?w=282&mode=scale',
-        movieLink: ''
-    },{
-        id: 5,
-        movieName: 'Sweet Tooth',
-        artworkLink: 'https://static.fptplay.net/static/img/share/video/10_12_2020/attack-on-titan-ss4-fpt-play-dai-chien-nguoi-khong-lo-phan-4-fpt-play-210-12-2020_15g31-47.jpg?w=282&mode=scale',
-        movieLink: ''
-    },{
-        id: 6,
-        movieName: 'Love, Death & Robots',
-        artworkLink: 'https://static.fptplay.net/static/img/share/video/04_09_2020/one-punch-man-season-2-fpt-play04-09-2020_01g05-08.jpg?w=282&mode=scale',
-        movieLink: ''
-    },{
-        id: 7,
-        movieName: 'The Umbrella Academy',
-        artworkLink: 'https://static.fptplay.net/static/img/share/video/14_05_2021/ixvawbxmypk4kzgzk5ggdgfiemx14-05-2021_20g36-12.jpg?w=282&mode=scale',
-        movieLink: ''
-    },{
-        id: 8,
-        movieName: 'Money Heist',
-        artworkLink: 'https://static.fptplay.net/static/img/share/video/23_02_2021/8vk5w80nasqmy544affdqzi3rrz23-02-2021_15g52-22.jpg?w=282&mode=scale',
-        movieLink: ''
-    },{
-        id: 9,
-        movieName: 'Breaking Bad',
-        artworkLink: 'https://static.fptplay.net/static/img/share/video/07_04_2021/gia-tien-tvod07-04-2021_10g52-51.jpg?w=282&mode=scale',
-        movieLink: ''
-    },{
-        id: 10,
-        movieName: 'The Umbrella Academy',
-        artworkLink: 'https://static.fptplay.net/static/img/share/video/24_04_2020/gia-tien-tvod24-04-2020_14g47-34.jpg?w=282&mode=scale',
-        movieLink: ''
-    },{
-        id: 11,
-        movieName: 'Godzilla: King of the Monsters',
-        artworkLink: 'https://static.fptplay.net/static/img/share/video/28_06_2021/pho-ma-duong-than-yeu-fpt-play-doc-quyen-poster1_28-06-2021_01g22-35.jpg?w=282&mode=scale',
-        movieLink: ''
-    },{
-        id: 12,
-        movieName: 'Kingdom: Ashin of the North',
-        artworkLink: 'https://static.fptplay.net/static/img/share/video/26_02_2020/poster-126-02-2020_18g55-10.jpg?w=282&mode=scale',
-        movieLink: ''
-    }]
-},{
-    id: 2,
-    sliderTitle: 'Action & Adventure',
-    sliderMovieList: [{
-        id: 1,
-        movieName: 'Stranger Things',
-        artworkLink: 'https://static.fptplay.net/static/img/share/video/19_01_2020/qwokfcgiolef3km9owva93rywac19-01-2020_15g12-59.jpg?w=282&mode=scale',
-        movieLink: ''
-    },{
-        id: 2,
-        movieName: `The Queen's Gambit`,
-        artworkLink: 'https://static.fptplay.net/static/img/share/video/26_06_2021/abd2uxiv1jxh8odcpovzlygri8s26-06-2021_11g33-45.jpg?w=282&mode=scale',
-        movieLink: ''
-    },{
-        id: 3,
-        movieName: 'Girl from Nowhere',
-        artworkLink: 'https://static.fptplay.net/static/img/share/video/19_08_2021/h8u0akgj52sqeekw4d56rwr2xlx19-08-2021_18g02-5719-08-2021_18g07-36.jpg?w=282&mode=scale',
-        movieLink: ''
-    },{
-        id: 4,
-        movieName: 'Sweet Home',
-        artworkLink: 'https://static.fptplay.net/static/img/share/video/19_08_2021/d7vvxps5tg14gyz2czzjoxmggvn19-08-2021_17g50-45.jpg?w=282&mode=scale',
-        movieLink: ''
-    },{
-        id: 5,
-        movieName: 'Sweet Tooth',
-        artworkLink: 'https://static.fptplay.net/static/img/share/video/10_12_2020/attack-on-titan-ss4-fpt-play-dai-chien-nguoi-khong-lo-phan-4-fpt-play-210-12-2020_15g31-47.jpg?w=282&mode=scale',
-        movieLink: ''
-    },{
-        id: 6,
-        movieName: 'Love, Death & Robots',
-        artworkLink: 'https://static.fptplay.net/static/img/share/video/04_09_2020/one-punch-man-season-2-fpt-play04-09-2020_01g05-08.jpg?w=282&mode=scale',
-        movieLink: ''
-    },{
-        id: 7,
-        movieName: 'The Umbrella Academy',
-        artworkLink: 'https://static.fptplay.net/static/img/share/video/14_05_2021/ixvawbxmypk4kzgzk5ggdgfiemx14-05-2021_20g36-12.jpg?w=282&mode=scale',
-        movieLink: ''
-    },{
-        id: 8,
-        movieName: 'Money Heist',
-        artworkLink: 'https://static.fptplay.net/static/img/share/video/23_02_2021/8vk5w80nasqmy544affdqzi3rrz23-02-2021_15g52-22.jpg?w=282&mode=scale',
-        movieLink: ''
-    },{
-        id: 9,
-        movieName: 'Breaking Bad',
-        artworkLink: 'https://static.fptplay.net/static/img/share/video/07_04_2021/gia-tien-tvod07-04-2021_10g52-51.jpg?w=282&mode=scale',
-        movieLink: ''
-    },{
-        id: 10,
-        movieName: 'The Umbrella Academy',
-        artworkLink: 'https://static.fptplay.net/static/img/share/video/24_04_2020/gia-tien-tvod24-04-2020_14g47-34.jpg?w=282&mode=scale',
-        movieLink: ''
-    },{
-        id: 11,
-        movieName: 'Godzilla: King of the Monsters',
-        artworkLink: 'https://static.fptplay.net/static/img/share/video/28_06_2021/pho-ma-duong-than-yeu-fpt-play-doc-quyen-poster1_28-06-2021_01g22-35.jpg?w=282&mode=scale',
-        movieLink: ''
-    },{
-        id: 12,
-        movieName: 'Kingdom: Ashin of the North',
-        artworkLink: 'https://static.fptplay.net/static/img/share/video/26_02_2020/poster-126-02-2020_18g55-10.jpg?w=282&mode=scale',
-        movieLink: ''
-    }]
-}]
 
 const PopularPage = (props) => {
-    //const [showed, setShowed] = useState(false)
+    const { idGenre } = useParams()
     const history = useHistory();
-    const showed = useSelector((state) => state.isPopUp)
-    const homePageRef = useRef(null)
-    const [currentScrollY, setCurrentScrollY] = useState(0);
-    const dispatch = useDispatch()
-    const handleMoreInfo = () => {
-        dispatch(showPopUpInfo(!showed))
-        if (!showed) {
-            homePageRef.current.style.top = -currentScrollY + 'px';
-            history.push({
-                pathname: props.match.url,
-                search: `jbv=${'detailId'}`,
-                state: { scrollY: currentScrollY }
-            })
-            window.scroll(0, 0)
-        }
-        else {
-            homePageRef.current.style.top = null;
+    const [isStart, setIsStart] = useState(true);
+    const [dataApiGenreMovies, setDataApiGenreMovies] = useState([]);
+    const [genreMovies, setGenreMovies] = useState([]);
+    const [isFetching, setIsFetching] = useState(false);
+    const [open, setOpen] = useState(false);
+    let dataTypes = useSelector((state) => state?.rootReducer.movieTypes)
+    const dispatch = useDispatch();
 
-        }
+    const toggleModal = () => {
+        delete_cookie('username')
+        delete_cookie('id_user')
+        delete_cookie('access_token')
+        history.push('/signin')
+    };
 
+    const itemClicked = (data) => () => {
+        history.push({
+            pathname: `/detail/${data.id.toString()}`,
+            //search: `jbv=${data.id}`,
+            state: { item: data }
+        })
     }
-    const styles = ({
-        fixed: {
-            position: 'fixed',
-        },
-        sticky: {
-            position: 'static',
-        }
-    })
 
     const handleScroll = useCallback(() => {
-        setCurrentScrollY(window.scrollY)
-
+        if (window.innerHeight + document.documentElement.scrollTop !== document.documentElement.offsetHeight || isFetching) return;
+        setIsFetching(true);
     }, []);
 
-    const handlePopState = useCallback(() => {
-        // window.scroll(0, 76)
-        dispatch(showPopUpInfo(false))
-        // console.log("🚀 ~ file: index.js ~ line 84 ~ handlePopState ~ dispatch", showed)
+    const fetchMoreListItems = () => {
 
-    }, [dispatch]);
+        setTimeout(() => {
+            setGenreMovies(prevState => ([...prevState, ...dataApiGenreMovies.slice(prevState.length, prevState.length + 30)]));
+            setIsFetching(false);
+        }, 2000);
+    }
 
-    useEffect(() => {
+    useEffect(async () => {
+        try {
+            const response = await getMovieTypeAPI(read_cookie('access_token'))
+            if (response.status === 200 && dataTypes.length == 0) {
+                const data = await response.json()
+                dispatch(setMovieTypes(data))
+            }
+            else if (response.status == 403) {
+                setOpen(true)
+            }
+            else if (response.status == 500) {
+                history.push('/maintenance')
+            }
+        }
+        catch (e) {
+            history.push('/maintenance')
 
-
-        window.addEventListener("scroll", handleScroll);
-        window.addEventListener('popstate', handlePopState);
-        return () => {
-
-            window.removeEventListener("scroll", handleScroll);
-            window.removeEventListener('onpopstate ', handlePopState);
         }
 
-    }, [handleScroll, handlePopState]);
+
+    }, [dispatch])
+
+    useEffect(() => {
+        window.addEventListener("scroll", handleScroll);
+        return () => {
+            window.removeEventListener("scroll", handleScroll);
+        }
+    }, [handleScroll]);
+
+
+    useEffect(() => {
+        if (!isFetching) return;
+        fetchMoreListItems();
+    }, [isFetching]);
+
+    useEffect(async () => {
+        try {
+            const response = await getRecommUserMoviesState1(read_cookie('id_user'))
+
+            if (response.status === 200) {
+                const data = await response.json()
+                const res = await getMoviesByListID(data.map((key) => key.id))
+                const data2 = await res.json()
+                setDataApiGenreMovies(data2)
+                setGenreMovies(data2.slice(0, 31))
+                setIsStart(false)
+
+            }
+            else if (response.status == 403) {
+                setOpen(true)
+            }
+            else if (response.status === 500) {
+                history.push('/maintenance')
+            }
+        }
+        catch {
+            history.push('/maintenance')
+        }
+    }, [])
+
     return (
-        <div className="overflow-x-hidden bg-black" ref={homePageRef} style={showed ? styles.fixed : styles.sticky}>
-            <div class="sub-header"><div><div class="sub-header-wrapper"><div class="galleryHeader"><div class="title"></div></div></div></div></div>
-            {movieData.map(item => (<Slider id={item.id} sliderTitle={item.sliderTitle} sliderMovieList={item.sliderMovieList} handleMoreInfo={handleMoreInfo}/>))}
-            <Footer/>
+        <div id='popularPage' >
+            <div className="popular-page overflow-x-hidden bg-black"  >
+                <NavigationBar />
+                <div class="header-genre bg-black">
+                    <div class="select-header text-light">
+                        Recommended movies for you
+                    </div>
+                </div>
+
+                <div className='body-content'>
+                    {isStart ?
+                        <div style={{ display: 'flex', marginBottom: '10px', width: '100%', justifyContent: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                            <span className='text-light mb-3' style={{ fontSize: '24px' }}>
+                                Personalizing for You
+                            </span>
+                            <div class="spinner-border" role="status" style={{ height: '5vh', width: '5vh', color: '#e50914' }} />
+                        </div>
+
+                        :
+                        <div>
+                            <div className='list-grid'>
+                                {genreMovies.map(item =>
+                                (item != null && item.uri_avatar != null &&
+                                    <div className='grid-container' onClick={itemClicked(item)}>
+                                        <div className=' item-grid multi-landing-stack-space-holder w-100 h-100'>
+                                            {/* <div className="multi-landing-stack-1"></div>
+                                    <div className="multi-landing-stack-2"></div> */}
+                                            <LazyLoadImage effect="blur" style={{ borderRadius: '4px', }} className="title-card w-100 h-100" src={item.uri_avatar} alt={item.m_name} />
+                                        </div>
+                                        <div className='name-label'>
+                                            {item.name}
+                                        </div>
+                                    </div>
+                                )
+                                )}
+
+                            </div>
+                            {isFetching &&
+                                <div style={{ display: 'flex', marginBottom: '10px', width: '100%', justifyContent: 'center' }}>
+                                    <div class="spinner-border spinner-color" role="status">
+
+                                    </div>
+                                </div>
+
+                            }
+                        </div>
+                    }
+
+                </div>
+                <CustomModal isOpen={open} onClick={toggleModal} headerText={"Session Timed out"} buttonText='Back to log in page' bodyText=
+                    {"Look like your log in session have been timed out. So please log in again.\nWe are so sorry for this inconvenience"
+                    } />
+                <Footer />
+
+            </div>
         </div>
     );
 };

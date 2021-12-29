@@ -1,5 +1,11 @@
 $icon-color: white;
 
+.video-player__top .input-search{
+    width: 230px;
+
+}
+
+
 #videoPlayer .video-player {
     background-color: black;
     width: 100%;
@@ -26,7 +32,7 @@ $icon-color: white;
 
         padding-left: 3vw;
 
-        background: linear-gradient(to top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.8));
+        // background: linear-gradient(to top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.8));
 
         &__icon-container {
             cursor: pointer;
@@ -71,11 +77,14 @@ $icon-color: white;
             width: 72px;
 
             opacity: 0.7;
-            color: white;
+            color: red;
 
-            animation: fadeOut ease 1s;
-            -webkit-animation: fadeOut ease 1s;
-            animation-fill-mode: forwards;
+            
+            &.pause{
+                animation: fadeOut ease 1s;
+                -webkit-animation: fadeOut ease 1s;
+                animation-fill-mode: forwards;
+            }
         }
     }
 

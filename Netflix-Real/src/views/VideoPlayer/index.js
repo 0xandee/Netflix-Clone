@@ -7,42 +7,51 @@ import screenfull from "screenfull";
 import { IconBackArrow, IconFullScreen, IconLayer, IconNext10s, IconPause, IconPauseCircle, IconPlay, IconPlayCircle, IconRewind10s, IconSetting, IconSkip, IconVolume, IconVolumeMute } from "../../assets/Icon";
 import { Duration, Format } from "../../services/function/Duration";
 import './style.scss'
+import * as Icon from 'react-feather';
+import { useLayoutEffect } from "react";
+
 let count = 0;
 //https://www.example.com/url_to_video.mp4
 ///https://player.vimeo.com/external/194837908.sd.mp4?s=c350076905b78c67f74d7ee39fdb4fef01d12420&profile_id=164
 // http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4
 //https://drive.google.com/uc?export=download&id=1Cvk2XhYdSKAST4ecGQ6s1ra4MilvXuLC
-const VideoPlayer = () => {
+const VideoPlayer = ({ socket, roomnum, videoURL, handleOpenMovieRecommend }) => {
     const history = useHistory(); // Navigate back to the previous state
     const [played, setPlayed] = useState(0);
     const [loaded, setLoaded] = useState(0);
     const [playing, setPlaying] = useState(false);
     const [focusing, setFocusing] = useState(false);
-
-    const [muted, setMuted] = useState(false);
+    const [muted, setMuted] = useState(true);
     const [seeking, setSeeking] = useState(false);
-    const [url, setUrl] = useState('https://drive.google.com/uc?export=download&id=1Cvk2XhYdSKAST4ecGQ6s1ra4MilvXuLC');
+    // const [url, setUrl] = useState('https://drive.google.com/uc?export=download&id=1Cvk2XhYdSKAST4ecGQ6s1ra4MilvXuLC');
+    // const [url, setUrl] = useState('https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4');
+    const [url, setUrl] = useState(videoURL);
     const [duration, setDuration] = useState(0);
     const [volume, setVolume] = useState(0.8);
     const playerRef = useRef(null);
     const playerContainerRef = useRef(null);
     const controlRef = useRef(null);
-    const volumeRef = useRef(null);
+    const volumeRef = useRef(true);
     const playedRef = useRef(null);
+    const playingRef = useRef(null);
     const titlePlayedRef = useRef(null);
     const [iconRewind, setIconRewind] = useState(false);
     const [iconNext, setIconNext] = useState(false);
+    const [isHost, setIsHost] = useState(false);
     let valueHover = 0;
 
     const toggleRewind = () => setIconRewind(!iconRewind);
     const toggleNext = () => setIconNext(!iconNext);
     const handleStop = () => {
         setUrl(null);
+        playingRef.current = false
         setPlaying(false);
     }
 
+
     const handleVideoOnReady = () => {
         console.log('loading')
+
     }
 
     const handleVolumeChange = () => {
@@ -58,58 +67,72 @@ const VideoPlayer = () => {
     }
 
     const handleVolumeMute = () => {
+        volumeRef.current = !muted
         setMuted(!muted)
     }
 
     const handleVolumeUp = () => { }
 
     const handlePlayedChange = (e) => {
+        playedRef.current = e.target.value
         setPlayed(e.target.value);
     }
 
     const handlePlayPause = useCallback(() => {
-        controlRef.current.style.opacity = '1'
-        setPlaying(!playing)
-    }, [playing])
+
+        if (isHost) {
+            controlRef.current.style.opacity = '1'
+            playingRef.current = !playing
+            setPlaying(!playing)
+        }
+    }, [playing, isHost])
 
     const handleVideoPlay = () => {
+        playingRef.current = true
         setPlaying(true)
     }
 
     const handleVideoPause = () => {
+        playingRef.current = false
         setPlaying(false)
     }
 
     const handleVideoProgress = (state) => {
-        if (count > 3 && !seeking) {
+        console.log("🚀 ~ file: index.js ~ line 101 ~ handleVideoProgress ~ state", muted)
 
+        if (count > 3 && !seeking) {
             controlRef.current.style.opacity = '0'
             count = 0;
         }
         else if (controlRef.current.style.opacity == '1' && playing) {
             count += 1;
+            setMuted(false)
         }
-        if (!seeking) {
+        if (playing && !muted) { setMuted(false) }
+        if (!seeking && state.played != 0) {
+            playedRef.current = state.played
             setPlayed(state.played);
             setLoaded(state.loaded)
         }
-
-
     }
 
     const handleVideoEnded = () => {
 
     }
 
-    const handleVideoDuration = (duration) => {
-        setDuration(duration);
-    }
+    const handleVideoDuration = useCallback((duration) => {
+        if (typeof (url) != 'undefined') {
+            setDuration(duration);
+        }
+    }, [url])
 
     const handlePlayedDown = () => {
+        setSeeking(true)
     }
 
     const handlePlayedUp = (e) => {
         playerRef.current.seekTo(parseFloat(e.target.value))
+        setSeeking(false)
     }
 
     const handleRewind = useCallback(() => {
@@ -125,10 +148,12 @@ const VideoPlayer = () => {
         screenfull.toggle(playerContainerRef.current)
     }
 
-    const handleMouseMove = () => {
+    const handleMouseMove = useCallback(() => {
         // console.log('move')
-        controlRef.current.style.opacity = '1'
-    }
+        if (isHost)
+            controlRef.current.style.opacity = '1'
+        else controlRef.current.style.opacity = '0'
+    }, [isHost])
 
     const handleMouseEnter = () => {
         setFocusing(true)
@@ -150,8 +175,6 @@ const VideoPlayer = () => {
         titlePlayedRef.current.style.left = e.nativeEvent.offsetX + 'px';
     }
 
-
-
     const handleKeyDown = useCallback((e) => {
         if (focusing) {
             if (e.key === 'ArrowDown') {
@@ -169,24 +192,31 @@ const VideoPlayer = () => {
                     setVolume(1);
                 }
                 else {
-
                     setVolume(parseFloat(volume) + 0.1);
                 }
                 handleVolumeChange()
             }
             else if (e.key === 'ArrowLeft') {
                 setSeeking(true);
-                if (played < (10 / duration))
+                if (played < (10 / duration)) {
+                    playedRef.current = 0
                     setPlayed(0)
-                else
+                }
+                else {
+                    playedRef.current = played - (10 / duration)
                     setPlayed(played - (10 / duration))
+                }
             }
             else if (e.key === 'ArrowRight') {
                 setSeeking(true);
-                if (played + (10 / duration) > 1)
+                if (played + (10 / duration) > 1) {
+                    playedRef.current = 1
                     setPlayed(1)
-                else
+                }
+                else {
+                    playedRef.current = played + (10 / duration)
                     setPlayed(played + (10 / duration))
+                }
             }
             else if (e.keyCode === 32) {
 
@@ -206,10 +236,9 @@ const VideoPlayer = () => {
                 setSeeking(false)
             }
         }
-    }, [played,focusing])
+    }, [played, focusing])
 
     useEffect(() => {
-
         document.addEventListener("keydown", handleKeyDown)
         document.addEventListener("keyup", handleKeyUp)
 
@@ -218,8 +247,113 @@ const VideoPlayer = () => {
             document.removeEventListener("keyup", handleKeyUp)
         }
     }, [handleKeyDown, handleKeyUp]);
+
+    useLayoutEffect(() => {
+        console.log('get host data')
+        if (socket != undefined) {
+            const data = {
+                room: roomnum,
+                currTime: playedRef.current,
+                state: playingRef.current,
+                muted: muted,
+                caller: socket.id
+            }
+            console.log("🚀 ~ file: index.js ~ line 253 ~ socket.on ~ data", data)
+            socket.emit('get host data', data);
+        }
+        else {
+            setUrl('https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4');
+            setIsHost(true)
+        }
+    }, [seeking, playing, muted])
+    // })
+    useEffect(() => {
+        if (socket != undefined) {
+            socket.on("getURLMovie", (data) => {
+                console.log("🚀 ~ file: index.js ~ line 246 ~ socket.on ~ data", data)
+                handleOpenMovieRecommend(false)
+                setUrl(data.movieURL)
+            })
+        }
+    }, [url, socket])
+
+    useLayoutEffect(() => {
+        if (socket != undefined) {
+            socket.on('isHost', function (data) {
+                console.log("🚀 ~ file: index.js ~ line 271 ~ data", data)
+                setIsHost(data.isHost)
+                if (!data.isHost) {
+                    controlRef.current.style.opacity = '0'
+                }
+            })
+        }
+    }, [socket])
+
+    useEffect(() => {
+        if (socket != undefined) {
+            socket.on("getData", () => {
+                console.log("New member get into the room")
+                const data = {
+                    room: roomnum,
+                    currTime: playedRef.current,
+                    state: playingRef.current,
+                    muted: false,
+                    caller: socket.id
+                }
+                console.log("🚀 ~ file: index.js ~ line 253 ~ socket.on ~ data", data)
+                socket.emit('get host data', data);
+            })
+
+            socket.on('isHost', function (data) {
+                console.log("🚀 ~ file: index.js ~ line 271 ~ data", data)
+                setIsHost(data.isHost)
+                if (!data.isHost) {
+                    controlRef.current.style.opacity = '0'
+                }
+            })
+        }
+    }, [socket])
+
+
+    // Uses the host data to compare
+    useEffect(() => {
+        if (socket != undefined) {
+            setMuted(true)
+            socket.on('compareHost', function (data) {
+                console.log("compareHost");
+                console.log("🚀 ~ file: index.js ~ line 259 ~ data", data)
+                // // The host data
+                var hostTime = data.currTime
+                var hostState = data.state
+
+                var host = data.host == socket.id
+
+                if (data.currVideo != url) {
+                    setUrl(data.currVideo)
+                }
+
+                if (playedRef.current != hostTime || playingRef.current != hostState) {
+
+                    if (!host) {
+                        handleOpenMovieRecommend(false)
+                        volumeRef.current = data.muted
+
+                        playedRef.current = hostTime
+                        setPlayed(hostTime);
+                        playingRef.current = hostState
+                        setPlaying(hostState);
+                        playerRef.current.seekTo(hostTime)
+
+                    }
+                }
+            });
+        }
+    }, [socket])
+
+
     return (
-        <div id={`videoPlayer`} onMouseMove={handleMouseMove} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+        <div id={`videoPlayer`} onMouseMove={handleMouseMove} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} style={{ position: 'absolute', width: '100%', height: '100%' }}>
+            
             <div ref={playerContainerRef} className={`video-player`} >
                 <div className={'video-container'} onClick={handlePlayPause}>
                     <ReactPlayer
@@ -229,25 +363,30 @@ const VideoPlayer = () => {
                         height='100%'
                         url={url}
                         onReady={handleVideoOnReady}
-                        playing={playing}
+                        playing={playingRef.current}
                         controls={false}
-
-
                         volume={volume}
                         muted={muted}
-
                         onPlay={handleVideoPlay}
                         onEnded={handleVideoEnded}
                         onPause={handleVideoPause}
                         onProgress={handleVideoProgress}
+                        onSeek={(value) => {
+                            console.log('onSeek')
+                            console.log("🚀 ~ file: index.js ~ line 395 ~ value", value)
+                        }
+                        }
+                        onError={(err) =>
+                            console.log("🚀 ~ file: index.js ~ line 407 ~ err", err)
+                        }
                         onDuration={handleVideoDuration}
                     />
                 </div>
                 <div className={`video-player__icon-container`} onClick={handlePlayPause}>
                     {!playing ?
-                        <IconPlayCircle className={`video-player__icon-container__icon`} />
+                        <IconPlayCircle className={`video-player__icon-container__icon `} />
                         :
-                        <IconPauseCircle className={`video-player__icon-container__icon`} />
+                        <IconPauseCircle className={`video-player__icon-container__icon pause`} />
                     }
 
 
@@ -256,17 +395,19 @@ const VideoPlayer = () => {
                     transition: 'all 0.5s'
                 }}>
 
-                    <div className={`video-player__top`} onClick={() => history.goBack()}>
-                        <div className={`video-player__top__icon-container`}>
+                    <div className={`video-player__top`} style={{  justifyContent: "space-between" }}>
+                        <div className={`video-player__top__icon-container`} style={{zIndex: '5',}} onClick={() => history.push('/home')}>
                             <IconBackArrow className={'video-player__top__icon-back'} />
                             <span>Back to Browse</span>
                         </div>
 
                     </div>
+
+
                     <div className={`video-player__bottom`}>
                         <div className={`video-player__bottom__bar-container`}>
                             <div className={`video-player__bottom__bar-container__bar`}>
-                                <input type='range' min={0} max={1} step='any' ref={playedRef} id='playedInput'
+                                <input type='range' min={0} max={1} step='any' id='playedInput'
                                     value={played}
                                     onMouseMove={handlePlayedMouseMove}
                                     onMouseDown={handlePlayedDown}
@@ -332,6 +473,13 @@ const VideoPlayer = () => {
                                             onChange={handleVolumeChange}
                                             onMouseUp={handleVolumeUp} />
                                     </div>
+                                    {/* <div style={{padding: '6px 6px'}}>
+                                        <button
+                                            style={{ fontSize: "1rem",fontWeight: "bold",paddingRight: "0.5rem", float: "right", borderRadius: "8px", backgroundColor: "rgb(183, 7, 16)", padding: "12px 12px", border: "none", color: 'white' }}
+                                            onClick={syncHost}>
+                                            Sync
+                                        </button>
+                                    </div> */}
 
 
                                 </div>

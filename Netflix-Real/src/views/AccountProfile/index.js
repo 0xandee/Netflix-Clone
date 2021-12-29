@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Route, Router, Switch, useRouteMatch } from "react-router";
+import { Route, Router, Switch, useRouteMatch, useHistory } from "react-router";
 import { Link, NavLink } from "react-router-dom";
 import { Col, Row } from "reactstrap";
 import { IconAlertCircle, IconNetflix, IconUser } from "../../assets/Icon";
@@ -13,14 +13,16 @@ import { ChangePasswordProfile, GeneralProfile } from "../../components";
 
 const AccountProfile = () => {
   let { path, url } = useRouteMatch();
+  const history = useHistory();
   const routesprofile = [
     {
       path: `${url}`,
       exact: true,
       main: () => <GeneralProfile />
-    },  
+    },
     {
       path: `${url}/change-password`,
+      exact: true,
       main: () => <ChangePasswordProfile />
     }
   ];
@@ -33,16 +35,24 @@ const AccountProfile = () => {
       color: 'white',
     }
   })
+
+  const logoClicked = () => {
+    console.log("🚀 ~ file: index.js ~ line 42 ~ logoClicked ~ logoClicked")
+
+    history.push('/home')
+  }
   return (
     <div id='accountProfile'>
       <div className='profile'>
         <div className={`profile__header`}>
           <div className={`profile__header__container`}>
-            <IconNetflix className={'profile__header__logo'} />
+            <div onClick={logoClicked}>
+              <IconNetflix className={'profile__header__logo'} />
+            </div>
+
             <div>
               <CustomDropdown />
             </div>
-
           </div>
           <div className="profile__body">
             <div className="profile__body__container">
@@ -54,7 +64,7 @@ const AccountProfile = () => {
                       General
                     </NavLink>
                   </Row>
-                  
+
                   <Row>
                     <NavLink className="nav-item" to={`${url}/change-password`} activeStyle={styles.activeStyle}>
                       <Icon.Lock className="icon" />
@@ -63,7 +73,7 @@ const AccountProfile = () => {
                   </Row>
                 </Col>
                 <Col xs="9">
-                  <div style ={{marginLeft:'20px'}}>
+                  <div style={{ marginLeft: '20px' }}>
                     <Switch>
                       {routesprofile.map((route, index) => (
                         // Render more <Route>s with the same paths as

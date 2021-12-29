@@ -57,21 +57,21 @@ $gray: #8c8c8c;
         min-width: 500px;
         width: 35vw;
         max-width: 750px;
-        min-height: 100vh;
+        height: 75vh;
 
-        margin: 0 auto -236px;
+        margin: 0 auto ;
         padding: 0 5%;
 
         background-color: transparent;
 
         &::before {
             content: "";
-            height: 12vh;
+            height: 15vh;
             display: block;
         }
         &::after {
             content: "";
-            height: 12vh;
+            height: 5vh;
             display: block;
         }
         &__content {
@@ -79,7 +79,7 @@ $gray: #8c8c8c;
             flex-direction: column;
             display: flex;
 
-            min-height: 660px;
+            min-height: 500px;
             width: 100%;
 
             padding: 40px 68px;
@@ -97,14 +97,25 @@ $gray: #8c8c8c;
                 min-height: 515px;
 
                 padding: 20px 0 30px;
+                .error-label {
+                    font-size: 12px;
+                    color: red;
 
+                    padding-top: 5px;
+                    padding-bottom: 15px;
+
+                    opacity:0;
+                    &.visible{
+                        opacity:1
+                    }
+                }
                 span {
                     color: $gray;
                     font-size: 12px;
 
                     display: flex;
                     align-items: center;
-                    justify-content: space-between;
+                    justify-content: flex-end;
                 }
                 a {
                     text-decoration: none;
@@ -132,6 +143,7 @@ $gray: #8c8c8c;
                     border-radius: 4px;
 
                     background-color: $red;
+                    cursor: pointer;
                     span {
                         font-size: 16px;
                         font-weight: 700;

@@ -1,18 +1,28 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import './signUpNavigationBar.scss'
 
-import { Link, NavLink } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { IconNetflix } from '../../assets/Icon';
 
 const SignUpNavigationBar = (props) => {
+    const history = useHistory()
+    const logoClicked = () => {
+        history.push('/home')
+        // if (localStorage.getItem('refresh_token') === null)
+        //     history.push('/signin')
+        // else history.push('/home')
+    }
     return (
-        <div className={`registration__header`}>
-            <div className={`registration__header__container`}>
-                <IconNetflix className={'registration__header__logo'} />
+        <div id='signUpNavigationBar'>
+            <div className={`registration__header`}>
+                <div className={`registration__header__container`}>
+                    <div onClick={logoClicked} >
+                        <IconNetflix className={'registration__header__logo'}  />
+                    </div>
+
+                </div>
+
             </div>
-            <Link >
-                Sign Out
-            </Link>
         </div>
     );
 

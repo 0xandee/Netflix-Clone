@@ -2,7 +2,8 @@
     height: 28px;
     font-size: 25px;
     margin-right: 40px;
-    fill: #e50914;
+    fill: #e50914; 
+    cursor: pointer;
 }
 .nav-bar {
     position: fixed;
@@ -56,6 +57,7 @@
         border: none;
         size: 16px;
         stroke-width: 4;
+        margin-right: 5px;;
     }
     .search-box {
         position: static;
@@ -80,6 +82,8 @@
         border-radius: 4px;
         opacity: 1;
         background-color: #141414;
+        float: right;
+        color: #fff;
     }
     input[type="text"]:focus {
         width: 230px;

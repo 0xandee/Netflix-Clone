@@ -1,18 +1,20 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import './navBar.scss'
 
-import { Link, NavLink, useHistory } from 'react-router-dom';
+import { Link, NavLink, useHistory, useLocation } from 'react-router-dom';
 
 import * as Icon from 'react-feather';
 import CustomNotification from '../CustomNotification';
 import CustomDropdown from '../Dropdown';
 import { IconNetflix } from '../../assets/Icon';
+import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
+
+import io from "socket.io-client";
 
 
 const navTabs = [{ id: 0, label: "Home", navLink: '/home' },
-{ id: 1, label: "New & Popular", navLink: '/popular' },
-{ id: 2, label: "TV Show", navLink: '/tvshow' },
-{ id: 3, label: "Movies", navLink: '/movies' },
+{ id: 3, label: "Movies", navLink: '/movies/1' },
+{ id: 1, label: "For You", navLink: '/popular' },
 { id: 4, label: "My Playlist", navLink: '/playlist' }];
 
 const NavigationBar = (props) => {
@@ -20,10 +22,17 @@ const NavigationBar = (props) => {
     const [isShown, setIsShown] = useState(false);
     const [isOpen, setOpen] = useState(false);
     const textInput = React.createRef(null);
+    const [searchText, setSearchText] = useState('');
     const [items, setItem] = useState(navTabs);
     const [onToppage, setOnTopPage] = useState(false);
+
+    // const [username, setusername] = useState(Math.random().toString(36).substr(2, 12));
+    // const [roomname, setroomname] = useState("idgroup");
+
+    const idgroup = read_cookie('username');
+
     var currentScrollY = useRef(0);
-    
+
     const useWindowSize = () => {
         const [size, setSize] = useState([0, 0]);
         useLayoutEffect(() => {
@@ -40,44 +49,62 @@ const NavigationBar = (props) => {
     const [width, height] = useWindowSize();
 
     const onBlurSearchInput = () => {
+
+        textInput.current.blur()
         setIsShown(false)
     }
+    
+
     const btnSearchClicked = () => {
         if (!isShown) {
             textInput.current.focus()
         }
         setIsShown(!isShown)
     }
-  
+    const onSearchKeyPress = (e) => {
+
+        if (e.key === "Enter") {
+
+            history.push({
+                pathname: '/search',
+                search: `value=${searchText}`,
+
+            })
+            setSearchText('')
+        }
+
+    }
+
+    const logoClicked = ()=>{
+        history.push('/home')
+    }
 
     useEffect(() => {
         const handleScroll = () => {
             currentScrollY = window.scrollY
             currentScrollY > 0 ? setOnTopPage(true) : setOnTopPage(false);
         };
-
-        window.addEventListener("scroll", handleScroll, { passive: true });
-        // history.push('/home')
+        window.addEventListener("scroll", handleScroll, { passive: true }); 
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
 
 
+
     return (
         <div id='navbar' >
-            <div className={`nav-bar ${onToppage && 'top-page'} ${isOpen && 'top-page'}`}
-            >
+            <div className={`nav-bar ${onToppage && 'top-page'} ${isOpen && 'top-page'}`}>
                 <div className='div-navigation'>
-                    {/* <img className='brand-logo'
-                        src='https://pixinvent.com/demo/vuexy-vuejs-admin-dashboard-template/demo-1/img/logo.36f34a9f.svg' alt='logo'
-                    /> */}
-                    <IconNetflix className='brand-logo' />
+                    <div onClick={logoClicked}>
+                        <IconNetflix className='brand-logo' />
+                    </div>
+
                     {width > 865 ?
                         <React.Fragment>
                             <div className='tab-navigation'>
-                         
+
                                 {
                                     items.map(item => (
-                                        <NavLink  to={item.navLink} className='nav-item' activeStyle={styles.activeStyle}>{item.label}</NavLink>
+                                        <NavLink to={item.navLink} className='nav-item' activeStyle={styles.activeStyle}>{item.label}</NavLink>
                                     ))
                                 }
                             </div>
@@ -112,14 +139,29 @@ const NavigationBar = (props) => {
                     }
                 </div>
                 <div className='secondary-navigation'>
+                    <Link to={`/watchgroup/${idgroup}`} className="text-decoration-none text-light">
+                        <div style={{paddingRight: '3rem', cursor: 'pointer'}}>
+                            <Icon.Plus className='icon-style' style={{color: 'white'}}/>
+                            Create Group
+                        </div>
+                    </Link>
+                    {/* <form id='user-form' style={{paddingRight: '3rem', cursor: 'pointer'}}>
+                        <input type="submit" value="Create Room" className='icon-style' style={{color: 'white'}}/>
+                    </form> */}
                     <div className={`search-box nav-element ${isShown && 'input-search'}`} >
-
-                        <button>
+                        <div>
                             <Icon.Search className='icon-style' size='16px' strokeWidth='4' color='white' onClick={btnSearchClicked} />
-                        </button>
+                        </div>
 
                         <React.Fragment>
-                            <input onBlur={onBlurSearchInput} ref={textInput} id='searchInput' type={'text'} name="search" placeholder="Search.." >
+                            <input
+                                onKeyPress={onSearchKeyPress}
+                                onBlur={onBlurSearchInput}
+                                ref={textInput} value={searchText}
+                                type={'text'}
+                                name="search"
+                                placeholder="Search.."
+                                onChange={(e) => setSearchText(e.target.value)} >
                             </input>
                         </React.Fragment>
 
