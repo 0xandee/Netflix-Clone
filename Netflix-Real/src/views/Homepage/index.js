@@ -18,6 +18,7 @@ import SwiperCore, {
 } from 'swiper';
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
 import { useHistory } from "react-router-dom";
+import { getToken } from "../../services/function";
 
 // install Swiper modules
 SwiperCore.use([Navigation]);
@@ -43,7 +44,7 @@ const Homepage = (props) => {
 
     useEffect(async () => {
         try {
-            const response = await getMovieTypeAPI(read_cookie('access_token'))
+            const response = await getMovieTypeAPI(getToken())
             console.log("🚀 ~ file: index.js ~ line 47 ~ useEffect ~ response", response)
             if (response.status === 200 && dataTypes.length == 0) {
                 const data = await response.json()
@@ -65,12 +66,12 @@ const Homepage = (props) => {
 
     useEffect(async () => {
         try {
-            const response = await getRecommUserMoviesState1(read_cookie('id_user'))
+            const response = await getRecommUserMoviesState1(localStorage.getItem('id_user'))
             console.log("🚀 ~ file: index.js ~ line 39 ~ useEffect ~ response", response)
 
             if (response.status === 200) {
                 const data = await response.json()
-                const res = await getMoviesByListID(data.map((key) => key.id), read_cookie('access_token'))
+                const res = await getMoviesByListID(data.map((key) => key.id), getToken())
                 const data2 = await res.json()
                 var genreMovie = {
                     id: 'recommend',
@@ -102,7 +103,7 @@ const Homepage = (props) => {
 
         dataTypes.map(async (item) => {
             try {
-                const res = await getMoviesByGenreAPI(item.id, read_cookie('access_token'))
+                const res = await getMoviesByGenreAPI(item.id, getToken())
                 if (res.status == 200 && !genreMovies.length) {
                     let data = await res.json()
                     var genreMovie = {

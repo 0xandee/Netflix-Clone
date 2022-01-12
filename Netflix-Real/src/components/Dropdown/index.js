@@ -6,6 +6,7 @@ import { userLogout } from '../../services/redux/actions';
 import { SignIn } from "../../views/index";
 import { requestLogout } from "../../services/api/auth";
 import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
+import { getToken } from "../../services/function";
 
 
 const CustomDropdown = () => {
@@ -17,13 +18,14 @@ const CustomDropdown = () => {
 
   const signOutClick = async (event) => {
     event.preventDefault();
-    const response = await requestLogout(read_cookie('access_token'))
+    const response = await requestLogout(getToken())
     console.log("🚀 ~ file: index.js ~ line 64 ~ nextClicked ~ response", response)
     if (response.status >= 200 && response.status <= 299) {
-      // localStorage.clear();
-      delete_cookie('username')
-      delete_cookie('id_user')
-      delete_cookie('access_token')
+       localStorage.clear();
+      // delete_cookie('username')
+      // delete_cookie('id_user')
+      // delete_cookie('access_token')
+      
       history.push('/signin')
     }
   }

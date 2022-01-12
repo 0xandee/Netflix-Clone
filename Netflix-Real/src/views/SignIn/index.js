@@ -26,40 +26,48 @@ const SignIn = (props) => {
     const signInClick = useCallback(async () => {
         var errorCheck = false;
         console.log("🚀 ~ file: index.js ~ line 27 ~ signInClick ~ username", username)
-        if (username == "" || !username.match('@gmail.com')) {
+        var emailValid = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        if (username == "" || !username.match(emailValid)) {
 
             setIsEmailError(true);
             errorCheck = true;
         } else {
             setIsEmailError(false)
         }
-        //  var passw = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/;
-        //  if (password == "" || !password.match(passw)) {
-        //     setIsPasswordError(true);
-        //     setErrorTextPassword('Password must be between 6 to 20 characters which contain at least one numeric digit, one uppercase and one lowercase letter')
+        var passw = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/;
+        if (password == "" || !password.match(passw)) {
+            setIsPasswordError(true);
+            setErrorTextPassword('Password must be between 6 to 20 characters which contain at least one numeric digit, one uppercase and one lowercase letter')
 
-        //     errorCheck = true;
-        // } else {
-        //     setIsPasswordError(false)
-        // }
+            errorCheck = true;
+        } else {
+            setIsPasswordError(false)
+        }
         if (!errorCheck) {
             try {
                 const response = await requestLogin(username, password)
-               
+
                 if (response.status === 200) {
                     const data = await response.json()
                     // localStorage.setItem("access_token", data.accessToken);
 
-                    bake_cookie('access_token', data.accessToken);
-                    bake_cookie('username', username.slice(0, username.indexOf("@")));
-                    bake_cookie('id_user', data.id);
-                    bake_cookie('new_user', data.first);
+                    // bake_cookie('access_token', data.accessToken);
+                    // bake_cookie('username', username.slice(0, username.indexOf("@")));
+                    // bake_cookie('id_user', data.id);
+                    // bake_cookie('new_user', data.first);
+
+                    localStorage.setItem('access_token', data.accessToken);
+                    localStorage.setItem('username', username.slice(0, username.indexOf("@")));
+                    localStorage.setItem('id_user', data.id);
+                    localStorage.setItem('new_user', data.first);
+
                     // delete_cookie(cookie_key);
                     if (data.first) {
                         history.push('/choosetype')
                     }
-                    else {                     
-                        history.push('/home') }
+                    else {
+                        history.push('/home')
+                    }
                 }
                 else if (response.status === 500) {
                     history.push('/maintenance')
@@ -68,7 +76,7 @@ const SignIn = (props) => {
                     setIsPasswordError(true)
                     setIsEmailError(false)
                     setErrorTextPassword("Username or password incorrect")
-                } 
+                }
             }
             catch {
                 history.push('/maintenance')
@@ -76,9 +84,9 @@ const SignIn = (props) => {
 
         }
     }, [username, password])
+
     const handleKeyDown = useCallback((e) => {
         if (e.key === 'Enter') {
-            console.log("🚀 ~ file: index.js ~ line 75 ~ handleKeyDown ~ e.key", e.key)
             signInClick()
         }
     }, [signInClick])
@@ -103,7 +111,7 @@ const SignIn = (props) => {
                     /> */}
                     <IconNetflix className={`sign-in__header__logo`} />
                 </div>
-                <div className={`sign-in__body`}>
+                <div className={`sign-in__body d-flex align-items-center h-100`}>
                     <div className={`sign-in__body__content`}>
                         <div className={`sign-in__body__content__main`}>
                             <h1 className={`sign-in__body__content__main__title`}>Sign In</h1>
@@ -147,12 +155,12 @@ const SignIn = (props) => {
                         </div>
                     </div>
                 </div>
-                <div>
-                    <Footer />
-                </div>
+
 
             </div>
-
+            <div style={{ position: 'absolute', bottom: '0', }}>
+                <Footer />
+            </div>
         </div>
     )
 }

@@ -11,6 +11,7 @@ import { Spinner } from 'reactstrap'
 import DefaultImage from '../../assets/Images/defaultImage.png';
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
+import { getToken } from "../../services/function";
 
 
 const MoviesPage = (props) => {
@@ -26,9 +27,10 @@ const MoviesPage = (props) => {
     const dispatch = useDispatch();
 
     const toggleModal = () => {
-        delete_cookie('username')
-        delete_cookie('id_user')
-        delete_cookie('access_token')
+        localStorage.clear()
+        // delete_cookie('username')
+        // delete_cookie('id_user')
+        // delete_cookie('access_token')
         history.push('/signin')
     };
 
@@ -72,7 +74,7 @@ const MoviesPage = (props) => {
     }
     useEffect(async () => {
         try {
-            const response = await getMovieTypeAPI(read_cookie('access_token'))
+            const response = await getMovieTypeAPI(getToken())
             if (response.status === 200 && dataTypes.length == 0) {
                 const data = await response.json()
                 dispatch(setMovieTypes(data))
@@ -113,7 +115,7 @@ const MoviesPage = (props) => {
     useEffect(async () => {
         if (selectedGenre != null) {
             try {
-                const res = await getMoviesByGenreAPI(selectedGenre.value, read_cookie('access_token'))
+                const res = await getMoviesByGenreAPI(selectedGenre.value, getToken())
                 if (res.status == 200) {
                     let data = await res.json()
                     setDataApiGenreMovies(data)

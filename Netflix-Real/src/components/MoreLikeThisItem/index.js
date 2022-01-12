@@ -3,6 +3,7 @@ import '../Episodes/Episodes.scss';
 import { favMoviePost } from '../../services/api/user';
 import { useHistory } from "react-router-dom";
 import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
+import { getToken } from '../../services/function';
 const MoreLikeThisItem = (props) => {
     const { item } = props
     const history = useHistory()
@@ -18,10 +19,8 @@ const MoreLikeThisItem = (props) => {
 
     const addFavoriteClicked = async (e) => {
         e.stopPropagation();
-        console.log("🚀 ~ file: index.js ~ line 30 ~ addFavoriteClicked ~ addFavoriteClicked")
-
         try {
-            const response = await favMoviePost(item.id, read_cookie('access_token'))
+            const response = await favMoviePost(item.id, getToken())
             if (response.status == 500) {
                 history.push('/maintenance')
             }

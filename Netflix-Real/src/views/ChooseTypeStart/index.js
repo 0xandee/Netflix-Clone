@@ -7,6 +7,7 @@ import { getMovieTypeAPI, postNewUserGenres } from '../../services/api/movie'
 import { Button } from "reactstrap";
 import { setMovieTypes } from "../../services/redux/actions";
 import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
+import { getToken } from "../../services/function";
 
 
 const ChooseTypeStart = () => {
@@ -36,7 +37,7 @@ const ChooseTypeStart = () => {
 
     useEffect(async () => {
         try {
-            const response = await getMovieTypeAPI(read_cookie('access_token'))
+            const response = await getMovieTypeAPI(getToken())
             console.log("🚀 ~ file: index.js ~ line 39 ~ useEffect ~ response", response)
             if (response.status === 200) {
                 let data = await response.json()

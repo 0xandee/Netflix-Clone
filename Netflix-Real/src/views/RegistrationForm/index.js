@@ -64,6 +64,8 @@ const RegistrationForm = () => {
     };
 
     const nextClicked = async () => {
+        var emailValid = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
         if (dob == 'Invalid Date') {
             setErrorDob(true)
         }
@@ -77,7 +79,7 @@ const RegistrationForm = () => {
             setErrorGenders(true)
         }
         else setErrorGenders(false)
-        if (email == "" || !email.match('@gmail.com')) {
+        if (email == "" || !email.match(emailValid)) {
             setIsEmailError(true)
         }
         else setIsEmailError(false)
@@ -123,8 +125,7 @@ const RegistrationForm = () => {
                 <SignUpNavigationBar />
                 <div className='registration__background-image'>
                 </div>
-
-                <div className={`registration__body`}>
+                <div className={`registration__body d-flex align-items-center`}>
                     {isSucess ?
                         <div className=' align-self-center justify-content-center text-center '>
                             <h1>
@@ -140,16 +141,12 @@ const RegistrationForm = () => {
                                         </span>
                                     </div>
                                 </div>
-
                             </NavLink>
-
-
                         </div>
                         :
                         <div className={`registration__body__content`}>
                             <div className={`registration__body__content__main`}>
                                 <div >
-
                                     <h1 className="registration__body__content__main__step-title">
                                         Create a password to start your membership</h1>
                                     <div className="registration__body__content__main__step-content">

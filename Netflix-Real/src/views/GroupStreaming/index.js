@@ -12,6 +12,7 @@ import io from "socket.io-client";
 import * as Icon from 'react-feather';
 import { getAllMovies, getMoviesByListID, getRecommGroupMoviesState1 } from "../../services/api/movie";
 import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
+import { getToken } from "../../services/function";
 
 //  const socket = io("http://localhost:8000", { transports: ['websocket']});
 
@@ -156,7 +157,7 @@ const GroupStreaming = () => {
       console.log("🚀 ~ file: index.js ~ line 156 ~ handleRefreshButton ~ res", res)
       if (res.status === 200) {
         let dataRecommend = await res.json()
-        const temp = await getMoviesByListID(dataRecommend.map((key) => key.id), read_cookie('access_token'))
+        const temp = await getMoviesByListID(dataRecommend.map((key) => key.id), getToken())
         let data2 = await temp.json()
         console.log("🚀 ~ file: index.js ~ line 196 ~ useEffect ~ data2")
         setRecommendedMovies(data2)
@@ -166,7 +167,7 @@ const GroupStreaming = () => {
 
       else {
         if (!movies.length) {
-          const response = await getAllMovies(read_cookie('access_token'))
+          const response = await getAllMovies(getToken())
           if (response.status === 200) {
             let data = await response.json()
             setMovies(data)

@@ -89,7 +89,7 @@ const Footer = (props) => {
                     </div>
                     <div className={`footer__content--links`}>
                         {linkFooters.map(item => (
-                            <div className={`footer__content--links_item`}>
+                            <div className={`footer__content--links_item `}>
                                 <NavLink id={item.id} to={item.navLink}>
                                     {item.label}
                                 </NavLink>

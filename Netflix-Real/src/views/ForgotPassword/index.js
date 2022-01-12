@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import './forgotPassword.scss'
 import * as Icon from 'react-feather';
 import { Link, NavLink, useHistory } from "react-router-dom";
@@ -6,6 +6,8 @@ import { IconNetflix } from '../../assets/Icon';
 import { FormGroup, Input, Label } from "reactstrap";
 import { CustomInput, Footer } from "../../components";
 import { requestForgotPassword } from "../../services/api/auth";
+import AccountMenuImg from '../../assets/Images/account_menu_image.png'
+import ChangePasswordImg from '../../assets/Images/change_password.png'
 
 const ForgotPassword = () => {
     const history = useHistory()
@@ -16,7 +18,9 @@ const ForgotPassword = () => {
     const [isCheckOTP, setIsCheckOTP] = useState(false);
 
     const forgotPasswordClicked = async () => {
-        if (email == "" || !email.match('@gmail.com')) {
+        var emailValid = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+        if (email == "" || !email.match(emailValid)) {
             setIsEmailError(true)
         }
         else {
@@ -43,6 +47,20 @@ const ForgotPassword = () => {
         history.push('/signin')
     }
 
+    const handleKeyDown = useCallback((e) => {
+        if (e.key === 'Enter') {
+            forgotPasswordClicked()
+        }
+    }, [forgotPasswordClicked])
+
+    useEffect(() => {
+        document.addEventListener("keydown", handleKeyDown)
+        return () => {
+            document.removeEventListener("keydown", handleKeyDown)
+
+        }
+    }, [handleKeyDown]);
+
     return (
         <div id='forgotPassword'>
             <div className={`forgot-password`}>
@@ -53,7 +71,7 @@ const ForgotPassword = () => {
                 <div className={`forgot-password__header`}>
                     <IconNetflix className='forgot-password__header__logo' />
                 </div>
-                <div className={`forgot-password__body`}>
+                <div className={`forgot-password__body d-flex justify-content-center align-items-center`}>
                     <div className={`forgot-password__body__content`}>
                         <div className={`forgot-password__body__content__main`}>
 
@@ -85,8 +103,16 @@ const ForgotPassword = () => {
                                         Please check your email and log in again with new password.
                                     </label>
                                     <label>
-                                        If you want to change password, you can go to account section and change it there.
+                                        If you want to change your password, you can go to your account section and change it there.
                                     </label>
+                                    <div class="d-flex mt-3">
+                                        1.
+                                        <img src={AccountMenuImg} alt='menu-1' />
+                                    </div>
+                                    <div class="d-flex mt-3">
+                                        2.
+                                        <img style={{ width: '600px', maxWidth:'100%' }} src={ChangePasswordImg} alt='changepass-2' />
+                                    </div>
                                     <div className={`forgot-password__body__content__main__button-forgot-password`} onClick={backToSignInClicked}>
                                         <span> Back to Sign in
                                         </span>
@@ -102,7 +128,6 @@ const ForgotPassword = () => {
                 <div>
                     <Footer />
                 </div>
-
             </div>
 
         </div>

@@ -10,7 +10,6 @@ $gray: #8c8c8c;
     height: 100%;
     width: 100%;
 
-    overflow: hidden;
 
     z-index: 0;
 
@@ -20,7 +19,7 @@ $gray: #8c8c8c;
         display: block;
 
         height: 100%;
-        min-height: 120vh;
+        min-height: 100vh;
         width: 100%;
 
         overflow: hidden;
@@ -38,9 +37,6 @@ $gray: #8c8c8c;
         }
     }
     &__header {
-        position: absolute;
-        top: 0;
-
         width: 100%;
 
         padding: 10px 15px;
@@ -54,36 +50,28 @@ $gray: #8c8c8c;
         }
     }
     &__body {
-        min-width: 500px;
+        min-width: 400px;
         width: 35vw;
-        max-width: 750px;
-        height: 75vh;
-
-        margin: 0 auto ;
-        padding: 0 5%;
+        max-width: 650px;
+        min-height: 60vh;
+        
+        
+        margin: 2.3% auto ;
+        padding: 0 4%;
 
         background-color: transparent;
 
-        &::before {
-            content: "";
-            height: 15vh;
-            display: block;
-        }
-        &::after {
-            content: "";
-            height: 5vh;
-            display: block;
-        }
         &__content {
             box-sizing: border-box;
             flex-direction: column;
             display: flex;
 
-            min-height: 500px;
+            min-height: 450px;
+            
             width: 100%;
 
-            padding: 40px 68px;
-            margin-bottom: 290px;
+            padding: 2vw 5vh;
+            margin-bottom: 3vh;
 
             border-radius: 4px;
 
@@ -94,7 +82,7 @@ $gray: #8c8c8c;
                 flex-direction: column;
 
                 width: 100%;
-                min-height: 515px;
+                min-height: 450px;
 
                 padding: 20px 0 30px;
                 .error-label {

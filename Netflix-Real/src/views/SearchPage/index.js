@@ -11,6 +11,7 @@ import { Spinner } from 'reactstrap'
 import { searchMovieByNameApi } from "../../services/api/search";
 
 import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
+import { getToken } from "../../services/function";
 
 const SearchPage = (props) => {
     const query = new URLSearchParams(useLocation().search)
@@ -63,7 +64,7 @@ const SearchPage = (props) => {
 
         if (query.get('value') != null) {
             try {
-                const res = await searchMovieByNameApi(query.get('value'), read_cookie('access_token'))
+                const res = await searchMovieByNameApi(query.get('value'), getToken())
                 if (res.status == 200) {
                     let data = await res.json()
                     setDataApiMovies(data)

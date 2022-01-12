@@ -5,45 +5,7 @@ import { Footer, OnboardingMovieItem, SignUpNavigationBar } from "../../componen
 import { Button } from "reactstrap";
 import { getMoviesByGenres, postNewUserMovies } from "../../services/api/movie";
 import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
-
-const artworkData = [{
-    id: 1,
-    artLink: 'https://occ-0-395-325.1.nflxso.net/dnm/api/v6/evlCitJPPCVCry0BZlEFb5-QjKc/AAAABdq7uWdcgr-iutmrDG4_pw7ak_o_DrkfwJmSyQTahiEMVr-Hc5xZr9aGEk4v3Rg1yys06uvHXIA_dF4kpnR1emwajA.jpg?r=a43'
-}, {
-    id: 2,
-    artLink: 'https://occ-0-395-325.1.nflxso.net/dnm/api/v6/evlCitJPPCVCry0BZlEFb5-QjKc/AAAABWVrqreoTb1Evojb0HBnTGcyAftKFkHKpyotCBCbtz8C0vN8jtVq0w_sSqcpba9qs_90CopZxolVRIy5dEpTMh4ggmjHMaSmE5rSuUPP7JB2f7f6gkiH-8kZPOs.jpg?r=20d'
-}, {
-    id: 3,
-    artLink: 'https://occ-0-395-325.1.nflxso.net/dnm/api/v6/evlCitJPPCVCry0BZlEFb5-QjKc/AAAABX-_GKy3ey9eeZwZflmrwgeko8lLWIpkZq8jziWBi1FYOAJsqBr3XHvGlkV-4-rKqxW-bNBe-CbudVzreQI-q-aj4w.jpg?r=8aa'
-}, {
-    id: 4,
-    artLink: 'https://occ-0-395-325.1.nflxso.net/dnm/api/v6/evlCitJPPCVCry0BZlEFb5-QjKc/AAAABUO2PnUpSpQQ1c9fZviK06V_dhWfoCxna5yp2sbNn6NyEmnolJnwA8MbhanckGLSCe5mIw1v8vC6B85qmWZgyxj6DsapJv4d19XSphT-ylkq5u-idf6OmQI5z5M.jpg?r=319'
-}, {
-    id: 5,
-    artLink: 'https://occ-0-395-325.1.nflxso.net/dnm/api/v6/evlCitJPPCVCry0BZlEFb5-QjKc/AAAABUVtaA-j-Wz6jSNlw55hX58S75Pxrc-g1nKLX0WrSoAqVoBvAbRO8WFb-ujggPfYE13Qik9eSfb22B77YkxhKJ7E7ecSeukLRR4SL9ec0x3D-lQBFqXJa7M-CpU.jpg?r=b1f'
-}, {
-    id: 6,
-    artLink: 'https://occ-0-395-325.1.nflxso.net/dnm/api/v6/evlCitJPPCVCry0BZlEFb5-QjKc/AAAABfhY52RXjTMD-fDGRa9HZF-u3kPV8f5h0bd_ipkMxV3evPmzXJtCay-uw88uwymiAMPyknbtkC289ZO_S2cy8dDEZ7RqlcZbRX8S_6kX5EEii6uXcirkdKKNMHg.jpg?r=b85'
-}, {
-    id: 7,
-    artLink: 'https://occ-0-395-325.1.nflxso.net/dnm/api/v6/evlCitJPPCVCry0BZlEFb5-QjKc/AAAABWVrqreoTb1Evojb0HBnTGcyAftKFkHKpyotCBCbtz8C0vN8jtVq0w_sSqcpba9qs_90CopZxolVRIy5dEpTMh4ggmjHMaSmE5rSuUPP7JB2f7f6gkiH-8kZPOs.jpg?r=20d'
-}, {
-    id: 8,
-    artLink: 'https://occ-0-395-325.1.nflxso.net/dnm/api/v6/evlCitJPPCVCry0BZlEFb5-QjKc/AAAABX-_GKy3ey9eeZwZflmrwgeko8lLWIpkZq8jziWBi1FYOAJsqBr3XHvGlkV-4-rKqxW-bNBe-CbudVzreQI-q-aj4w.jpg?r=8aa'
-}, {
-    id: 9,
-    artLink: 'https://occ-0-395-325.1.nflxso.net/dnm/api/v6/evlCitJPPCVCry0BZlEFb5-QjKc/AAAABUO2PnUpSpQQ1c9fZviK06V_dhWfoCxna5yp2sbNn6NyEmnolJnwA8MbhanckGLSCe5mIw1v8vC6B85qmWZgyxj6DsapJv4d19XSphT-ylkq5u-idf6OmQI5z5M.jpg?r=319'
-}, {
-    id: 10,
-    artLink: 'https://occ-0-395-325.1.nflxso.net/dnm/api/v6/evlCitJPPCVCry0BZlEFb5-QjKc/AAAABUVtaA-j-Wz6jSNlw55hX58S75Pxrc-g1nKLX0WrSoAqVoBvAbRO8WFb-ujggPfYE13Qik9eSfb22B77YkxhKJ7E7ecSeukLRR4SL9ec0x3D-lQBFqXJa7M-CpU.jpg?r=b1f'
-}, {
-    id: 11,
-    artLink: 'https://occ-0-395-325.1.nflxso.net/dnm/api/v6/evlCitJPPCVCry0BZlEFb5-QjKc/AAAABfhY52RXjTMD-fDGRa9HZF-u3kPV8f5h0bd_ipkMxV3evPmzXJtCay-uw88uwymiAMPyknbtkC289ZO_S2cy8dDEZ7RqlcZbRX8S_6kX5EEii6uXcirkdKKNMHg.jpg?r=b85'
-}, {
-    id: 12,
-    artLink: 'https://occ-0-395-325.1.nflxso.net/dnm/api/v6/evlCitJPPCVCry0BZlEFb5-QjKc/AAAABX-_GKy3ey9eeZwZflmrwgeko8lLWIpkZq8jziWBi1FYOAJsqBr3XHvGlkV-4-rKqxW-bNBe-CbudVzreQI-q-aj4w.jpg?r=8aa'
-}]
-
+import { getToken } from "../../services/function";
 
 
 const OnboardingMovies = () => {
@@ -57,9 +19,9 @@ const OnboardingMovies = () => {
     const triggerFinished = async () => {
         setIsFinished(!isFinished);
         try {
-            const response = await postNewUserMovies(selectedMovies, read_cookie('access_token'))
+            const response = await postNewUserMovies(selectedMovies, getToken())
             if (response.status === 200) {
-                bake_cookie('new_user', false);
+                localStorage.setItem('new_user', false);
                 setTimeout(() => {
                     history.push({
                         pathname: '/home',
@@ -93,10 +55,14 @@ const OnboardingMovies = () => {
     useEffect(async () => {
         let temp = JSON.parse(query.get('value'))
         try {
-            const response = await getMoviesByGenres(temp, read_cookie('access_token'), 30)
+            const response = await getMoviesByGenres(temp, getToken(), 30)
             
             if (response.status === 200) {
                 setMovies(await response.json())
+            }
+            else if(response.status === 500)
+            {
+                history.push('/maintenance')
             }
 
         }

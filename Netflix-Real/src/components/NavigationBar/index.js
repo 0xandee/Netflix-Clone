@@ -14,7 +14,7 @@ import io from "socket.io-client";
 
 const navTabs = [{ id: 0, label: "Home", navLink: '/home' },
 { id: 3, label: "Movies", navLink: '/movies/1' },
-{ id: 1, label: "For You", navLink: '/popular' },
+{ id: 1, label: "Just for You", navLink: '/popular' },
 { id: 4, label: "My Playlist", navLink: '/playlist' }];
 
 const NavigationBar = (props) => {
@@ -29,7 +29,7 @@ const NavigationBar = (props) => {
     // const [username, setusername] = useState(Math.random().toString(36).substr(2, 12));
     // const [roomname, setroomname] = useState("idgroup");
 
-    const idgroup = read_cookie('username');
+    const idgroup = localStorage.getItem('username');
 
     var currentScrollY = useRef(0);
 

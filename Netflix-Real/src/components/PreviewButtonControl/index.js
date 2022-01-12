@@ -3,13 +3,14 @@ import { NavLink,useHistory } from 'react-router-dom';
 import './PreviewButtonControl.scss'
 import { favMoviePost } from '../../services/api/user';
 import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
+import { getToken } from '../../services/function';
 
 const PreviewButtonControl = (props) => {
     const { item } = props
     const history = useHistory()
     const addFavoriteClicked = async () => {
         try {
-            const response = await favMoviePost(item.id, read_cookie('access_token'))
+            const response = await favMoviePost(item.id, getToken())
             console.log("🚀 ~ file: index.js ~ line 9 ~ addFavoriteClicked ~ response", response)
             if (response.status == 500) {
                 history.push('/maintenance')

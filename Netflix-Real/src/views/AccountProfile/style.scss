@@ -15,14 +15,12 @@ $gray: #8c8c8c;
   z-index: 1;
   background-color: rgba(231, 231, 231, 0.808);
   &__header {
-    position: fixed;
-    top: 0;
+    height: fit-content;
     box-sizing: border-box;
 
+    padding: 10px 15px;
+
     width: 100%;  
-    height: 4vw;
-    min-height: 40px;
-    max-height: 65px;
 
     border-bottom: 1px solid #e6e6e6;
     background-color: black;
@@ -54,6 +52,7 @@ $gray: #8c8c8c;
     margin-top: 20px;
     &__container {
       width: 60%;
+      
       height: 100%;
 
       .nav-item {

@@ -7,6 +7,7 @@ import { useHistory } from "react-router-dom";
 import { requestRefreshToken } from "../../services/api/auth";
 import { getUserFavoriteList } from "../../services/api/user";
 import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
+import { getToken } from "../../services/function";
 
 
 const MyPlaylistPage = (props) => {
@@ -14,13 +15,14 @@ const MyPlaylistPage = (props) => {
     const [dataApiMovies, setDataApiMovies] = useState([]);
     const [genreMovies, setGenreMovies] = useState([]);
     const [isFetching, setIsFetching] = useState(false);
-    const [accessToken, setAccessToken] = useState(read_cookie('access_token'))
+    const [accessToken, setAccessToken] = useState(getToken())
     const [open, setOpen] = useState(false);
 
     const toggleModal = () => {
-        delete_cookie('username')
-        delete_cookie('id_user')
-        delete_cookie('access_token')
+        localStorage.clear()
+        // delete_cookie('username')
+        // delete_cookie('id_user')
+        // delete_cookie('access_token')
         history.push('/signin')
     };
 

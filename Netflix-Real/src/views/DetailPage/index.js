@@ -9,6 +9,7 @@ import { to_Decrypt, to_Encrypt } from '../../services/aes256';
 import { getMovieAPI, getMoviesByListID, getRecommUserMoviesState2 } from '../../services/api/movie';
 import { useHistory } from 'react-router-dom';
 import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
+import { getToken } from '../../services/function';
 
 const DetailPage = (props) => {
     // const { item } = props.location.state;
@@ -20,16 +21,17 @@ const DetailPage = (props) => {
     const [open, setOpen] = useState(false);
 
     const toggleModal = () => {
-        delete_cookie('username')
-        delete_cookie('id_user')
-        delete_cookie('access_token')
+        localStorage.clear()
+        // delete_cookie('username')
+        // delete_cookie('id_user')
+        // delete_cookie('access_token')
         history.push('/signin')
     };
 
 
 
     useEffect(async () => {
-        const response = await getMovieAPI(idMovie.toString(), read_cookie('access_token'))
+        const response = await getMovieAPI(idMovie.toString(), getToken())
         if (response.status === 200) {
             let data = await response.json()
             setDataMovie(data)
@@ -38,12 +40,12 @@ const DetailPage = (props) => {
 
     useEffect(async () => {
         try {
-            const response = await getRecommUserMoviesState2(read_cookie('id_user'))
+            const response = await getRecommUserMoviesState2(localStorage.getItem('id_user'))
             console.log("🚀 ~ file: index.js ~ line 39 ~ useEffect ~ response", response)
 
             if (response.status === 200) {
                 const data = await response.json()
-                const res = await getMoviesByListID(data.map((key) => key.id), read_cookie('access_token'))
+                const res = await getMoviesByListID(data.map((key) => key.id), getToken())
                 const data2 = await res.json()
                 console.log("🚀 ~ file: index.js ~ line 45 ~ useEffect ~ data2", data2)
                 setRecommendedMovies(data2.slice(0, 5));

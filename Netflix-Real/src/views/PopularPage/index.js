@@ -8,6 +8,7 @@ import { Link, useHistory, useLocation, useParams } from "react-router-dom";
 import { getMoviesByGenreAPI, getMoviesByListID, getMoviesByTypeAPI, getMovieType, getMovieTypeAPI, getRecommUserMoviesState1 } from "../../services/api/movie";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
+import { getToken } from "../../services/function";
 
 
 const PopularPage = (props) => {
@@ -22,9 +23,10 @@ const PopularPage = (props) => {
     const dispatch = useDispatch();
 
     const toggleModal = () => {
-        delete_cookie('username')
-        delete_cookie('id_user')
-        delete_cookie('access_token')
+        localStorage.clear()
+        // delete_cookie('username')
+        // delete_cookie('id_user')
+        // delete_cookie('access_token')
         history.push('/signin')
     };
 
@@ -51,7 +53,7 @@ const PopularPage = (props) => {
 
     useEffect(async () => {
         try {
-            const response = await getMovieTypeAPI(read_cookie('access_token'))
+            const response = await getMovieTypeAPI(getToken())
             if (response.status === 200 && dataTypes.length == 0) {
                 const data = await response.json()
                 dispatch(setMovieTypes(data))
@@ -86,7 +88,7 @@ const PopularPage = (props) => {
 
     useEffect(async () => {
         try {
-            const response = await getRecommUserMoviesState1(read_cookie('id_user'))
+            const response = await getRecommUserMoviesState1(localStorage.getItem('id_user'))
 
             if (response.status === 200) {
                 const data = await response.json()

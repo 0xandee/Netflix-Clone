@@ -7,7 +7,7 @@ import CustomDropdown from "../../components/Dropdown";
 import * as Icon from 'react-feather';
 
 import './style.scss'
-import { ChangePasswordProfile, GeneralProfile } from "../../components";
+import { ChangePasswordProfile, Footer, GeneralProfile } from "../../components";
 
 
 
@@ -54,44 +54,47 @@ const AccountProfile = () => {
               <CustomDropdown />
             </div>
           </div>
-          <div className="profile__body">
-            <div className="profile__body__container">
-              <Row>
-                <Col xs="3">
-                  <Row>
-                    <NavLink exact className="nav-item" to={`${url}`} activeStyle={styles.activeStyle}>
-                      <IconUser className="icon" />
-                      General
-                    </NavLink>
-                  </Row>
+        </div>
+        <div className="profile__body">
+          <div className="profile__body__container">
+            <Row>
+              <Col lg='3' xs="12" >
+                <Row>
+                  <NavLink exact className="nav-item" to={`${url}`} activeStyle={styles.activeStyle}>
+                    <IconUser className="icon" />
+                    General
+                  </NavLink>
+                </Row>
 
-                  <Row>
-                    <NavLink className="nav-item" to={`${url}/change-password`} activeStyle={styles.activeStyle}>
-                      <Icon.Lock className="icon" />
-                      Change Password
-                    </NavLink>
-                  </Row>
-                </Col>
-                <Col xs="9">
-                  <div style={{ marginLeft: '20px' }}>
-                    <Switch>
-                      {routesprofile.map((route, index) => (
-                        // Render more <Route>s with the same paths as
-                        // above, but different components this time.
-                        <Route
-                          key={index}
-                          path={route.path}
-                          exact={route.exact}
-                          children={<route.main />}
-                        />
-                      ))}
-
-                    </Switch>
-                  </div>
-                </Col>
-              </Row>
-            </div>
+                <Row className='mb-2'>
+                  <NavLink className="nav-item" to={`${url}/change-password`} activeStyle={styles.activeStyle}>
+                    <Icon.Lock className="icon" />
+                    Change Password
+                  </NavLink>
+                </Row>
+              </Col>
+              <Col lg="9" xs='12' >
+                <div style={{ marginLeft: '20px' }}>
+                  <Switch>
+                    {routesprofile.map((route, index) => (
+                      // Render more <Route>s with the same paths as
+                      // above, but different components this time.
+                      <Route
+                        key={index}
+                        path={route.path}
+                        exact={route.exact}
+                        children={<route.main />}
+                      />
+                    ))}
+                  </Switch>
+                </div>
+              </Col>
+            </Row>
           </div>
+        </div>
+
+        <div style={{ position: 'absolute', bottom: '0', backgroundColor: 'black' }}>
+          <Footer />
         </div>
       </div>
 
