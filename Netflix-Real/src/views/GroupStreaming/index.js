@@ -26,7 +26,7 @@ const GroupStreaming = () => {
   // Choose whenever JOIN room or CREATE new room
   let { idgroup } = useParams();
   let tempRoom = null;
-  let currentUsername = read_cookie('username');
+  let currentUsername = localStorage.getItem('username');
   if (idgroup != currentUsername) {
     // JOIN
     tempRoom = idgroup;
@@ -36,7 +36,7 @@ const GroupStreaming = () => {
     tempRoom = currentUsername;
   }
   const [username, setusername] = useState(currentUsername);
-  const [userid, setuserid] = useState(read_cookie('id_user'));
+  const [userid, setuserid] = useState(localStorage.getItem('id_user'));
   const [roomnum, setroomnum] = useState(tempRoom);
   const [socket, setSocket] = useState(null);
 
@@ -61,7 +61,7 @@ const GroupStreaming = () => {
   const [hostModal, setHostModal] = useState(false);
   const [isHost, setIsHost] = useState(false);
   const [isFetchingApi, setIsFetchingApi] = useState(false);
-  const [members, setMembers] = useState([read_cookie('id_user')]);
+  const [members, setMembers] = useState([localStorage.getItem('id_user')]);
   const [btnRefresh, setBtnRefresh] = useState(false);
 
   const toggleRefresh = () => setBtnRefresh(!btnRefresh);

@@ -80,7 +80,7 @@ const Routes = [
     exact: true,
   },
   {
-    path: '/watch',
+    path: '/watch/:idMovie',
     component: lazy(() => import('../../views/VideoPlayer')),
     exact: true,
   },

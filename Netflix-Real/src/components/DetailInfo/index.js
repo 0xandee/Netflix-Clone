@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import '../PreviewInfo/PreviewInfo.scss';
 
 const DetailInfo = (props) => {
@@ -7,7 +8,7 @@ const DetailInfo = (props) => {
     return (
         <div className="px-4 pb-4">
             <div className="preview-detail-metadata">
-                <h2 className="episodes__label">{item.m_name}</h2>
+                <h2 className="episodes__label">{item.name}</h2>
                 <span className="match-score">98% Match</span>
                 <span className="maturiry-rating ml-2">
                     <span className="maturity-number">13+</span>
@@ -37,11 +38,17 @@ const DetailInfo = (props) => {
                 <div className="preview-tags d-flex flex-row">
                     <span className="preview-tags-item">
                         <span className="preview-tags-label">Genres: </span>
-                        {item.t_type && item.t_type.map((item, i, a) => (
+                        {item.type && item.type.map((item, i, a) => (
                             i !== a.length - 1 ?
-                                ` ${item},`
+                                <Link to={`/movies/${item.id}`} className="genre-title" >
+                                  {  ` ${item.name}, `}
+                                </Link>
+
                                 :
-                                ` ${item} `
+                                <Link to={`/movies/${item.id}`}  className="genre-title">
+                                    {` ${item.name} `}
+                                </Link>
+
                         ))}
 
                     </span>

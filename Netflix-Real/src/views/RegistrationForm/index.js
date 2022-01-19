@@ -10,6 +10,7 @@ import { requestRegister, verifyEmail } from "../../services/api/auth";
 import { countryListData } from "../../config/countryData";
 import { X, Check } from "react-feather";
 import { toast } from 'react-toastify'
+import { to_Encrypt } from "../../services/aes256";
 
 const genderData = [
     { value: 0, label: 'Male' },
@@ -70,7 +71,7 @@ const RegistrationForm = () => {
             setErrorDob(true)
         }
         else setErrorDob(false)
-       
+
         if (country == null) {
             setErrorCountry(true)
         }
@@ -92,10 +93,23 @@ const RegistrationForm = () => {
         else {
             try {
                 setIsPasswordError(false)
-                const response = await requestRegister({ email, password, gender, country, dob: dob.toISOString().slice(0, 10) })
+                const offset = dob.getTimezoneOffset()
+                let temp = new Date(dob.getTime() - (offset * 60 * 1000))
+                // dates.push(currentDate.toISOString().split('T')[0]);
+                let realDob =
+                    temp.getFullYear()
+                    + '-' +
+                    ((temp.getMonth() > 8) ?
+                        (temp.getMonth() + 1) :
+                        ('0' + (temp.getMonth() + 1)))
+                    + '-' +
+                    ((temp.getDate() > 9) ?
+                        temp.getDate() : ('0' + temp.getDate()));
+                console.log("🚀 ~ file: index.js ~ line 100 ~ nextClicked ~ realDob", realDob)
+                const response = await requestRegister({ email, password, gender, country, dob: realDob })
                 console.log("🚀 ~ file: index.js ~ line 64 ~ nextClicked ~ response", response)
                 if (response.status >= 200 && response.status <= 299) {
-                    const res =  await verifyEmail(email)
+                    const res = await verifyEmail(email)
                     console.log("🚀 ~ file: index.js ~ line 97 ~ nextClicked ~ res", res)
                     setIsSucess(true)
                 }

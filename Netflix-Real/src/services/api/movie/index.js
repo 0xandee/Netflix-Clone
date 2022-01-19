@@ -33,7 +33,7 @@ export const getRecommUserMoviesState1 = async (idUser) => {
       mode: 'cors',
       headers: {
         'Content-Type': 'application/json'
-        
+
       },
     })
       .then(response => {
@@ -54,7 +54,7 @@ export const getRecommUserMoviesState2 = async (idUser) => {
       mode: 'cors',
       headers: {
         'Content-Type': 'application/json'
-        
+
       },
     })
       .then(response => {
@@ -75,7 +75,7 @@ export const getRecommGroupMoviesState1 = async (idUser) => {
       mode: 'cors',
       headers: {
         'Content-Type': 'application/json'
-        
+
       },
     })
       .then(response => {
@@ -108,9 +108,9 @@ export const getAllMovies = async (token) => {
   })
 }
 
-export const getMoviesByGenres = async (arrIdGenre, token , number) => {
+export const getMoviesByGenres = async (arrIdGenre, token, number) => {
   return new Promise((resolve, reject) => {
-    fetch(movieApi.urlGetMoviesByGenres , {
+    fetch(movieApi.urlGetMoviesByGenres, {
       crossDomain: true,
       method: "POST",
       mode: 'cors',
@@ -121,7 +121,7 @@ export const getMoviesByGenres = async (arrIdGenre, token , number) => {
       body: JSON.stringify({
         arr_id_type: arrIdGenre,
         number
-    })
+      })
     })
       .then(response => {
         resolve(response)
@@ -134,18 +134,18 @@ export const getMoviesByGenres = async (arrIdGenre, token , number) => {
 
 export const getMoviesByListID = async (arrIdMovies, token) => {
   return new Promise((resolve, reject) => {
-    fetch(movieApi.urlGetMoviesByListID , {
+    fetch(movieApi.urlGetMoviesByListID, {
       crossDomain: true,
       method: "POST",
       mode: 'cors',
       headers: {
         'Content-Type': 'application/json',
-         'Authorization': "Bearer " + token,
+        'Authorization': "Bearer " + token,
       },
       body: JSON.stringify({
         arr_id_movie: arrIdMovies
-      
-    })
+
+      })
     })
       .then(response => {
 
@@ -212,6 +212,78 @@ export const getMoviesByGenreAPI = async (genreId, token) => {
     })
       .then(response => {
 
+        resolve(response)
+      })
+      .catch(error => {
+        return reject(error)
+      });
+  })
+}
+
+export const updateTimeWatched = async (id_movie, value_watched, token,) => {
+  return new Promise((resolve, reject) => {
+    fetch(movieApi.urlAddTimeWatched, {
+      crossDomain: true,
+      method: "POST",
+      mode: 'cors',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': "Bearer " + token,
+      },
+      body: JSON.stringify({
+        id_movie,
+        value: value_watched
+      })
+    })
+      .then(response => {
+        resolve(response)
+      })
+      .catch(error => {
+        return reject(error)
+      });
+  })
+}
+
+export const addWatchingList = async (id_movie, value_watched, token,) => {
+  return new Promise((resolve, reject) => {
+    fetch(movieApi.urlAddWatchingList, {
+      crossDomain: true,
+      method: "POST",
+      mode: 'cors',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': "Bearer " + token,
+      },
+      body: JSON.stringify({
+        id_movie,
+        value: value_watched
+      })
+    })
+      .then(response => {
+        resolve(response)
+      })
+      .catch(error => {
+        return reject(error)
+      });
+  })
+}
+
+export const updateMovieClicked = async (id_movie, token) => {
+  return new Promise((resolve, reject) => {
+    fetch(movieApi.urlAddMovieClicked, {
+      crossDomain: true,
+      method: "POST",
+      mode: 'cors',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': "Bearer " + token,
+      },
+      body: JSON.stringify({
+        id_movie,
+        value: 1
+      })
+    })
+      .then(response => {
         resolve(response)
       })
       .catch(error => {

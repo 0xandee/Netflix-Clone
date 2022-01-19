@@ -1,10 +1,27 @@
 $icon-color: white;
 
-.video-player__top .input-search{
+.video-player__top .input-search {
     width: 230px;
-
 }
+.icon {
+    width: 48px;
+    height: 48px;
 
+    opacity: 0.7;
+    transition: all 0.4s;
+    &:hover {
+        opacity: 1;
+        transform: scale(1.2);
+    }
+    &--color {
+        @extend .icon;
+        color: $icon-color;
+    }
+    &--fill {
+        @extend .icon;
+        fill: $icon-color;
+    }
+}
 
 #videoPlayer .video-player {
     background-color: black;
@@ -79,20 +96,19 @@ $icon-color: white;
             opacity: 0.7;
             color: red;
 
-            
-            &.pause{
+            &.pause {
                 animation: fadeOut ease 1s;
                 -webkit-animation: fadeOut ease 1s;
                 animation-fill-mode: forwards;
             }
         }
     }
+    
 
     &__bottom {
         position: absolute;
         bottom: 0;
 
-        width: 99%;
         height: 7vh;
 
         padding: 0 0.7% 1vw;
@@ -101,21 +117,19 @@ $icon-color: white;
 
         background: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.8));
         &__bar-container {
-            width: 100%;
-            height: 100%;
             position: relative;
             display: flex;
+            flex-direction: column;
 
             &__bar {
                 box-sizing: border-box;
-                width: 95%;
+                float: none;
+
+                width: 100%;
                 height: 0.5vh;
 
-                position: absolute;
-                top: 0;
-
+                position: relative;
                 transition: all 0.5s;
-
                 .tool-tip {
                     display: none;
                     position: absolute;
@@ -123,10 +137,7 @@ $icon-color: white;
 
                     cursor: default;
 
-                    color:white;
-            
-
-                  
+                    color: white;
                 }
                 input[type="range"] {
                     z-index: 2;
@@ -153,7 +164,8 @@ $icon-color: white;
                     }
                     &:hover ~ .video-player__bottom__bar-container__bar--loaded {
                         transform: scaleY(2);
-                    } &:hover ~ .tool-tip{
+                    }
+                    &:hover ~ .tool-tip {
                         display: block;
                     }
                 }
@@ -209,15 +221,11 @@ $icon-color: white;
                 }
             }
             &__remain-time {
-                position: absolute;
-                top: -20%;
-                right: 0;
-
-                width: 5%;
+                width: fit-content;
 
                 text-align: right;
 
-                padding: 0px;
+                padding: 0px 5px;
                 margin: 0;
 
                 color: white;
@@ -229,7 +237,7 @@ $icon-color: white;
 
                 width: 100%;
 
-                margin-top: 2vh;
+                margin-top: 1vh;
                 align-items: center;
                 input[type="range"] {
                     width: 100px;
@@ -288,17 +296,8 @@ $icon-color: white;
                     display: flex;
                     justify-content: space-between;
                     align-items: center;
-                    min-width: 250px;
-                    max-width: 400px;
-                    width: 30%;
+
                     height: 100%;
-                }
-                &__right {
-                    display: flex;
-                    justify-content: space-between;
-                    min-width: 250px;
-                    max-width: 400px;
-                    width: 30%;
                 }
             }
         }

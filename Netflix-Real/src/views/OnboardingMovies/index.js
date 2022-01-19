@@ -55,7 +55,7 @@ const OnboardingMovies = () => {
     useEffect(async () => {
         let temp = JSON.parse(query.get('value'))
         try {
-            const response = await getMoviesByGenres(temp, getToken(), 30)
+            const response = await getMoviesByGenres(temp, getToken(), 32)
             
             if (response.status === 200) {
                 setMovies(await response.json())
@@ -103,7 +103,7 @@ const OnboardingMovies = () => {
                                         <span>Next</span>
                                     </Button>
                                 </div>}
-                            <div className="registration__body__content__main__boxes w-100">
+                            <div className="registration__body__content__main__boxes w-75">
                                 {movies.map(item => (<OnboardingMovieItem id={item.id} artLink={item.uri_avatar} checkedMoviesClicked={checkedMoviesClicked} notCheckedMoviesClicked={notCheckedMoviesClicked} />))}
                             </div>
                         </div>

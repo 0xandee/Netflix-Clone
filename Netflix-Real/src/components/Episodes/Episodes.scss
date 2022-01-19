@@ -149,7 +149,7 @@
 .titleCard__container.more-like-this-item {
     margin: 0.1em;
     width: 100%;
-    max-width: 330px;
+    
     max-height: 100%;
     -webkit-box-flex: 0;
     cursor: pointer;
@@ -194,6 +194,7 @@
     white-space: unset;
     color: #46d369;
     font-weight: 700;
+    font-size: 18px;
     display: inline-block;
 }
 
@@ -229,7 +230,8 @@
 
 .titleCard-synopsis.previewModal--small-text {
     color: #d2d2d2;
-    font-size: 14px;
+    font-size: 16px;
+    font-weight: bold;
     line-height: 20px;
 
     margin:0;
@@ -242,12 +244,12 @@
 }
 
 .titleCard__container .titleCard--metadataWrapper {
-    background-color: #2f2f2f;
+    background-color: #181818;
 
     border-bottom-left-radius: 6px;
     border-bottom-right-radius: 6px;
 
-    padding: 0 5% 5%;
+    padding: 0 5%;
 }
 @media (min-width: 600px) {
     .titleCard-synopsis.previewModal--small-text {

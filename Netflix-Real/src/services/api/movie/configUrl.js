@@ -11,4 +11,7 @@ export const movieApi = {
   urlGetRecommendedUserMoviesState2: `${tempUrl}/individual/state2/?id=`,
   urlGetRecommendedGroupMoviesState1: `${tempUrl}/group/state1/?id=`,
   urlGetRecommendedGroupMoviesState2: `${tempUrl}/group/state2/?id=`,
+  urlAddTimeWatched: `${url}/api/movie/add-time-watcher`,
+  urlAddMovieClicked: `${url}/api/movie/is-clicked`,
+  urlAddWatchingList: `${url}/api/movie/user-time-watch`,
 }

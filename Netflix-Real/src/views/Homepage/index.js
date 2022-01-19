@@ -34,9 +34,10 @@ const Homepage = (props) => {
     const [open, setOpen] = useState(false);
 
     const toggleModal = () => {
-        delete_cookie('username')
-        delete_cookie('id_user')
-        delete_cookie('access_token')
+        localStorage.clear()
+        // delete_cookie('username')
+        // delete_cookie('id_user')
+        // delete_cookie('access_token')
         history.push('/signin')
     };
 

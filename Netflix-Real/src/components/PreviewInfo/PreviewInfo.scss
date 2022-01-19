@@ -56,3 +56,12 @@
     font-size: 18px;
     margin-bottom: .5em;
 }
+
+.genre-title{
+    text-decoration:none;
+    color: #ddd;
+    &:hover{
+        text-decoration:underline;
+        color: #ddd;
+    }
+}

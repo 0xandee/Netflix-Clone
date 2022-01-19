@@ -1,14 +1,16 @@
 import React, { createRef, useCallback, useEffect, useRef, useState } from "react";
 import { findDOMNode } from "react-dom";
 import ReactPlayer from "react-player";
-import { Link, useHistory } from "react-router-dom";
-import { Progress, Tooltip } from "reactstrap";
+import { Link, useHistory, useParams } from "react-router-dom";
+import { Progress, Tooltip, Row, Col } from "reactstrap";
 import screenfull from "screenfull";
 import { IconBackArrow, IconFullScreen, IconLayer, IconNext10s, IconPause, IconPauseCircle, IconPlay, IconPlayCircle, IconRewind10s, IconSetting, IconSkip, IconVolume, IconVolumeMute } from "../../assets/Icon";
 import { Duration, Format } from "../../services/function/Duration";
 import './style.scss'
 import * as Icon from 'react-feather';
 import { useLayoutEffect } from "react";
+import { addWatchingList, updateTimeWatched } from "../../services/api/movie";
+import { getToken } from "../../services/function";
 
 let count = 0;
 //https://www.example.com/url_to_video.mp4
@@ -17,6 +19,7 @@ let count = 0;
 //https://drive.google.com/uc?export=download&id=1Cvk2XhYdSKAST4ecGQ6s1ra4MilvXuLC
 const VideoPlayer = ({ socket, roomnum, videoURL, handleOpenMovieRecommend }) => {
     const history = useHistory(); // Navigate back to the previous state
+    const { idMovie } = useParams()
     const [played, setPlayed] = useState(0);
     const [loaded, setLoaded] = useState(0);
     const [playing, setPlaying] = useState(false);
@@ -32,6 +35,7 @@ const VideoPlayer = ({ socket, roomnum, videoURL, handleOpenMovieRecommend }) =>
     const playerContainerRef = useRef(null);
     const controlRef = useRef(null);
     const volumeRef = useRef(true);
+    const volumeNonHostRef = useRef(true);
     const playedRef = useRef(null);
     const playingRef = useRef(null);
     const titlePlayedRef = useRef(null);
@@ -53,6 +57,7 @@ const VideoPlayer = ({ socket, roomnum, videoURL, handleOpenMovieRecommend }) =>
         console.log('loading')
 
     }
+
 
     const handleVolumeChange = () => {
         let target = volumeRef.current
@@ -98,7 +103,6 @@ const VideoPlayer = ({ socket, roomnum, videoURL, handleOpenMovieRecommend }) =>
     }
 
     const handleVideoProgress = (state) => {
-        console.log("🚀 ~ file: index.js ~ line 101 ~ handleVideoProgress ~ state", muted)
 
         if (count > 3 && !seeking) {
             controlRef.current.style.opacity = '0'
@@ -136,10 +140,13 @@ const VideoPlayer = ({ socket, roomnum, videoURL, handleOpenMovieRecommend }) =>
     }
 
     const handleRewind = useCallback(() => {
+        // playedRef.current = played + (10 / duration)
         playerRef.current.seekTo((played * duration) - 10, 'seconds')
+
     }, [played, duration]
     )
     const handleNext = useCallback(() => {
+        playedRef.current = played + (10 / duration)
         playerRef.current.seekTo((played * duration) + 10, 'seconds')
     }, [played, duration]
     )
@@ -239,14 +246,26 @@ const VideoPlayer = ({ socket, roomnum, videoURL, handleOpenMovieRecommend }) =>
     }, [played, focusing])
 
     useEffect(() => {
-        document.addEventListener("keydown", handleKeyDown)
-        document.addEventListener("keyup", handleKeyUp)
+        if (isHost) {
+            document.addEventListener("keydown", handleKeyDown)
+            document.addEventListener("keyup", handleKeyUp)
+        }
 
         return () => {
             document.removeEventListener("keydown", handleKeyDown)
             document.removeEventListener("keyup", handleKeyUp)
         }
     }, [handleKeyDown, handleKeyUp]);
+
+    useEffect(() => {
+        return async () => {
+            if (socket == undefined) {
+                if (playedRef.current < 0.9)
+                    await addWatchingList(idMovie.toString(), playedRef.current, getToken())
+                await updateTimeWatched(idMovie.toString(), Math.round(playedRef.current * 5), getToken())
+            }
+        }
+    }, [])
 
     useLayoutEffect(() => {
         console.log('get host data')
@@ -312,6 +331,8 @@ const VideoPlayer = ({ socket, roomnum, videoURL, handleOpenMovieRecommend }) =>
                 }
             })
         }
+
+
     }, [socket])
 
 
@@ -331,9 +352,7 @@ const VideoPlayer = ({ socket, roomnum, videoURL, handleOpenMovieRecommend }) =>
                 if (data.currVideo != url) {
                     setUrl(data.currVideo)
                 }
-
                 if (playedRef.current != hostTime || playingRef.current != hostState) {
-
                     if (!host) {
                         handleOpenMovieRecommend(false)
                         volumeRef.current = data.muted
@@ -343,7 +362,6 @@ const VideoPlayer = ({ socket, roomnum, videoURL, handleOpenMovieRecommend }) =>
                         playingRef.current = hostState
                         setPlaying(hostState);
                         playerRef.current.seekTo(hostTime)
-
                     }
                 }
             });
@@ -353,7 +371,17 @@ const VideoPlayer = ({ socket, roomnum, videoURL, handleOpenMovieRecommend }) =>
 
     return (
         <div id={`videoPlayer`} onMouseMove={handleMouseMove} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} style={{ position: 'absolute', width: '100%', height: '100%' }}>
-            
+            {!isHost &&
+                <div className='position-absolute'
+                    style={{ bottom: '4vh', left: '2vw', height: '60px', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 7 }}>
+                    <div onClick={handleVolumeMute}>
+                        {volume > 0 && !muted ?
+                            <IconVolume className={'icon--color'} />
+                            :
+                            <IconVolumeMute className={'icon--color'} />
+                        }
+                    </div>
+                </div>}
             <div ref={playerContainerRef} className={`video-player`} >
                 <div className={'video-container'} onClick={handlePlayPause}>
                     <ReactPlayer
@@ -388,52 +416,50 @@ const VideoPlayer = ({ socket, roomnum, videoURL, handleOpenMovieRecommend }) =>
                         :
                         <IconPauseCircle className={`video-player__icon-container__icon pause`} />
                     }
-
-
                 </div>
                 <div ref={controlRef} style={{
                     transition: 'all 0.5s'
                 }}>
-
-                    <div className={`video-player__top`} style={{  justifyContent: "space-between" }}>
-                        <div className={`video-player__top__icon-container`} style={{zIndex: '5',}} onClick={() => history.push('/home')}>
+                    <div className={`video-player__top`} style={{ justifyContent: "space-between" }}>
+                        <div className={`video-player__top__icon-container`} style={{ zIndex: '5', }} onClick={() => history.push('/home')}>
                             <IconBackArrow className={'video-player__top__icon-back'} />
                             <span>Back to Browse</span>
                         </div>
-
                     </div>
+                    <div className={`video-player__bottom w-100`}>
+                        <div className={`video-player__bottom__bar-container h-100 w-100`}>
+                            <div className={'d-flex w-100 justify-content-space_between align-items-center'}>
+                                <div className={`video-player__bottom__bar-container__bar`}>
+                                    <input type='range' min={0} max={1} step='any' id='playedInput'
+                                        value={played}
+                                        onMouseMove={handlePlayedMouseMove}
+                                        onMouseDown={handlePlayedDown}
+                                        onChange={handlePlayedChange}
+                                        onMouseUp={handlePlayedUp} />
+                                    <span className={`tool-tip`} ref={titlePlayedRef}  >
+
+                                    </span>
+                                    <div className={`video-player__bottom__bar-container__bar--played`}>
+                                        <progress min={0}
+                                            max={1} value={played} >
+                                        </progress>
+                                    </div>
+                                    <div className={`video-player__bottom__bar-container__bar--loaded`}>
+                                        <progress min={0}
+                                            max={1} value={loaded} >
+                                        </progress>
+                                    </div>
 
 
-                    <div className={`video-player__bottom`}>
-                        <div className={`video-player__bottom__bar-container`}>
-                            <div className={`video-player__bottom__bar-container__bar`}>
-                                <input type='range' min={0} max={1} step='any' id='playedInput'
-                                    value={played}
-                                    onMouseMove={handlePlayedMouseMove}
-                                    onMouseDown={handlePlayedDown}
-                                    onChange={handlePlayedChange}
-                                    onMouseUp={handlePlayedUp} />
-                                <span className={`tool-tip`} ref={titlePlayedRef}  >
-
-                                </span>
-                                <div className={`video-player__bottom__bar-container__bar--played`}>
-                                    <progress min={0}
-                                        max={1} value={played} >
-                                    </progress>
                                 </div>
-                                <div className={`video-player__bottom__bar-container__bar--loaded`}>
-                                    <progress min={0}
-                                        max={1} value={loaded} >
-                                    </progress>
-                                </div>
-
-
+                                <p className={`video-player__bottom__bar-container__remain-time`}>
+                                    <Duration seconds={duration * (1 - played)} />
+                                </p>
                             </div>
-                            <p className={`video-player__bottom__bar-container__remain-time`}>
-                                <Duration seconds={duration * (1 - played)} />
-                            </p>
-                            <div className={'video-player__bottom__bar-container__player-container'}>
-                                <div className={`video-player__bottom__bar-container__player-container__left`} >
+
+
+                            <Row className={'video-player__bottom__bar-container__player-container w-100'}>
+                                <Col lg='3' md='6' sm='8' xs='10' className={`video-player__bottom__bar-container__player-container__left`} >
                                     <div onClick={handlePlayPause}>
                                         {!playing ? <IconPlay className={'icon--color'} />
                                             :
@@ -441,8 +467,11 @@ const VideoPlayer = ({ socket, roomnum, videoURL, handleOpenMovieRecommend }) =>
                                         }
                                     </div>
 
-
-                                    <div id='iconRewind' onClick={handleRewind}>
+                                    <div id='iconRewind'
+                                        onClick={handleRewind}
+                                        onMouseDown={handlePlayedDown}
+                                        onMouseUp={() => { setSeeking(false) }}
+                                    >
                                         <IconRewind10s className={'icon--fill'} />
                                         <Tooltip placement="top" isOpen={iconRewind} target="iconRewind" toggle={toggleRewind}>
                                             10s
@@ -457,43 +486,28 @@ const VideoPlayer = ({ socket, roomnum, videoURL, handleOpenMovieRecommend }) =>
 
 
                                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                                        {volume > 0 && !muted ?
-                                            <div onClick={handleVolumeMute}>
+                                        <div onClick={handleVolumeMute}>
+                                            {volume > 0 && !muted ?
                                                 <IconVolume className={'icon--color'} />
-                                            </div>
-                                            :
-                                            <div>
-                                                <div onClick={handleVolumeMute}>
-                                                    <IconVolumeMute className={'icon--color'} />
-                                                </div>
-                                            </div>
-                                        }
+                                                :
+                                                <IconVolumeMute className={'icon--color'} />
+                                            }
+                                        </div>
                                         <input type='range' min={0} max={1} step='any' ref={volumeRef}
                                             value={volume} className={`volume ${!muted && 'open'}`}
                                             onChange={handleVolumeChange}
                                             onMouseUp={handleVolumeUp} />
                                     </div>
-                                    {/* <div style={{padding: '6px 6px'}}>
-                                        <button
-                                            style={{ fontSize: "1rem",fontWeight: "bold",paddingRight: "0.5rem", float: "right", borderRadius: "8px", backgroundColor: "rgb(183, 7, 16)", padding: "12px 12px", border: "none", color: 'white' }}
-                                            onClick={syncHost}>
-                                            Sync
-                                        </button>
-                                    </div> */}
 
-
-                                </div>
-                                <div className="video-player__bottom__bar-container__player-container__right">
-                                    <IconSkip className={'icon--color'} />
-                                    <IconLayer className={'icon--fill'} />
-                                    <IconSetting className={'icon--color'} />
+                                </Col>
+                                <Col xs='1' className="d-flex justify-content-end" >
                                     <div onClick={handleClickFullscreen} >
                                         <IconFullScreen className={'icon--color'} />
                                     </div>
 
-                                </div>
+                                </Col>
 
-                            </div>
+                            </Row>
 
 
                         </div>
