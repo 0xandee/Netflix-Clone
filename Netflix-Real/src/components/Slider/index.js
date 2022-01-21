@@ -39,15 +39,15 @@ const Slider = (props) => {
                     "768": { "slidesPerView": 4, "slidesPerGroup": 4, freeMode: false },
                     "1024": { "slidesPerView": 8, "slidesPerGroup": 8, freeMode: false }
                 }}
-                className="swiper-container mt-3 px-5">
+                className="swiper-container mt-4 px-5">
                 <div>
                     {props.sliderMovieList.map(item => {
                        
                         return (
                             item != null && item.uri_avatar != null &&
-                            <SwiperSlide className="swiper-slide slide" onClick={itemClicked(item)}>
-                                <a className="thumbTile cursor-pointer" >
-                                    <LazyLoadImage effect="blur" className="thumbTile__image" src={item.uri_avatar} alt={item.m_name} />
+                            <SwiperSlide className="swiper-slide slide h-100"  onClick={itemClicked(item)}>
+                                <a className="thumbTile cursor-pointer h-100" >
+                                    <LazyLoadImage effect="blur" className="thumbTile__image" style={{minHeight:'25vh', maxHeight:'25vh'}} src={item.uri_avatar} alt={item.m_name} />
                                 </a>
                                 {/* <div className="controlPlayer pl-4em"></div> */}
                             </SwiperSlide>)

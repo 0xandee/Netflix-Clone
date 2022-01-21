@@ -20,7 +20,7 @@ const Episodes = (props) => {
             </div>
             <div className="episodesSelector__container" onClick={playClicked}>
                 <div className="titleCardList__container episode__item">
-                    <div className="titleCard_title_index">1</div>
+                    
                     <div className="titleCard_imageWrapper">
                         <img src={props.item.uri_avatar} alt="Episode 1" />
                     </div>

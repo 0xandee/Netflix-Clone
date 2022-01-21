@@ -10,6 +10,7 @@ import { getMovieAPI, getMoviesByListID, getRecommUserMoviesState2, updateMovieC
 import { useHistory } from 'react-router-dom';
 import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
 import { getToken } from '../../services/function';
+import { Col, Container, Row } from 'reactstrap';
 
 const DetailPage = (props) => {
     // const { item } = props.location.state;
@@ -92,35 +93,40 @@ const DetailPage = (props) => {
                 </div>
 
                 :
-                <div style={{ padding: '0 7vw', minWidth: '800px' }}>
-                    <div className="position-relative  background max-width">
-                        <div className="position-relative float-start w-75 pt-4 ">
-                            <div className="mask-image position-relative d-flex flex-row  mb-5">
-                                <img style={{ maxHeight: '510px', marginRight: '2vh' }}
-                                    className='w-25 h-100  ' alt="playerArt" src={dataMovie.uri_thumbnail} />
+                <div style={{ padding: '0 7vw', width: '100%' }}>
+                    <Row className="position-relative  background max-width">
+                        <Col xs='12' lg='9' className="position-relative float-start  pt-4 ">
+                            <div className="mask-image position-relative d-flex flex-row mt-3 mb-5">
+                                <img style={{ maxHeight: '510px',maxWidth:'220px', marginRight: '2vh' }}
+                                    className='w-50 h-100  ' alt="playerArt" src={dataMovie.uri_thumbnail} />
 
-                                <div className='position-relative d-flex flex-column mb-5'>
+                                <div className='position-relative d-flex flex-column float-start mb-5'>
                                     <DetailInfo item={dataMovie} />
                                     <PreviewButtonControl item={dataMovie} />
                                 </div>
                             </div>
                             <Episodes item={dataMovie} />
-                        </div>
-                        <h3 >More Like This</h3>
-                        <div className=" float-end w-25 my-3 py-2 px-4 ml-4 overflow-auto d-flex justify-content-center more-like-this-container" style={{ height: '80vh' }} >
-                            <div className="pb-3">
-                                {/* {recommendedMovies.length && recommendedMovies.map((item) =>
-                                    <MoreLikeThisItem item={item} />
-                                )} */}
-                                <MoreLikeThisItem item={dataMovie} />
-                                <MoreLikeThisItem item={dataMovie} />
-                                <MoreLikeThisItem item={dataMovie} />
-                                <MoreLikeThisItem item={dataMovie} />
-                                <MoreLikeThisItem item={dataMovie} />
-                                <MoreLikeThisItem item={dataMovie} />
+                        </Col>
+                        <Col xs='12' lg='3' className="position-relative float-end mt-4">
+                            <h3 className="position-absolute text-light px-4" style={{ top: '-2%', zIndex: '1000' }}>More Like This</h3>
+                            <div className="my-3 py-2 px-4 ml-4 overflow-auto w-100 more-like-this-container" style={{ height: '80vh' }} >
+
+                                <div className="pb-3 d-flex flex-column justify-content-center align-items-center">
+
+                                    {/* {recommendedMovies.length && recommendedMovies.map((item) =>
+            <MoreLikeThisItem item={item} />
+        )} */}
+                                    <MoreLikeThisItem item={dataMovie} />
+                                    <MoreLikeThisItem item={dataMovie} />
+                                    <MoreLikeThisItem item={dataMovie} />
+                                    <MoreLikeThisItem item={dataMovie} />
+                                    <MoreLikeThisItem item={dataMovie} />
+                                    <MoreLikeThisItem item={dataMovie} />
+                                </div>
                             </div>
-                        </div>
-                    </div>
+                        </Col>
+
+                    </Row>
                 </div>
             }
             <CustomModal isOpen={open} onClick={toggleModal} headerText={"Session Timed out"} buttonText='Back to log in page' bodyText=

@@ -9,7 +9,7 @@ import { Duration, Format } from "../../services/function/Duration";
 import './style.scss'
 import * as Icon from 'react-feather';
 import { useLayoutEffect } from "react";
-import { addWatchingList, updateTimeWatched } from "../../services/api/movie";
+import { addWatchingList, getWatchingList, updateTimeWatched } from "../../services/api/movie";
 import { getToken } from "../../services/function";
 
 let count = 0;
@@ -35,7 +35,6 @@ const VideoPlayer = ({ socket, roomnum, videoURL, handleOpenMovieRecommend }) =>
     const playerContainerRef = useRef(null);
     const controlRef = useRef(null);
     const volumeRef = useRef(true);
-    const volumeNonHostRef = useRef(true);
     const playedRef = useRef(null);
     const playingRef = useRef(null);
     const titlePlayedRef = useRef(null);
@@ -53,10 +52,12 @@ const VideoPlayer = ({ socket, roomnum, videoURL, handleOpenMovieRecommend }) =>
     }
 
 
-    const handleVideoOnReady = () => {
+    const handleVideoOnReady = useCallback(() => {
+
+
         console.log('loading')
 
-    }
+    }, [])
 
 
     const handleVolumeChange = () => {
@@ -103,7 +104,6 @@ const VideoPlayer = ({ socket, roomnum, videoURL, handleOpenMovieRecommend }) =>
     }
 
     const handleVideoProgress = (state) => {
-
         if (count > 3 && !seeking) {
             controlRef.current.style.opacity = '0'
             count = 0;
@@ -257,12 +257,44 @@ const VideoPlayer = ({ socket, roomnum, videoURL, handleOpenMovieRecommend }) =>
         }
     }, [handleKeyDown, handleKeyUp]);
 
+    useEffect(async () => {
+        try {
+            const response = await getWatchingList(getToken())
+            console.log("🚀 ~ file: index.js ~ line 39 ~ useEffect ~ response", response)
+
+            if (response.status === 200) {
+                const data = await response.json()
+                console.log("🚀 ~ file: index.js ~ line 141 ~ useEffect ~ data", data)
+                if (data.length) {
+                    const current_duration = data.find(item => item.id == idMovie.toString()).current_duration
+                    console.log("🚀 ~ file: index.js ~ line 269 ~ useEffect ~ data", data.find(item => item.id == idMovie.toString()).current_duration)
+
+                    playedRef.current = current_duration
+                    setPlayed(current_duration);
+                    playerRef.current.seekTo(current_duration)
+                }
+            }
+            else if (response.status === 500) {
+                history.push('/maintenance')
+            }
+
+        }
+        catch {
+            history.push('/maintenance')
+        }
+       
+    }, [])
+
     useEffect(() => {
-        return async () => {
+        return () => {
+
             if (socket == undefined) {
-                if (playedRef.current < 0.9)
-                    await addWatchingList(idMovie.toString(), playedRef.current, getToken())
-                await updateTimeWatched(idMovie.toString(), Math.round(playedRef.current * 5), getToken())
+                if (playedRef.current != null && playedRef.current < 0.9) {
+                    console.log("🚀 ~ file: index.js ~ line 290 ~ return ~ playedRef.current", playedRef.current)
+
+                    addWatchingList(idMovie.toString(), playedRef.current, getToken())
+                    updateTimeWatched(idMovie.toString(), Math.round(playedRef.current * 5), getToken())
+                }
             }
         }
     }, [])

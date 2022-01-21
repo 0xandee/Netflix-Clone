@@ -2,7 +2,7 @@ import React, { useRef, useState, useCallback, useEffect, createRef } from "reac
 import { Slider, Footer, NavigationBar, CustomModal } from "../../components";
 import { useSelector, useDispatch } from 'react-redux';
 import { setMovieTypes, showPopUpInfo } from "../../services/redux/actions";
-import { getMoviesByGenreAPI, getMoviesByListID, getMovieTypeAPI, getRecommUserMoviesState1 } from "../../services/api/movie";
+import { getMoviesByGenreAPI, getMoviesByListID, getMovieTypeAPI, getRecommUserMoviesState1, getWatchingList } from "../../services/api/movie";
 import './Slider.scss';
 // Import Swiper styles
 import "swiper/swiper.min.css";
@@ -92,7 +92,7 @@ const Homepage = (props) => {
             else {
                 setIsFetching(false)
             }
-           
+
         }
         catch {
             // history.push('/maintenance')
@@ -101,11 +101,10 @@ const Homepage = (props) => {
     }, [])
 
     useEffect(() => {
-
         dataTypes.map(async (item) => {
             try {
                 const res = await getMoviesByGenreAPI(item.id, getToken())
-                if (res.status == 200 && !genreMovies.length) {
+                if (res.status == 200) {
                     let data = await res.json()
                     var genreMovie = {
                         id: item.id,
@@ -129,10 +128,43 @@ const Homepage = (props) => {
             }
 
         });
+        if (dataTypes.length)
+            setIsFetching(false)
         console.log("🚀 ~ file: index.js ~ line 104 ~ dataTypes.map ~ dataTypes", dataTypes)
-
     }, [dataTypes])
 
+    useEffect(async () => {
+        try {
+            const response = await getWatchingList(getToken())
+            console.log("🚀 ~ file: index.js ~ line 39 ~ useEffect ~ response", response)
+
+            if (response.status === 200) {
+                const data = await response.json()
+                console.log("🚀 ~ file: index.js ~ line 141 ~ useEffect ~ data", data)
+                if (data.length) {
+                    var genreMovie = {
+                        id: 'Watching',
+                        sliderTitle: 'Continue watching',
+                        sliderMovieList: data
+                    }
+                    setGenreMovies(genreMovies => [genreMovie, ...genreMovies]);
+                    console.log("🚀 ~ file: index.js ~ line 149 ~ useEffect ~ genreMovies", genreMovies)
+                }
+
+            }
+            else if (response.status == 403) {
+                setOpen(true)
+            }
+            else if (response.status === 500) {
+                history.push('/maintenance')
+            }
+
+        }
+        catch {
+            history.push('/maintenance')
+        }
+
+    }, [])
 
 
     return (

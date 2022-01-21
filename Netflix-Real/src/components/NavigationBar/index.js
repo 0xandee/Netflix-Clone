@@ -53,7 +53,7 @@ const NavigationBar = (props) => {
         textInput.current.blur()
         setIsShown(false)
     }
-    
+
 
     const btnSearchClicked = () => {
         if (!isShown) {
@@ -75,7 +75,7 @@ const NavigationBar = (props) => {
 
     }
 
-    const logoClicked = ()=>{
+    const logoClicked = () => {
         history.push('/home')
     }
 
@@ -84,7 +84,7 @@ const NavigationBar = (props) => {
             currentScrollY = window.scrollY
             currentScrollY > 0 ? setOnTopPage(true) : setOnTopPage(false);
         };
-        window.addEventListener("scroll", handleScroll, { passive: true }); 
+        window.addEventListener("scroll", handleScroll, { passive: true });
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
 
@@ -101,7 +101,6 @@ const NavigationBar = (props) => {
                     {width > 865 ?
                         <React.Fragment>
                             <div className='tab-navigation'>
-
                                 {
                                     items.map(item => (
                                         <NavLink to={item.navLink} className='nav-item' activeStyle={styles.activeStyle}>{item.label}</NavLink>
@@ -113,7 +112,7 @@ const NavigationBar = (props) => {
                         (<div className='sub-menu nav-element'
                             onClick={() => setOpen(!isOpen)}>
                             <div className='sub-menu-header'>
-                                <span>Browse</span>
+                                <h6 className='text-white'>Browse</h6>
                                 <span className={`caret ${isOpen && 'open'}`} />
                             </div>
                             <div className={`sub-menu-body ${isOpen && 'open'}`} >
@@ -140,9 +139,9 @@ const NavigationBar = (props) => {
                 </div>
                 <div className='secondary-navigation'>
                     <Link to={`/watchgroup/${idgroup}`} className="text-decoration-none text-light">
-                        <div style={{paddingRight: '3rem', cursor: 'pointer'}}>
-                            <Icon.Plus className='icon-style' style={{color: 'white'}}/>
-                            Create Group
+                        <div style={{ textAlign: 'center', paddingRight: '3vw', cursor: 'pointer', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                            <Icon.Plus className='icon-style' style={{ color: 'white' }} />
+                            <span className='text-white text-center' >Create Group</span>
                         </div>
                     </Link>
                     {/* <form id='user-form' style={{paddingRight: '3rem', cursor: 'pointer'}}>
@@ -166,9 +165,9 @@ const NavigationBar = (props) => {
                         </React.Fragment>
 
                     </div>
-                    <div className='nav-element'>
+                    {/* <div className='nav-element'>
                         <CustomNotification />
-                    </div>
+                    </div> */}
                     <div className='nav-element'>
                         <CustomDropdown />
                     </div>

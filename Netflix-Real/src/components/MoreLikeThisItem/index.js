@@ -39,9 +39,9 @@ const MoreLikeThisItem = (props) => {
     return (
         <div id='moreLikeThis'>
             <div className="titleCard__container more-like-this-item pb-4" onClick={itemClicked}>
-                <div className="d-flex has-duration h-50 w-100">
-                    <img className='w-25 h-25' src={item.uri_avatar} alt={item.m_name} />
-                    <div className="d-flex  justify-content-center px-4 pt-2" style={{backgroundColor:'#333'}}>
+                <div className="d-flex has-duration h-25 w-100">
+                    <img className='w-25 h-125' src={item.uri_avatar} alt={item.m_name} />
+                    <div className="d-flex  justify-content-center align-items-center px-4 pt-2 text-center" style={{backgroundColor:'#333'}}>
                         <p className="titleCard-synopsis previewModal--small-text">{item.description}</p>
                     </div>
 

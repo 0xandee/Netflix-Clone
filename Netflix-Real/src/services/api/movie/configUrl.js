@@ -14,4 +14,5 @@ export const movieApi = {
   urlAddTimeWatched: `${url}/api/movie/add-time-watcher`,
   urlAddMovieClicked: `${url}/api/movie/is-clicked`,
   urlAddWatchingList: `${url}/api/movie/user-time-watch`,
+  urlGetWatchingList: `${url}/api/movie/watching-list`,
 }

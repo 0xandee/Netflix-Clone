@@ -30,7 +30,7 @@ body {
 }
 
 .thumbSection {
-    padding-top: 4vh;
+    padding-top: 3vh;
     color: var(--colorWhite);
 }
 
@@ -58,6 +58,7 @@ body {
 
 .thumbTile__image {
     width: 100%;
+    height: 100%;
     border-radius: var(--tileBorderRadius);
 }
 
@@ -118,6 +119,7 @@ body {
     transition: all 0.2s ease-in-out;
     overflow: hidden;
     position:relative;
+    min-height: 100%;
     z-index:1;
     img{
         -webkit-transition:all .2s ease;
@@ -153,6 +155,7 @@ body {
 
 .swiper-container {
     overflow: visible;
+   
 }
 
 .controlPlayer {

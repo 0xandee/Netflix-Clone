@@ -291,3 +291,23 @@ export const updateMovieClicked = async (id_movie, token) => {
       });
   })
 }
+
+export const getWatchingList = async (token) => {
+  return new Promise((resolve, reject) => {
+    fetch(movieApi.urlGetWatchingList, {
+      crossDomain: true,
+      method: "GET",
+      mode: 'cors',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': "Bearer " + token,
+      },
+    })
+      .then(response => {
+        resolve(response)
+      })
+      .catch(error => {
+        return reject(error)
+      });
+  })
+}
