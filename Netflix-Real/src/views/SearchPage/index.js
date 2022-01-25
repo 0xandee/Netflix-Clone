@@ -93,7 +93,7 @@ const SearchPage = (props) => {
                 <div className='body-content'>
                     <div className='list-grid'>
                         {genreMovies.length > 0 ? genreMovies.map(item =>
-                            <div className='grid-container' onClick={itemClicked(item)}>
+                            <div className='grid-container w-100 h-100' onClick={itemClicked(item)}>
                                 <div className=' item-grid multi-landing-stack-space-holder w-100 h-100'>
                                     {/* <div className="multi-landing-stack-1"></div>
                                     <div className="multi-landing-stack-2"></div> */}

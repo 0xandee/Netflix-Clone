@@ -9,14 +9,10 @@
     z-index: 3;
     .select-header {
       position: absolute;
-      top: 5rem;
-      left:3rem;
-
-      width: max-content;
+      bottom: 2%;
+      left: 3rem;
+      width: 200px;
       z-index: 3;
-
-      color:#fff;
-      font-size: 20px;
       &::-webkit-scrollbar {
         display: none;
         scrollbar-width: none;
@@ -25,8 +21,8 @@
   }
   .body-content {
     padding: 0 3rem;
-    margin-top: 10vh;
-    min-height: 70vh;
+    margin-top: 15vh;
+    min-height: 65vh;
     .list-grid {
       display: flex;
       align-items: center;
@@ -37,12 +33,10 @@
       grid-gap: 1rem;
       .grid-container {
         position: relative;
-        height: 310px;
         max-height: 360px;
         min-height: 290px;
 
-        width: 220px;
-        min-width: 180px;
+        
         max-width: 230px;
 
         padding-bottom: 40px;
@@ -127,7 +121,7 @@
     }
   }
 
-  @media (min-width: 400px) {
+  @media (min-width: 300px) {
     .list-grid {
       grid-template-columns: repeat(2, 1fr);
     }

@@ -12,7 +12,6 @@ $gray: #8c8c8c;
 
     z-index: 0;
 
-
     &__background-image {
         position: absolute;
         display: block;
@@ -45,7 +44,7 @@ $gray: #8c8c8c;
         &__container {
             line-height: 90px;
         }
-        
+
         &__logo {
             height: 45px;
             fill: #e50914;
@@ -65,11 +64,18 @@ $gray: #8c8c8c;
     &__body {
         height: 100%;
         min-height: 650px;
-        
+
         margin: 0 auto;
         margin-bottom: 2vh;
         background-color: transparent;
 
+        .resend-email {
+            text-decoration: none;
+            font-weight: 700;
+            &:hover {
+                text-decoration: underline;
+            }
+        }
         &__content {
             box-sizing: border-box;
             flex-direction: column;
@@ -81,7 +87,7 @@ $gray: #8c8c8c;
             border-radius: 4px;
 
             display: block;
-            
+
             transition-duration: 250ms;
             &__main {
                 box-sizing: border-box;
@@ -92,7 +98,6 @@ $gray: #8c8c8c;
 
                 width: 100%;
 
-                
                 .error-label {
                     font-size: 12px;
                     color: #e50914;
@@ -100,9 +105,9 @@ $gray: #8c8c8c;
                     padding-top: 5px;
                     padding-bottom: 15px;
 
-                    opacity:0;
-                    &.visible{
-                        opacity:1
+                    opacity: 0;
+                    &.visible {
+                        opacity: 1;
                     }
                 }
                 &__image-devices {
@@ -136,7 +141,7 @@ $gray: #8c8c8c;
                 &__button-next {
                     width: 100%;
                     min-height: 64px;
-                 
+
                     padding: 16px;
 
                     border-radius: 4px;

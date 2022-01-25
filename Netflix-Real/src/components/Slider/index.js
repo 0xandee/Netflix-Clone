@@ -11,7 +11,8 @@ import SwiperCore, {
 } from 'swiper/core';
 import { Link, useHistory, useLocation, NavLink } from "react-router-dom";
 import './Slider.scss';
-import { LazyLoadImage } from 'react-lazy-load-image-component';
+import { LazyLoadImage } from "react-lazy-load-image-component";
+
 
 // install Swiper modules
 SwiperCore.use([Navigation]);

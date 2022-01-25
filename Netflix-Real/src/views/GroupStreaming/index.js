@@ -153,21 +153,22 @@ const GroupStreaming = () => {
   const handleRefreshButton = async () => {
     try {
       setIsFetchingApi(true)
-      const res = await getRecommGroupMoviesState1(members.join("&id="))
-      console.log("🚀 ~ file: index.js ~ line 156 ~ handleRefreshButton ~ res", res)
-      if (res.status === 200) {
-        let dataRecommend = await res.json()
-        const temp = await getMoviesByListID(dataRecommend.map((key) => key.id), getToken())
-        let data2 = await temp.json()
-        console.log("🚀 ~ file: index.js ~ line 196 ~ useEffect ~ data2")
-        setRecommendedMovies(data2)
-        setShowedMovies(data2.slice(0, 31))
-        setIsFetchingApi(false)
-      }
+      // const res = await getRecommGroupMoviesState1(members.join("&id="))
+      // console.log("🚀 ~ file: index.js ~ line 156 ~ handleRefreshButton ~ res", res)
+      // if (res.status === 200) {
+      //   let dataRecommend = await res.json()
+      //   const temp = await getMoviesByListID(dataRecommend.map((key) => key.id), getToken())
+      //   let data2 = await temp.json()
+      //   console.log("🚀 ~ file: index.js ~ line 196 ~ useEffect ~ data2")
+      //   setRecommendedMovies(data2)
+      //   setShowedMovies(data2.slice(0, 31))
+      //   setIsFetchingApi(false)
+      // }
 
-      else {
+      // else {
         if (!movies.length) {
           const response = await getAllMovies(getToken())
+          console.log("🚀 ~ file: index.js ~ line 171 ~ handleRefreshButton ~ response", response)
           if (response.status === 200) {
             let data = await response.json()
             setMovies(data)
@@ -178,7 +179,7 @@ const GroupStreaming = () => {
           }
         }
         setIsFetchingApi(false)
-      }
+      // }
 
     }
     catch {

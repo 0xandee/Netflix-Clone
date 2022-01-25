@@ -11,6 +11,7 @@ import { countryListData } from "../../config/countryData";
 import { X, Check } from "react-feather";
 import { toast } from 'react-toastify'
 import { to_Encrypt } from "../../services/aes256";
+import { useEffect } from "react";
 
 const genderData = [
     { value: 0, label: 'Male' },
@@ -40,6 +41,7 @@ const ErrorToast = (props) => (
 
 const RegistrationForm = () => {
     const history = useHistory()
+    const [seconds, setSeconds] = React.useState(0);
     const [isEmailError, setIsEmailError] = useState(false)
     const [isPasswordError, setIsPasswordError] = useState(false)
     const [email, setEmail] = useState('')
@@ -66,7 +68,7 @@ const RegistrationForm = () => {
 
     const nextClicked = async () => {
         var emailValid = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
+       
         if (dob == 'Invalid Date') {
             setErrorDob(true)
         }
@@ -105,13 +107,13 @@ const RegistrationForm = () => {
                     + '-' +
                     ((temp.getDate() > 9) ?
                         temp.getDate() : ('0' + temp.getDate()));
-                console.log("🚀 ~ file: index.js ~ line 100 ~ nextClicked ~ realDob", realDob)
+
                 const response = await requestRegister({ email, password, gender, country, dob: realDob })
-                console.log("🚀 ~ file: index.js ~ line 64 ~ nextClicked ~ response", response)
+
                 if (response.status >= 200 && response.status <= 299) {
-                    const res = await verifyEmail(email)
-                    console.log("🚀 ~ file: index.js ~ line 97 ~ nextClicked ~ res", res)
+                    const res = await verifyEmail(email)               
                     setIsSucess(true)
+                    setSeconds(59)
                 }
                 else if (response.status == 422) {
                     setIsEmailError(true)
@@ -132,6 +134,25 @@ const RegistrationForm = () => {
         }
 
     }
+    const resendEmailClicked = async () => {
+        try {
+            const res = await verifyEmail(email)
+            if (res.status == 200) {
+                setSeconds(59)
+            }
+            else {
+                history.push('maintenance')
+            }
+        }
+        catch (e) {
+        }
+    }
+
+    useEffect(() => {
+        if (seconds > 0) {
+            setTimeout(() => setSeconds(seconds - 1), 1000);
+        }
+    }, [seconds]);
 
     return (
         <div id='regForm'>
@@ -148,6 +169,18 @@ const RegistrationForm = () => {
                             <h2>
                                 Please check your registered email to finish the registration process
                             </h2>
+                            <div className='d-flex align-items-center justify-content-center text-center'>
+                                Don't receive any activation email ?
+                                <div className='ml-2'>
+                                    {seconds > 0 ?
+                                        `00:${seconds > 9 ? seconds : '0' + seconds}`
+                                        :
+                                        <div className='resend-email' onClick={resendEmailClicked}>
+                                            Resend email
+                                        </div>
+                                    }
+                                </div>
+                            </div>
                             <NavLink to='/signin' className=" text-decoration-none d-flex justify-content-center">
                                 <div className=" px-5 mt-4 w-75">
                                     <div className={`registration__body__content__main__button-next `} onClick={nextClicked}>

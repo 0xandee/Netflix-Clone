@@ -22,9 +22,9 @@ const Episodes = (props) => {
                 <div className="titleCardList__container episode__item">
                     
                     <div className="titleCard_imageWrapper">
-                        <img src={props.item.uri_avatar} alt="Episode 1" />
+                        <img className="w-100" src={props.item.uri_avatar} alt="Episode 1" />
                     </div>
-                    <div className="titleCardList__metadataWrapper">
+                    <div className="titleCardList__metadataWrapper w-100">
                         <div className="titleCardList__title">
                             <span className="titleCard__title_text">Episode 1</span>
                             <span><span className="duration ellipsized">82m</span></span>

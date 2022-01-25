@@ -258,31 +258,33 @@ const VideoPlayer = ({ socket, roomnum, videoURL, handleOpenMovieRecommend }) =>
     }, [handleKeyDown, handleKeyUp]);
 
     useEffect(async () => {
-        try {
-            const response = await getWatchingList(getToken())
-            console.log("🚀 ~ file: index.js ~ line 39 ~ useEffect ~ response", response)
+        if (socket == undefined) {
+            try {
 
-            if (response.status === 200) {
-                const data = await response.json()
-                console.log("🚀 ~ file: index.js ~ line 141 ~ useEffect ~ data", data)
-                if (data.length) {
-                    const current_duration = data.find(item => item.id == idMovie.toString()).current_duration
-                    console.log("🚀 ~ file: index.js ~ line 269 ~ useEffect ~ data", data.find(item => item.id == idMovie.toString()).current_duration)
+                const response = await getWatchingList(getToken())
+                console.log("🚀 ~ file: index.js ~ line 39 ~ useEffect ~ response", response)
 
-                    playedRef.current = current_duration
-                    setPlayed(current_duration);
-                    playerRef.current.seekTo(current_duration)
+                if (response.status === 200) {
+                    const data = await response.json()
+                    console.log("🚀 ~ file: index.js ~ line 141 ~ useEffect ~ data", data)
+                    if (data.length) {
+                        const current_duration = data.find(item => item.id == idMovie.toString()).current_duration
+                        console.log("🚀 ~ file: index.js ~ line 269 ~ useEffect ~ data", data.find(item => item.id == idMovie.toString()).current_duration)
+
+                        playedRef.current = current_duration
+                        setPlayed(current_duration);
+                        playerRef.current.seekTo(current_duration)
+                    }
                 }
+                else if (response.status === 500) {
+                    history.push('/maintenance')
+                }
+
             }
-            else if (response.status === 500) {
+            catch {
                 history.push('/maintenance')
             }
-
         }
-        catch {
-            history.push('/maintenance')
-        }
-       
     }, [])
 
     useEffect(() => {

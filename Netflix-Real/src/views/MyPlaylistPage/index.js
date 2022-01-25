@@ -87,8 +87,8 @@ return (
             <div className='body-content'>
                 {genreMovies.length > 0 ?
                     <div className='list-grid'>
-                        {genreMovies.map(item =>
-                            <div className='grid-container' onClick={itemClicked(item)}>
+                        {genreMovies.map(item => 
+                            <div className='grid-container w-100 h-100' onClick={itemClicked(item)}>
                                 <div className=' item-grid multi-landing-stack-space-holder w-100 h-100'>
                                     <img style={{ borderRadius: '4px', }} className="title-card w-100 h-100" src={item.uri_avatar} alt={item.m_name} />
                                 </div>

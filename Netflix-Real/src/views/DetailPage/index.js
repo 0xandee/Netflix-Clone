@@ -96,15 +96,18 @@ const DetailPage = (props) => {
                 <div style={{ padding: '0 7vw', width: '100%' }}>
                     <Row className="position-relative  background max-width">
                         <Col xs='12' lg='9' className="position-relative float-start  pt-4 ">
-                            <div className="mask-image position-relative d-flex flex-row mt-3 mb-5">
-                                <img style={{ maxHeight: '510px',maxWidth:'220px', marginRight: '2vh' }}
-                                    className='w-50 h-100  ' alt="playerArt" src={dataMovie.uri_thumbnail} />
+                            <Row className="mask-image position-relative d-flex flex-row mb-5">
+                                <Col lg='3' className="d-flex justify-content-center  mt-3" >
+                                    <img style={{ maxHeight: '510px', maxWidth: '220px', marginRight: '2vh' }}
+                                        className='w-100 h-100  ' alt="playerArt" src={dataMovie.uri_thumbnail} />
+                                </Col>
 
-                                <div className='position-relative d-flex flex-column float-start mb-5'>
+
+                                <Col lg='9' className='position-relative d-flex flex-column float-start  mt-3 mb-5'>
                                     <DetailInfo item={dataMovie} />
                                     <PreviewButtonControl item={dataMovie} />
-                                </div>
-                            </div>
+                                </Col>
+                            </Row>
                             <Episodes item={dataMovie} />
                         </Col>
                         <Col xs='12' lg='3' className="position-relative float-end mt-4">

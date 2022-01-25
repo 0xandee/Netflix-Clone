@@ -11,11 +11,12 @@ import ChangePasswordImg from '../../assets/Images/change_password.png'
 
 const ForgotPassword = () => {
     const history = useHistory()
+    const [seconds, setSeconds] = React.useState(0);
     const backgroudUrl = 'https://assets.nflxext.com/ffe/siteui/acquisition/login/login-the-crown_2-1500x1000.jpg'
     const [email, setEmail] = useState('')
     const [isEmailError, setIsEmailError] = useState(false)
     const [errorTextEmail, setErrorTextEmail] = useState('Please enter a valid email')
-    const [isCheckOTP, setIsCheckOTP] = useState(false);
+    const [isCheckOTP, setIsCheckOTP] = useState(true);
 
     const forgotPasswordClicked = async () => {
         var emailValid = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -27,8 +28,10 @@ const ForgotPassword = () => {
             try {
                 setIsEmailError(false)
                 const res = await requestForgotPassword(email)
-                if (res.status == 200)
+                if (res.status == 200) {
                     setIsCheckOTP(true)
+                    setSeconds(59)
+                }
                 else if (res.status == 302) {
                     setIsEmailError(true)
                     setErrorTextEmail('Account not exist in our web')
@@ -60,6 +63,26 @@ const ForgotPassword = () => {
 
         }
     }, [handleKeyDown]);
+
+    const resendEmailClicked = async () => {
+        try {
+            const res = await requestForgotPassword(email)
+            if (res.status == 200) {
+                setSeconds(59)
+            }
+            else {
+                history.push('maintenance')
+            }
+        }
+        catch (e) {
+        }
+    }
+
+    useEffect(() => {
+        if (seconds > 0) {
+            setTimeout(() => setSeconds(seconds - 1), 1000);
+        }
+    }, [seconds]);
 
     return (
         <div id='forgotPassword'>
@@ -111,7 +134,19 @@ const ForgotPassword = () => {
                                     </div>
                                     <div class="d-flex mt-3">
                                         2.
-                                        <img style={{ width: '600px', maxWidth:'100%' }} src={ChangePasswordImg} alt='changepass-2' />
+                                        <img style={{ width: '600px', maxWidth: '100%' }} src={ChangePasswordImg} alt='changepass-2' />
+                                    </div>
+                                    <div className='d-flex align-items-center justify-content-center text-center'>
+                                        Don't receive any activation email ?
+                                        <div className='ml-2'>
+                                            {seconds > 0 ?
+                                                `00:${seconds > 9 ? seconds : '0' + seconds}`
+                                                :
+                                                <div className='resend-email' onClick={resendEmailClicked}>
+                                                    Resend email
+                                                </div>
+                                            }
+                                        </div>
                                     </div>
                                     <div className={`forgot-password__body__content__main__button-forgot-password`} onClick={backToSignInClicked}>
                                         <span> Back to Sign in

@@ -60,6 +60,8 @@ const SignIn = (props) => {
                     localStorage.setItem('username', username.slice(0, username.indexOf("@")));
                     localStorage.setItem('id_user', data.id);
                     localStorage.setItem('new_user', data.first);
+                    localStorage.setItem('email', to_Encrypt(username));
+                    localStorage.setItem('password', to_Encrypt(password));
 
                     // delete_cookie(cookie_key);
                     if (data.first) {
@@ -68,6 +70,11 @@ const SignIn = (props) => {
                     else {
                         history.push('/home')
                     }
+                }
+                else if (response.status === 403) {
+                    setIsPasswordError(true)
+                    setIsEmailError(false)
+                    setErrorTextPassword("Email is not verified")
                 }
                 else if (response.status === 500) {
                     history.push('/maintenance')

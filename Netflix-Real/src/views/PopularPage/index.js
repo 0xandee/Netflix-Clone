@@ -135,7 +135,7 @@ const PopularPage = (props) => {
                             <div className='list-grid'>
                                 {genreMovies.map(item =>
                                 (item != null && item.uri_avatar != null &&
-                                    <div className='grid-container' onClick={itemClicked(item)}>
+                                    <div className='grid-container w-100 h-100' onClick={itemClicked(item)}>
                                         <div className=' item-grid multi-landing-stack-space-holder w-100 h-100'>
                                             {/* <div className="multi-landing-stack-1"></div>
                                     <div className="multi-landing-stack-2"></div> */}
