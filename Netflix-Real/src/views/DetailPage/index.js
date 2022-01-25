@@ -55,31 +55,31 @@ const DetailPage = (props) => {
 
     }, [setDataMovie])
 
-    // useEffect(async () => {
-    //     try {
-    //         const response = await getRecommUserMoviesState2(localStorage.getItem('id_user'))
-    //         console.log("🚀 ~ file: index.js ~ line 39 ~ useEffect ~ response", response)
+    useEffect(async () => {
+        try {
+            const response = await getRecommUserMoviesState2(localStorage.getItem('id_user'), idMovie.toString())
+            console.log("🚀 ~ file: index.js ~ line 39 ~ useEffect ~ response", response)
 
-    //         if (response.status === 200) {
-    //             const data = await response.json()
-    //             const res = await getMoviesByListID(data.map((key) => key.id), getToken())
-    //             const data2 = await res.json()
-    //             console.log("🚀 ~ file: index.js ~ line 45 ~ useEffect ~ data2", data2)
-    //             setRecommendedMovies(data2.slice(0, 5));
-    //             setIsFetching(false)
-    //         }
-    //         else if (response.status == 403) {
-    //             setOpen(true)
-    //         }
-    //         else if (response.status == 500) {
-    //             history.push('/maintenance')
-    //         }
-    //     }
-    //     catch {
-    //         history.push('/maintenance')
-    //     }
+            if (response.status === 200) {
+                const data = await response.json()
+                const res = await getMoviesByListID(data.map((key) => key.id), getToken())
+                const data2 = await res.json()
+                console.log("🚀 ~ file: index.js ~ line 45 ~ useEffect ~ data2", data2)
+                setRecommendedMovies(data2.slice(0, 5));
+                setIsFetching(false)
+            }
+            else if (response.status == 403) {
+                setOpen(true)
+            }
+            else if (response.status == 500) {
+                history.push('/maintenance')
+            }
+        }
+        catch {
+            history.push('/maintenance')
+        }
 
-    // }, [])
+    }, [])
 
     return (
         <div className="pop-up__container">
@@ -116,15 +116,15 @@ const DetailPage = (props) => {
 
                                 <div className="pb-3 d-flex flex-column justify-content-center align-items-center">
 
-                                    {/* {recommendedMovies.length && recommendedMovies.map((item) =>
-            <MoreLikeThisItem item={item} />
-        )} */}
+                                    {recommendedMovies.length && recommendedMovies.map((item) =>
+                                        <MoreLikeThisItem item={item} />
+                                    )}
+                                    {/* <MoreLikeThisItem item={dataMovie} />
                                     <MoreLikeThisItem item={dataMovie} />
                                     <MoreLikeThisItem item={dataMovie} />
                                     <MoreLikeThisItem item={dataMovie} />
                                     <MoreLikeThisItem item={dataMovie} />
-                                    <MoreLikeThisItem item={dataMovie} />
-                                    <MoreLikeThisItem item={dataMovie} />
+                                    <MoreLikeThisItem item={dataMovie} /> */}
                                 </div>
                             </div>
                         </Col>

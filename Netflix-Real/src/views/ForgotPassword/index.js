@@ -16,7 +16,7 @@ const ForgotPassword = () => {
     const [email, setEmail] = useState('')
     const [isEmailError, setIsEmailError] = useState(false)
     const [errorTextEmail, setErrorTextEmail] = useState('Please enter a valid email')
-    const [isCheckOTP, setIsCheckOTP] = useState(true);
+    const [isCheckOTP, setIsCheckOTP] = useState(false);
 
     const forgotPasswordClicked = async () => {
         var emailValid = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;

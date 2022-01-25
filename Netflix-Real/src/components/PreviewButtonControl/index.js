@@ -47,8 +47,7 @@ const PreviewButtonControl = (props) => {
                     </div>
                     <span className="PlayButton__primary-text PlayButton__primary-text-transform plr-2 ">Play</span>
                 </Col>
-                <Col sm='4' className="d-flex justify-content-between">
-               
+                <Col sm='4' className="d-flex justify-content-between mx-4">
                         <div id="AddIcon" >
                             <div className="PlayButton__secondary-color PlayButton__secondary-button" onClick={addFavoriteClicked}>
                                 <div className="PlayIcon_icon-container">

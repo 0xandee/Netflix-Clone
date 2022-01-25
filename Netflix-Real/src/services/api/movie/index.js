@@ -46,9 +46,9 @@ export const getRecommUserMoviesState1 = async (idUser) => {
   })
 }
 
-export const getRecommUserMoviesState2 = async (idUser) => {
+export const getRecommUserMoviesState2 = async (idUser,idMovie) => {
   return new Promise((resolve, reject) => {
-    fetch(movieApi.urlGetRecommendedUserMoviesState2 + idUser, {
+    fetch(movieApi.urlGetRecommendedUserMoviesState2 + idUser + `&id_movie=${idMovie}`, {
       crossDomain: true,
       method: "GET",
       mode: 'cors',
