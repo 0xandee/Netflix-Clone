@@ -3,7 +3,7 @@ import './style.scss';
 import { CustomModal, Footer, NavigationBar } from "../../components";
 import { to_Decrypt, to_Encrypt } from "../../services/aes256";
 import { useHistory } from "react-router-dom";
-
+import DefaultImage from '../../assets/Images/defaultImage.png';
 import { requestRefreshToken } from "../../services/api/auth";
 import { getUserFavoriteList } from "../../services/api/user";
 import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
@@ -80,43 +80,45 @@ const MyPlaylistPage = (props) => {
         }
     }, [accessToken])
 
-return (
-    <div id='myPlaylistPage' >
-        <div className="myplaylist-page overflow-x-hidden bg-black"  >
-            <NavigationBar />
-            <div className='body-content'>
-                {genreMovies.length > 0 ?
-                    <div className='list-grid'>
-                        {genreMovies.map(item => 
-                            <div className='grid-container w-100 h-100' onClick={itemClicked(item)}>
-                                <div className=' item-grid multi-landing-stack-space-holder w-100 h-100'>
-                                    <img style={{ borderRadius: '4px', }} className="title-card w-100 h-100" src={item.uri_avatar} alt={item.m_name} />
+    return (
+        <div id='myPlaylistPage' >
+            <div className="myplaylist-page overflow-x-hidden bg-black"  >
+                <NavigationBar />
+                <div className='body-content'>
+                    {genreMovies.length > 0 ?
+                        <div className='list-grid'>
+                            {genreMovies.map(item =>
+                                <div className='grid-container w-100 h-100' onClick={itemClicked(item)}>
+                                    <div className=' item-grid multi-landing-stack-space-holder w-100 h-100'>
+                                        <img onError={
+                                            (e) => e.currentTarget.src = DefaultImage
+                                        } style={{ borderRadius: '4px', }} className="title-card w-100 h-100" src={item.uri_avatar} alt={item.m_name} />
+                                    </div>
+                                    <div className='name-label'>
+                                        {item.name}
+                                    </div>
                                 </div>
-                                <div className='name-label'>
-                                    {item.name}
-                                </div>
-                            </div>
-                        )
-                        }
-                    </div>
-                    :
-                    <div style={{ color: 'white', fontWeight: "bold", fontSize: '24px' }} >You don't have any movie in your playlist yet</div>
-                }
-                {isFetching && genreMovies.length > 0 &&
-                    <div style={{ display: 'flex', marginBottom: '10px', width: '100%', justifyContent: 'center' }}>
-                        <div class="spinner-border spinner-color" role="status">
+                            )
+                            }
                         </div>
-                    </div>
-                }
-            </div>
-            <CustomModal isOpen={open} onClick={toggleModal} headerText={"Session Timed out"} buttonText='Back to log in page' bodyText=
+                        :
+                        <div style={{ color: 'white', fontWeight: "bold", fontSize: '24px' }} >You don't have any movie in your playlist yet</div>
+                    }
+                    {isFetching && genreMovies.length > 0 &&
+                        <div style={{ display: 'flex', marginBottom: '10px', width: '100%', justifyContent: 'center' }}>
+                            <div class="spinner-border spinner-color" role="status">
+                            </div>
+                        </div>
+                    }
+                </div>
+                <CustomModal isOpen={open} onClick={toggleModal} headerText={"Session Timed out"} buttonText='Back to log in page' bodyText=
                     {"Look like your log in session have been timed out. So please log in again.\nWe are so sorry for this inconvenience"
                     } />
-            <Footer />
+                <Footer />
 
+            </div>
         </div>
-    </div>
-);
+    );
 };
 
 export default MyPlaylistPage;

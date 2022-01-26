@@ -10,7 +10,7 @@ import Select, { createFilter } from 'react-select';
 import { Spinner } from 'reactstrap'
 import { searchMovieByNameApi } from "../../services/api/search";
 
-import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
+import DefaultImage from '../../assets/Images/defaultImage.png';
 import { getToken } from "../../services/function";
 
 const SearchPage = (props) => {
@@ -97,7 +97,9 @@ const SearchPage = (props) => {
                                 <div className=' item-grid multi-landing-stack-space-holder w-100 h-100'>
                                     {/* <div className="multi-landing-stack-1"></div>
                                     <div className="multi-landing-stack-2"></div> */}
-                                    <img style={{ borderRadius: '4px', }} className="title-card w-100 h-100" src={item.uri_avatar} alt={item.m_name} />
+                                    <img  onError={
+                                        (e) => e.currentTarget.src = DefaultImage
+                                    } style={{ borderRadius: '4px', }} className="title-card w-100 h-100" src={item.uri_avatar} alt={item.m_name} />
                                 </div>
                                 <div className='name-label'>
                                     {item.m_name}

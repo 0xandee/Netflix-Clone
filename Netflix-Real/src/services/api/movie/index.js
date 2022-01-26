@@ -1,4 +1,43 @@
+import { resetToken } from '../../function';
 import { movieApi } from './configUrl'
+const axios = require('axios');
+const instance = axios.create({
+  headers: { 'Content-Type': 'application/json' }
+});
+
+
+instance.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('access_token');
+    if (token) {
+      config.headers = { 
+        'Authorization':  `Bearer ${token}`,
+        'Accept': 'application/json',
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }
+    }
+
+    return config;
+  },
+
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
+instance.interceptors.response.use((response) => {
+  return response
+}, async function (error) {
+  const originalRequest = error.config;
+  console.log("🚀 ~ file: index.js ~ line 28 ~ instance.interceptors.response.use ~ originalRequest", originalRequest)
+  if (error.response.status === 401 && !originalRequest._retry) {
+    originalRequest._retry = true;
+    const access_token = await resetToken();
+    axios.defaults.headers.common['Authorization'] = 'Bearer ' + access_token;
+    return instance(originalRequest);
+  }
+  return Promise.reject(error);
+});
 
 export const postNewUserMovies = async (dataNewUser, token) => {
   return new Promise((resolve, reject) => {
@@ -46,7 +85,7 @@ export const getRecommUserMoviesState1 = async (idUser) => {
   })
 }
 
-export const getRecommUserMoviesState2 = async (idUser,idMovie) => {
+export const getRecommUserMoviesState2 = async (idUser, idMovie) => {
   return new Promise((resolve, reject) => {
     fetch(movieApi.urlGetRecommendedUserMoviesState2 + idUser + `&id_movie=${idMovie}`, {
       crossDomain: true,
@@ -180,20 +219,21 @@ export const getMovieAPI = async (idMovie, token) => {
 
 export const getMovieTypeAPI = async (token) => {
   return new Promise((resolve, reject) => {
-    fetch(movieApi.urlGetMovieType, {
-      crossDomain: true,
-      method: "GET",
-      mode: 'cors',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': "Bearer " + token,
-      },
-    })
-      .then(response => {
+    instance.get(movieApi.urlGetMovieType
+      //   , {
 
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //     'Authorization': "Bearer " + token,
+      //   },
+      // }
+    )
+      .then(response => {
+        console.log("🚀 ~ file: index.js ~ line 240 ~ returnnewPromise ~ response", response)
         resolve(response)
       })
       .catch(error => {
+        console.log("🚀 ~ file: index.js ~ line 224 ~ returnnewPromise ~ error", error)
         return reject(error)
       });
   })
@@ -201,15 +241,17 @@ export const getMovieTypeAPI = async (token) => {
 
 export const getMoviesByGenreAPI = async (genreId, token) => {
   return new Promise((resolve, reject) => {
-    fetch(movieApi.urlGetMovieType + `/${genreId}`, {
-      crossDomain: true,
-      method: "GET",
-      mode: 'cors',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': "Bearer " + token,
-      },
-    })
+    instance.get(movieApi.urlGetMovieType + `/${genreId}`
+    // , {
+    //   crossDomain: true,
+    //   method: "GET",
+    //   mode: 'cors',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //     'Authorization': "Bearer " + token,
+    //   },
+    // }
+    )
       .then(response => {
 
         resolve(response)
@@ -311,3 +353,4 @@ export const getWatchingList = async (token) => {
       });
   })
 }
+

@@ -48,7 +48,7 @@ const Homepage = (props) => {
             const response = await getMovieTypeAPI(getToken())
             console.log("🚀 ~ file: index.js ~ line 47 ~ useEffect ~ response", response)
             if (response.status === 200 && dataTypes.length == 0) {
-                const data = await response.json()
+                const data = await response.data
                 dispatch(setMovieTypes(data))
             }
             else if (response.status == 403) {
@@ -59,53 +59,53 @@ const Homepage = (props) => {
             }
         }
         catch {
-            history.push('/maintenance')
+          //  history.push('/maintenance')
         }
     }, [])
 
 
 
-    useEffect(async () => {
-        try {
-            const response = await getRecommUserMoviesState1(localStorage.getItem('id_user'))
-            console.log("🚀 ~ file: index.js ~ line 39 ~ useEffect ~ response", response)
+    // useEffect(async () => {
+    //     try {
+    //         const response = await getRecommUserMoviesState1(localStorage.getItem('id_user'))
+    //         console.log("🚀 ~ file: index.js ~ line 39 ~ useEffect ~ response", response)
 
-            if (response.status === 200) {
-                const data = await response.json()
-                const res = await getMoviesByListID(data.map((key) => key.id), getToken())
-                const data2 = await res.json()
-                var genreMovie = {
-                    id: 'recommend',
-                    sliderTitle: 'Recommend for you',
-                    sliderMovieList: data2
-                }
-                setGenreMovies(genreMovies => [genreMovie, ...genreMovies]);
-                setIsFetching(false)
+    //         if (response.status === 200) {
+    //             const data = await response.json()
+    //             const res = await getMoviesByListID(data.map((key) => key.id), getToken())
+    //             const data2 = await res.json()
+    //             var genreMovie = {
+    //                 id: 'recommend',
+    //                 sliderTitle: 'Recommend for you',
+    //                 sliderMovieList: data2
+    //             }
+    //             setGenreMovies(genreMovies => [genreMovie, ...genreMovies]);
+    //             setIsFetching(false)
 
-            }
-            else if (response.status == 403) {
-                setOpen(true)
-            }
-            // else if (response.status === 500) {
-            //     history.push('/maintenance')
-            // }
-            else {
-                setIsFetching(false)
-            }
+    //         }
+    //         else if (response.status == 403) {
+    //             setOpen(true)
+    //         }
+    //         // else if (response.status === 500) {
+    //         //     history.push('/maintenance')
+    //         // }
+    //         else {
+    //             setIsFetching(false)
+    //         }
 
-        }
-        catch {
-            // history.push('/maintenance')
-        }
+    //     }
+    //     catch {
+    //         // history.push('/maintenance')
+    //     }
 
-    }, [])
+    // }, [])
 
     useEffect(() => {
         dataTypes.map(async (item) => {
             try {
                 const res = await getMoviesByGenreAPI(item.id, getToken())
                 if (res.status == 200) {
-                    let data = await res.json()
+                    let data = await res.data
                     var genreMovie = {
                         id: item.id,
                         sliderTitle: item.name,
@@ -124,7 +124,7 @@ const Homepage = (props) => {
                 }
             }
             catch {
-                history.push('/maintenance')
+             //   history.push('/maintenance')
             }
 
         });
@@ -161,7 +161,7 @@ const Homepage = (props) => {
 
         }
         catch {
-            history.push('/maintenance')
+           // history.push('/maintenance')
         }
 
     }, [])
@@ -171,6 +171,9 @@ const Homepage = (props) => {
         <div className="overflow-x-hidden bg-black w-100" ref={homePageRef} style={{ minHeight: '100vh' }}>
             <NavigationBar />
             <div className="h-100" style={{ minHeight: '75vh', paddingTop: '5vh' }}>
+            <div className='text-light mb-3' onClick={()=> localStorage.setItem('access_token','1')}>
+                    REmove token key
+                </div>
                 {isFetching ?
                     <div style={{ display: 'flex', marginBottom: '10px', width: '100%', justifyContent: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                         <span className='text-light mb-3' style={{ fontSize: '24px' }}>
@@ -182,6 +185,7 @@ const Homepage = (props) => {
                     :
                     genreMovies.map(item => (<Slider id={item.id} sliderTitle={item.sliderTitle} sliderMovieList={item.sliderMovieList} />))
                 }
+              
             </div>
             <CustomModal isOpen={open} onClick={toggleModal} headerText={"Session Timed out"} buttonText='Back to log in page' bodyText=
                 {"Look like your log in session have been timed out. So please log in again.\nWe are so sorry for this inconvenience"

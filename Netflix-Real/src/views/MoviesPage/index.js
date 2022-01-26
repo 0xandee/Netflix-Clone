@@ -89,7 +89,7 @@ const MoviesPage = (props) => {
             }
         }
         catch {
-            history.push('/maintenance')
+           // history.push('/maintenance')
         }
 
 
@@ -117,7 +117,7 @@ const MoviesPage = (props) => {
             try {
                 const res = await getMoviesByGenreAPI(selectedGenre.value, getToken())
                 if (res.status == 200) {
-                    let data = await res.json()
+                    let data = await res.data
                     setDataApiGenreMovies(data)
                     setGenreMovies(data.slice(0, 31))
                 }
@@ -131,7 +131,7 @@ const MoviesPage = (props) => {
                 }
             }
             catch {
-                history.push('/maintenance')
+              //  history.push('/maintenance')
             }
         }
     }, [selectedGenre])
@@ -191,7 +191,9 @@ const MoviesPage = (props) => {
                                 <div className=' item-grid multi-landing-stack-space-holder w-100 h-100'>
                                     {/* <div className="multi-landing-stack-1"></div>
                                     <div className="multi-landing-stack-2"></div> */}
-                                    <LazyLoadImage effect="blur" style={{ borderRadius: '4px', }} className="title-card w-100 h-100" src={item.uri_avatar} alt={item.m_name} />
+                                    <img  onError={
+                                        (e) => e.currentTarget.src = DefaultImage
+                                    }   style={{ borderRadius: '4px', }} className="title-card w-100 h-100" src={item.uri_avatar} alt={item.m_name} />
                                 </div>
                                 <div className='name-label'>
                                     {item.name}

@@ -12,6 +12,7 @@ import SwiperCore, {
 import { Link, useHistory, useLocation, NavLink } from "react-router-dom";
 import './Slider.scss';
 import { LazyLoadImage } from "react-lazy-load-image-component";
+import DefaultImage from'../../assets/Images/defaultImage.png'
 
 
 // install Swiper modules
@@ -27,6 +28,13 @@ const Slider = (props) => {
             state: { item: data }
         })
     }
+
+    const imageOnErrorHandler = (
+        event
+      ) => {
+        event.currentTarget.src = DefaultImage;
+        
+      };
     return (
         <section className="thumbSection mb-3">
             <h2 className="thumbTitle my-3 ps-5 position-relative cursor-pointer d-inline">{props.sliderTitle}</h2>
@@ -43,12 +51,15 @@ const Slider = (props) => {
                 className="swiper-container mt-4 px-5">
                 <div>
                     {props.sliderMovieList.map(item => {
-                       
+
                         return (
                             item != null && item.uri_avatar != null &&
-                            <SwiperSlide className="swiper-slide slide h-100"  onClick={itemClicked(item)}>
+                            <SwiperSlide className="swiper-slide slide h-100" onClick={itemClicked(item)}>
                                 <a className="thumbTile cursor-pointer h-100" >
-                                    <LazyLoadImage effect="blur" className="thumbTile__image" style={{minHeight:'25vh', maxHeight:'25vh'}} src={item.uri_avatar} alt={item.m_name} />
+                                    <img   className="thumbTile__image" style={{ minHeight: '25vh', maxHeight: '25vh' }} src={item.uri_avatar} alt={item.m_name} 
+                                    onError={
+                                        (e) => e.currentTarget.src = DefaultImage
+                                    }/>
                                 </a>
                                 {/* <div className="controlPlayer pl-4em"></div> */}
                             </SwiperSlide>)
