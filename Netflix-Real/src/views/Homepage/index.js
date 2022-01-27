@@ -58,7 +58,8 @@ const Homepage = (props) => {
                 history.push('/maintenance')
             }
         }
-        catch {
+        catch(err) {
+          console.log("🚀 ~ file: index.js ~ line 62 ~ useEffect ~ err", err)
           //  history.push('/maintenance')
         }
     }, [])

@@ -113,11 +113,17 @@ const VideoPlayer = ({ socket, roomnum, videoURL, handleOpenMovieRecommend }) =>
             setMuted(false)
         }
         if (playing && !muted) { setMuted(false) }
+        if (state.played >= 0.9) { 
+            handleOpenMovieRecommend(true)
+            setPlaying(false)
+            playingRef.current = false
+         }
         if (!seeking && state.played != 0) {
             playedRef.current = state.played
             setPlayed(state.played);
             setLoaded(state.loaded)
         }
+
     }
 
     const handleVideoEnded = () => {
@@ -326,6 +332,14 @@ const VideoPlayer = ({ socket, roomnum, videoURL, handleOpenMovieRecommend }) =>
                 console.log("🚀 ~ file: index.js ~ line 246 ~ socket.on ~ data", data)
                 handleOpenMovieRecommend(false)
                 setUrl(data.movieURL)
+                playedRef.current = 0
+                setPlayed(0);
+                playingRef.current = false
+                setPlaying(false);
+                console.log("🚀 ~ file: index.js ~ line 340 ~ socket.on ~ playerRef.current", playerRef.current.getDuration())
+
+                if (playerRef.current.getDuration() != null)
+                    playerRef.current.seekTo(0)
             })
         }
     }, [url, socket])
@@ -407,7 +421,7 @@ const VideoPlayer = ({ socket, roomnum, videoURL, handleOpenMovieRecommend }) =>
         <div id={`videoPlayer`} onMouseMove={handleMouseMove} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} style={{ position: 'absolute', width: '100%', height: '100%' }}>
             {!isHost &&
                 <div className='position-absolute'
-                    style={{ bottom: '4vh', left: '2vw', height: '60px', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 7 }}>
+                    style={{ bottom: '4vh', left: '2vw', height: '60px', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 6 }}>
                     <div onClick={handleVolumeMute}>
                         {volume > 0 && !muted ?
                             <IconVolume className={'icon--color'} />

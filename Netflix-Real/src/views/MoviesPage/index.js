@@ -88,7 +88,8 @@ const MoviesPage = (props) => {
                 }
             }
         }
-        catch {
+        catch(err) {
+           console.log("🚀 ~ file: index.js ~ line 92 ~ useEffect ~ err", err)
            // history.push('/maintenance')
         }
 

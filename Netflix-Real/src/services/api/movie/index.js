@@ -10,8 +10,8 @@ instance.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('access_token');
     if (token) {
-      config.headers = { 
-        'Authorization':  `Bearer ${token}`,
+      config.headers = {
+        'Authorization': `Bearer ${token}`,
         'Accept': 'application/json',
         'Content-Type': 'application/x-www-form-urlencoded'
       }
@@ -66,7 +66,7 @@ export const postNewUserMovies = async (dataNewUser, token) => {
 
 export const getRecommUserMoviesState1 = async (idUser) => {
   return new Promise((resolve, reject) => {
-    fetch(movieApi.urlGetRecommendedUserMoviesState1 + idUser, {
+    fetch(movieApi.urlGetRecommendedUserMoviesState1 + idUser + `&n_movie=100`, {
       crossDomain: true,
       method: "GET",
       mode: 'cors',
@@ -87,7 +87,7 @@ export const getRecommUserMoviesState1 = async (idUser) => {
 
 export const getRecommUserMoviesState2 = async (idUser, idMovie) => {
   return new Promise((resolve, reject) => {
-    fetch(movieApi.urlGetRecommendedUserMoviesState2 + idUser + `&id_movie=${idMovie}`, {
+    fetch(movieApi.urlGetRecommendedUserMoviesState2 + idUser + `&n_movie=100&id_movie=${idMovie}`, {
       crossDomain: true,
       method: "GET",
       mode: 'cors',
@@ -108,7 +108,28 @@ export const getRecommUserMoviesState2 = async (idUser, idMovie) => {
 
 export const getRecommGroupMoviesState1 = async (idUser) => {
   return new Promise((resolve, reject) => {
-    fetch(movieApi.urlGetRecommendedGroupMoviesState1 + idUser, {
+    fetch(movieApi.urlGetRecommendedGroupMoviesState1 + idUser + `&n_movie=100`, {
+      crossDomain: true,
+      method: "GET",
+      mode: 'cors',
+      headers: {
+        'Content-Type': 'application/json'
+
+      },
+    })
+      .then(response => {
+
+        resolve(response)
+      })
+      .catch(error => {
+        return reject(error)
+      });
+  })
+}
+
+export const getRecommGroupMoviesState2 = async (idUser, idMovie) => {
+  return new Promise((resolve, reject) => {
+    fetch(movieApi.urlGetRecommendedGroupMoviesState2 + idUser + `&n_movie=100&id_movie=${idMovie}`, {
       crossDomain: true,
       method: "GET",
       mode: 'cors',
@@ -242,15 +263,15 @@ export const getMovieTypeAPI = async (token) => {
 export const getMoviesByGenreAPI = async (genreId, token) => {
   return new Promise((resolve, reject) => {
     instance.get(movieApi.urlGetMovieType + `/${genreId}`
-    // , {
-    //   crossDomain: true,
-    //   method: "GET",
-    //   mode: 'cors',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //     'Authorization': "Bearer " + token,
-    //   },
-    // }
+      // , {
+      //   crossDomain: true,
+      //   method: "GET",
+      //   mode: 'cors',
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //     'Authorization': "Bearer " + token,
+      //   },
+      // }
     )
       .then(response => {
 

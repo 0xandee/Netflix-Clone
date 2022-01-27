@@ -1,4 +1,4 @@
-import React, { createRef, useCallback, useEffect, useRef, useState } from "react";
+import React, { createRef, Fragment, useCallback, useEffect, useRef, useState } from "react";
 import { useParams, useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux';
 import { CustomModal } from "../../components";
@@ -10,17 +10,52 @@ import AppChat from "../../components/Chat";
 import Chat from "../../components/Chat";
 import io from "socket.io-client";
 import * as Icon from 'react-feather';
-import { getAllMovies, getMoviesByListID, getRecommGroupMoviesState1 } from "../../services/api/movie";
+import { getAllMovies, getMoviesByListID, getRecommGroupMoviesState1, getRecommGroupMoviesState2, getRecommUserMoviesState2 } from "../../services/api/movie";
 import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
 import { getToken } from "../../services/function";
+import DefaultImage from '../../assets/Images/defaultImage.png';
+import { toast } from "react-toastify";
 
-//  const socket = io("http://localhost:8000", { transports: ['websocket']});
 
 // This sets the room number on the client
 // var username = Math.random().toString(36).substr(2, 12);
 // var roomnum = Math.random().toString(36).substr(2, 12);
 // import { socket } from "../../services/socket/socket"
+const WarningToast = (props) => (
+  <Fragment>
+    <div className='toastify-header'>
+      <div className='title-wrapper'>
+        <h6 className='toast-title'>Sorry!</h6>
+      </div>
+    </div>
+    <div className='toastify-body'>
+      <span role='img' aria-label='toast-text'>
+        {props.data != null ?
+          props.data :
+          'Only host can choose movie!!'
+        }
+      </span>
+    </div>
+  </Fragment>
+)
 
+const InviteToast = (props) => (
+  <Fragment>
+    <div className='toastify-header'>
+      <div className='title-wrapper'>
+        <h6 className='toast-title'>Welcome!</h6>
+      </div>
+    </div>
+    <div className='toastify-body'>
+      <span role='img' aria-label='toast-text'>
+        {props.data != null ?
+          props.data :
+          'You can copy this page url to invite your friend to this room'
+        }
+      </span>
+    </div>
+  </Fragment>
+)
 
 const GroupStreaming = () => {
   // Choose whenever JOIN room or CREATE new room
@@ -63,6 +98,11 @@ const GroupStreaming = () => {
   const [isFetchingApi, setIsFetchingApi] = useState(false);
   const [members, setMembers] = useState([localStorage.getItem('id_user')]);
   const [btnRefresh, setBtnRefresh] = useState(false);
+  const [choosedMovie, setChoosedMovie] = useState('');
+
+  const notifyWarning = (data) => toast.warning(<WarningToast data={data} />, { position: toast.POSITION.TOP_CENTER, hideProgressBar: true })
+  const notifyInvite = (data) => toast.info(<InviteToast data={data} />, { position: toast.POSITION.TOP_CENTER, hideProgressBar: true,autoClose: 8000, })
+
 
   const toggleRefresh = () => setBtnRefresh(!btnRefresh);
   const toggleModal = () => {
@@ -126,15 +166,44 @@ const GroupStreaming = () => {
 
   }, [movieURL, openedMovieRecommend])
 
-  const handleMovieUrlClick = (data) => () => {
-    // setMovieURL(data);
+  const handleMovieUrlClick = (data) => async () => {
     if (isHost) {
+      setChoosedMovie(data.id)
       setMovieURL('https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4');
       let movieURL = 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4';
-      socket.emit('set movie', { username, roomnum, movieURL });
+      socket.emit('set movie', { username, roomnum, movieURL, movieId: data.id });
       handleOpenMovieRecommend(false)
-    }
+      const res = await getRecommGroupMoviesState2(members.join("&id="), data.id)
 
+      console.log("🚀 ~ file: index.js ~ line 156 ~ handleRefreshButton ~ res", res)
+      if (res.status === 200) {
+        let dataRecommend = await res.json()
+        const temp = await getMoviesByListID(dataRecommend.map((key) => key.id), getToken())
+        let data2 = await temp.json()
+        console.log("🚀 ~ file: index.js ~ line 196 ~ useEffect ~ data2")
+        setRecommendedMovies(data2)
+        setShowedMovies(data2.slice(0, 31))
+        setIsFetchingApi(false)
+      }
+      else {
+        if (!movies.length) {
+          const response = await getAllMovies(getToken())
+          console.log("🚀 ~ file: index.js ~ line 171 ~ handleRefreshButton ~ response", response)
+          if (response.status === 200) {
+            let data = await response.json()
+            setMovies(data)
+            setShowedMovies(data.slice(0, 31))
+          }
+          else if (response.status == 500) {
+            history.push('/maintenance')
+          }
+        }
+        setIsFetchingApi(false)
+      }
+    }
+    else {
+      notifyWarning()
+    }
   }
 
   const onBlurSearchInput = () => {
@@ -150,22 +219,30 @@ const GroupStreaming = () => {
     setIsShown(!isShown)
   }
 
-  const handleRefreshButton = async () => {
+
+
+  const handleRefreshButton = useCallback(async () => {
     try {
       setIsFetchingApi(true)
-      // const res = await getRecommGroupMoviesState1(members.join("&id="))
-      // console.log("🚀 ~ file: index.js ~ line 156 ~ handleRefreshButton ~ res", res)
-      // if (res.status === 200) {
-      //   let dataRecommend = await res.json()
-      //   const temp = await getMoviesByListID(dataRecommend.map((key) => key.id), getToken())
-      //   let data2 = await temp.json()
-      //   console.log("🚀 ~ file: index.js ~ line 196 ~ useEffect ~ data2")
-      //   setRecommendedMovies(data2)
-      //   setShowedMovies(data2.slice(0, 31))
-      //   setIsFetchingApi(false)
-      // }
+      console.log("🚀 ~ file: index.js ~ line 188 ~ handleRefreshButton ~ choosedMovie.length", choosedMovie)
+      console.log("🚀 ~ file: index.js ~ line 190 ~ handleRefreshButton ~ members", members)
 
-      // else {
+      const res = !choosedMovie ?
+        await getRecommGroupMoviesState1(members.join("&id="))
+        :
+        await getRecommGroupMoviesState2(members.join("&id="), choosedMovie)
+
+      console.log("🚀 ~ file: index.js ~ line 156 ~ handleRefreshButton ~ res", res)
+      if (res.status === 200) {
+        let dataRecommend = await res.json()
+        const temp = await getMoviesByListID(dataRecommend.map((key) => key.id), getToken())
+        let data2 = await temp.json()
+        console.log("🚀 ~ file: index.js ~ line 196 ~ useEffect ~ data2")
+        setRecommendedMovies(data2)
+        setShowedMovies(data2.slice(0, 31))
+        setIsFetchingApi(false)
+      }
+      else {
         if (!movies.length) {
           const response = await getAllMovies(getToken())
           console.log("🚀 ~ file: index.js ~ line 171 ~ handleRefreshButton ~ response", response)
@@ -179,13 +256,13 @@ const GroupStreaming = () => {
           }
         }
         setIsFetchingApi(false)
-      // }
+      }
 
     }
     catch {
       history.push('/maintenance')
     }
-  }
+  }, [members, choosedMovie])
 
   useEffect(() => {
     // Join room
@@ -194,6 +271,7 @@ const GroupStreaming = () => {
     if (newSocket) {
       newSocket.emit("joinRoom", { username, roomnum });
       newSocket.emit('new room', { username, roomnum, userid });
+      notifyInvite()
     }
 
     return () => {
@@ -211,13 +289,24 @@ const GroupStreaming = () => {
         console.log("🚀 ~ file: index.js ~ line 197 ~ data", data)
         setIsHost(data.isHost)
       })
-
       socket.on('getData', function (data) {
-        console.log("🚀 ~ file: index.js ~ line 200 ~ data", data)
+        console.log("🚀 ~ file: index.js ~ line 250 ~ data", data)
         setMembers(data)
       })
+      socket.on('getChoosedMovieId', function (data) {
+        console.log("🚀 ~ file: index.js ~ line 253 ~ data", data)
+        setChoosedMovie(data.movieId)
+      })
     }
+
+
+
+
   }, [socket])
+
+
+
+  useEffect(() => { console.log("🚀 ~ file: index.js ~ line 200 ~ data", members) }, [members])
 
   useEffect(() => {
     if (socket != undefined) {
@@ -230,7 +319,7 @@ const GroupStreaming = () => {
 
   useEffect(() => {
     handleRefreshButton()
-  }, []);
+  }, [choosedMovie]);
 
 
   useEffect(() => {
@@ -266,14 +355,11 @@ const GroupStreaming = () => {
                 <IconChevronLeft />
               }
             </div>
-
-
-
             <VideoPlayer socket={socket} roomnum={roomnum} movieURL={movieURL} handleOpenMovieRecommend={handleOpenMovieRecommend} />
 
             <div id="movieRecommend" onScroll={handleScroll}
               className={`${openedMovieRecommend ? '' : 'd-none'}`}
-              style={{ position: 'absolute', width: '100%', height: '100%', backgroundColor: '#242526', zIndex: 3, overflowX: 'auto', paddingTop: '40px' }}>
+              style={{ position: 'absolute', width: '100%', height: '100%', backgroundColor: '#242526', zIndex: 7, overflowX: 'auto', paddingTop: '40px' }}>
               <div className=" position-absolute d-flex justify-content-end" style={{ top: '0', zIndex: '5', width: '100%', backgroundColor: '#242526' }} >
                 <div className={`search-box ${isShown && 'input-search'} ${openedMovieRecommend ? '' : 'd-none'}`} style={{ marginRight: "7rem" }}>
                   <div >
@@ -314,7 +400,9 @@ const GroupStreaming = () => {
                         <div className=' item-grid multi-landing-stack-space-holder w-100 h-100'>
                           {/* <div className="multi-landing-stack-1"></div>
                                       <div className="multi-landing-stack-2"></div> */}
-                          <img style={{ borderRadius: '4px', }} className="title-card w-100 h-100" src={item.uri_avatar} alt={item.m_name} />
+                          <img onError={
+                            (e) => e.currentTarget.src = DefaultImage
+                          } style={{ borderRadius: '4px', }} className="title-card w-100 h-100" src={item.uri_avatar} alt={item.m_name} />
                         </div>
                         <div className='name-label'>
                           {item.name}
