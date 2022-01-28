@@ -15,4 +15,5 @@ export const movieApi = {
   urlAddMovieClicked: `${url}/api/movie/is-clicked`,
   urlAddWatchingList: `${url}/api/movie/user-time-watch`,
   urlGetWatchingList: `${url}/api/movie/watching-list`,
+  urlAddMovieCountView: `${url}/api/control/add-view-count`,
 }

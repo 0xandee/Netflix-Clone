@@ -138,37 +138,42 @@ const NavigationBar = (props) => {
                     }
                 </div>
                 <div className='secondary-navigation'>
-                    <Link to={`/watchgroup/${idgroup}`} className="text-decoration-none text-light">
-                        <div style={{ textAlign: 'center', paddingRight: '3vw', cursor: 'pointer', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                            <Icon.Plus className='icon-style' style={{ color: 'white' }} />
-                            <span className='text-white text-center' >Create Group</span>
+                    <div className='position-relative nav-element'>
+                        <div className={`search-box  ${isShown && 'input-search'}`} >
+                            <div>
+                                <Icon.Search className='icon-style' size='16px' strokeWidth='4' color='white' onClick={btnSearchClicked} />
+                            </div>
+
+                            <React.Fragment>
+                                <input
+                                    onKeyPress={onSearchKeyPress}
+                                    onBlur={onBlurSearchInput}
+                                    ref={textInput} value={searchText}
+                                    type={'text'}
+                                    name="search"
+                                    placeholder="Search.."
+                                    onChange={(e) => setSearchText(e.target.value)} >
+                                </input>
+                            </React.Fragment>
+
                         </div>
-                    </Link>
+                        <Link to={`/watchgroup/${idgroup}`} className="text-decoration-none text-light">
+                            <div style={{ textAlign: 'center', paddingRight: '2vw', cursor: 'pointer', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                                <Icon.Plus className='icon-style' style={{ color: 'white' }} />
+                                <span className='text-white text-center' >Create Group</span>
+                            </div>
+                        </Link>
+                    </div>
+
                     {/* <form id='user-form' style={{paddingRight: '3rem', cursor: 'pointer'}}>
                         <input type="submit" value="Create Room" className='icon-style' style={{color: 'white'}}/>
                     </form> */}
-                    <div className={`search-box nav-element ${isShown && 'input-search'}`} >
-                        <div>
-                            <Icon.Search className='icon-style' size='16px' strokeWidth='4' color='white' onClick={btnSearchClicked} />
-                        </div>
 
-                        <React.Fragment>
-                            <input
-                                onKeyPress={onSearchKeyPress}
-                                onBlur={onBlurSearchInput}
-                                ref={textInput} value={searchText}
-                                type={'text'}
-                                name="search"
-                                placeholder="Search.."
-                                onChange={(e) => setSearchText(e.target.value)} >
-                            </input>
-                        </React.Fragment>
-
-                    </div>
                     {/* <div className='nav-element'>
                         <CustomNotification />
                     </div> */}
                     <div className='nav-element'>
+
                         <CustomDropdown />
                     </div>
 

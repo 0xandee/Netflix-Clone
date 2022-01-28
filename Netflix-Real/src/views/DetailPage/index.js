@@ -20,6 +20,7 @@ const DetailPage = (props) => {
     const [isFetching, setIsFetching] = useState(true);
     const history = useHistory();
     const [open, setOpen] = useState(false);
+    const [percentMatched, setPercentMatched] = useState(0);
 
     const toggleModal = () => {
         localStorage.clear()
@@ -40,7 +41,7 @@ const DetailPage = (props) => {
                 let data = await response.json()
                 console.log("🚀 ~ file: index.js ~ line 37 ~ useEffect ~ data", data)
                 setDataMovie(data)
-                setIsFetching(false)
+                // setIsFetching(false)
             }
             else if (response.status == 403) {
                 setOpen(true)
@@ -62,10 +63,14 @@ const DetailPage = (props) => {
 
             if (response.status === 200) {
                 const data = await response.json()
-                const res = await getMoviesByListID(data.map((key) => key.id), getToken())
+                setPercentMatched(data.percentage_match)
+                console.log("🚀 ~ file: index.js ~ line 65 ~ useEffect ~ data", data)
+                const res = await getMoviesByListID(data.list_recommend.map((key) => key.id), getToken())
                 const data2 = await res.json()
-                console.log("🚀 ~ file: index.js ~ line 45 ~ useEffect ~ data2", data2)
-                setRecommendedMovies(data2.slice(0, 5));
+                const result = data2.map(v => ({ ...v, ...data.list_recommend.find(sp => sp.id === v.id) }));
+                console.log("🚀 ~ file: index.js ~ line 45 ~ useEffect ~ result", result)
+
+                setRecommendedMovies(result.slice(0, 20));
                 setIsFetching(false)
             }
             else if (response.status == 403) {
@@ -76,7 +81,7 @@ const DetailPage = (props) => {
             }
         }
         catch {
-            history.push('/maintenance')
+            // history.push('/maintenance')
         }
 
     }, [])
@@ -104,7 +109,7 @@ const DetailPage = (props) => {
 
 
                                 <Col lg='9' className='position-relative d-flex flex-column float-start  mt-3 mb-5'>
-                                    <DetailInfo item={dataMovie} />
+                                    <DetailInfo item={dataMovie} percentMatched={percentMatched} />
                                     <PreviewButtonControl item={dataMovie} />
                                 </Col>
                             </Row>

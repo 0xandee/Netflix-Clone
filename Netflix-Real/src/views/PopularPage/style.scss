@@ -4,14 +4,16 @@
   .header-genre {
     position: fixed;
     top: 0;
-    height: 13vh;
+    height: 10vh;
     width: 100%;
     z-index: 3;
     .select-header {
       position: absolute;
       bottom: 2%;
       left: 3rem;
-      width: 200px;
+      width: fit-content;
+      font-weight: 800;
+     
       z-index: 3;
       &::-webkit-scrollbar {
         display: none;

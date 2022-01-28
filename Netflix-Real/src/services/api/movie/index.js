@@ -87,7 +87,7 @@ export const getRecommUserMoviesState1 = async (idUser) => {
 
 export const getRecommUserMoviesState2 = async (idUser, idMovie) => {
   return new Promise((resolve, reject) => {
-    fetch(movieApi.urlGetRecommendedUserMoviesState2 + idUser + `&n_movie=100&id_movie=${idMovie}`, {
+    fetch(movieApi.urlGetRecommendedUserMoviesState2 + idUser + `&n_movie=100&id_movie=${idMovie}&fil_by_des=genre`, {
       crossDomain: true,
       method: "GET",
       mode: 'cors',
@@ -375,3 +375,22 @@ export const getWatchingList = async (token) => {
   })
 }
 
+export const updateMovieView = async (idMovie,token) => {
+  return new Promise((resolve, reject) => {
+    fetch(movieApi.urlAddMovieCountView + `/${idMovie}`, {
+      crossDomain: true,
+      method: "POST",
+      mode: 'cors',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': "Bearer " + token,
+      },
+    })
+      .then(response => {
+        resolve(response)
+      })
+      .catch(error => {
+        return reject(error)
+      });
+  })
+}

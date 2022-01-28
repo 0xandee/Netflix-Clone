@@ -66,40 +66,40 @@ const Homepage = (props) => {
 
 
 
-    // useEffect(async () => {
-    //     try {
-    //         const response = await getRecommUserMoviesState1(localStorage.getItem('id_user'))
-    //         console.log("🚀 ~ file: index.js ~ line 39 ~ useEffect ~ response", response)
+    useEffect(async () => {
+        try {
+            const response = await getRecommUserMoviesState1(localStorage.getItem('id_user'))
+            console.log("🚀 ~ file: index.js ~ line 39 ~ useEffect ~ response", response)
 
-    //         if (response.status === 200) {
-    //             const data = await response.json()
-    //             const res = await getMoviesByListID(data.map((key) => key.id), getToken())
-    //             const data2 = await res.json()
-    //             var genreMovie = {
-    //                 id: 'recommend',
-    //                 sliderTitle: 'Recommend for you',
-    //                 sliderMovieList: data2
-    //             }
-    //             setGenreMovies(genreMovies => [genreMovie, ...genreMovies]);
-    //             setIsFetching(false)
+            if (response.status === 200) {
+                const data = await response.json()
+                const res = await getMoviesByListID(data.map((key) => key.id), getToken())
+                const data2 = await res.json()
+                var genreMovie = {
+                    id: 'recommend',
+                    sliderTitle: 'Recommend for you',
+                    sliderMovieList: data2
+                }
+                setGenreMovies(genreMovies => [genreMovie, ...genreMovies]);
+                setIsFetching(false)
 
-    //         }
-    //         else if (response.status == 403) {
-    //             setOpen(true)
-    //         }
-    //         // else if (response.status === 500) {
-    //         //     history.push('/maintenance')
-    //         // }
-    //         else {
-    //             setIsFetching(false)
-    //         }
+            }
+            else if (response.status == 403) {
+                setOpen(true)
+            }
+            // else if (response.status === 500) {
+            //     history.push('/maintenance')
+            // }
+            else {
+                setIsFetching(false)
+            }
 
-    //     }
-    //     catch {
-    //         // history.push('/maintenance')
-    //     }
+        }
+        catch {
+            // history.push('/maintenance')
+        }
 
-    // }, [])
+    }, [])
 
     useEffect(() => {
         dataTypes.map(async (item) => {
@@ -129,9 +129,9 @@ const Homepage = (props) => {
             }
 
         });
-        if (dataTypes.length)
-            setIsFetching(false)
-        console.log("🚀 ~ file: index.js ~ line 104 ~ dataTypes.map ~ dataTypes", dataTypes)
+        // if (dataTypes.length)
+        //     setIsFetching(false)
+        // console.log("🚀 ~ file: index.js ~ line 104 ~ dataTypes.map ~ dataTypes", dataTypes)
     }, [dataTypes])
 
     useEffect(async () => {
