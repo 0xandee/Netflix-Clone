@@ -113,11 +113,11 @@ const VideoPlayer = ({ socket, roomnum, videoURL, handleOpenMovieRecommend }) =>
             setMuted(false)
         }
         if (playing && !muted) { setMuted(false) }
-        if (state.played >= 0.9) { 
+        if (state.played >= 0.9) {
             handleOpenMovieRecommend(true)
             setPlaying(false)
             playingRef.current = false
-         }
+        }
         if (!seeking && state.played != 0) {
             playedRef.current = state.played
             setPlayed(state.played);
@@ -274,12 +274,14 @@ const VideoPlayer = ({ socket, roomnum, videoURL, handleOpenMovieRecommend }) =>
                     const data = await response.json()
                     console.log("🚀 ~ file: index.js ~ line 141 ~ useEffect ~ data", data)
                     if (data.length) {
-                        const current_duration = data.find(item => item.id == idMovie.toString()).current_duration
-                        console.log("🚀 ~ file: index.js ~ line 269 ~ useEffect ~ data", data.find(item => item.id == idMovie.toString()).current_duration)
+                        const current_movie = data.find(item => item.id == idMovie.toString())
+                        console.log("🚀 ~ file: index.js ~ line 269 ~ useEffect ~ data", data.find(item => item.id == idMovie.toString()))
+                        if (current_movie != undefined) {
+                            playedRef.current = current_movie.current_duration
+                            setPlayed(current_movie.current_duration);
+                            playerRef.current.seekTo(current_movie.current_duration)
+                        }
 
-                        playedRef.current = current_duration
-                        setPlayed(current_duration);
-                        playerRef.current.seekTo(current_duration)
                     }
                 }
                 else if (response.status === 500) {
@@ -287,7 +289,9 @@ const VideoPlayer = ({ socket, roomnum, videoURL, handleOpenMovieRecommend }) =>
                 }
 
             }
-            catch {
+            catch (error) {
+                console.log("🚀 ~ file: index.js ~ line 291 ~ useEffect ~ error", error)
+
                 history.push('/maintenance')
             }
         }
@@ -295,7 +299,6 @@ const VideoPlayer = ({ socket, roomnum, videoURL, handleOpenMovieRecommend }) =>
 
     useEffect(() => {
         return () => {
-
             if (socket == undefined) {
                 if (playedRef.current != null && playedRef.current < 0.9) {
                     console.log("🚀 ~ file: index.js ~ line 290 ~ return ~ playedRef.current", playedRef.current)
