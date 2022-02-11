@@ -61,20 +61,19 @@ const SliderItemForWatching = (props) => {
         }
     }
 
-    const itemRemoveClicked = (data) => async (e) => {
+    const itemRemoveClicked = (data) => (e) => {
+        console.log("🚀 ~ file: index.js ~ line 65 ~ itemRemoveClicked ~ data", data)
         e.stopPropagation();
-        // try {
-        //     const response = await favMoviePost(data.id.toString(), getToken())
-        //     if (response.status == 500) {
-        //         history.push('/maintenance')
-        //     }
-        // }
-        // catch (error) {
-        //     console.log("🚀 ~ file: index.js ~ line 62 ~ itemAddClicked ~ error", error)
-        //     history.push('/maintenance')
-        // }
-    }
 
+        try {      
+            props.itemRemoveClicked(data)
+        } catch (error) {
+            console.log("🚀 ~ file: index.js ~ line 77 ~ itemRemoveClicked ~ error", error)
+
+        }
+
+
+    }
 
 
     return (
@@ -101,12 +100,17 @@ const SliderItemForWatching = (props) => {
                     <UncontrolledTooltip placement="top" target={`add-icon-${item.id}`} >
                         Add to Playlist
                     </UncontrolledTooltip>
-                    <div id={`remove-icon-${item.id}`} className=' btn-container bg-danger' onClick={itemRemoveClicked(item)} >
-                        <X />
+
+                    <div id={`remove-icon-${item.id}`} className=' btn-container bg-danger'  >
+                        <div onClick={itemRemoveClicked(item)}>
+                            <X />
+                        </div>
+                        {/* <UncontrolledTooltip placement="top" target={`remove-icon-${item.id}`}>
+                            Remove from list
+                        </UncontrolledTooltip> */}
                     </div>
-                    <UncontrolledTooltip placement="top" target={`remove-icon-${item.id}`}>
-                        Remove from list
-                    </UncontrolledTooltip>
+
+
 
                 </div>
             }

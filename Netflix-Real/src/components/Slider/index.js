@@ -26,63 +26,29 @@ SwiperCore.use([Navigation]);
 
 const Slider = (props) => {
     const history = useHistory();
-    const [hoverMenu, setHoverMenu] = useState(false);
+    const [movies, setMovies] = useState(props.sliderMovieList)
 
-    const toggleHoverMenu = () => setHoverMenu(!hoverMenu);
-
-    const itemClicked = (data) => () => {
-        history.push({
-            pathname: `/detail/${data.id.toString()}`,
-            //search: `jbv=${data.id}`,
-            state: { item: data }
-        })
-    }
-
-    const itemPlayClicked = (data) => (e) => {
-        e.stopPropagation();
-        history.push({
-            pathname: `/watch/${data.id.toString()}`,
-            //search: `jbv=${data.id}`,
-            state: { item: data }
-        })
-    }
-
-    const itemAddClicked = (data) => async (e) => {
-        e.stopPropagation();
+    const itemRemoveClicked = (data) => async () => {
+       
+        let updatedData = movies
         try {
-            const response = await favMoviePost(data.id.toString(), getToken())
-            if (response.status == 500) {
-                history.push('/maintenance')
-            }
+            updatedData = updatedData.filter((movie) =>
+                data.id !== movie.id
+            );
+            console.log("🚀 ~ file: index.js ~ line 71 ~ itemRemoveClicked ~ updatedData", updatedData)
+
+            setMovies(updatedData)
+        } catch (error) {
+            console.log("🚀 ~ file: index.js ~ line 77 ~ itemRemoveClicked ~ error", error)
+
         }
-        catch (error) {
-            console.log("🚀 ~ file: index.js ~ line 62 ~ itemAddClicked ~ error", error)
-            history.push('/maintenance')
-        }
+
+
     }
 
-    const itemRemoveClicked = (data) => async (e) => {
-        e.stopPropagation();
-        // try {
-        //     const response = await favMoviePost(data.id.toString(), getToken())
-        //     if (response.status == 500) {
-        //         history.push('/maintenance')
-        //     }
-        // }
-        // catch (error) {
-        //     console.log("🚀 ~ file: index.js ~ line 62 ~ itemAddClicked ~ error", error)
-        //     history.push('/maintenance')
-        // }
-    }
 
-    const imageOnErrorHandler = (
-        event
-    ) => {
-        event.currentTarget.src = DefaultImage;
-
-    };
-    return (
-        <section className="thumbSection mb-3">
+    return ( movies.length &&
+        <section className="thumbSection mb-3" key={props.id}>
             <h2 className="thumbTitle my-3 ps-5 position-relative cursor-pointer d-inline">{props.sliderTitle}</h2>
             <Swiper spaceBetween={20}
                 slidesPerView={3}
@@ -99,11 +65,11 @@ const Slider = (props) => {
                 }}
                 className="swiper-container mt-4 px-5">
                 <div>
-                    {props.sliderMovieList.map(item => {
+                    {movies.map(item => {
                         return (
-                            item != null && item.uri_avatar != null &&
+                            item != null && item.uri_avatar != null && 
                             <SwiperSlide className="swiper-slide slide h-100" >
-                                <SliderItemForWatching item={item} id={props.id} />
+                                <SliderItemForWatching item={item} id={props.id} itemRemoveClicked={itemRemoveClicked(item)} />
                                 {/* <a className="thumbTile cursor-pointer h-100" >
                                     <img className="thumbTile__image" style={{ minHeight: '25vh', maxHeight: '25vh' }} src={item.uri_avatar} alt={item.m_name}
                                         onError={
