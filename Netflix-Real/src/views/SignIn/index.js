@@ -7,7 +7,7 @@ import { IconNetflix } from "../../assets/Icon";
 
 import { connect } from 'react-redux';
 import { userLoginFetch } from '../../services/redux/actions';
-import { requestLogin } from "../../services/api/auth";
+import { detectDevice, requestLogin } from "../../services/api/auth";
 import { to_Decrypt, to_Encrypt } from "../../services/aes256";
 // import Cookies from 'universal-cookie';
 import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
@@ -23,9 +23,22 @@ const SignIn = (props) => {
     const [errorTextEmail, setErrorTextEmail] = useState('Please enter a valid email')
     const [errorTextPassword, setErrorTextPassword] = useState('Password must be between 6 to 20 characters which contain at least one numeric digit, one uppercase and one lowercase letter')
 
+    const deviceType = () => {
+        const ua = navigator.userAgent;
+        if (/(tablet|ipad|playbook|silk)|(android(?!.*mobi))/i.test(ua)) {
+            // device is tablet
+            return 1;
+        }
+        else if (/Mobile|Android|iP(hone|od)|IEMobile|BlackBerry|Kindle|Silk-Accelerated|(hpw|web)OS|Opera M(obi|ini)/.test(ua)) {
+            // device is mobile
+            return 0;
+        }
+        // device is desktop
+        return 2;
+    };
+
     const signInClick = useCallback(async () => {
         var errorCheck = false;
-        console.log("🚀 ~ file: index.js ~ line 27 ~ signInClick ~ username", username)
         var emailValid = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         if (username == "" || !username.match(emailValid)) {
 
@@ -50,11 +63,9 @@ const SignIn = (props) => {
                 if (response.status === 200) {
                     const data = await response.json()
                     // localStorage.setItem("access_token", data.accessToken);
-
-                    // bake_cookie('access_token', data.accessToken);
-                    // bake_cookie('username', username.slice(0, username.indexOf("@")));
-                    // bake_cookie('id_user', data.id);
-                    // bake_cookie('new_user', data.first);
+                    const res = await detectDevice(deviceType(), data.accessToken)
+                    
+                    
 
                     localStorage.setItem('access_token', data.accessToken);
                     localStorage.setItem('username', username.slice(0, username.indexOf("@")));
@@ -63,7 +74,7 @@ const SignIn = (props) => {
                     localStorage.setItem('email', to_Encrypt(username));
                     localStorage.setItem('password', to_Encrypt(password));
 
-                    // delete_cookie(cookie_key);
+                    
                     if (data.first) {
                         history.push('/choosetype')
                     }

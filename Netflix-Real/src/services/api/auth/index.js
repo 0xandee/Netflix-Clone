@@ -196,3 +196,26 @@ export const requestRefreshToken = async (refresh_token, callback) => {
             callback('error', error)
         )
 }
+
+// 0: mobile, 1: tablet, 2: desktop
+export const detectDevice = async (value, token) => {
+    return new Promise((resolve, reject) => {
+      fetch(authApi.urlDetectDevice + `/${value}` , {
+        crossDomain: true,
+        method: "POST",
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': "Bearer " + token,
+        },
+       
+      })
+        .then(response => {
+          resolve(response)
+        })
+        .catch(error => {
+          return reject(error)
+        });
+    })
+  }
+  

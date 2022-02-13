@@ -70,38 +70,7 @@ const Slider = (props) => {
                             item != null && item.uri_avatar != null && 
                             <SwiperSlide className="swiper-slide slide h-100" >
                                 <SliderItemForWatching item={item} id={props.id} itemRemoveClicked={itemRemoveClicked(item)} />
-                                {/* <a className="thumbTile cursor-pointer h-100" >
-                                    <img className="thumbTile__image" style={{ minHeight: '25vh', maxHeight: '25vh' }} src={item.uri_avatar} alt={item.m_name}
-                                        onError={
-                                            (e) => e.currentTarget.src = DefaultImage
-                                        } />
-                                </a>
-                                {props.id == 'Watching' && hoverMenu &&
-                                    <div className="w-100 h-100 px-2 position-absolute d-flex justify-content-around align-items-center"
-                                        style={{ top: 0, backgroundColor: 'black', opacity: 0.6 }}
-                                    >
-                                        <div id={`play-${item.id}`} className=' btn-container' onClick={itemPlayClicked(item)}>
-                                            <Play />
-                                        </div>
-                                        <UncontrolledTooltip placement="top" target={`play-${item.id}`} >
-                                            Play
-                                        </UncontrolledTooltip>
-                                        <div id={`add-icon-${item.id}`} className=' btn-container' onClick={itemAddClicked(item)}>
-                                            <Plus />
-                                        </div>
-                                        <UncontrolledTooltip placement="top" target={`add-icon-${item.id}`} >
-                                            Add to Playlist
-                                        </UncontrolledTooltip>
-                                        <div id={`remove-icon-${item.id}`} className=' btn-container bg-danger' onClick={itemRemoveClicked(item)} >
-                                            <X />
-                                        </div>
-                                        <UncontrolledTooltip placement="top" target={`remove-icon-${item.id}`}>
-                                            Remove from list
-                                        </UncontrolledTooltip>
-
-                                    </div>
-                                } */}
-                                {/* <div className="controlPlayer pl-4em"></div> */}
+                              
                             </SwiperSlide>)
                     })}
                 </div>

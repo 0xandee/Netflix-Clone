@@ -375,7 +375,54 @@ export const getWatchingList = async (token) => {
   })
 }
 
-export const updateMovieView = async (idMovie,token) => {
+
+export const deleteWatchingList = async (idMovie, token) => {
+  return new Promise((resolve, reject) => {
+    fetch(movieApi.urlDeleteWatchingList + `/${idMovie}`, {
+      crossDomain: true,
+      method: "DELETE",
+      mode: 'cors',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': "Bearer " + token,
+      },
+    })
+      .then(response => {
+        resolve(response)
+      })
+      .catch(error => {
+        return reject(error)
+      });
+  })
+}
+
+//0: Dislike, 1: Like
+export const isLikeOrDislike = async (idMovie, value, token) => {
+  return new Promise((resolve, reject) => {
+    fetch(movieApi.urlIsLike , {
+      crossDomain: true,
+      method: "POST",
+      mode: 'cors',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': "Bearer " + token,
+      },
+      body: JSON.stringify({
+        idMovie,
+        value: value
+      })
+    })
+      .then(response => {
+        resolve(response)
+      })
+      .catch(error => {
+        return reject(error)
+      });
+  })
+}
+
+
+export const updateMovieView = async (idMovie, token) => {
   return new Promise((resolve, reject) => {
     fetch(movieApi.urlAddMovieCountView + `/${idMovie}`, {
       crossDomain: true,

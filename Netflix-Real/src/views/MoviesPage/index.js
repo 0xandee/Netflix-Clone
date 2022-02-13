@@ -12,6 +12,7 @@ import DefaultImage from '../../assets/Images/defaultImage.png';
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
 import { getToken } from "../../services/function";
+import { IconNetflix } from "../../assets/Icon";
 
 
 const MoviesPage = (props) => {
@@ -88,9 +89,9 @@ const MoviesPage = (props) => {
                 }
             }
         }
-        catch(err) {
-           console.log("🚀 ~ file: index.js ~ line 92 ~ useEffect ~ err", err)
-           // history.push('/maintenance')
+        catch (err) {
+            console.log("🚀 ~ file: index.js ~ line 92 ~ useEffect ~ err", err)
+            // history.push('/maintenance')
         }
 
 
@@ -132,13 +133,20 @@ const MoviesPage = (props) => {
                 }
             }
             catch {
-              //  history.push('/maintenance')
+                //  history.push('/maintenance')
             }
         }
     }, [selectedGenre])
 
     return (
         <div id='moviesPage' >
+            <div className="d-flex justify-content-center align-items-center" style={{ height: '100vh', width: '100vw', backgroundColor: 'white' }}>
+                {/* <div class="spinner-border  text-danger" style={{ height: '10vh', width: '10vh', borderWidth: '15px' }} role="status" /> */}
+                <div class="text-danger" style={{ height: '20vh', width: '10vh', borderWidth: '15px', fill:'red' }} role="status" >
+                    <IconNetflix/>
+                </div>
+
+            </div>
             <div className="movie-page overflow-x-hidden bg-black"  >
                 <NavigationBar />
                 <div class="header-genre bg-black">
@@ -192,9 +200,9 @@ const MoviesPage = (props) => {
                                 <div className=' item-grid multi-landing-stack-space-holder w-100 h-100'>
                                     {/* <div className="multi-landing-stack-1"></div>
                                     <div className="multi-landing-stack-2"></div> */}
-                                    <img  onError={
+                                    <img onError={
                                         (e) => e.currentTarget.src = DefaultImage
-                                    }   style={{ borderRadius: '4px', }} className="title-card w-100 h-100" src={item.uri_avatar} alt={item.m_name} />
+                                    } style={{ borderRadius: '4px', }} className="title-card w-100 h-100" src={item.uri_avatar} alt={item.m_name} />
                                 </div>
                                 <div className='name-label'>
                                     {item.name}

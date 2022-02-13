@@ -101,7 +101,7 @@ const GroupStreaming = () => {
   const [choosedMovie, setChoosedMovie] = useState('');
 
   const notifyWarning = (data) => toast.warning(<WarningToast data={data} />, { position: toast.POSITION.TOP_CENTER, hideProgressBar: true })
-  const notifyInvite = (data) => toast.info(<InviteToast data={data} />, { position: toast.POSITION.TOP_CENTER, hideProgressBar: true,autoClose: 8000, })
+  const notifyInvite = (data) => toast.info(<InviteToast data={data} />, { position: toast.POSITION.TOP_CENTER, hideProgressBar: true, autoClose: 8000, })
 
 
   const toggleRefresh = () => setBtnRefresh(!btnRefresh);
@@ -266,7 +266,9 @@ const GroupStreaming = () => {
 
   useEffect(() => {
     // Join room
-    const newSocket = io("http://localhost:8000", { transports: ['websocket'] });
+    require('dotenv').config();
+    const url = process.env.REACT_APP_URL;
+    const newSocket = io(url, { transports: ['websocket'] });
     setSocket(newSocket);
     if (newSocket) {
       newSocket.emit("joinRoom", { username, roomnum });
@@ -435,7 +437,7 @@ const GroupStreaming = () => {
           </div>
 
           <CustomModal isOpen={open} onClick={toggleModal} headerText={"Host disconnected"} buttonText='Back to home page' bodyText=
-            {"Look like host is disconnect.\n So please press below button to back to home page."
+            {"Look like the host was disconnected.\n So please press below button to go back to the home page."
             } />
           <CustomModal isOpen={hostModal} onClick={toggleModal} headerText={"Host enter room"} buttonText='Back to home page' bodyText=
             {"Sorry but you can only create one room at a time.\n So please close this page or press below button to back to home page."

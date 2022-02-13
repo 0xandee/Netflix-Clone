@@ -16,6 +16,7 @@ import { Play, Plus, X } from "react-feather";
 import { Tooltip, UncontrolledTooltip } from "reactstrap";
 import { favMoviePost } from "../../services/api/user";
 import { getToken } from "../../services/function";
+import { deleteWatchingList } from "../../services/api/movie";
 
 
 // install Swiper modules
@@ -61,12 +62,23 @@ const SliderItemForWatching = (props) => {
         }
     }
 
-    const itemRemoveClicked = (data) => (e) => {
+    const itemRemoveClicked = (data) => async (e) => {
         console.log("🚀 ~ file: index.js ~ line 65 ~ itemRemoveClicked ~ data", data)
         e.stopPropagation();
 
-        try {      
-            props.itemRemoveClicked(data)
+        try {
+            const response = await deleteWatchingList(data.id, getToken())
+
+            console.log("🚀 ~ file: index.js ~ line 39 ~ useEffect ~ response", response)
+
+            if (response.status === 200) {
+                props.itemRemoveClicked(data)
+
+            }
+            else if (response.status === 500) {
+                history.push('/maintenance')
+            }
+            
         } catch (error) {
             console.log("🚀 ~ file: index.js ~ line 77 ~ itemRemoveClicked ~ error", error)
 

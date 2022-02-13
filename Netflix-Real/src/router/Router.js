@@ -16,6 +16,7 @@ import { ErrorPage } from "../views/index";
 import { Routes, DefaultRoute } from "./routes";
 import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
 import { getToken } from "../services/function";
+import { IconNetflix } from "../assets/Icon";
 
 // import {socket} from "./services/socket/socket"
 
@@ -25,7 +26,11 @@ import { getToken } from "../services/function";
 const LoadingRoute = () => {
     return (
         <div className="d-flex justify-content-center align-items-center" style={{ height: '100vh', width: '100vw', backgroundColor: 'white' }}>
-            <div class="spinner-border  text-danger" style={{ height: '10vh', width: '10vh', borderWidth: '15px' }} role="status" />
+            {/* <div class="spinner-border  text-danger" style={{ height: '10vh', width: '10vh', borderWidth: '15px' }} role="status" /> */}
+            <div class="spinner-border  text-danger" style={{ height: '10vh', width: '10vh', borderWidth: '15px' }} role="status" >
+                <IconNetflix />
+            </div>
+
         </div>
 
     )
@@ -37,14 +42,14 @@ const FinalRoute = (props) => {
     const route = props.route
     console.log("🚀 ~ file: Router.js ~ line 37 ~ FinalRoute ~ route", route)
     // ** Assign vars based on route meta
-    console.log("🚀 ~ file: Router.js ~ line 40 ~ FinalRoute ~ read_cookie('access_token')", getToken()!= null)
+    console.log("🚀 ~ file: Router.js ~ line 40 ~ FinalRoute ~ read_cookie('access_token')", getToken() != null)
     console.log("🚀 ~ file: Router.js ~ line 46 ~ FinalRoute ~ localStorage.getItem('new_user')", localStorage.getItem('new_user'))
 
-    if (route.meta === undefined && getToken() === null ) {
+    if (route.meta === undefined && getToken() === null) {
         return <Redirect to='/signin' />
 
     } else if (route.meta && route.meta.authRoute && getToken() != null && localStorage.getItem('new_user') == 'false') {
-       
+
         return <Redirect to='/' />
     }
 
