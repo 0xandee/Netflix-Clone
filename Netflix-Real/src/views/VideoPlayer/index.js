@@ -2,7 +2,7 @@ import React, { createRef, useCallback, useEffect, useRef, useState } from "reac
 import { findDOMNode } from "react-dom";
 import ReactPlayer from "react-player";
 import { Link, useHistory, useParams } from "react-router-dom";
-import { Progress, Tooltip, Row, Col } from "reactstrap";
+import { Progress, Tooltip, Row, Col, UncontrolledTooltip } from "reactstrap";
 import screenfull from "screenfull";
 import { IconBackArrow, IconFullScreen, IconLayer, IconNext10s, IconPause, IconPauseCircle, IconPlay, IconPlayCircle, IconRewind10s, IconSetting, IconSkip, IconVolume, IconVolumeMute } from "../../assets/Icon";
 import { Duration, Format } from "../../services/function/Duration";
@@ -13,6 +13,7 @@ import { addWatchingList, getWatchingList, updateTimeWatched } from "../../servi
 import { getToken } from "../../services/function";
 
 let count = 0;
+let seconds = 0;
 //https://www.example.com/url_to_video.mp4
 ///https://player.vimeo.com/external/194837908.sd.mp4?s=c350076905b78c67f74d7ee39fdb4fef01d12420&profile_id=164
 // http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4
@@ -104,12 +105,16 @@ const VideoPlayer = ({ socket, roomnum, videoURL, handleOpenMovieRecommend }) =>
     }
 
     const handleVideoProgress = (state) => {
+
+        console.log("🚀 ~ file: index.js ~ line 110 ~ handleVideoProgress ~ seconds", seconds)
+        if (playing) seconds += 1;
         if (count > 3 && !seeking) {
             controlRef.current.style.opacity = '0'
             count = 0;
         }
         else if (controlRef.current.style.opacity == '1' && playing) {
             count += 1;
+
             setMuted(false)
         }
         if (playing && !muted) { setMuted(false) }
@@ -119,6 +124,7 @@ const VideoPlayer = ({ socket, roomnum, videoURL, handleOpenMovieRecommend }) =>
             playingRef.current = false
         }
         if (!seeking && state.played != 0) {
+
             playedRef.current = state.played
             setPlayed(state.played);
             setLoaded(state.loaded)
@@ -251,6 +257,8 @@ const VideoPlayer = ({ socket, roomnum, videoURL, handleOpenMovieRecommend }) =>
         }
     }, [played, focusing])
 
+
+
     useEffect(() => {
         if (isHost) {
             document.addEventListener("keydown", handleKeyDown)
@@ -263,7 +271,7 @@ const VideoPlayer = ({ socket, roomnum, videoURL, handleOpenMovieRecommend }) =>
         }
     }, [handleKeyDown, handleKeyUp]);
 
-    useEffect(async () => {
+    useEffect(async () => { 
         if (socket == undefined) {
             try {
 
@@ -292,7 +300,7 @@ const VideoPlayer = ({ socket, roomnum, videoURL, handleOpenMovieRecommend }) =>
             catch (error) {
                 console.log("🚀 ~ file: index.js ~ line 291 ~ useEffect ~ error", error)
 
-              //  history.push('/maintenance')
+                //  history.push('/maintenance')
             }
         }
     }, [])
@@ -301,18 +309,17 @@ const VideoPlayer = ({ socket, roomnum, videoURL, handleOpenMovieRecommend }) =>
         return () => {
             if (socket == undefined) {
                 if (playedRef.current != null && playedRef.current < 0.9) {
-                    console.log("🚀 ~ file: index.js ~ line 290 ~ return ~ playedRef.current", playedRef.current)
-
                     addWatchingList(idMovie.toString(), playedRef.current, getToken())
-                    updateTimeWatched(idMovie.toString(), Math.round(playedRef.current * 5), getToken())
+                    updateTimeWatched(idMovie.toString(), Math.round((seconds / duration) * 5), getToken())
                 }
             }
         }
-    }, [])
+    }, [duration])
 
     useLayoutEffect(() => {
-        console.log('get host data')
+
         if (socket != undefined) {
+            console.log('get host data')
             const data = {
                 room: roomnum,
                 currTime: playedRef.current,
@@ -555,7 +562,7 @@ const VideoPlayer = ({ socket, roomnum, videoURL, handleOpenMovieRecommend }) =>
                                     <div onClick={handleClickFullscreen} >
                                         <IconFullScreen className={'icon--color'} />
                                     </div>
-
+                                   
                                 </Col>
 
                             </Row>
