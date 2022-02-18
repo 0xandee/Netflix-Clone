@@ -1,19 +1,30 @@
 import { to_Decrypt } from "../aes256"
-import { requestLogin } from "../api/auth"
+import { checkRefreshToken, getAccessToken, requestLogin } from "../api/auth"
+
 
 export const getToken = () => { return localStorage.getItem('access_token') }
-export const resetToken = async () => {
+export const requestRefreshToken = async () => {
     try {
-        const response = await requestLogin(to_Decrypt(localStorage.getItem('email')), to_Decrypt(localStorage.getItem('password')))
-        console.log("🚀 ~ file: index.js ~ line 8 ~ resetToken ~ response", response)
-        if (response.status === 200) {
-            const data = await response.json()
-            localStorage.setItem('access_token', data.accessToken);
-        }
-        return localStorage.getItem('access_token')
+      const response = await checkRefreshToken(localStorage.getItem('refresh_token'))
+      console.log("🚀 ~ file: index.js ~ line 8 ~ resetRefreshToken ~ response", response)
+      return response.status
     }
     catch {
-        return localStorage.getItem('access_token')
+      return 'error'
     }
+  
+  }
 
-}
+export const requestAccessToken = async () => {
+    try {
+      const response = await getAccessToken(localStorage.getItem('refresh_token'))
+      console.log("🚀 ~ file: index.js ~ line 8 ~ resetAccessToken ~ resetAccessToken", response)
+  
+      localStorage.setItem('access_token',response.accessToken)
+      return response.accessToken
+    }
+    catch {
+      return 'errors'
+    }
+  
+  }

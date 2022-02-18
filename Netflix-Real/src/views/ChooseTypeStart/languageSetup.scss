@@ -68,10 +68,10 @@ $gray: #8c8c8c;
         }
     }
     &__body {
-        height: 55vh;
-        width: 50vw;
+        height: 100%;
+        width: 100vw;
 
-        margin: 10vh auto;
+        margin: 15vh 0 0 0;
         padding: 0 5%;
 
         background-color: transparent;
@@ -86,11 +86,11 @@ $gray: #8c8c8c;
        
         &__content {
             box-sizing: border-box;
-            min-height: 80vh;
+            min-height: 65vh;
             // max-width: 340px;
             width: 100%;
 
-            margin-bottom: 10vh;
+            //margin-bottom: 10vh;
 
             border-radius: 4px;
 
@@ -107,7 +107,7 @@ $gray: #8c8c8c;
                 padding: 20px 0 30px;
 
                 .languages-container{
-                    max-width: 50vw;
+                    max-width: 700px;
                     @media screen and (min-width: 1024px){
                         column-count: 4;
                     }
@@ -187,7 +187,7 @@ $gray: #8c8c8c;
                     font-size: 13px;
                 }
                 &__step-title {
-                    font-size: 32px;
+                    font-size: 24px;
                     font-weight: 700;
                     margin: 0 0 0.4em;
                     color: #333;

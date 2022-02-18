@@ -40,15 +40,16 @@ const ChooseTypeStart = () => {
             const response = await getMovieTypeAPI(getToken())
             console.log("🚀 ~ file: index.js ~ line 39 ~ useEffect ~ response", response)
             if (response.status === 200) {
-                let data = await response.json()
+                let data = await response.data
                 dispatch(setMovieTypes(data))
             }
             else if (response.status == 500) {
                 history.push('/maintenance')
             }
         }
-        catch {
-            history.push('/maintenance')
+        catch(err) {
+            console.log("🚀 ~ file: index.js ~ line 51 ~ useEffect ~ err", err)
+          //  history.push('/maintenance')
         }
     }, [dispatch])
 

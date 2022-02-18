@@ -49,7 +49,6 @@ const AccountProfile = () => {
             <div onClick={logoClicked}>
               <IconNetflix className={'profile__header__logo'} />
             </div>
-
             <div>
               <CustomDropdown />
             </div>

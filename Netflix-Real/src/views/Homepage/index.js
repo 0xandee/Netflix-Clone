@@ -137,10 +137,10 @@ const Homepage = (props) => {
     useEffect(async () => {
         try {
             const response = await getWatchingList(getToken())
-            console.log("🚀 ~ file: index.js ~ line 39 ~ useEffect ~ response", response)
+            console.log("🚀 ~ file: index.js ~ line 140 ~ useEffect ~ response", response)
 
             if (response.status === 200) {
-                const data = await response.json()
+                const data = await response.data
                 console.log("🚀 ~ file: index.js ~ line 141 ~ useEffect ~ data", data)
                 if (data.length) {
                     var genreMovie = {
@@ -149,9 +149,10 @@ const Homepage = (props) => {
                         sliderMovieList: data
                     }
                     setGenreMovies(genreMovies => [genreMovie, ...genreMovies]);
+                   
                     console.log("🚀 ~ file: index.js ~ line 149 ~ useEffect ~ genreMovies", genreMovies)
                 }
-
+               
             }
             else if (response.status == 403) {
                 setOpen(true)

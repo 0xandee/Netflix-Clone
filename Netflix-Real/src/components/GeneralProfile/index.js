@@ -105,7 +105,11 @@ const GeneralProfile = () => {
 
   useEffect(async () => {
     try {
+      console.log("🚀 ~ file: index.js ~ line 109 ~ useEffect ~ getToken()", getToken())
+      console.log("🚀 ~ file: index.js ~ line 109 ~ useEffect ~ getToken()",  localStorage.getItem('access_token'))
+
       let response = await getProfile(getToken())
+      console.log("🚀 ~ file: index.js ~ line 109 ~ useEffect ~ response", response)
       if (response.status === 200) {
         let data = await response.json()
         setEmail(data.email)

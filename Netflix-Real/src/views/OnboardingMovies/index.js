@@ -67,6 +67,7 @@ const OnboardingMovies = () => {
 
         }
         catch (e) {
+        console.log("🚀 ~ file: index.js ~ line 70 ~ useEffect ~ e", e)
 
         }
 

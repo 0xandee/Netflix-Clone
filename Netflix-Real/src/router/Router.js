@@ -27,32 +27,32 @@ const LoadingRoute = () => {
     return (
         <div className="d-flex justify-content-center align-items-center" style={{ height: '100vh', width: '100vw', backgroundColor: 'white' }}>
             {/* <div class="spinner-border  text-danger" style={{ height: '10vh', width: '10vh', borderWidth: '15px' }} role="status" /> */}
-            <div class="spinner-border  text-danger" style={{ height: '10vh', width: '10vh', borderWidth: '15px' }} role="status" >
+            <div class="text-danger" style={{ height: '20vh', width: '10vh', borderWidth: '15px', fill: 'red' }} role="status" >
                 <IconNetflix />
             </div>
-
         </div>
 
     )
 }
 
 const FinalRoute = (props) => {
-
-
     const route = props.route
-    console.log("🚀 ~ file: Router.js ~ line 37 ~ FinalRoute ~ route", route)
-    // ** Assign vars based on route meta
-    console.log("🚀 ~ file: Router.js ~ line 40 ~ FinalRoute ~ read_cookie('access_token')", getToken() != null)
-    console.log("🚀 ~ file: Router.js ~ line 46 ~ FinalRoute ~ localStorage.getItem('new_user')", localStorage.getItem('new_user'))
+    console.log("🚀 ~ file: Router.js ~ line 45 ~ FinalRoute ~ localStorage.getItem('new_user')", localStorage.getItem('new_user'))
 
     if (route.meta === undefined && getToken() === null) {
+        console.log("1")
         return <Redirect to='/signin' />
 
-    } else if (route.meta && route.meta.authRoute && getToken() != null && localStorage.getItem('new_user') == 'false') {
-
+    }
+    else if (route.meta === undefined && getToken() != null && localStorage.getItem('new_user') == 'true') {
+        console.log("12")
+        return <Redirect to='/choosetype' />
+    }
+    else if (route.meta && route.meta.authRoute && getToken() != null && localStorage.getItem('new_user') == 'false') {
+        console.log("13")
         return <Redirect to='/' />
     }
-
+    console.log("14")
     return <route.component {...props} />
 }
 
@@ -67,6 +67,7 @@ export default function WebRouter() {
                         return getToken() !== null ? <Redirect to={DefaultRoute} /> : <Redirect to='/signin' />
                     }}
                 />
+               
                 {Routes.map(route =>
                     <Route
                         key={route.path}
@@ -82,21 +83,7 @@ export default function WebRouter() {
                     />
                 )}
 
-                {/* <Route path="/signin" component={SignIn} />
-                <Route path="/forgot-password" component={ForgotPassword} />
-                <Route path="/signup/registration" component={Registration} />
-                <Route path="/signup/registrationform" component={RegistrationForm} />
-                <Route path="/choosetype" component={ChooseTypeStart} />
-                <Route path="/choosemovies" component={OnboardingMovies} />
-                <PrivateRoute exact path="/playlist" component={MyPlaylistPage} />
-                <PrivateRoute exact path="/movies/:idGenre" component={MoviesPage} />
-                <PrivateRoute exact path="/popular" component={PopularPage} />
-                <Route exact path='/home' component={Homepage} />
-                <PrivateRoute exact path='/detail/:idMovie' component={PreviewPopup} />
-                <PrivateRoute exact path='/search' component={SearchPage} />
-                <PrivateRoute path="/watch" component={VideoPlayer} />
-                <PrivateRoute path="/watchgroup/:idgroup" component={GroupStreaming} />
-                <Route path="/profile" component={AccountProfile} /> */}
+                
                 <Route component={ErrorPage} />
             </Switch>
 

@@ -173,30 +173,52 @@ export const requestLogout = async (refresh_token) => {
     })
 }
 
-export const requestRefreshToken = async (refresh_token, callback) => {
-    var rawBody = JSON.stringify({
-        refresh_token
-    });
-    var requestOptions = {
-        method: 'POST',
-        headers: requestHeaders,
-        body: rawBody,
-        redirect: 'follow'
-    };
-
-    await fetch(authApi.urlRefreshToken, requestOptions)
-        .then(response =>
-            response.text()
-        )
-        .then(result =>
-            callback(JSON.parse(result))
-        )
-
-        .catch(error =>
-            callback('error', error)
-        )
+export const checkRefreshToken = (token) => {
+    return new Promise((resolve, reject) => {
+        fetch(authApi.urlCheckRefreshToken, {
+            crossDomain: true,
+            method: "GET",
+            mode: 'cors',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': "Bearer " + token,
+            }
+        })
+            .then(async response => {
+                resolve(response)
+            })
+            .catch(error => {
+                return reject(error)
+            });
+    })
 }
 
+export const getAccessToken = (token) => {
+console.log("🚀 ~ file: index.js ~ line 197 ~ getAccessToken ~ token", token)
+    return new Promise((resolve, reject) => {
+        fetch(authApi.urlRefreshAccessToken, {
+            crossDomain: true,
+            method: "GET",
+            mode: 'cors',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': "Bearer " + token,
+            }
+        })
+            .then(async response => {
+                console.log("🚀 ~ file: index.js ~ line 217 ~ returnnewPromise ~ response", response)
+
+                const data = await response.json();
+
+                if (!response.ok) return reject(response.ok)
+                console.log(data)
+                resolve(data)
+            })
+            .catch(error => {
+                return reject(error)
+            });
+    })
+}
 // 0: mobile, 1: tablet, 2: desktop
 export const detectDevice = async (value, token) => {
     return new Promise((resolve, reject) => {

@@ -271,7 +271,7 @@ const VideoPlayer = ({ socket, roomnum, videoURL, handleOpenMovieRecommend }) =>
                 console.log("🚀 ~ file: index.js ~ line 39 ~ useEffect ~ response", response)
 
                 if (response.status === 200) {
-                    const data = await response.json()
+                    const data = await response.data
                     console.log("🚀 ~ file: index.js ~ line 141 ~ useEffect ~ data", data)
                     if (data.length) {
                         const current_movie = data.find(item => item.id == idMovie.toString())
@@ -292,7 +292,7 @@ const VideoPlayer = ({ socket, roomnum, videoURL, handleOpenMovieRecommend }) =>
             catch (error) {
                 console.log("🚀 ~ file: index.js ~ line 291 ~ useEffect ~ error", error)
 
-                history.push('/maintenance')
+              //  history.push('/maintenance')
             }
         }
     }, [])

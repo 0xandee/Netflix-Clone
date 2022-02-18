@@ -65,14 +65,12 @@ const SignIn = (props) => {
                     // localStorage.setItem("access_token", data.accessToken);
                     const res = await detectDevice(deviceType(), data.accessToken)
                     
-                    
-
                     localStorage.setItem('access_token', data.accessToken);
                     localStorage.setItem('username', username.slice(0, username.indexOf("@")));
                     localStorage.setItem('id_user', data.id);
                     localStorage.setItem('new_user', data.first);
-                    localStorage.setItem('email', to_Encrypt(username));
-                    localStorage.setItem('password', to_Encrypt(password));
+                    localStorage.setItem('refresh_token', data.refreshToken);
+                   
 
                     
                     if (data.first) {

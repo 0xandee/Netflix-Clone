@@ -77,7 +77,7 @@ const MoviesPage = (props) => {
         try {
             const response = await getMovieTypeAPI(getToken())
             if (response.status === 200 && dataTypes.length == 0) {
-                const data = await response.json()
+                const data = await response.data
                 dispatch(setMovieTypes(data))
             }
             else if (response.status === 500) {
@@ -118,6 +118,7 @@ const MoviesPage = (props) => {
         if (selectedGenre != null) {
             try {
                 const res = await getMoviesByGenreAPI(selectedGenre.value, getToken())
+                console.log("🚀 ~ file: index.js ~ line 121 ~ useEffect ~ getToken()", getToken())
                 if (res.status == 200) {
                     let data = await res.data
                     setDataApiGenreMovies(data)
@@ -140,13 +141,6 @@ const MoviesPage = (props) => {
 
     return (
         <div id='moviesPage' >
-            <div className="d-flex justify-content-center align-items-center" style={{ height: '100vh', width: '100vw', backgroundColor: 'white' }}>
-                {/* <div class="spinner-border  text-danger" style={{ height: '10vh', width: '10vh', borderWidth: '15px' }} role="status" /> */}
-                <div class="text-danger" style={{ height: '20vh', width: '10vh', borderWidth: '15px', fill:'red' }} role="status" >
-                    <IconNetflix/>
-                </div>
-
-            </div>
             <div className="movie-page overflow-x-hidden bg-black"  >
                 <NavigationBar />
                 <div class="header-genre bg-black">

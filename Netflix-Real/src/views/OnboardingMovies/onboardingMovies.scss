@@ -84,7 +84,7 @@ $gray: #8c8c8c;
 
         &::before {
             content: "";
-            height: 10vh;
+            height: 15vh;
             display: block;
         }
         &::after {
@@ -120,8 +120,11 @@ $gray: #8c8c8c;
                 &__boxes{
                     text-align: center;
                     margin: 15px -2% 15px -1%;
-                    @media screen and (min-width: 1024px){
+                    @media screen and (min-width: 1200px){
                         column-count: 4;
+                    }
+                    @media screen and (max-width: 1200px){
+                        column-count: 3;
                     }
                     @media screen and (max-width: 1024px){
                         column-count: 2;
@@ -209,7 +212,7 @@ $gray: #8c8c8c;
                     font-size: 13px;
                 }
                 &__step-title {
-                    font-size: 32px;
+                    font-size: 24px;
                     font-weight: 700;
                     margin: 0 0 0.4em;
                     color: #333;
