@@ -21,12 +21,12 @@ const OnboardingMovies = () => {
         try {
             const response = await postNewUserMovies(selectedMovies, getToken())
             if (response.status === 200) {
-                localStorage.setItem('new_user', false);
-                setTimeout(() => {
-                    history.push({
-                        pathname: '/home',
-                    })
-                }, 3000);
+                // localStorage.setItem('new_user', false);
+                // setTimeout(() => {
+                //     history.push({
+                //         pathname: '/home',
+                //     })
+                // }, 3000);
             }
         }
         catch (error) {
@@ -52,24 +52,28 @@ const OnboardingMovies = () => {
         setSelectedMovies(temp)
     }
 
-    useEffect(async () => {
-        let temp = JSON.parse(query.get('value'))
-        try {
-            const response = await getMoviesByGenres(temp, getToken(), 32)
-            
-            if (response.status === 200) {
-                setMovies(await response.json())
-            }
-            else if(response.status === 500)
-            {
-                history.push('/maintenance')
-            }
+    useEffect(() => {
+        async function fetchData() {
+            // You can await here
+            let temp = JSON.parse(query.get('value'))
+            try {
+                const response = await getMoviesByGenres(temp, 32, getToken())
 
-        }
-        catch (e) {
-        console.log("🚀 ~ file: index.js ~ line 70 ~ useEffect ~ e", e)
+                if (response.status === 200) {
+                    setMovies(await response.data)
+                }
+                else if (response.status === 500) {
+                    history.push('/maintenance')
+                }
 
+            }
+            catch (e) {
+                console.log("🚀 ~ file: index.js ~ line 70 ~ useEffect ~ e", e)
+
+            }
         }
+        fetchData();
+
 
 
     }, [])
@@ -81,6 +85,9 @@ const OnboardingMovies = () => {
                 <div className='registration__background-image'>
                 </div>
                 <div className={`registration__body`}>
+                    <div className=' mb-3' onClick={() => localStorage.setItem('access_token', '1')}>
+                        REmove token key
+                    </div>
                     <div className={`registration__body__content`}>
                         <div className={`registration__body__content__main `}>
                             {isFinished ?

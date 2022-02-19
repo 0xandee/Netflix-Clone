@@ -24,66 +24,62 @@ const DetailPage = (props) => {
 
     const toggleModal = () => {
         localStorage.clear()
-        // delete_cookie('username')
-        // delete_cookie('id_user')
-        // delete_cookie('access_token')
         history.push('/signin')
     };
 
 
 
-    useEffect(async () => {
-        try {
-            await updateMovieClicked(idMovie.toString(), getToken())
-
-            const response = await getMovieAPI(idMovie.toString(), getToken())
-            if (response.status === 200) {
-                let data = await response.json()
-                console.log("🚀 ~ file: index.js ~ line 37 ~ useEffect ~ data", data)
-                setDataMovie(data)
-                // setIsFetching(false)
+    useEffect(() => {
+        async function fetchData() {
+            // You can await here
+            try {
+                await updateMovieClicked(idMovie.toString())
+                const response = await getMovieAPI(idMovie.toString())
+                if (response.status === 200) {
+                    let data = await response.data                 
+                    setDataMovie(data)
+                    setIsFetching(false)
+                }
+                else if (response.status == 403) {
+                    setOpen(true)
+                }
+                else if (response.status == 500) {
+                    history.push('/maintenance')
+                }
             }
-            else if (response.status == 403) {
-                setOpen(true)
-            }
-            else if (response.status == 500) {
-                history.push('/maintenance')
+            catch (err) {
             }
         }
-        catch {
-            history.push('/maintenance')
-        }
-
+        fetchData();
     }, [setDataMovie])
 
-    useEffect(async () => {
-        try {
-            const response = await getRecommUserMoviesState2(localStorage.getItem('id_user'), idMovie.toString())
-            console.log("🚀 ~ file: index.js ~ line 39 ~ useEffect ~ response", response)
+    useEffect(() => {
+        async function fetchData() {
+            // You can await here
+            try {
+                const response = await getRecommUserMoviesState2(localStorage.getItem('id_user'), idMovie.toString())
+                if (response.status === 200) {
+                    const data = await response.json()
+                    setPercentMatched(data.percentage_match)
+                    const res = await getMoviesByListID(data.list_recommend.map((key) => key.id),getToken())
+                    const data2 = await res.json()
+                    const result = data2.map(v => ({ ...v, ...data.list_recommend.find(sp => sp.id === v.id) }));
 
-            if (response.status === 200) {
-                const data = await response.json()
-                setPercentMatched(data.percentage_match)
-                console.log("🚀 ~ file: index.js ~ line 65 ~ useEffect ~ data", data)
-                const res = await getMoviesByListID(data.list_recommend.map((key) => key.id), getToken())
-                const data2 = await res.json()
-                const result = data2.map(v => ({ ...v, ...data.list_recommend.find(sp => sp.id === v.id) }));
-                console.log("🚀 ~ file: index.js ~ line 45 ~ useEffect ~ result", result)
-
-                setRecommendedMovies(result.slice(0, 20));
-                setIsFetching(false)
+                    setRecommendedMovies(result.slice(0, 20));
+                    setIsFetching(false)
+                }
+                else if (response.status == 403) {
+                    setOpen(true)
+                }
+                // else if (response.status == 500) {
+                //     history.push('/maintenance')
+                // }
             }
-            else if (response.status == 403) {
-                setOpen(true)
-            }
-            else if (response.status == 500) {
-                history.push('/maintenance')
+            catch {
+                // history.push('/maintenance')
             }
         }
-        catch {
-            // history.push('/maintenance')
-        }
-
+        fetchData();
     }, [])
 
     return (
@@ -124,12 +120,7 @@ const DetailPage = (props) => {
                                     {recommendedMovies.length && recommendedMovies.map((item) =>
                                         <MoreLikeThisItem item={item} />
                                     )}
-                                    {/* <MoreLikeThisItem item={dataMovie} />
-                                    <MoreLikeThisItem item={dataMovie} />
-                                    <MoreLikeThisItem item={dataMovie} />
-                                    <MoreLikeThisItem item={dataMovie} />
-                                    <MoreLikeThisItem item={dataMovie} />
-                                    <MoreLikeThisItem item={dataMovie} /> */}
+
                                 </div>
                             </div>
                         </Col>

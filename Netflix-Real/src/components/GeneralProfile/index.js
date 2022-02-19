@@ -77,8 +77,7 @@ const GeneralProfile = () => {
 
   const saveClicked = async () => {
     try {
-      const response = await requestUpdateProfile({ email, country: country.value, dob: dob.toISOString().slice(0, 10), gender: gender.value }, getToken())
-      console.log("🚀 ~ file: index.js ~ line 81 ~ saveClicked ~ response", response)
+      const response = await requestUpdateProfile({ email, country: country.value, dob: dob.toISOString().slice(0, 10), gender: gender.value },getToken())
       if (response.status >= 200 && response.status < 299) {
         notifySuccess()
         setIsChange(false)
@@ -105,11 +104,8 @@ const GeneralProfile = () => {
 
   useEffect(async () => {
     try {
-      console.log("🚀 ~ file: index.js ~ line 109 ~ useEffect ~ getToken()", getToken())
-      console.log("🚀 ~ file: index.js ~ line 109 ~ useEffect ~ getToken()",  localStorage.getItem('access_token'))
-
       let response = await getProfile(getToken())
-      console.log("🚀 ~ file: index.js ~ line 109 ~ useEffect ~ response", response)
+      console.log("🚀 ~ file: index.js ~ line 108 ~ useEffect ~ response", response)
       if (response.status === 200) {
         let data = await response.json()
         setEmail(data.email)
@@ -123,7 +119,7 @@ const GeneralProfile = () => {
 
     } catch (error) {
 
-      history.push('/maintenance')
+    //  history.push('/maintenance')
 
     }
   }, [])

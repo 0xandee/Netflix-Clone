@@ -43,61 +43,68 @@ const Homepage = (props) => {
 
     var movieDataGenres = [];
 
-    useEffect(async () => {
-        try {
-            const response = await getMovieTypeAPI(getToken())
-            console.log("🚀 ~ file: index.js ~ line 47 ~ useEffect ~ response", response)
-            if (response.status === 200 && dataTypes.length == 0) {
-                const data = await response.data
-                dispatch(setMovieTypes(data))
+    useEffect(() => {
+        async function fetchData() {
+            // You can await here
+            try {
+                const response = await getMovieTypeAPI(getToken())
+                console.log("🚀 ~ file: index.js ~ line 47 ~ useEffect ~ response", response)
+                if (response.status === 200 && dataTypes.length == 0) {
+                    const data = await response.data
+                    dispatch(setMovieTypes(data))
+                }
+                else if (response.status == 403) {
+                    setOpen(true)
+                }
+                else if (response.status === 500) {
+                    history.push('/maintenance')
+                }
             }
-            else if (response.status == 403) {
-                setOpen(true)
-            }
-            else if (response.status === 500) {
-                history.push('/maintenance')
+            catch (err) {
+                console.log("🚀 ~ file: index.js ~ line 62 ~ useEffect ~ err", err)
+                //  history.push('/maintenance')
             }
         }
-        catch (err) {
-            console.log("🚀 ~ file: index.js ~ line 62 ~ useEffect ~ err", err)
-            //  history.push('/maintenance')
-        }
+        fetchData();
+
     }, [])
 
 
 
-    useEffect(async () => {
-        try {
-            const response = await getRecommUserMoviesState1(localStorage.getItem('id_user'))
-            console.log("🚀 ~ file: index.js ~ line 39 ~ useEffect ~ response", response)
+    useEffect(() => {
+        async function fetchData() {
+            // You can await here
+            try {
+                const response = await getRecommUserMoviesState1(localStorage.getItem('id_user'))
+                console.log("🚀 ~ file: index.js ~ line 39 ~ useEffect ~ response", response)
 
-            if (response.status === 200) {
-                const data = await response.json()
-                const res = await getMoviesByListID(data.map((key) => key.id), getToken())
-                const data2 = await res.json()
-                var genreMovie = {
-                    id: 'recommend',
-                    sliderTitle: 'Recommend for you',
-                    sliderMovieList: data2
+                if (response.status === 200) {
+                    const data = await response.json()
+                    const res = await getMoviesByListID(data.map((key) => key.id), getToken())
+                    const data2 = await res.json()
+                    var genreMovie = {
+                        id: 'recommend',
+                        sliderTitle: 'Recommend for you',
+                        sliderMovieList: data2
+                    }
+                    setGenreMovies(genreMovies => [genreMovie, ...genreMovies]);
+                    setIsFetching(false)
+
                 }
-                setGenreMovies(genreMovies => [genreMovie, ...genreMovies]);
-                setIsFetching(false)
+                else if (response.status == 403) {
+                    setOpen(true)
+                }           
+                else {
+                    setIsFetching(false)
+                }
 
             }
-            else if (response.status == 403) {
-                setOpen(true)
+            catch {
+                // history.push('/maintenance')
             }
-            // else if (response.status === 500) {
-            //     history.push('/maintenance')
-            // }
-            else {
-                setIsFetching(false)
-            }
+        }
+        fetchData();
 
-        }
-        catch {
-            // history.push('/maintenance')
-        }
 
     }, [])
 
@@ -129,42 +136,43 @@ const Homepage = (props) => {
             }
 
         });
-        // if (dataTypes.length)
-        //     setIsFetching(false)
-        // console.log("🚀 ~ file: index.js ~ line 104 ~ dataTypes.map ~ dataTypes", dataTypes)
+ 
     }, [dataTypes])
 
-    useEffect(async () => {
-        try {
-            const response = await getWatchingList(getToken())
-            console.log("🚀 ~ file: index.js ~ line 140 ~ useEffect ~ response", response)
+    useEffect(() => {
+        async function fetchData() {
+            // You can await here
+            try {
+                const response = await getWatchingList(getToken())
+                console.log("🚀 ~ file: index.js ~ line 140 ~ useEffect ~ response", response)
 
-            if (response.status === 200) {
-                const data = await response.data
-                console.log("🚀 ~ file: index.js ~ line 141 ~ useEffect ~ data", data)
-                if (data.length) {
-                    var genreMovie = {
-                        id: 'Watching',
-                        sliderTitle: 'Continue watching',
-                        sliderMovieList: data
+                if (response.status === 200) {
+                    const data = await response.data
+                    console.log("🚀 ~ file: index.js ~ line 141 ~ useEffect ~ data", data)
+                    if (data.length) {
+                        var genreMovie = {
+                            id: 'Watching',
+                            sliderTitle: 'Continue watching',
+                            sliderMovieList: data
+                        }
+                        setGenreMovies(genreMovies => [genreMovie, ...genreMovies]);
                     }
-                    setGenreMovies(genreMovies => [genreMovie, ...genreMovies]);
-                   
-                    console.log("🚀 ~ file: index.js ~ line 149 ~ useEffect ~ genreMovies", genreMovies)
-                }
-               
-            }
-            else if (response.status == 403) {
-                setOpen(true)
-            }
-            else if (response.status === 500) {
-                history.push('/maintenance')
-            }
 
+                }
+                else if (response.status == 403) {
+                    setOpen(true)
+                }
+                else if (response.status === 500) {
+                    history.push('/maintenance')
+                }
+
+            }
+            catch {
+                // history.push('/maintenance')
+            }
         }
-        catch {
-            // history.push('/maintenance')
-        }
+        fetchData();
+
 
     }, [])
 
@@ -181,7 +189,7 @@ const Homepage = (props) => {
                         <span className='text-light mb-3' style={{ fontSize: '24px' }}>
                             Personalizing for You
                         </span>
-                        <div class="spinner-border" role="status" style={{ height: '5vh', width: '5vh', color: '#e50914' }} />
+                        <div className="spinner-border" role="status" style={{ height: '5vh', width: '5vh', color: '#e50914' }} />
                     </div>
 
                     :
@@ -193,7 +201,7 @@ const Homepage = (props) => {
                 {"Look like your log in session have been timed out. So please log in again.\nWe are so sorry for this inconvenience"
                 } />
 
-            <Footer />
+            <Footer key = 'homepage' />
         </div>
     );
 };

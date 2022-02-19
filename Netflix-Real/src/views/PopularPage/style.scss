@@ -36,7 +36,7 @@
       .grid-container {
         position: relative;
         max-height: 360px;
-        min-height: 310px;
+        min-height: 330px;
 
         
         max-width: 230px;
@@ -128,28 +128,28 @@
       grid-template-columns: repeat(2, 1fr);
     }
   }
-  @media (min-width: 600px) {
+  @media (min-width: 750px) {
     .list-grid {
       grid-template-columns: repeat(4, 1fr);
     }
   }
 
   /* Screen larger than 900px? 3 columns */
-  @media (min-width: 900px) {
+  @media (min-width: 950px) {
     .list-grid {
       grid-template-columns: repeat(5, 1fr);
     }
   }
 
-  @media (min-width: 1100px) {
+  @media (min-width: 1150px) {
     .list-grid {
-      grid-template-columns: repeat(6, 1fr);
+      grid-template-columns: repeat(7, 1fr);
     }
   }
 
   @media (min-width: 1400px) {
     .list-grid {
-      grid-template-columns: repeat(7, 1fr);
+      grid-template-columns: repeat(8, 1fr);
     }
   }
 }

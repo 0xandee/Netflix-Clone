@@ -1,7 +1,59 @@
+import { requestAccessToken, requestRefreshToken } from '../../function';
 import { authApi } from './configUrl'
+const axios = require('axios');
+const instance = axios.create({
+    headers: { 'Content-Type': 'application/json' }
+});
 
-var requestHeaders = new Headers();
-requestHeaders.append("Content-Type", "application/json");
+instance.interceptors.request.use(
+    (config) => {
+        const token = localStorage.getItem('access_token');
+        if (token) {
+            config.headers = {
+                'Authorization': `Bearer ${token}`,
+                'Accept': 'application/json',
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        }
+
+        return config;
+    },
+
+    (error) => {
+        return Promise.reject(error);
+    }
+);
+
+instance.interceptors.response.use((response) => {
+    return response
+}, async function (error) {
+    const originalRequest = error.config;
+    console.log("🚀 ~ file: index.js ~ line 28 ~ instance.interceptors.response.use ~ originalRequest", originalRequest)
+    if (error.response.status === 401 && !originalRequest._retry) {
+        originalRequest._retry = true;
+        const request_token_status = await requestRefreshToken();
+        console.log("🚀 ~ file: index.js ~ line 36 ~ instance.interceptors.response.use ~ request_token_status", request_token_status)
+        if (request_token_status == 200) {
+            const access_token = await requestAccessToken();
+            console.log("🚀 ~ file: index.js ~ line 39 ~ instance.interceptors.response.use ~ access_token", access_token)
+            axios.defaults.headers.common['Authorization'] = 'Bearer ' + access_token;
+            return instance(originalRequest);
+        }
+        else if (request_token_status === 401) {
+            // const dispatch = useDispatch()
+            // dispatch(handleLogout())
+            await requestLogout(localStorage.getItem('refresh_token'))
+            localStorage.clear()
+            document.location.href = '/signin'
+        }
+        else if (request_token_status === 500) {
+            document.location.href = '/maintenance'
+        }
+
+        return instance(originalRequest);
+    }
+    return Promise.reject(error);
+});
 
 export const requestRegister = async (dataRegister) => {
     return new Promise((resolve, reject) => {
@@ -64,15 +116,17 @@ export const requestForgotPassword = async (email) => {
 
 export const getProfile = async (token) => {
     return new Promise((resolve, reject) => {
-        fetch(authApi.urlProfile, {
-            crossDomain: true,
-            method: "GET",
-            mode: 'cors',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': "Bearer " + token,
-            },
-        })
+        fetch(authApi.urlProfile
+            , {
+                crossDomain: true,
+                method: "GET",
+                mode: 'cors',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': "Bearer " + token,
+                },
+            }
+        )
             .then(response => {
                 resolve(response)
             })
@@ -82,21 +136,22 @@ export const getProfile = async (token) => {
     })
 }
 
-export const requestChangePass = async (oldPassword, newPassword, token) => {
+export const requestChangePass = async (oldPassword, newPassword) => {
     return new Promise((resolve, reject) => {
-        fetch(authApi.urlChangePassword, {
-            crossDomain: true,
-            method: "PUT",
-            mode: 'cors',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': "Bearer " + token,
-            },
-            body: JSON.stringify({
+        instance.put(authApi.urlChangePassword,
+            // crossDomain: true,
+            // method: "PUT",
+            // mode: 'cors',
+            // headers: {
+            //     'Content-Type': 'application/json',
+            //     'Authorization': "Bearer " + token,
+            // },
+            // body: JSON.stringify(
+            {
                 oldPassword,
                 newPassword
-            })
-        })
+            }
+        )
             .then(response => {
                 resolve(response)
             })
@@ -106,23 +161,25 @@ export const requestChangePass = async (oldPassword, newPassword, token) => {
     })
 }
 
-export const requestUpdateProfile = async (data, token) => {
+export const requestUpdateProfile = async (data) => {
     return new Promise((resolve, reject) => {
-        fetch(authApi.urlProfile, {
-            crossDomain: true,
-            method: "PUT",
-            mode: 'cors',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': "Bearer " + token,
-            },
-            body: JSON.stringify({
+        instance.put(authApi.urlProfile,
+            // {
+            // crossDomain: true,
+            // method: "PUT",
+            // mode: 'cors',
+            // headers: {
+            //     'Content-Type': 'application/json',
+            //     'Authorization': "Bearer " + token,
+            // },
+            // body: JSON.stringify(
+            {
                 gender: data.gender,
                 email: data.email,
                 dob: data.dob,
                 country: data.country,
-            })
-        })
+            }
+        )
             .then(response => {
                 resolve(response)
             })
@@ -194,7 +251,7 @@ export const checkRefreshToken = (token) => {
 }
 
 export const getAccessToken = (token) => {
-console.log("🚀 ~ file: index.js ~ line 197 ~ getAccessToken ~ token", token)
+    console.log("🚀 ~ file: index.js ~ line 197 ~ getAccessToken ~ token", token)
     return new Promise((resolve, reject) => {
         fetch(authApi.urlRefreshAccessToken, {
             crossDomain: true,
@@ -222,22 +279,21 @@ console.log("🚀 ~ file: index.js ~ line 197 ~ getAccessToken ~ token", token)
 // 0: mobile, 1: tablet, 2: desktop
 export const detectDevice = async (value, token) => {
     return new Promise((resolve, reject) => {
-      fetch(authApi.urlDetectDevice + `/${value}` , {
-        crossDomain: true,
-        method: "POST",
-        mode: 'cors',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': "Bearer " + token,
-        },
-       
-      })
-        .then(response => {
-          resolve(response)
+        fetch(authApi.urlDetectDevice + `/${value}`, {
+            crossDomain: true,
+            method: "POST",
+            mode: 'cors',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': "Bearer " + token,
+            },
+
         })
-        .catch(error => {
-          return reject(error)
-        });
+            .then(response => {
+                resolve(response)
+            })
+            .catch(error => {
+                return reject(error)
+            });
     })
-  }
-  
+}

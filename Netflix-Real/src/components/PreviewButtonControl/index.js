@@ -20,7 +20,7 @@ const PreviewButtonControl = (props) => {
     const addFavoriteClicked = async () => {
         try {
             const response = await favMoviePost(item.id, getToken())
-            // console.log("🚀 ~ file: index.js ~ line 9 ~ addFavoriteClicked ~ response", response)
+            console.log("🚀 ~ file: index.js ~ line 9 ~ addFavoriteClicked ~ response", response)
             if (response.status == 500) {
                 history.push('/maintenance')
             }
@@ -33,14 +33,13 @@ const PreviewButtonControl = (props) => {
 
     const likeClicked = async () => {
         try {
-            const response = await isLikeOrDislike(item.id, 1, getToken())
-             console.log("🚀 ~ file: index.js ~ line 9 ~ addFavoriteClicked ~ response", response)
+            const response = await isLikeOrDislike(item.id, 1)
             if (response.status == 500) {
                 history.push('/maintenance')
             }
         }
         catch {
-            history.push('/maintenance')
+           // history.push('/maintenance')
         }
 
     }
@@ -48,13 +47,12 @@ const PreviewButtonControl = (props) => {
     const dislikeClicked = async () => {
         try {
             const response = await isLikeOrDislike(item.id, 0, getToken())
-             console.log("🚀 ~ file: index.js ~ line 9 ~ addFavoriteClicked ~ response", response)
             if (response.status == 500) {
                 history.push('/maintenance')
             }
         }
         catch {
-            history.push('/maintenance')
+           // history.push('/maintenance')
         }
 
     }
@@ -62,7 +60,6 @@ const PreviewButtonControl = (props) => {
     const playClicked = async () => {
         try {
             const response = await updateMovieView(item.id, getToken())
-            // console.log("🚀 ~ file: index.js ~ line 9 ~ addFavoriteClicked ~ response", response)
             if (response.status == 500) {
                 history.push('/maintenance')
             }
@@ -71,7 +68,7 @@ const PreviewButtonControl = (props) => {
             }
         }
         catch {
-            history.push('/maintenance')
+          //  history.push('/maintenance')
         }
 
     }

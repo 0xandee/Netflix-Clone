@@ -36,14 +36,11 @@ const SearchPage = (props) => {
     }, []);
 
     function fetchMoreListItems() {
-
         setTimeout(() => {
             setGenreMovies(prevState => ([...prevState, ...dataApiMovies.slice(prevState.length, prevState.length + 60)]));
             setIsFetching(false);
         }, 2000);
     }
-
-
 
 
     useEffect(() => {
@@ -61,12 +58,11 @@ const SearchPage = (props) => {
     }, [isFetching]);
 
     useEffect(async () => {
-
         if (query.get('value') != null) {
             try {
-                const res = await searchMovieByNameApi(query.get('value'), getToken())
+                const res = await searchMovieByNameApi(query.get('value'))
                 if (res.status == 200) {
-                    let data = await res.json()
+                    let data = await res.data
                     setDataApiMovies(data)
                     setGenreMovies(data.slice(0, 30))
                 }
@@ -74,8 +70,9 @@ const SearchPage = (props) => {
                     history.push('/maintenance')
                 }
             }
-            catch {
-                history.push('/maintenance')
+            catch (err){
+                console.log("🚀 ~ file: index.js ~ line 74 ~ useEffect ~ err", err)
+                //history.push('/maintenance')
             }
         }
 

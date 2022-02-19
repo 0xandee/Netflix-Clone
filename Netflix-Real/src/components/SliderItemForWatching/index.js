@@ -58,18 +58,15 @@ const SliderItemForWatching = (props) => {
         }
         catch (error) {
             console.log("🚀 ~ file: index.js ~ line 62 ~ itemAddClicked ~ error", error)
-            history.push('/maintenance')
+            //history.push('/maintenance')
         }
     }
 
     const itemRemoveClicked = (data) => async (e) => {
-        console.log("🚀 ~ file: index.js ~ line 65 ~ itemRemoveClicked ~ data", data)
         e.stopPropagation();
 
         try {
-            const response = await deleteWatchingList(data.id, getToken())
-
-            console.log("🚀 ~ file: index.js ~ line 39 ~ useEffect ~ response", response)
+            const response = await deleteWatchingList(data.id)
 
             if (response.status === 200) {
                 props.itemRemoveClicked(data)
@@ -89,7 +86,7 @@ const SliderItemForWatching = (props) => {
 
 
     return (
-        <div className="w-100 h-100" onClick={itemClicked(item)} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} >
+        <div className="w-100 h-100" onClick={itemClicked(item)} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} key={props.id} >
             <a className="thumbTile cursor-pointer h-100" >
                 <img className="thumbTile__image" style={{ minHeight: '25vh', maxHeight: '25vh' }} src={item.uri_avatar} alt={item.m_name}
                     onError={

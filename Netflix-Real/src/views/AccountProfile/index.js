@@ -37,8 +37,6 @@ const AccountProfile = () => {
   })
 
   const logoClicked = () => {
-    console.log("🚀 ~ file: index.js ~ line 42 ~ logoClicked ~ logoClicked")
-
     history.push('/home')
   }
   return (

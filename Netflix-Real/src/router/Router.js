@@ -1,12 +1,8 @@
-import React, { Suspense, useEffect, useRef, useState } from "react";
+import React, { Suspense } from "react";
 import {
     BrowserRouter as Router,
     Switch,
     Route,
-    Link,
-    useRouteMatch,
-    useParams,
-    useHistory,
     Redirect
 } from "react-router-dom";
 
@@ -14,20 +10,13 @@ import '../App.css'
 import { ErrorPage } from "../views/index";
 
 import { Routes, DefaultRoute } from "./routes";
-import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
 import { getToken } from "../services/function";
 import { IconNetflix } from "../assets/Icon";
-
-// import {socket} from "./services/socket/socket"
-
-//const socket = io.connect('http://localhost:8000');
-// const socket = io("localhost:8000", { transports: ["websocket"] });
 
 const LoadingRoute = () => {
     return (
         <div className="d-flex justify-content-center align-items-center" style={{ height: '100vh', width: '100vw', backgroundColor: 'white' }}>
-            {/* <div class="spinner-border  text-danger" style={{ height: '10vh', width: '10vh', borderWidth: '15px' }} role="status" /> */}
-            <div class="text-danger" style={{ height: '20vh', width: '10vh', borderWidth: '15px', fill: 'red' }} role="status" >
+            <div className="text-danger" style={{ height: '20vh', width: '10vh', borderWidth: '15px', fill: 'red' }} role="status" >
                 <IconNetflix />
             </div>
         </div>
@@ -37,21 +26,19 @@ const LoadingRoute = () => {
 
 const FinalRoute = (props) => {
     const route = props.route
-    console.log("🚀 ~ file: Router.js ~ line 45 ~ FinalRoute ~ localStorage.getItem('new_user')", localStorage.getItem('new_user'))
-
     if (route.meta === undefined && getToken() === null) {
         console.log("1")
         return <Redirect to='/signin' />
 
     }
-    else if (route.meta === undefined && getToken() != null && localStorage.getItem('new_user') == 'true') {
-        console.log("12")
-        return <Redirect to='/choosetype' />
-    }
-    else if (route.meta && route.meta.authRoute && getToken() != null && localStorage.getItem('new_user') == 'false') {
-        console.log("13")
-        return <Redirect to='/' />
-    }
+    // else if (route.meta === undefined && getToken() != null && localStorage.getItem('new_user') == 'true') {
+    //     console.log("12")
+    //     return <Redirect to='/choosetype' />
+    // }
+    // else if (route.meta && route.meta.authRoute && getToken() != null && localStorage.getItem('new_user') == 'false') {
+    //     console.log("13")
+    //     return <Redirect to='/' />
+    // }
     console.log("14")
     return <route.component {...props} />
 }
@@ -82,8 +69,6 @@ export default function WebRouter() {
                         }}
                     />
                 )}
-
-                
                 <Route component={ErrorPage} />
             </Switch>
 

@@ -1,15 +1,12 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import './navBar.scss'
 
-import { Link, NavLink, useHistory, useLocation } from 'react-router-dom';
+import { Link, NavLink, useHistory } from 'react-router-dom';
 
 import * as Icon from 'react-feather';
-import CustomNotification from '../CustomNotification';
+
 import CustomDropdown from '../Dropdown';
 import { IconNetflix } from '../../assets/Icon';
-import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
-
-import io from "socket.io-client";
 
 
 const navTabs = [{ id: 0, label: "Home", navLink: '/home' },
@@ -25,9 +22,6 @@ const NavigationBar = (props) => {
     const [searchText, setSearchText] = useState('');
     const [items, setItem] = useState(navTabs);
     const [onToppage, setOnTopPage] = useState(false);
-
-    // const [username, setusername] = useState(Math.random().toString(36).substr(2, 12));
-    // const [roomname, setroomname] = useState("idgroup");
 
     const idgroup = localStorage.getItem('username');
 
@@ -160,18 +154,11 @@ const NavigationBar = (props) => {
                         <Link to={`/watchgroup/${idgroup}`} className="text-decoration-none text-light">
                             <div style={{ textAlign: 'center', paddingRight: '2vw', cursor: 'pointer', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                                 <Icon.Plus className='icon-style' style={{ color: 'white' }} />
-                                <span className='text-white text-center' >Create Group</span>
+                                <span className='text-white text-center' style={{fontSize: '14px' }} >Create Group</span>
                             </div>
                         </Link>
                     </div>
 
-                    {/* <form id='user-form' style={{paddingRight: '3rem', cursor: 'pointer'}}>
-                        <input type="submit" value="Create Room" className='icon-style' style={{color: 'white'}}/>
-                    </form> */}
-
-                    {/* <div className='nav-element'>
-                        <CustomNotification />
-                    </div> */}
                     <div className='nav-element'>
 
                         <CustomDropdown />

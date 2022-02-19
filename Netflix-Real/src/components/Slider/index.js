@@ -48,7 +48,7 @@ const Slider = (props) => {
 
 
     return ( movies.length &&
-        <section className="thumbSection mb-3" key={props.id}>
+        <div className="thumbSection mb-3" key={props.id}>
             <h2 className="thumbTitle my-3 ps-5 position-relative cursor-pointer d-inline">{props.sliderTitle}</h2>
             <Swiper spaceBetween={20}
                 slidesPerView={3}
@@ -75,7 +75,7 @@ const Slider = (props) => {
                     })}
                 </div>
             </Swiper>
-        </section>
+        </div>
     );
 };
 

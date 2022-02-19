@@ -1,17 +1,13 @@
-import React, { useState } from "react";
+import React from "react";
 import './signUp.scss'
-import * as Icon from 'react-feather';
-import { Link, NavLink } from "react-router-dom";
 
-import { IconCheckmark,IconNetflix } from "../../assets/Icon";
+import {  NavLink } from "react-router-dom";
+
+import { IconCheckmark } from "../../assets/Icon";
 import { Footer } from "../../components";
 
 const SignUp = () => {
     const backgroudUrl = 'https://assets.nflxext.com/ffe/siteui/acquisition/simplicity/Checkmark.png'
-
-    const nextClicked = () => {
-
-    }
 
     return (
         <div id='signUp'>
@@ -22,34 +18,28 @@ const SignUp = () => {
                 <div className={`sign-up__body`}>
                     <div className={`sign-up__body__content`}>
                         <div className={`sign-up__body__content__main`}>
-
-                            <img className={`sign-up__body__content__main__image-devices`} src={backgroudUrl} />
+                            <img className={`sign-up__body__content__main__image-devices`} src={backgroudUrl} alt='backgroundImage'/>
                             <div >
                                 <span className="sign-up__body__content__main__step-indicator" >STEP <b>2</b> OF <b>3</b>
                                 </span>
                                 <h1 className="sign-up__body__content__main__step-title">
-
                                     Choose your plan</h1>
                                 <div className="sign-up__body__content__main__step-content">
                                     <span>
                                         <IconCheckmark className={`sign-up__icon-checkmark`} />
                                       <p>No commitments, cancel anytime.
                                           </p>  
-
                                     </span>
                                     <span>
                                         <IconCheckmark className={`sign-up__icon-checkmark`} />
                                       <p> Everything on Netflix for one low price.
-
                                           </p> 
                                     </span>
                                     <span>
                                         <IconCheckmark className={`sign-up__icon-checkmark`} />
                                       <p> No ads and no extra fees. Ever.
-
                                           </p> 
                                     </span>
-                                    
                                 </div>
                             </div>
 

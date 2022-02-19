@@ -2,7 +2,7 @@ import React, { createRef, Fragment, useCallback, useEffect, useRef, useState } 
 import { useParams, useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux';
 import { CustomModal } from "../../components";
-import { Row, Col, Container, Button, Tooltip } from 'reactstrap'
+import { Row, Col, Container, Button, Tooltip, UncontrolledTooltip } from 'reactstrap'
 import './style.scss';
 import VideoPlayer from "../VideoPlayer";
 import { IconChevronLeft, IconChevronRight } from "../../assets/Icon";
@@ -17,9 +17,11 @@ import DefaultImage from '../../assets/Images/defaultImage.png';
 import { toast } from "react-toastify";
 
 
-// This sets the room number on the client
-// var username = Math.random().toString(36).substr(2, 12);
-// var roomnum = Math.random().toString(36).substr(2, 12);
+// This sets the room number on the client(for test)
+// const [username, setusername] = useState(Math.random().toString(36).substr(2, 12));
+// const [userid, setuserid] = useState(Math.random());
+// const [roomnum, setroomnum] = useState(tempRoom);
+// const [socket, setSocket] = useState(null);
 // import { socket } from "../../services/socket/socket"
 const WarningToast = (props) => (
   <Fragment>
@@ -50,7 +52,7 @@ const InviteToast = (props) => (
       <span role='img' aria-label='toast-text'>
         {props.data != null ?
           props.data :
-          'You can copy this page url to invite your friend to this room'
+          'Link room is already in clipboard. You can invite another by giving them this link'
         }
       </span>
     </div>
@@ -75,11 +77,6 @@ const GroupStreaming = () => {
   const [roomnum, setroomnum] = useState(tempRoom);
   const [socket, setSocket] = useState(null);
 
-  // const [username, setusername] = useState(Math.random().toString(36).substr(2, 12));
-  // const [userid, setuserid] = useState(Math.random());
-  // const [roomnum, setroomnum] = useState(tempRoom);
-  // const [socket, setSocket] = useState(null);
-
   const history = useHistory()
   const [openedChatBox, setOpenedChatBox] = useState(false);
   const [recommendedMovies, setRecommendedMovies] = useState([]);
@@ -97,14 +94,11 @@ const GroupStreaming = () => {
   const [isHost, setIsHost] = useState(false);
   const [isFetchingApi, setIsFetchingApi] = useState(false);
   const [members, setMembers] = useState([localStorage.getItem('id_user')]);
-  const [btnRefresh, setBtnRefresh] = useState(false);
   const [choosedMovie, setChoosedMovie] = useState('');
 
   const notifyWarning = (data) => toast.warning(<WarningToast data={data} />, { position: toast.POSITION.TOP_CENTER, hideProgressBar: true })
-  const notifyInvite = (data) => toast.info(<InviteToast data={data} />, { position: toast.POSITION.TOP_CENTER, hideProgressBar: true, autoClose: 8000, })
+  const notifyInvite = (data) => toast.info(<InviteToast data={data} />, { position: toast.POSITION.TOP_CENTER, hideProgressBar: true })
 
-
-  const toggleRefresh = () => setBtnRefresh(!btnRefresh);
   const toggleModal = () => {
     history.push('/home')
   };
@@ -130,8 +124,11 @@ const GroupStreaming = () => {
       setShowedMovies(updatedData.slice(0, 31))
       setSearchText(value)
     }
-    else {
+    else if (recommendedMovies.length) {
       setShowedMovies(recommendedMovies.slice(0, 31))
+    }
+    else {
+      setShowedMovies(movies.slice(0, 31))
     }
   }
 
@@ -145,8 +142,11 @@ const GroupStreaming = () => {
       if (searchText.length > 0) {
         setShowedMovies(prevState => ([...prevState, ...filteredMovies.slice(prevState.length, prevState.length + 60)]));
       }
-      else {
+      else if (recommendedMovies.length) {
         setShowedMovies(prevState => ([...prevState, ...recommendedMovies.slice(prevState.length, prevState.length + 60)]));
+      }
+      else {
+        setShowedMovies(prevState => ([...prevState, ...movies.slice(prevState.length, prevState.length + 60)]));
       }
       setIsFetching(false);
     }, 2000);
@@ -247,7 +247,7 @@ const GroupStreaming = () => {
           const response = await getAllMovies(getToken())
           console.log("🚀 ~ file: index.js ~ line 171 ~ handleRefreshButton ~ response", response)
           if (response.status === 200) {
-            let data = await response.json()
+            let data = await response.data
             setMovies(data)
             setShowedMovies(data.slice(0, 31))
           }
@@ -286,9 +286,9 @@ const GroupStreaming = () => {
       socket.on("hostDisconnect", () => {
         setOpen(true)
         setOpenedMovieRecommend(false)
+        socket.close()
       })
       socket.on('isHost', function (data) {
-        console.log("🚀 ~ file: index.js ~ line 197 ~ data", data)
         setIsHost(data.isHost)
       })
       socket.on('getData', function (data) {
@@ -301,14 +301,7 @@ const GroupStreaming = () => {
       })
     }
 
-
-
-
   }, [socket])
-
-
-
-  useEffect(() => { console.log("🚀 ~ file: index.js ~ line 200 ~ data", members) }, [members])
 
   useEffect(() => {
     if (socket != undefined) {
@@ -320,6 +313,7 @@ const GroupStreaming = () => {
   }, [socket])
 
   useEffect(() => {
+    navigator.clipboard.writeText(window.location.href)
     handleRefreshButton()
   }, [choosedMovie]);
 
@@ -365,16 +359,20 @@ const GroupStreaming = () => {
               <div className=" position-absolute d-flex justify-content-end" style={{ top: '0', zIndex: '5', width: '100%', backgroundColor: '#242526' }} >
                 <div className={`search-box ${isShown && 'input-search'} ${openedMovieRecommend ? '' : 'd-none'}`} style={{ marginRight: "7rem" }}>
                   <div >
-                    <Button
-                      disabled={members.length < 2}
-                      id='btnRefresh'
-                      style={{ marginRight: "1rem", fontSize: "1rem", fontWeight: "bold", paddingRight: "0.5rem", float: "right", borderRadius: "8px", backgroundColor: "rgb(183, 7, 16)", padding: "12px 12px", border: "none", color: 'white' }}
-                      onClick={handleRefreshButton}>
-                      Refresh
-                    </Button>
-                    <Tooltip placement="bottom" isOpen={btnRefresh} target="btnRefresh" toggle={toggleRefresh}>
+                    <div >
+                      <Button
+                      outline 
+                        id='btnRefresh'
+                        disabled={members.length < 2}
+                        style={{ marginRight: "1rem", fontSize: "1rem", fontWeight: "bold", paddingRight: "0.5rem", float: "right", borderRadius: "8px", backgroundColor: "rgb(183, 7, 16)", padding: "12px 12px", border: "none", color: 'white' }}
+                        onClick={handleRefreshButton}>
+                        Refresh
+                      </Button>
+                    </div>
+
+                    <UncontrolledTooltip placement="bottom" target="btnRefresh" >
                       Refresh list movies base on group members
-                    </Tooltip>
+                    </UncontrolledTooltip>
                   </div>
                   <div>
                     <Icon.Search className='icon-style' size='16px' strokeWidth='4' color='white' onClick={btnSearchClicked} style={{ cursor: 'pointer', marginRight: "1rem" }} />
@@ -417,7 +415,7 @@ const GroupStreaming = () => {
                 </div>
                 {isFetching &&
                   <div style={{ display: 'flex', marginBottom: '10px', width: '100%', justifyContent: 'center' }}>
-                    <div class="spinner-border spinner-color" role="status">
+                    <div className="spinner-border spinner-color" role="status">
                     </div>
                   </div>
                 }

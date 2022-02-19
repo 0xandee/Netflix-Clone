@@ -1,20 +1,16 @@
-import React, { useState, Component, useCallback } from "react";
+import React, { useState, useCallback } from "react";
 import './signIn.scss'
-import * as Icon from 'react-feather';
-import { NavLink, useHistory, Redirect } from "react-router-dom";
+import { NavLink, useHistory } from "react-router-dom";
 import { CustomInput, Footer } from "../../components";
 import { IconNetflix } from "../../assets/Icon";
 
 import { connect } from 'react-redux';
 import { userLoginFetch } from '../../services/redux/actions';
 import { detectDevice, requestLogin } from "../../services/api/auth";
-import { to_Decrypt, to_Encrypt } from "../../services/aes256";
-// import Cookies from 'universal-cookie';
-import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
+
 import { useEffect } from "react";
 
-const SignIn = (props) => {
-    const backgroudUrl = 'https://assets.nflxext.com/ffe/siteui/vlv3/9c5457b8-9ab0-4a04-9fc1-e608d5670f1a/f50f46d7-13f0-4412-a37c-34808af2dd0c/VN-en-20210719-popsignuptwoweeks-perspective_alpha_website_small.jpg'
+const SignIn = () => {
     const history = useHistory()
     const [isEmailError, setIsEmailError] = useState(false)
     const [isPasswordError, setIsPasswordError] = useState(false)
@@ -23,6 +19,7 @@ const SignIn = (props) => {
     const [errorTextEmail, setErrorTextEmail] = useState('Please enter a valid email')
     const [errorTextPassword, setErrorTextPassword] = useState('Password must be between 6 to 20 characters which contain at least one numeric digit, one uppercase and one lowercase letter')
 
+    // func detect device access web
     const deviceType = () => {
         const ua = navigator.userAgent;
         if (/(tablet|ipad|playbook|silk)|(android(?!.*mobi))/i.test(ua)) {
@@ -39,14 +36,16 @@ const SignIn = (props) => {
 
     const signInClick = useCallback(async () => {
         var errorCheck = false;
+        //Check valid email
         var emailValid = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         if (username == "" || !username.match(emailValid)) {
-
             setIsEmailError(true);
             errorCheck = true;
         } else {
             setIsEmailError(false)
         }
+        //check valid password (6-20 letters, number and has at least one uppercase and one lowercase)
+
         var passw = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/;
         if (password == "" || !password.match(passw)) {
             setIsPasswordError(true);
@@ -56,38 +55,44 @@ const SignIn = (props) => {
         } else {
             setIsPasswordError(false)
         }
+
         if (!errorCheck) {
             try {
+                // call api login 
                 const response = await requestLogin(username, password)
-
+                // if success
                 if (response.status === 200) {
-                    const data = await response.json()
-                    // localStorage.setItem("access_token", data.accessToken);
-                    const res = await detectDevice(deviceType(), data.accessToken)
+                    // get data from login api and call api detectDevice to send device type to server
+                    const data = await response.json()                  
+                    await detectDevice(deviceType(), data.accessToken)
                     
+                    // save data into localStorage
                     localStorage.setItem('access_token', data.accessToken);
                     localStorage.setItem('username', username.slice(0, username.indexOf("@")));
                     localStorage.setItem('id_user', data.id);
                     localStorage.setItem('new_user', data.first);
                     localStorage.setItem('refresh_token', data.refreshToken);
                    
-
-                    
+                    // if new user redirect into New user page
                     if (data.first) {
                         history.push('/choosetype')
                     }
+                    // else go to home page
                     else {
                         history.push('/home')
                     }
                 }
+                // if email is not verified
                 else if (response.status === 403) {
                     setIsPasswordError(true)
                     setIsEmailError(false)
                     setErrorTextPassword("Email is not verified")
                 }
+                // server error
                 else if (response.status === 500) {
                     history.push('/maintenance')
                 }
+                // another case
                 else {
                     setIsPasswordError(true)
                     setIsEmailError(false)
@@ -101,17 +106,18 @@ const SignIn = (props) => {
         }
     }, [username, password])
 
+    // func handle while user Press Enter
     const handleKeyDown = useCallback((e) => {
         if (e.key === 'Enter') {
             signInClick()
         }
     }, [signInClick])
 
+    // Add event keyboard listener
     useEffect(() => {
         document.addEventListener("keydown", handleKeyDown)
         return () => {
             document.removeEventListener("keydown", handleKeyDown)
-
         }
     }, [handleKeyDown]);
 
@@ -121,13 +127,10 @@ const SignIn = (props) => {
                 <div className='sign-in__background-image'>
                     <img className={`sign-in__background-image__image-style`} src="https://assets.nflxext.com/ffe/siteui/vlv3/9c5457b8-9ab0-4a04-9fc1-e608d5670f1a/f50f46d7-13f0-4412-a37c-34808af2dd0c/VN-en-20210719-popsignuptwoweeks-perspective_alpha_website_small.jpg" srcset="https://assets.nflxext.com/ffe/siteui/vlv3/9c5457b8-9ab0-4a04-9fc1-e608d5670f1a/f50f46d7-13f0-4412-a37c-34808af2dd0c/VN-en-20210719-popsignuptwoweeks-perspective_alpha_website_small.jpg 1000w, https://assets.nflxext.com/ffe/siteui/vlv3/9c5457b8-9ab0-4a04-9fc1-e608d5670f1a/f50f46d7-13f0-4412-a37c-34808af2dd0c/VN-en-20210719-popsignuptwoweeks-perspective_alpha_website_medium.jpg 1500w, https://assets.nflxext.com/ffe/siteui/vlv3/9c5457b8-9ab0-4a04-9fc1-e608d5670f1a/f50f46d7-13f0-4412-a37c-34808af2dd0c/VN-en-20210719-popsignuptwoweeks-perspective_alpha_website_large.jpg 1800w" alt="" />
                 </div>
-                <div className={`sign-in__header`}>
-                    {/* <img className={`sign-in__header__logo`}
-                        src='https://pixinvent.com/demo/vuexy-vuejs-admin-dashboard-template/demo-1/img/logo.36f34a9f.svg' alt='logo'
-                    /> */}
+                <div className={`sign-in__header`}>                
                     <IconNetflix className={`sign-in__header__logo`} />
                 </div>
-                <div className={`sign-in__body d-flex align-items-center h-100`}>
+                <div className={`sign-in__body d-flex align-items-center justify-content-center h-100`}>
                     <div className={`sign-in__body__content`}>
                         <div className={`sign-in__body__content__main`}>
                             <h1 className={`sign-in__body__content__main__title`}>Sign In</h1>
@@ -148,10 +151,8 @@ const SignIn = (props) => {
                             <div className={`error-label ${isPasswordError && 'visible'}`}> {isPasswordError && errorTextPassword}</div>
 
                             <div onClick={signInClick} className={`sign-in__body__content__main__button-sign-in`}>
-                                {/* <NavLink to='/home' > */}
                                 <span> Sign In
                                 </span>
-                                {/* </NavLink> */}
                             </div>
 
                             <span>

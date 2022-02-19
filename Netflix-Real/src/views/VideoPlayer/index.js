@@ -1,25 +1,28 @@
-import React, { createRef, useCallback, useEffect, useRef, useState } from "react";
-import { findDOMNode } from "react-dom";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+
 import ReactPlayer from "react-player";
-import { Link, useHistory, useParams } from "react-router-dom";
-import { Progress, Tooltip, Row, Col, UncontrolledTooltip } from "reactstrap";
+import { useHistory, useParams } from "react-router-dom";
+import { Tooltip, Row, Col } from "reactstrap";
 import screenfull from "screenfull";
-import { IconBackArrow, IconFullScreen, IconLayer, IconNext10s, IconPause, IconPauseCircle, IconPlay, IconPlayCircle, IconRewind10s, IconSetting, IconSkip, IconVolume, IconVolumeMute } from "../../assets/Icon";
+import { IconBackArrow, IconFullScreen, IconNext10s, IconPause, IconPauseCircle, IconPlay, IconPlayCircle, IconRewind10s, IconSetting, IconSkip, IconVolume, IconVolumeMute } from "../../assets/Icon";
 import { Duration, Format } from "../../services/function/Duration";
 import './style.scss'
-import * as Icon from 'react-feather';
 import { useLayoutEffect } from "react";
 import { addWatchingList, getWatchingList, updateTimeWatched } from "../../services/api/movie";
 import { getToken } from "../../services/function";
 
+// variable to hile player
 let count = 0;
+// variable to count real user's time watched in seconds
 let seconds = 0;
+// example link video
 //https://www.example.com/url_to_video.mp4
 ///https://player.vimeo.com/external/194837908.sd.mp4?s=c350076905b78c67f74d7ee39fdb4fef01d12420&profile_id=164
 // http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4
 //https://drive.google.com/uc?export=download&id=1Cvk2XhYdSKAST4ecGQ6s1ra4MilvXuLC
 const VideoPlayer = ({ socket, roomnum, videoURL, handleOpenMovieRecommend }) => {
-    const history = useHistory(); // Navigate back to the previous state
+    //init varable
+    const history = useHistory();
     const { idMovie } = useParams()
     const [played, setPlayed] = useState(0);
     const [loaded, setLoaded] = useState(0);
@@ -27,8 +30,6 @@ const VideoPlayer = ({ socket, roomnum, videoURL, handleOpenMovieRecommend }) =>
     const [focusing, setFocusing] = useState(false);
     const [muted, setMuted] = useState(true);
     const [seeking, setSeeking] = useState(false);
-    // const [url, setUrl] = useState('https://drive.google.com/uc?export=download&id=1Cvk2XhYdSKAST4ecGQ6s1ra4MilvXuLC');
-    // const [url, setUrl] = useState('https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4');
     const [url, setUrl] = useState(videoURL);
     const [duration, setDuration] = useState(0);
     const [volume, setVolume] = useState(0.8);
@@ -44,23 +45,11 @@ const VideoPlayer = ({ socket, roomnum, videoURL, handleOpenMovieRecommend }) =>
     const [isHost, setIsHost] = useState(false);
     let valueHover = 0;
 
+    // toggle of tooltip rewind and next
     const toggleRewind = () => setIconRewind(!iconRewind);
     const toggleNext = () => setIconNext(!iconNext);
-    const handleStop = () => {
-        setUrl(null);
-        playingRef.current = false
-        setPlaying(false);
-    }
 
-
-    const handleVideoOnReady = useCallback(() => {
-
-
-        console.log('loading')
-
-    }, [])
-
-
+    //handle func of change input of volume
     const handleVolumeChange = () => {
         let target = volumeRef.current
 
@@ -73,6 +62,7 @@ const VideoPlayer = ({ socket, roomnum, videoURL, handleOpenMovieRecommend }) =>
         setVolume(volumeRef.current.value)
     }
 
+    //handle func of mute volume
     const handleVolumeMute = () => {
         volumeRef.current = !muted
         setMuted(!muted)
@@ -80,13 +70,14 @@ const VideoPlayer = ({ socket, roomnum, videoURL, handleOpenMovieRecommend }) =>
 
     const handleVolumeUp = () => { }
 
+    // handle func of update played time 
     const handlePlayedChange = (e) => {
         playedRef.current = e.target.value
         setPlayed(e.target.value);
     }
 
+    // handle func of play/pause video
     const handlePlayPause = useCallback(() => {
-
         if (isHost) {
             controlRef.current.style.opacity = '1'
             playingRef.current = !playing
@@ -94,86 +85,97 @@ const VideoPlayer = ({ socket, roomnum, videoURL, handleOpenMovieRecommend }) =>
         }
     }, [playing, isHost])
 
+    // set video playing
     const handleVideoPlay = () => {
         playingRef.current = true
         setPlaying(true)
     }
 
+    // set video pause
     const handleVideoPause = () => {
         playingRef.current = false
         setPlaying(false)
     }
 
+    // handle func of video process
     const handleVideoProgress = (state) => {
-
-        console.log("🚀 ~ file: index.js ~ line 110 ~ handleVideoProgress ~ seconds", seconds)
+        // if playing crease seconds( real user's time watched)
         if (playing) seconds += 1;
+
+        // if video play more then 3 second without any user'action player will disappear
         if (count > 3 && !seeking) {
             controlRef.current.style.opacity = '0'
             count = 0;
         }
         else if (controlRef.current.style.opacity == '1' && playing) {
             count += 1;
-
             setMuted(false)
         }
+
         if (playing && !muted) { setMuted(false) }
-        if (state.played >= 0.9) {
+
+        // if video play 9/10 and socket is connect open recommended section (group stream only)
+        if (state.played >= 0.9 && socket != undefined) {
             handleOpenMovieRecommend(true)
             setPlaying(false)
             playingRef.current = false
         }
+        // if user isn't seeking and state played > 0 update tiem watched variable
         if (!seeking && state.played != 0) {
-
             playedRef.current = state.played
             setPlayed(state.played);
             setLoaded(state.loaded)
         }
-
     }
 
+    // handle when video end
     const handleVideoEnded = () => {
 
     }
 
+    // update duration of video url into variable
     const handleVideoDuration = useCallback((duration) => {
         if (typeof (url) != 'undefined') {
             setDuration(duration);
         }
     }, [url])
 
+    // if user mouse down set is seeking
     const handlePlayedDown = () => {
         setSeeking(true)
     }
-
+    // seek video
     const handlePlayedUp = (e) => {
         playerRef.current.seekTo(parseFloat(e.target.value))
         setSeeking(false)
     }
-
+    // rewind video 10s
     const handleRewind = useCallback(() => {
-        // playedRef.current = played + (10 / duration)
         playerRef.current.seekTo((played * duration) - 10, 'seconds')
 
-    }, [played, duration]
-    )
+    }, [played, duration])
+
+    // nest video 10s
     const handleNext = useCallback(() => {
         playedRef.current = played + (10 / duration)
         playerRef.current.seekTo((played * duration) + 10, 'seconds')
     }, [played, duration]
     )
 
+    // set full screen
     const handleClickFullscreen = () => {
         screenfull.toggle(playerContainerRef.current)
     }
 
+    // catch when user's mouse move
     const handleMouseMove = useCallback(() => {
-        // console.log('move')
+
         if (isHost)
             controlRef.current.style.opacity = '1'
         else controlRef.current.style.opacity = '0'
     }, [isHost])
 
+    // set focus while user'mouse is in screen
     const handleMouseEnter = () => {
         setFocusing(true)
     }
@@ -182,6 +184,7 @@ const VideoPlayer = ({ socket, roomnum, videoURL, handleOpenMovieRecommend }) =>
         setFocusing(false)
     }
 
+    // calculate position of cursor
     const calcSliderPos = (e) => {
         return (e.nativeEvent.offsetX / e.target.clientWidth) * parseInt(e.target.getAttribute('max'), 10);
     }
@@ -190,17 +193,18 @@ const VideoPlayer = ({ socket, roomnum, videoURL, handleOpenMovieRecommend }) =>
     const handlePlayedMouseMove = (e) => {
         valueHover = calcSliderPos(e).toFixed(4);
 
+        // show tolltip 
         titlePlayedRef.current.textContent = Format((valueHover * duration).toFixed(0));
         titlePlayedRef.current.style.left = e.nativeEvent.offsetX + 'px';
     }
 
+    // handle func of keydown
     const handleKeyDown = useCallback((e) => {
         if (focusing) {
             if (e.key === 'ArrowDown') {
                 if (volume <= 0.1) {
                     setVolume(0)
                 }
-
                 else
                     setVolume(parseFloat(volume) - 0.1);
                 handleVolumeChange()
@@ -244,6 +248,7 @@ const VideoPlayer = ({ socket, roomnum, videoURL, handleOpenMovieRecommend }) =>
         }
     }, [setVolume, volume, handlePlayPause, played, duration, focusing])
 
+    // handle func of keyup
     const handleKeyUp = useCallback((e) => {
         if (focusing) {
             if (e.key === 'ArrowLeft') {
@@ -257,8 +262,7 @@ const VideoPlayer = ({ socket, roomnum, videoURL, handleOpenMovieRecommend }) =>
         }
     }, [played, focusing])
 
-
-
+    //add event keyboard listener
     useEffect(() => {
         if (isHost) {
             document.addEventListener("keydown", handleKeyDown)
@@ -271,55 +275,51 @@ const VideoPlayer = ({ socket, roomnum, videoURL, handleOpenMovieRecommend }) =>
         }
     }, [handleKeyDown, handleKeyUp]);
 
-    useEffect(async () => { 
-        if (socket == undefined) {
-            try {
-
-                const response = await getWatchingList(getToken())
-                console.log("🚀 ~ file: index.js ~ line 39 ~ useEffect ~ response", response)
-
-                if (response.status === 200) {
-                    const data = await response.data
-                    console.log("🚀 ~ file: index.js ~ line 141 ~ useEffect ~ data", data)
-                    if (data.length) {
-                        const current_movie = data.find(item => item.id == idMovie.toString())
-                        console.log("🚀 ~ file: index.js ~ line 269 ~ useEffect ~ data", data.find(item => item.id == idMovie.toString()))
-                        if (current_movie != undefined) {
-                            playedRef.current = current_movie.current_duration
-                            setPlayed(current_movie.current_duration);
-                            playerRef.current.seekTo(current_movie.current_duration)
+    // get data to seek into last user time watch (if have)
+    useEffect(() => {
+        async function fetchData() {
+            // You can await here
+            if (socket == undefined) {
+                try {
+                    const response = await getWatchingList(getToken())
+                    if (response.status === 200) {
+                        const data = await response.data
+                        if (data.length) {
+                            const current_movie = data.find(item => item.id == idMovie.toString())
+                            if (current_movie != undefined) {
+                                playedRef.current = current_movie.current_duration
+                                setPlayed(current_movie.current_duration);
+                                playerRef.current.seekTo(current_movie.current_duration)
+                            }
                         }
-
+                    }
+                    else if (response.status === 500) {
+                        history.push('/maintenance')
                     }
                 }
-                else if (response.status === 500) {
-                    history.push('/maintenance')
+                catch (error) {
+                    //  history.push('/maintenance')
                 }
-
-            }
-            catch (error) {
-                console.log("🚀 ~ file: index.js ~ line 291 ~ useEffect ~ error", error)
-
-                //  history.push('/maintenance')
             }
         }
+        fetchData();
     }, [])
 
+    // request update current time watched and real time watched while unmounted 
     useEffect(() => {
-        return () => {
+        return async () => {
             if (socket == undefined) {
                 if (playedRef.current != null && playedRef.current < 0.9) {
-                    addWatchingList(idMovie.toString(), playedRef.current, getToken())
-                    updateTimeWatched(idMovie.toString(), Math.round((seconds / duration) * 5), getToken())
+                    await addWatchingList(idMovie.toString(), playedRef.current, getToken())
+                    await updateTimeWatched(idMovie.toString(), Math.round((seconds / duration) * 5), getToken())
                 }
             }
         }
     }, [duration])
 
+    // catch event seeking, change playing to update via socket
     useLayoutEffect(() => {
-
         if (socket != undefined) {
-            console.log('get host data')
             const data = {
                 room: roomnum,
                 currTime: playedRef.current,
@@ -327,26 +327,27 @@ const VideoPlayer = ({ socket, roomnum, videoURL, handleOpenMovieRecommend }) =>
                 muted: muted,
                 caller: socket.id
             }
-            console.log("🚀 ~ file: index.js ~ line 253 ~ socket.on ~ data", data)
             socket.emit('get host data', data);
         }
+        // if socket isn't connect
         else {
             setUrl('https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4');
             setIsHost(true)
         }
     }, [seeking, playing, muted])
-    // })
+
+    // set URl video when host choosed movie
     useEffect(() => {
         if (socket != undefined) {
             socket.on("getURLMovie", (data) => {
-                console.log("🚀 ~ file: index.js ~ line 246 ~ socket.on ~ data", data)
+                console.log("🚀 ~ file: index.js ~ line 343 ~ socket.on ~ data", data)
+                // turn off recommend section
                 handleOpenMovieRecommend(false)
                 setUrl(data.movieURL)
                 playedRef.current = 0
                 setPlayed(0);
                 playingRef.current = false
                 setPlaying(false);
-                console.log("🚀 ~ file: index.js ~ line 340 ~ socket.on ~ playerRef.current", playerRef.current.getDuration())
 
                 if (playerRef.current.getDuration() != null)
                     playerRef.current.seekTo(0)
@@ -354,11 +355,12 @@ const VideoPlayer = ({ socket, roomnum, videoURL, handleOpenMovieRecommend }) =>
         }
     }, [url, socket])
 
+    // check user is host or not (Group streaming only) while socket is connect
     useLayoutEffect(() => {
         if (socket != undefined) {
             socket.on('isHost', function (data) {
-                console.log("🚀 ~ file: index.js ~ line 271 ~ data", data)
                 setIsHost(data.isHost)
+                // if user isn't host hide player
                 if (!data.isHost) {
                     controlRef.current.style.opacity = '0'
                 }
@@ -366,6 +368,7 @@ const VideoPlayer = ({ socket, roomnum, videoURL, handleOpenMovieRecommend }) =>
         }
     }, [socket])
 
+    // update current host time to server while new member get into the room
     useEffect(() => {
         if (socket != undefined) {
             socket.on("getData", () => {
@@ -377,7 +380,6 @@ const VideoPlayer = ({ socket, roomnum, videoURL, handleOpenMovieRecommend }) =>
                     muted: false,
                     caller: socket.id
                 }
-                console.log("🚀 ~ file: index.js ~ line 253 ~ socket.on ~ data", data)
                 socket.emit('get host data', data);
             })
 
@@ -411,6 +413,8 @@ const VideoPlayer = ({ socket, roomnum, videoURL, handleOpenMovieRecommend }) =>
                     setUrl(data.currVideo)
                 }
                 if (playedRef.current != hostTime || playingRef.current != hostState) {
+                    console.log("🚀 ~ file: index.js ~ line 416 ~ playerRef.current.getDuration() != null", playerRef.current.getDuration() != null)
+                    console.log("🚀 ~ file: index.js ~ line 416 ~ playedRef.current", playerRef.current)
                     if (!host) {
                         handleOpenMovieRecommend(false)
                         volumeRef.current = data.muted
@@ -419,7 +423,8 @@ const VideoPlayer = ({ socket, roomnum, videoURL, handleOpenMovieRecommend }) =>
                         setPlayed(hostTime);
                         playingRef.current = hostState
                         setPlaying(hostState);
-                        playerRef.current.seekTo(hostTime)
+                        if (playerRef.current.getDuration() != null)
+                            playerRef.current.seekTo(hostTime)
                     }
                 }
             });
@@ -448,7 +453,6 @@ const VideoPlayer = ({ socket, roomnum, videoURL, handleOpenMovieRecommend }) =>
                         width='100%'
                         height='100%'
                         url={url}
-                        onReady={handleVideoOnReady}
                         playing={playingRef.current}
                         controls={false}
                         volume={volume}
@@ -457,14 +461,6 @@ const VideoPlayer = ({ socket, roomnum, videoURL, handleOpenMovieRecommend }) =>
                         onEnded={handleVideoEnded}
                         onPause={handleVideoPause}
                         onProgress={handleVideoProgress}
-                        onSeek={(value) => {
-                            console.log('onSeek')
-                            console.log("🚀 ~ file: index.js ~ line 395 ~ value", value)
-                        }
-                        }
-                        onError={(err) =>
-                            console.log("🚀 ~ file: index.js ~ line 407 ~ err", err)
-                        }
                         onDuration={handleVideoDuration}
                     />
                 </div>
@@ -562,7 +558,7 @@ const VideoPlayer = ({ socket, roomnum, videoURL, handleOpenMovieRecommend }) =>
                                     <div onClick={handleClickFullscreen} >
                                         <IconFullScreen className={'icon--color'} />
                                     </div>
-                                   
+
                                 </Col>
 
                             </Row>

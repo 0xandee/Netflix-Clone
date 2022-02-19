@@ -18,7 +18,7 @@ const ForgotPassword = () => {
     const [errorTextEmail, setErrorTextEmail] = useState('Please enter a valid email')
     const [isCheckOTP, setIsCheckOTP] = useState(false);
 
-    const forgotPasswordClicked = async () => {
+    const forgotPasswordClicked = useCallback(async () => {
         var emailValid = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
         if (email == "" || !email.match(emailValid)) {
@@ -44,7 +44,7 @@ const ForgotPassword = () => {
                 history.push('/maintenance')
             }
         }
-    }
+    }, [])
 
     const backToSignInClicked = () => {
         history.push('/signin')

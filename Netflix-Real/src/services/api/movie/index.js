@@ -1,4 +1,5 @@
-import { requestAccessToken, requestRefreshToken, resetToken } from '../../function';
+import { requestAccessToken, requestRefreshToken } from '../../function';
+import { requestLogout } from '../auth';
 import { movieApi } from './configUrl'
 const axios = require('axios');
 const instance = axios.create({
@@ -29,24 +30,58 @@ instance.interceptors.response.use((response) => {
   return response
 }, async function (error) {
   const originalRequest = error.config;
-  console.log("🚀 ~ file: index.js ~ line 28 ~ instance.interceptors.response.use ~ originalRequest", originalRequest)
-  if (error.response.status === 401 && !originalRequest._retry) {
+  
+  if (error.response.status === 401) {
     originalRequest._retry = true;
     const request_token_status = await requestRefreshToken();
-    console.log("🚀 ~ file: index.js ~ line 36 ~ instance.interceptors.response.use ~ request_token_status", request_token_status)
     if (request_token_status == 200) {
       const access_token = await requestAccessToken();
-      console.log("🚀 ~ file: index.js ~ line 39 ~ instance.interceptors.response.use ~ access_token", access_token)
       axios.defaults.headers.common['Authorization'] = 'Bearer ' + access_token;
       return instance(originalRequest);
     }
-    // else if (request_token_status === 401) {
-    //     // const dispatch = useDispatch()
-    //     // dispatch(handleLogout())
-    //     localStorage.clear()
-    //     document.location.href = '/signin'
-    // }
+    else if (request_token_status === 401) {
+      
+      await requestLogout(localStorage.getItem('refresh_token'))
+      localStorage.clear()
+      document.location.href = '/signin'
+    }
+    else if (request_token_status === 500) {
+      document.location.href = '/maintenance'
+    }
+
     return instance(originalRequest);
+  }
+  return Promise.reject(error);
+});
+
+axios.interceptors.response.use((response) => {
+  return response
+}, async function (error) {
+  const originalRequest = error.config;
+  console.log("🚀 ~ file: index.js ~ line 61 ~ axios.interceptors.response.use ~ originalRequest", originalRequest)
+  
+  if (error.response.status === 401) {
+    originalRequest._retry = true;
+    const request_token_status = await requestRefreshToken();
+    if (request_token_status == 200) {
+      const access_token = await requestAccessToken();
+      axios.defaults.headers.common['Authorization'] = 'Bearer ' + access_token;
+      return instance(originalRequest);
+    }
+    else if (request_token_status === 401) {
+      
+      await requestLogout(localStorage.getItem('refresh_token'))
+      localStorage.clear()
+      document.location.href = '/signin'
+    }
+    else if (request_token_status === 500) {
+      document.location.href = '/maintenance'
+    }
+
+    return instance(originalRequest);
+  }
+  else if(error.response.status === 500){
+    document.location.reload(true)
   }
   return Promise.reject(error);
 });
@@ -62,10 +97,11 @@ export const postNewUserMovies = async (dataNewUser, token) => {
         'Content-Type': 'application/json',
         'Authorization': "Bearer " + token,
       },
-      body: JSON.stringify({
-        arr_id_movie: dataNewUser,
+      body: JSON.stringify(
+        {
+          arr_id_movie: dataNewUser,
 
-      })
+        })
     })
       .then(response => {
 
@@ -161,17 +197,9 @@ export const getRecommGroupMoviesState2 = async (idUser, idMovie) => {
   })
 }
 
-export const getAllMovies = async (token) => {
+export const getAllMovies = async () => {
   return new Promise((resolve, reject) => {
-    fetch(movieApi.urlGetMovie, {
-      crossDomain: true,
-      method: "GET",
-      mode: 'cors',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': "Bearer " + token,
-      },
-    })
+    instance.get(movieApi.urlGetMovie)
       .then(response => {
         resolve(response)
       })
@@ -181,20 +209,37 @@ export const getAllMovies = async (token) => {
   })
 }
 
-export const getMoviesByGenres = async (arrIdGenre, token, number) => {
+export const getMoviesByGenres = async (arrIdGenre, number, token) => {
   return new Promise((resolve, reject) => {
-    fetch(movieApi.urlGetMoviesByGenres, {
-      crossDomain: true,
-      method: "POST",
-      mode: 'cors',
+    // instance.post(movieApi.urlGetMoviesByGenres,
+    //   // {
+    //   //   crossDomain: true,
+    //   //   method: "POST",
+    //   //   mode: 'cors',
+    //   //   headers: {
+    //   //     'Content-Type': 'application/json',
+    //   //     'Authorization': "Bearer " + token,
+    //   //   },
+    //   //   body: JSON.stringify({
+    //   {
+    //     arr_id_type: arrIdGenre,
+    //     number
+    //   }
+
+    //   //   })
+    //   // }
+    // )
+    axios({
+      method: 'post',
+      url: movieApi.urlGetMoviesByGenres,
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': "Bearer " + token,
+        'Authorization': `Bearer ${token}`,
+        'Accept': 'application/json',
       },
-      body: JSON.stringify({
+      data: {
         arr_id_type: arrIdGenre,
         number
-      })
+      }
     })
       .then(response => {
         resolve(response)
@@ -207,87 +252,62 @@ export const getMoviesByGenres = async (arrIdGenre, token, number) => {
 
 export const getMoviesByListID = async (arrIdMovies, token) => {
   return new Promise((resolve, reject) => {
-    fetch(movieApi.urlGetMoviesByListID, {
-      crossDomain: true,
-      method: "POST",
-      mode: 'cors',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': "Bearer " + token,
-      },
-      body: JSON.stringify({
-        arr_id_movie: arrIdMovies
-
-      })
-    })
-      .then(response => {
-
-        resolve(response)
-      })
-      .catch(error => {
-        return reject(error)
-      });
-  })
-}
-
-export const getMovieAPI = async (idMovie, token) => {
-  return new Promise((resolve, reject) => {
-    fetch(movieApi.urlGetMovie + `/${idMovie}`, {
-      crossDomain: true,
-      method: "GET",
-      mode: 'cors',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': "Bearer " + token,
-      },
-    })
-      .then(response => {
-
-        resolve(response)
-      })
-      .catch(error => {
-        return reject(error)
-      });
-  })
-}
-
-export const getMovieTypeAPI = async (token) => {
-  return new Promise((resolve, reject) => {
-    instance.get(movieApi.urlGetMovieType
-      //   , {
-
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //     'Authorization': "Bearer " + token,
-      //   },
-      // }
-    )
-      .then(response => {
-        console.log("🚀 ~ file: index.js ~ line 240 ~ returnnewPromise ~ response", response)
-        resolve(response)
-      })
-      .catch(error => {
-        console.log("🚀 ~ file: index.js ~ line 224 ~ returnnewPromise ~ error", error)
-        return reject(error)
-      });
-  })
-}
-
-export const getMoviesByGenreAPI = async (genreId, token) => {
-  return new Promise((resolve, reject) => {
-    instance.get(movieApi.urlGetMovieType + `/${genreId}`
-      // , {
-      //   crossDomain: true,
-      //   method: "GET",
-      //   mode: 'cors',
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //     'Authorization': "Bearer " + token,
-      //   },
-      // }
+    fetch(movieApi.urlGetMoviesByListID,
+      {
+        crossDomain: true,
+        method: "POST",
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': "Bearer " + token,
+        },
+        body: JSON.stringify(
+          {
+            arr_id_movie: arrIdMovies,
+          }
+        )
+      }
     )
       .then(response => {
 
+        resolve(response)
+      })
+      .catch(error => {
+        return reject(error)
+      });
+  })
+}
+
+export const getMovieAPI = async (idMovie) => {
+  return new Promise((resolve, reject) => {
+    instance.get(movieApi.urlGetMovie + `/${idMovie}`)
+      .then(response => {
+
+        resolve(response)
+      })
+      .catch(error => {
+        return reject(error)
+      });
+  })
+}
+
+export const getMovieTypeAPI = async () => {
+  return new Promise((resolve, reject) => {
+    instance.get(movieApi.urlGetMovieType)
+      .then(response => {
+        resolve(response)
+      })
+      .catch(error => {
+
+        return reject(error)
+      });
+  })
+}
+
+export const getMoviesByGenreAPI = async (genreId) => {
+  return new Promise((resolve, reject) => {
+    instance.get(movieApi.urlGetMovieType + `/${genreId}`)
+      .then(response => {
         resolve(response)
       })
       .catch(error => {
@@ -298,19 +318,11 @@ export const getMoviesByGenreAPI = async (genreId, token) => {
 
 export const updateTimeWatched = async (id_movie, value_watched, token,) => {
   return new Promise((resolve, reject) => {
-    fetch(movieApi.urlAddTimeWatched, {
-      crossDomain: true,
-      method: "POST",
-      mode: 'cors',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': "Bearer " + token,
-      },
-      body: JSON.stringify({
-        id_movie,
-        value: value_watched
-      })
-    })
+    instance.post(movieApi.urlAddTimeWatched, {
+      id_movie,
+      value: value_watched
+    }
+    )
       .then(response => {
         resolve(response)
       })
@@ -320,22 +332,15 @@ export const updateTimeWatched = async (id_movie, value_watched, token,) => {
   })
 }
 
-export const addWatchingList = async (id_movie, value_watched, token,) => {
+export const addWatchingList = async (id_movie, value_watched) => {
   return new Promise((resolve, reject) => {
-    fetch(movieApi.urlAddWatchingList, {
-      crossDomain: true,
-      method: "POST",
-      mode: 'cors',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': "Bearer " + token,
-      },
-      body: JSON.stringify({
-        id_movie,
-        value: value_watched
-      })
-    })
+    instance.post(movieApi.urlAddWatchingList, {
+      id_movie,
+      value: value_watched
+    }
+    )
       .then(response => {
+        console.log("🚀 ~ file: index.js ~ line 288 ~ returnnewPromise ~ response", response)
         resolve(response)
       })
       .catch(error => {
@@ -344,22 +349,15 @@ export const addWatchingList = async (id_movie, value_watched, token,) => {
   })
 }
 
-export const updateMovieClicked = async (id_movie, token) => {
+export const updateMovieClicked = async (id_movie) => {
   return new Promise((resolve, reject) => {
-    fetch(movieApi.urlAddMovieClicked, {
-      crossDomain: true,
-      method: "POST",
-      mode: 'cors',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': "Bearer " + token,
-      },
-      body: JSON.stringify({
-        id_movie,
-        value: 1
-      })
-    })
+    instance.post(movieApi.urlAddMovieClicked, {
+      id_movie,
+      value: 1
+    }
+    )
       .then(response => {
+        console.log("🚀 ~ file: index.js ~ line 305 ~ returnnewPromise ~ response", response)
         resolve(response)
       })
       .catch(error => {
@@ -368,18 +366,10 @@ export const updateMovieClicked = async (id_movie, token) => {
   })
 }
 
-export const getWatchingList = async (token) => {
+export const getWatchingList = async () => {
   return new Promise((resolve, reject) => {
     instance.get(movieApi.urlGetWatchingList
-      //   , {
-      //   crossDomain: true,
-      //   method: "GET",
-      //   mode: 'cors',
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //     'Authorization': "Bearer " + token,
-      //   },
-      // }
+
     )
       .then(response => {
         resolve(response)
@@ -391,17 +381,9 @@ export const getWatchingList = async (token) => {
 }
 
 
-export const deleteWatchingList = async (idMovie, token) => {
+export const deleteWatchingList = async (idMovie) => {
   return new Promise((resolve, reject) => {
-    fetch(movieApi.urlDeleteWatchingList + `/${idMovie}`, {
-      crossDomain: true,
-      method: "DELETE",
-      mode: 'cors',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': "Bearer " + token,
-      },
-    })
+    instance.delete(movieApi.urlDeleteWatchingList + `/${idMovie}`)
       .then(response => {
         resolve(response)
       })
@@ -412,21 +394,13 @@ export const deleteWatchingList = async (idMovie, token) => {
 }
 
 //0: Dislike, 1: Like
-export const isLikeOrDislike = async (idMovie, value, token) => {
+export const isLikeOrDislike = async (idMovie, value) => {
   return new Promise((resolve, reject) => {
-    fetch(movieApi.urlIsLike, {
-      crossDomain: true,
-      method: "POST",
-      mode: 'cors',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': "Bearer " + token,
-      },
-      body: JSON.stringify({
-        idMovie,
-        value: value
-      })
-    })
+    instance.post(movieApi.urlIsLike, {
+      idMovie,
+      value: value
+    }
+    )
       .then(response => {
         resolve(response)
       })
@@ -437,17 +411,9 @@ export const isLikeOrDislike = async (idMovie, value, token) => {
 }
 
 
-export const updateMovieView = async (idMovie, token) => {
+export const updateMovieView = async (idMovie) => {
   return new Promise((resolve, reject) => {
-    fetch(movieApi.urlAddMovieCountView + `/${idMovie}`, {
-      crossDomain: true,
-      method: "POST",
-      mode: 'cors',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': "Bearer " + token,
-      },
-    })
+    instance.post(movieApi.urlAddMovieCountView + `/${idMovie}`)
       .then(response => {
         resolve(response)
       })

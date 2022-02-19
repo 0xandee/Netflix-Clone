@@ -1,12 +1,9 @@
-import React, { useState, useCallback, useEffect, createRef } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import './style.scss';
 import { CustomModal, Footer, NavigationBar } from "../../components";
-import { to_Decrypt, to_Encrypt } from "../../services/aes256";
 import { useHistory } from "react-router-dom";
 import DefaultImage from '../../assets/Images/defaultImage.png';
-import { requestRefreshToken } from "../../services/api/auth";
 import { getUserFavoriteList } from "../../services/api/user";
-import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
 import { getToken } from "../../services/function";
 
 
@@ -58,26 +55,31 @@ const MyPlaylistPage = (props) => {
         fetchMoreListItems();
     }, [isFetching]);
 
-    useEffect(async () => {
-        try {
-            const res = await getUserFavoriteList(accessToken)
-            if (res.status === 200) {
-                let data = await res.json()
-                setDataApiMovies(data)
-                setGenreMovies(data.slice(0, 30))
-            }
-            else if (res.status === 500) {
-                history.push('/maintenance')
-            }
-            else {
-                if (res.status == 403) {
-                    setOpen(true)
+    useEffect(() => {
+        async function fetchData() {
+            // You can await here
+            try {
+                const res = await getUserFavoriteList(accessToken)
+                if (res.status === 200) {
+                    let data = await res.json()
+                    setDataApiMovies(data)
+                    setGenreMovies(data.slice(0, 30))
+                }
+                else if (res.status === 500) {
+                    history.push('/maintenance')
+                }
+                else {
+                    if (res.status == 403) {
+                        setOpen(true)
+                    }
                 }
             }
+            catch {
+                history.push('/maintenance')
+            }
         }
-        catch {
-            history.push('/maintenance')
-        }
+        fetchData();
+
     }, [accessToken])
 
     return (

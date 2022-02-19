@@ -98,25 +98,7 @@ const Footer = (props) => {
 
 
                     </div>
-                    {/* <div className={`footer__content--language-selection`} onClick={toggleDropdown}>
-                        <div className='footer__content--language-selection__header' onClick={toggleDropdown}>
-                            <Icon.Globe size='16px' />
-                            <span>{selectedItem ? languages.find(item => item.id === selectedItem).label : languages[0].label}</span>
-                            <span className={`caret ${isOpen && 'open'}`} />
-                            <div className={`footer__content--language-selection__picker ${isOpen && 'open'} `}>
-                                {languages.map(item => (
-                                    <div className={`footer__content--language-selection__picker__item`}
-                                    onClick={handleItemClick(item.id)}
-                                    >
-                                        {item.label}
-                                        </div>
-                                ))}
-                            </div>
-                        </div>
-
-
-
-                    </div> */}
+                 
                 </div>
             </div>
         </div>
