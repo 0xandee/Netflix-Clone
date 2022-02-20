@@ -177,8 +177,13 @@
         grid-template-columns: repeat(3, 1fr);
       }
     }
+    @media (min-width: 1300px) {
+      .list-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
   
-    @media (min-width: 1400px) {
+    @media (min-width: 1550px) {
       .list-grid {
         grid-template-columns: repeat(5, 1fr);
       }

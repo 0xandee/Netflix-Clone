@@ -1,11 +1,7 @@
-import React, { useState, Component, Fragment } from "react";
+import React from "react";
 import './footerPage.scss'
-import { Row, Col, Label, Avatar, Button } from 'reactstrap'
-import Select from 'react-select';
-import { Link, NavLink, useHistory } from "react-router-dom";
-import Flatpickr from "react-flatpickr";
 import 'flatpickr/dist/flatpickr.css';
-import { CustomInput, Footer, SignUpNavigationBar } from "../../components";
+import { Footer, SignUpNavigationBar } from "../../components";
 
 const ContactUs = () => {
     return(

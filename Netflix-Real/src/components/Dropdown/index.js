@@ -1,11 +1,7 @@
 import React, { useState } from "react";
 import './customdropdown.scss'
-import * as Icon from 'react-feather';
-import { Link, NavLink, Route, useHistory } from "react-router-dom";
-import { userLogout } from '../../services/redux/actions';
-import { SignIn } from "../../views/index";
+import { Link, useHistory } from "react-router-dom";
 import { requestLogout } from "../../services/api/auth";
-import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
 import { getToken } from "../../services/function";
 
 
@@ -22,10 +18,6 @@ const CustomDropdown = () => {
     console.log("🚀 ~ file: index.js ~ line 64 ~ nextClicked ~ response", response)
     if (response.status >= 200 && response.status <= 299) {
        localStorage.clear();
-      // delete_cookie('username')
-      // delete_cookie('id_user')
-      // delete_cookie('access_token')
-      
       history.push('/signin')
     }
   }
@@ -42,6 +34,13 @@ const CustomDropdown = () => {
             <React.Fragment>
               <div className={`dropdown-content ${isOpen && 'open'}`}>
                 <div className='callout-arrow' />
+                <div className="dropdown-account-item">
+                  <div  className='reponsive-link '>
+                    <span className='profile-name account-link'>
+                      Hello {localStorage.getItem('username')}
+                    </span>
+                  </div>
+                </div>
                 <div className="dropdown-account-item">
                   <Link to={userProfile} className='profile-link'>
                     <span className='profile-name account-link'>

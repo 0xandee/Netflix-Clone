@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavLink,useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 import './Episodes.scss';
 
@@ -8,7 +8,7 @@ const Episodes = (props) => {
     const history = useHistory()
 
     const playClicked = () => {
-        history.push('/watch')
+        history.push(`/watch/${props.item.id}`)
     }
     
 

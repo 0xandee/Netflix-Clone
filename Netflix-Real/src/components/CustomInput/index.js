@@ -1,10 +1,8 @@
-import React, { createRef, useEffect, useState } from "react";
+import React, { createRef, useState } from "react";
 import './customInput.scss'
 import * as Icon from 'react-feather';
-import { NavLink } from "react-router-dom";
 const CustomInput = (props) => {
     const [isFocus, setIsFocus] = useState(false)
-    // const [isError, setIsError] = useState(false)
     const [isReveal, setIsreveal] = useState(false)
     const textInput = createRef(null);
     const onFocus = () => setIsFocus(true)

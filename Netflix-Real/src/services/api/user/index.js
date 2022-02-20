@@ -1,16 +1,28 @@
+import { requestAccessToken, requestRefreshToken } from '../../function';
+import { requestLogout } from '../auth';
 import { userApi } from './configUrl'
+ const axios = require('axios');
 
 
 export const favMoviePost = (movieID, token) => {
   return new Promise((resolve, reject) => {
-    fetch(`${userApi.urlAddFavorite}` + `/${movieID}`, {
-      crossDomain: true,
-      method: "POST",
-      mode: 'cors',
+    // fetch(`${userApi.urlAddFavorite}` + `/${movieID}`, {
+    //   crossDomain: true,
+    //   method: "POST",
+    //   mode: 'cors',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //     'Authorization': "Bearer " + token,
+    //   },
+    // })
+    axios({
+      method: 'post',
+      url:`${userApi.urlAddFavorite}` + `/${movieID}`,
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': "Bearer " + token,
+        'Authorization': `Bearer ${token}`,
+        'Accept': 'application/json',
       },
+    
     })
       .then(response => {
         resolve(response)

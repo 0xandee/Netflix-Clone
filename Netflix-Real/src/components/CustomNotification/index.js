@@ -23,17 +23,16 @@ const fakeDataNotification = [
 const CustomNotification = () => {
     const [isOpen, setOpen] = useState(false);
     const avatar = 'https://assets.nflxext.com/us/email/gem/hero/inapp/top10_112x63.jpg'
-    const [numb, setNumb] = useState(fakeDataNotification[0].numb)
-    const [items, setItem] = useState(fakeDataNotification[1].items)
+    const numb= fakeDataNotification[0].numb
+    const items =fakeDataNotification[1].items
     const toggleDropdown = () => {
-
         setOpen(!isOpen)
     };
     return (
         <div id='customNotification'>
             <div className='notification' onClick={toggleDropdown}>
                 <div className={`button-style position-relative`}>
-                    <div className="number-notification">{numb != 0 && numb}</div>
+                    <div className="number-notification">{numb !== 0 && numb}</div>
                     <div >
                         <Icon.Bell className='icon-style' fill='white' size='16px' strokeWidth='4' color='white' />
                         <div className = {`notification-container`}>

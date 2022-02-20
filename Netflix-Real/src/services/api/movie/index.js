@@ -6,7 +6,6 @@ const instance = axios.create({
   headers: { 'Content-Type': 'application/json' }
 });
 
-
 instance.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('access_token');
@@ -89,19 +88,17 @@ axios.interceptors.response.use((response) => {
 
 export const postNewUserMovies = async (dataNewUser, token) => {
   return new Promise((resolve, reject) => {
-    fetch(movieApi.urlPostNewUserMovies, {
-      crossDomain: true,
-      method: "POST",
-      mode: 'cors',
+    axios({
+      method: 'post',
+      url: movieApi.urlPostNewUserMovies,
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': "Bearer " + token,
+        'Authorization': `Bearer ${token}`,
+        'Accept': 'application/json',
       },
-      body: JSON.stringify(
-        {
-          arr_id_movie: dataNewUser,
+      data: {
+        arr_id_movie: dataNewUser,
 
-        })
+      }
     })
       .then(response => {
 
@@ -211,24 +208,7 @@ export const getAllMovies = async () => {
 
 export const getMoviesByGenres = async (arrIdGenre, number, token) => {
   return new Promise((resolve, reject) => {
-    // instance.post(movieApi.urlGetMoviesByGenres,
-    //   // {
-    //   //   crossDomain: true,
-    //   //   method: "POST",
-    //   //   mode: 'cors',
-    //   //   headers: {
-    //   //     'Content-Type': 'application/json',
-    //   //     'Authorization': "Bearer " + token,
-    //   //   },
-    //   //   body: JSON.stringify({
-    //   {
-    //     arr_id_type: arrIdGenre,
-    //     number
-    //   }
-
-    //   //   })
-    //   // }
-    // )
+    
     axios({
       method: 'post',
       url: movieApi.urlGetMoviesByGenres,
@@ -252,23 +232,20 @@ export const getMoviesByGenres = async (arrIdGenre, number, token) => {
 
 export const getMoviesByListID = async (arrIdMovies, token) => {
   return new Promise((resolve, reject) => {
-    fetch(movieApi.urlGetMoviesByListID,
-      {
-        crossDomain: true,
-        method: "POST",
-        mode: 'cors',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': "Bearer " + token,
-        },
-        body: JSON.stringify(
-          {
-            arr_id_movie: arrIdMovies,
-          }
-        )
+ 
+    axios({
+      method: 'post',
+      url: movieApi.urlGetMoviesByListID,
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Accept': 'application/json',
+      },
+      data: {
+        arr_id_movie: arrIdMovies,
       }
-    )
+    })
       .then(response => {
+      console.log("🚀 ~ file: index.js ~ line 264 ~ returnnewPromise ~ response", response)
 
         resolve(response)
       })

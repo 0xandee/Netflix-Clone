@@ -1,6 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState, history } from "react";
-// Import Swiper React components
-import { Swiper, SwiperSlide } from "swiper/react";
+import React, {  useState } from "react";
 
 // Import Swiper styles
 import "swiper/swiper.min.css";
@@ -9,11 +7,10 @@ import "swiper/components/navigation/navigation.min.css"
 import SwiperCore, {
     Navigation
 } from 'swiper/core';
-import { Link, useHistory, useLocation, NavLink } from "react-router-dom";
-import { LazyLoadImage } from "react-lazy-load-image-component";
+import { useHistory} from "react-router-dom";
 import DefaultImage from '../../assets/Images/defaultImage.png'
 import { Play, Plus, X } from "react-feather";
-import { Tooltip, UncontrolledTooltip } from "reactstrap";
+import {  UncontrolledTooltip } from "reactstrap";
 import { favMoviePost } from "../../services/api/user";
 import { getToken } from "../../services/function";
 import { deleteWatchingList } from "../../services/api/movie";
@@ -57,7 +54,6 @@ const SliderItemForWatching = (props) => {
             }
         }
         catch (error) {
-            console.log("🚀 ~ file: index.js ~ line 62 ~ itemAddClicked ~ error", error)
             //history.push('/maintenance')
         }
     }
@@ -77,7 +73,6 @@ const SliderItemForWatching = (props) => {
             }
             
         } catch (error) {
-            console.log("🚀 ~ file: index.js ~ line 77 ~ itemRemoveClicked ~ error", error)
 
         }
 

@@ -1,48 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import './footer.scss'
-import * as Icon from 'react-feather';
+
 import { NavLink } from "react-router-dom";
 
-const languagesData = [
-    {
-        id: 1,
-        label: 'English'
-
-    },
-  
-];
-// const linkFooterData = [
-//     {
-//         id: 1,
-//         label: 'FAQ',
-//         navLink: '/faq'
-//     },
-//     {
-//         id: 2,
-//         label: 'Help Center',
-//         navLink: '/faq'
-//     },
-//     {
-//         id: 3,
-//         label: 'Terms of Use',
-//         navLink: '/faq'
-//     },
-//     {
-//         id: 4,
-//         label: 'Privacy',
-//         navLink: '/faq'
-//     },
-//     {
-//         id: 5,
-//         label: 'Cookies Preferences',
-//         navLink: '/faq'
-//     },
-//     {
-//         id: 6,
-//         label: 'Corporate Information',
-//         navLink: '/faq'
-//     }
-// ]
 
 const linkFooterData = [
     {
@@ -68,16 +28,8 @@ const linkFooterData = [
 ]
 
 const Footer = (props) => {
-    const [languages, setLanguages] = useState(languagesData);
-    const [linkFooters, setLinkFooters] = useState(linkFooterData);
-    const [isOpen, setOpen] = useState(false);
-    const [selectedItem, setSelectedItem] = useState(null);
+    const linkFooters = linkFooterData;
 
-    const toggleDropdown = () => setOpen(!isOpen);
-
-    const handleItemClick = (id)=> () => {
-        selectedItem === id ? setSelectedItem(null) : setSelectedItem(id);
-    }
     return (
         <div id='footer'>
             <div className={`footer`} style={props.style}>
@@ -98,7 +50,7 @@ const Footer = (props) => {
 
 
                     </div>
-                 
+
                 </div>
             </div>
         </div>

@@ -1,13 +1,12 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import React from 'react';
 import './signUpNavigationBar.scss'
 
 import { useHistory } from 'react-router-dom';
 import { IconNetflix } from '../../assets/Icon';
 
-const SignUpNavigationBar = (props) => {
+const SignUpNavigationBar = () => {
     const history = useHistory()
     const logoClicked = () => {
-
         history.push('/signin')
 
     }

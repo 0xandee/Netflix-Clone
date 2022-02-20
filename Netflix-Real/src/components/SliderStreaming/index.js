@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState, history } from "react";
+import React from "react";
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
 
@@ -9,12 +9,10 @@ import "swiper/components/navigation/navigation.min.css"
 import SwiperCore, {
     Navigation
 } from 'swiper/core';
-import { Link, useHistory, useLocation, NavLink } from "react-router-dom";
 import './Slider.scss';
 
 // install Swiper modules
 SwiperCore.use([Navigation]);
-
 
 const Slider = (props) => {
     

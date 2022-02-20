@@ -204,8 +204,12 @@
     white-space: unset;
     color: white;
     font-weight: 600;
-    font-size: 18px;
-    display: inline-block;
+    font-size: 16px;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    text-overflow: ellipsis;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
 
 .titleCard__container .titleCard-imageWrapper img {
@@ -240,7 +244,7 @@
 
 .titleCard-synopsis.previewModal--small-text {
     color: #d2d2d2;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: bold;
     line-height: 20px;
 
@@ -263,11 +267,11 @@
 }
 @media (min-width: 600px) {
     .titleCard-synopsis.previewModal--small-text {
-        -webkit-line-clamp: 3;
+        -webkit-line-clamp: 2;
     }
 }
 
-@media (min-width: 1000px) {
+@media (min-width: 1050px) {
     .titleCard-synopsis.previewModal--small-text {
         -webkit-line-clamp: 3;
     }

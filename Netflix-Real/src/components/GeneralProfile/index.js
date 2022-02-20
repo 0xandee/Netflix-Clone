@@ -1,7 +1,6 @@
 import React, { Fragment, useEffect, useState } from "react";
 import Select from 'react-select';
-import { Button, Col, Form, FormGroup, Input, InputGroup, Label, Row } from "reactstrap";
-import { Controller } from "swiper";
+import { Button, Col, Form, FormGroup, Input, Label, Row } from "reactstrap";
 import { countryListData } from "../../config/countryData";
 import Flatpickr from "react-flatpickr";
 import 'flatpickr/dist/flatpickr.css';
@@ -9,7 +8,6 @@ import './style.scss'
 import { getProfile, requestUpdateProfile } from "../../services/api/auth";
 import { toast } from 'react-toastify'
 import { useHistory } from "react-router-dom";
-import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
 import { getToken } from "../../services/function";
 
 const SuccessToast = (props) => (
@@ -87,7 +85,6 @@ const GeneralProfile = () => {
       }
     }
     catch (error) {
-      console.log("🚀 ~ file: index.js ~ line 77 ~ saveClicked ~ error", error)
       notifyError()
     }
   }
@@ -102,26 +99,29 @@ const GeneralProfile = () => {
   }
 
 
-  useEffect(async () => {
-    try {
-      let response = await getProfile(getToken())
-      console.log("🚀 ~ file: index.js ~ line 108 ~ useEffect ~ response", response)
-      if (response.status === 200) {
-        let data = await response.json()
-        setEmail(data.email)
-        setGender(genderData.find(option => option.value === data.gender))
-        setDob(new Date(data.dob))
-        setValueCountry(countryListData.find(option => option.value === data.country))
+  useEffect(() => {
+    async function fetchData() {
+      // You can await here
+      try {
+        let response = await getProfile(getToken())
+        if (response.status === 200) {
+          let data = await response.json()
+          setEmail(data.email)
+          setGender(genderData.find(option => option.value === data.gender))
+          setDob(new Date(data.dob))
+          setValueCountry(countryListData.find(option => option.value === data.country))
+        }
+        else if (response.status === 500) {
+          history.push('/maintenance')
+        }
+  
+      } catch (error) {
+      //  history.push('/maintenance')
+  
       }
-      else if (response.status == 500) {
-        history.push('/maintenance')
-      }
-
-    } catch (error) {
-
-    //  history.push('/maintenance')
-
     }
+    fetchData();
+   
   }, [])
 
   return (

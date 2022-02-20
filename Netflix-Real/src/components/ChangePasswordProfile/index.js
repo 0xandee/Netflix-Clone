@@ -1,12 +1,10 @@
 import React, { Fragment, useState } from "react";
 import { useHistory } from "react-router";
-import { Button, Col, Form, FormGroup, Input, InputGroup, Label, Row } from "reactstrap";
-import { countryListData } from "../../config/countryData";
+import { Button, Col, Form, Row } from "reactstrap";
 import { requestChangePass } from "../../services/api/auth";
 import InputPasswordToggle from "../InputPassword";
 import './style.scss'
 import { toast } from 'react-toastify'
-import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
 import { getToken } from "../../services/function";
 
 const SuccessToast = (props) => (
@@ -66,11 +64,11 @@ const ChangePasswordProfile = () => {
       setIsConfirmPassError(true)
     }
     var passw = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/;
-    if (oldPass == "" || !oldPass.match(passw)) {
+    if (oldPass === "" || !oldPass.match(passw)) {
       setIsOldPassError(true)
       setErrorTextOldPassword('Password must be between 6 to 20 characters which contain at least one numeric digit, one uppercase and one lowercase letter')
     }
-    if (newPass == "" || !newPass.match(passw)) {
+    if (newPass === "" || !newPass.match(passw)) {
       setIsNewPassError(true)
       setErrorTextPassword('Password must be between 6 to 20 characters which contain at least one numeric digit, one uppercase and one lowercase letter')
     }
@@ -80,11 +78,10 @@ const ChangePasswordProfile = () => {
         setIsOldPassError(false)
         setIsNewPassError(false)
         const res = await requestChangePass(oldPass, newPass, getToken())
-        console.log("🚀 ~ file: index.js ~ line 82 ~ saveClicked ~ res", res)
         if (res.status === 200) {
           notifySuccess()
         }
-        else if (res.status == 500) {
+        else if (res.status === 500) {
           setIsOldPassError(true)
           setErrorTextOldPassword('Wrong password')
         }

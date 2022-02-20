@@ -2,16 +2,14 @@ import React, { createRef, Fragment, useCallback, useEffect, useRef, useState } 
 import { useParams, useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux';
 import { CustomModal } from "../../components";
-import { Row, Col, Container, Button, Tooltip, UncontrolledTooltip } from 'reactstrap'
+import {  Button, UncontrolledTooltip } from 'reactstrap'
 import './style.scss';
 import VideoPlayer from "../VideoPlayer";
 import { IconChevronLeft, IconChevronRight } from "../../assets/Icon";
-import AppChat from "../../components/Chat";
 import Chat from "../../components/Chat";
 import io from "socket.io-client";
 import * as Icon from 'react-feather';
-import { getAllMovies, getMoviesByListID, getRecommGroupMoviesState1, getRecommGroupMoviesState2, getRecommUserMoviesState2 } from "../../services/api/movie";
-import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
+import { getAllMovies, getMoviesByListID, getRecommGroupMoviesState1, getRecommGroupMoviesState2 } from "../../services/api/movie";
 import { getToken } from "../../services/function";
 import DefaultImage from '../../assets/Images/defaultImage.png';
 import { toast } from "react-toastify";
@@ -52,7 +50,7 @@ const InviteToast = (props) => (
       <span role='img' aria-label='toast-text'>
         {props.data != null ?
           props.data :
-          'Link room is already in clipboard. You can invite another by giving them this link'
+          'Link room is already in clipboard. You can invite another by giving them this link (max 10)'
         }
       </span>
     </div>
@@ -91,6 +89,7 @@ const GroupStreaming = () => {
   const [movieURL, setMovieURL] = useState('')
   const [open, setOpen] = useState(false);
   const [hostModal, setHostModal] = useState(false);
+  const [isFull, setIsFull] = useState(false);
   const [isHost, setIsHost] = useState(false);
   const [isFetchingApi, setIsFetchingApi] = useState(false);
   const [members, setMembers] = useState([localStorage.getItem('id_user')]);
@@ -179,8 +178,7 @@ const GroupStreaming = () => {
       if (res.status === 200) {
         let dataRecommend = await res.json()
         const temp = await getMoviesByListID(dataRecommend.map((key) => key.id), getToken())
-        let data2 = await temp.json()
-        console.log("🚀 ~ file: index.js ~ line 196 ~ useEffect ~ data2")
+        let data2 = await temp.data
         setRecommendedMovies(data2)
         setShowedMovies(data2.slice(0, 31))
         setIsFetchingApi(false)
@@ -188,9 +186,8 @@ const GroupStreaming = () => {
       else {
         if (!movies.length) {
           const response = await getAllMovies(getToken())
-          console.log("🚀 ~ file: index.js ~ line 171 ~ handleRefreshButton ~ response", response)
           if (response.status === 200) {
-            let data = await response.json()
+            let data = await response.data
             setMovies(data)
             setShowedMovies(data.slice(0, 31))
           }
@@ -224,43 +221,38 @@ const GroupStreaming = () => {
   const handleRefreshButton = useCallback(async () => {
     try {
       setIsFetchingApi(true)
-      console.log("🚀 ~ file: index.js ~ line 188 ~ handleRefreshButton ~ choosedMovie.length", choosedMovie)
-      console.log("🚀 ~ file: index.js ~ line 190 ~ handleRefreshButton ~ members", members)
-
       const res = !choosedMovie ?
         await getRecommGroupMoviesState1(members.join("&id="))
         :
         await getRecommGroupMoviesState2(members.join("&id="), choosedMovie)
+      const response = await getAllMovies(getToken())
+      let data = []
+      if (response.status === 200) {
+        data = await response.data
+        setMovies(data)
 
-      console.log("🚀 ~ file: index.js ~ line 156 ~ handleRefreshButton ~ res", res)
+      }
+      else if (response.status == 500) {
+        history.push('/maintenance')
+      }
+
       if (res.status === 200) {
         let dataRecommend = await res.json()
         const temp = await getMoviesByListID(dataRecommend.map((key) => key.id), getToken())
-        let data2 = await temp.json()
-        console.log("🚀 ~ file: index.js ~ line 196 ~ useEffect ~ data2")
+        let data2 = await temp.data
         setRecommendedMovies(data2)
         setShowedMovies(data2.slice(0, 31))
         setIsFetchingApi(false)
       }
       else {
-        if (!movies.length) {
-          const response = await getAllMovies(getToken())
-          console.log("🚀 ~ file: index.js ~ line 171 ~ handleRefreshButton ~ response", response)
-          if (response.status === 200) {
-            let data = await response.data
-            setMovies(data)
-            setShowedMovies(data.slice(0, 31))
-          }
-          else if (response.status == 500) {
-            history.push('/maintenance')
-          }
-        }
+        setShowedMovies(data.slice(0, 31))
         setIsFetchingApi(false)
       }
 
     }
-    catch {
-      history.push('/maintenance')
+    catch (err) {
+      //console.log("🚀 ~ file: index.js ~ line 263 ~ handleRefreshButton ~ err", err)
+      ///history.push('/maintenance')
     }
   }, [members, choosedMovie])
 
@@ -268,12 +260,12 @@ const GroupStreaming = () => {
     // Join room
     require('dotenv').config();
     const url = process.env.REACT_APP_URL;
+    //const url = 'http://localhost:8000';
     const newSocket = io(url, { transports: ['websocket'] });
     setSocket(newSocket);
     if (newSocket) {
-      newSocket.emit("joinRoom", { username, roomnum });
       newSocket.emit('new room', { username, roomnum, userid });
-      notifyInvite()
+
     }
 
     return () => {
@@ -288,15 +280,19 @@ const GroupStreaming = () => {
         setOpenedMovieRecommend(false)
         socket.close()
       })
+      socket.on('fullRoom', function (data) {
+        setIsFull(true)
+        setOpenedMovieRecommend(false)
+        socket.close()
+      })
       socket.on('isHost', function (data) {
+        notifyInvite()
         setIsHost(data.isHost)
       })
       socket.on('getData', function (data) {
-        console.log("🚀 ~ file: index.js ~ line 250 ~ data", data)
         setMembers(data)
       })
       socket.on('getChoosedMovieId', function (data) {
-        console.log("🚀 ~ file: index.js ~ line 253 ~ data", data)
         setChoosedMovie(data.movieId)
       })
     }
@@ -361,7 +357,7 @@ const GroupStreaming = () => {
                   <div >
                     <div >
                       <Button
-                      outline 
+                        outline
                         id='btnRefresh'
                         disabled={members.length < 2}
                         style={{ marginRight: "1rem", fontSize: "1rem", fontWeight: "bold", paddingRight: "0.5rem", float: "right", borderRadius: "8px", backgroundColor: "rgb(183, 7, 16)", padding: "12px 12px", border: "none", color: 'white' }}
@@ -439,6 +435,9 @@ const GroupStreaming = () => {
             } />
           <CustomModal isOpen={hostModal} onClick={toggleModal} headerText={"Host enter room"} buttonText='Back to home page' bodyText=
             {"Sorry but you can only create one room at a time.\n So please close this page or press below button to back to home page."
+            } />
+          <CustomModal isOpen={isFull} onClick={toggleModal} headerText={"Host enter room"} buttonText='Back to home page' bodyText=
+            {"Sorry but this room is already full.\n So please close this page or press below button to back to home page."
             } />
 
         </div>

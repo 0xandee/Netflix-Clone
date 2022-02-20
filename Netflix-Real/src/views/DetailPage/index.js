@@ -1,19 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import './PreviewPopup.scss';
-// import '../PreviewInfo/PreviewInfo.scss';
-// import '../PreviewPlayer/PreviewPlayer.scss';
-import { IconBackArrow } from "../../assets/Icon";
 import { PreviewButtonControl, Episodes, DetailInfo, MoreLikeThisItem, NavigationBar, CustomModal } from "../../components";
 import { useParams } from 'react-router';
-import { to_Decrypt, to_Encrypt } from '../../services/aes256';
 import { getMovieAPI, getMoviesByListID, getRecommUserMoviesState2, updateMovieClicked } from '../../services/api/movie';
 import { useHistory } from 'react-router-dom';
-import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
 import { getToken } from '../../services/function';
-import { Col, Container, Row } from 'reactstrap';
+import { Col, Row } from 'reactstrap';
 
 const DetailPage = (props) => {
-    // const { item } = props.location.state;
     const { idMovie } = useParams()
     const [dataMovie, setDataMovie] = useState([]);
     const [recommendedMovies, setRecommendedMovies] = useState([]);
@@ -38,12 +32,12 @@ const DetailPage = (props) => {
                 if (response.status === 200) {
                     let data = await response.data                 
                     setDataMovie(data)
-                    setIsFetching(false)
+                  
                 }
-                else if (response.status == 403) {
+                else if (response.status === 403) {
                     setOpen(true)
                 }
-                else if (response.status == 500) {
+                else if (response.status === 500) {
                     history.push('/maintenance')
                 }
             }
@@ -62,18 +56,16 @@ const DetailPage = (props) => {
                     const data = await response.json()
                     setPercentMatched(data.percentage_match)
                     const res = await getMoviesByListID(data.list_recommend.map((key) => key.id),getToken())
-                    const data2 = await res.json()
+                    const data2 = await res.data
                     const result = data2.map(v => ({ ...v, ...data.list_recommend.find(sp => sp.id === v.id) }));
 
                     setRecommendedMovies(result.slice(0, 20));
                     setIsFetching(false)
                 }
-                else if (response.status == 403) {
+                else if (response.status === 403) {
                     setOpen(true)
                 }
-                // else if (response.status == 500) {
-                //     history.push('/maintenance')
-                // }
+              
             }
             catch {
                 // history.push('/maintenance')
@@ -94,7 +86,7 @@ const DetailPage = (props) => {
                 </div>
 
                 :
-                <div style={{ padding: '0 7vw', width: '100%' }}>
+                <div className="mx-auto" style={{ padding: '0 0 0 6vw ', width: '100%' }}>
                     <Row className="position-relative  background max-width">
                         <Col xs='12' lg='9' className="position-relative float-start  pt-4 ">
                             <Row className="mask-image position-relative d-flex flex-row mb-5">
@@ -111,9 +103,9 @@ const DetailPage = (props) => {
                             </Row>
                             <Episodes item={dataMovie} />
                         </Col>
-                        <Col xs='12' lg='3' className="position-relative float-end mt-4">
-                            <h3 className="position-absolute text-light px-4" style={{ top: '-2%', zIndex: '1000' }}>More Like This</h3>
-                            <div className="my-3 py-2 px-4 ml-4 overflow-auto w-100 more-like-this-container" style={{ height: '80vh' }} >
+                        <Col xs='12' lg='3' className="position-relative float-end mt-4" >
+                            <h3 className="position-absolute text-light text-center" style={{ top: '-2%', zIndex: '1000' }}>More Like This</h3>
+                            <div className="my-3 py-2 px-3 ml-4 overflow-auto w-100 more-like-this-container" style={{ height: '80vh', padding: '0 50px'}} >
 
                                 <div className="pb-3 d-flex flex-column justify-content-center align-items-center">
 

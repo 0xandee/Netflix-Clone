@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState, history } from "react";
+import React, {  useState } from "react";
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
 
@@ -9,14 +9,9 @@ import "swiper/components/navigation/navigation.min.css"
 import SwiperCore, {
     Navigation
 } from 'swiper/core';
-import { Link, useHistory, useLocation, NavLink } from "react-router-dom";
+import {  useHistory } from "react-router-dom";
 import './Slider.scss';
-import { LazyLoadImage } from "react-lazy-load-image-component";
-import DefaultImage from '../../assets/Images/defaultImage.png'
-import { Play, Plus, X } from "react-feather";
-import { Tooltip, UncontrolledTooltip } from "reactstrap";
-import { favMoviePost } from "../../services/api/user";
-import { getToken } from "../../services/function";
+
 import SliderItemForWatching from "../SliderItemForWatching";
 
 
@@ -25,7 +20,6 @@ SwiperCore.use([Navigation]);
 
 
 const Slider = (props) => {
-    const history = useHistory();
     const [movies, setMovies] = useState(props.sliderMovieList)
 
     const itemRemoveClicked = (data) => async () => {
@@ -35,17 +29,11 @@ const Slider = (props) => {
             updatedData = updatedData.filter((movie) =>
                 data.id !== movie.id
             );
-            console.log("🚀 ~ file: index.js ~ line 71 ~ itemRemoveClicked ~ updatedData", updatedData)
-
             setMovies(updatedData)
         } catch (error) {
-            console.log("🚀 ~ file: index.js ~ line 77 ~ itemRemoveClicked ~ error", error)
 
         }
-
-
     }
-
 
     return ( movies.length &&
         <div className="thumbSection mb-3" key={props.id}>
@@ -70,7 +58,6 @@ const Slider = (props) => {
                             item != null && item.uri_avatar != null && 
                             <SwiperSlide className="swiper-slide slide h-100" >
                                 <SliderItemForWatching item={item} id={props.id} itemRemoveClicked={itemRemoveClicked(item)} />
-                              
                             </SwiperSlide>)
                     })}
                 </div>

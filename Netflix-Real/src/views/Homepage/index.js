@@ -1,22 +1,18 @@
-import React, { useRef, useState, useCallback, useEffect, createRef } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { Slider, Footer, NavigationBar, CustomModal } from "../../components";
 import { useSelector, useDispatch } from 'react-redux';
-import { setMovieTypes, showPopUpInfo } from "../../services/redux/actions";
+import { setMovieTypes } from "../../services/redux/actions";
 import { getMoviesByGenreAPI, getMoviesByListID, getMovieTypeAPI, getRecommUserMoviesState1, getWatchingList } from "../../services/api/movie";
 import './Slider.scss';
 // Import Swiper styles
 import "swiper/swiper.min.css";
 import "swiper/components/navigation/navigation.min.css"
 import "swiper/components/pagination/pagination.min.css"
-import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
-
 
 // import Swiper core and required modules
 import SwiperCore, {
-    Navigation,
-    Pagination
+    Navigation
 } from 'swiper';
-import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
 import { useHistory } from "react-router-dom";
 import { getToken } from "../../services/function";
 
@@ -24,7 +20,7 @@ import { getToken } from "../../services/function";
 SwiperCore.use([Navigation]);
 
 
-const Homepage = (props) => {
+const Homepage = () => {
     const history = useHistory()
     const [genreMovies, setGenreMovies] = useState([]);
     const [isFetching, setIsFetching] = useState(true);
@@ -35,9 +31,6 @@ const Homepage = (props) => {
 
     const toggleModal = () => {
         localStorage.clear()
-        // delete_cookie('username')
-        // delete_cookie('id_user')
-        // delete_cookie('access_token')
         history.push('/signin')
     };
 
@@ -81,7 +74,7 @@ const Homepage = (props) => {
                 if (response.status === 200) {
                     const data = await response.json()
                     const res = await getMoviesByListID(data.map((key) => key.id), getToken())
-                    const data2 = await res.json()
+                    const data2 = await res.data
                     var genreMovie = {
                         id: 'recommend',
                         sliderTitle: 'Recommend for you',
@@ -144,11 +137,8 @@ const Homepage = (props) => {
             // You can await here
             try {
                 const response = await getWatchingList(getToken())
-                console.log("🚀 ~ file: index.js ~ line 140 ~ useEffect ~ response", response)
-
                 if (response.status === 200) {
                     const data = await response.data
-                    console.log("🚀 ~ file: index.js ~ line 141 ~ useEffect ~ data", data)
                     if (data.length) {
                         var genreMovie = {
                             id: 'Watching',

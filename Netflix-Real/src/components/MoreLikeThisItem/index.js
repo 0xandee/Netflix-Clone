@@ -8,18 +8,13 @@ import { Tooltip } from 'reactstrap';
 const MoreLikeThisItem = (props) => {
     const { item } = props
     const history = useHistory()
-    const [description, setDescription] = useState(false);
     const [iconAdd, setAdd] = useState(false);
 
     const toggleAddPlaylist = () => setAdd(!iconAdd);
-    const toggleDescription = () => setDescription(!description);
 
     const itemClicked = () => {
-        console.log("🚀 ~ file: index.js ~ line 13 ~ itemClicked ~ item", item)
-
         history.push({
             pathname: `/detail/${item.id.toString()}`,
-            //search: `jbv=${data.id}`,
         })
     }
 
@@ -66,7 +61,6 @@ const MoreLikeThisItem = (props) => {
                         </div>
                     </div>
 
-                    {/* <p className="titleCard-synopsis previewModal--small-text">{item.description}</p> */}
                 </div>
             </div>
         </div>

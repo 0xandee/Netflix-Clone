@@ -170,10 +170,10 @@ const RegistrationForm = () => {
                                 Please check your registered email to finish the registration process
                             </h2>
                             <div className='d-flex align-items-center justify-content-center text-center'>
-                                Don't receive any activation email ?
+                                Don't receive any activation email ? Check in your spam or 
                                 <div className='ml-2'>
                                     {seconds > 0 ?
-                                        `00:${seconds > 9 ? seconds : '0' + seconds}`
+                                        `resend in 00:${seconds > 9 ? seconds : '0' + seconds}`
                                         :
                                         <div className='resend-email' onClick={resendEmailClicked}>
                                             Resend email
