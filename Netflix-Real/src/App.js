@@ -8,12 +8,13 @@ import WebRouter from "./router/Router";
 
 export default function App() {
   return (
+    /*eslint-disable */
     <Provider store={store}>
       <WebRouter />
       <ToastContainer />
     </Provider>
+    /*eslint-enable */
 
-  
 
   );
 }

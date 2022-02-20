@@ -1,16 +1,14 @@
-import React, { useState, Component, Fragment } from "react";
+import React, { useState,  Fragment } from "react";
 import './registrationForm.scss'
-import { Row, Col, Label, Avatar, Button } from 'reactstrap'
+import { Row, Col } from 'reactstrap'
 import Select from 'react-select';
-import { Link, NavLink, useHistory } from "react-router-dom";
+import {  NavLink, useHistory } from "react-router-dom";
 import Flatpickr from "react-flatpickr";
 import 'flatpickr/dist/flatpickr.css';
 import { CustomInput, Footer, SignUpNavigationBar } from "../../components";
 import { requestRegister, verifyEmail } from "../../services/api/auth";
 import { countryListData } from "../../config/countryData";
-import { X, Check } from "react-feather";
 import { toast } from 'react-toastify'
-import { to_Encrypt } from "../../services/aes256";
 import { useEffect } from "react";
 
 const genderData = [
@@ -25,7 +23,6 @@ const ErrorToast = (props) => (
             <div className='title-wrapper'>
                 <h6 className='toast-title'>Error!</h6>
             </div>
-            {/* <small className='text-muted'>11 Min Ago</small>   */}
         </div>
         <div className='toastify-body'>
             <span role='img' aria-label='toast-text'>
@@ -111,15 +108,15 @@ const RegistrationForm = () => {
                 const response = await requestRegister({ email, password, gender, country, dob: realDob })
 
                 if (response.status >= 200 && response.status <= 299) {
-                    const res = await verifyEmail(email)               
+                    await verifyEmail(email)               
                     setIsSucess(true)
                     setSeconds(59)
                 }
-                else if (response.status == 422) {
+                else if (response.status === 422) {
                     setIsEmailError(true)
                     setErrorTextEmail('Email already registered')
                 }
-                else if (response.status == 400) {
+                else if (response.status === 400) {
                     setIsEmailError(true)
                     setErrorTextEmail('Email have been blocked')
                 }
@@ -137,7 +134,7 @@ const RegistrationForm = () => {
     const resendEmailClicked = async () => {
         try {
             const res = await verifyEmail(email)
-            if (res.status == 200) {
+            if (res.status === 200) {
                 setSeconds(59)
             }
             else {

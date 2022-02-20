@@ -1,6 +1,5 @@
 import SignIn from './SignIn'
 import SignUp from './SignUp'
-import PlanForm from './PlanForm'
 import RegistrationForm from './RegistrationForm'
 import ForgotPassword from './ForgotPassword'
 import Registration from './Registration'
@@ -19,7 +18,7 @@ import DetailPage from './DetailPage'
 import FooterPage from './FooterPage'
 
 export {
-    SignIn,SignUp,ForgotPassword,Registration,RegistrationForm,PlanForm,
+    SignIn,SignUp,ForgotPassword,Registration,RegistrationForm,
     ChooseTypeStart,OnboardingMovies,VideoPlayer,Homepage,MyPlaylistPage,PopularPage,AccountProfile,
     GroupStreaming,MoviesPage,SearchPage,ErrorPage,DetailPage,FooterPage
 }

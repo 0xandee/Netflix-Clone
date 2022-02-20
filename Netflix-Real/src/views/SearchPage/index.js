@@ -1,17 +1,12 @@
-import React, { useRef, useState, useCallback, useEffect, createRef } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import './style.scss';
-import { Slider, Footer, NavigationBar } from "../../components";
-import { to_Decrypt, to_Encrypt } from "../../services/aes256";
-import { useSelector, useDispatch } from 'react-redux';
-import { showPopUpInfo } from "../../services/redux/actions";
-import { Link, useHistory, useLocation, useParams } from "react-router-dom";
-import { getMoviesByTypeAPI, getMovieType } from "../../services/api/movie";
-import Select, { createFilter } from 'react-select';
-import { Spinner } from 'reactstrap'
+import { Footer, NavigationBar } from "../../components";
+
+import {  useHistory, useLocation} from "react-router-dom";
+
 import { searchMovieByNameApi } from "../../services/api/search";
 
 import DefaultImage from '../../assets/Images/defaultImage.png';
-import { getToken } from "../../services/function";
 
 const SearchPage = (props) => {
     const query = new URLSearchParams(useLocation().search)
@@ -19,14 +14,12 @@ const SearchPage = (props) => {
     const [dataApiMovies, setDataApiMovies] = useState([]);
     const [genreMovies, setGenreMovies] = useState([]);
     const [isFetching, setIsFetching] = useState(false);
-    const dispatch = useDispatch()
 
     const itemClicked = (data) => () => {
 
         history.push({
             pathname: `/detail/${data.id.toString()}`,
-            //search: `jbv=${data.id}`,
-            state: { item: data }
+           
         })
     }
 
@@ -57,23 +50,27 @@ const SearchPage = (props) => {
         fetchMoreListItems();
     }, [isFetching]);
 
-    useEffect(async () => {
+    useEffect(() => {
         if (query.get('value') != null) {
-            try {
-                const res = await searchMovieByNameApi(query.get('value'))
-                if (res.status == 200) {
-                    let data = await res.data
-                    setDataApiMovies(data)
-                    setGenreMovies(data.slice(0, 30))
+            async function fetchData() {
+                // You can await here
+                try {
+                    const res = await searchMovieByNameApi(query.get('value'))
+                    if (res.status === 200) {
+                        let data = await res.data
+                        setDataApiMovies(data)
+                        setGenreMovies(data.slice(0, 30))
+                    }
+                    else if (res.status === 500) {
+                        history.push('/maintenance')
+                    }
                 }
-                else if (res.status === 500) {
-                    history.push('/maintenance')
+                catch (err) {
+                   
                 }
             }
-            catch (err){
-                console.log("🚀 ~ file: index.js ~ line 74 ~ useEffect ~ err", err)
-                //history.push('/maintenance')
-            }
+            fetchData();
+
         }
 
     }, [])
@@ -94,7 +91,7 @@ const SearchPage = (props) => {
                                 <div className=' item-grid multi-landing-stack-space-holder w-100 h-100'>
                                     {/* <div className="multi-landing-stack-1"></div>
                                     <div className="multi-landing-stack-2"></div> */}
-                                    <img  onError={
+                                    <img onError={
                                         (e) => e.currentTarget.src = DefaultImage
                                     } style={{ borderRadius: '4px', }} className="title-card w-100 h-100" src={item.uri_avatar} alt={item.m_name} />
                                 </div>

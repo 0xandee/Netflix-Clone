@@ -13,16 +13,14 @@ const MoreLikeThisItem = (props) => {
     const toggleAddPlaylist = () => setAdd(!iconAdd);
 
     const itemClicked = () => {
-        history.push({
-            pathname: `/detail/${item.id.toString()}`,
-        })
+        history.push(`/detail/${item.id}`)
     }
 
     const addFavoriteClicked = async (e) => {
-        e.stopPropagation();
+       // e.stopPropagation();
         try {
             const response = await favMoviePost(item.id, getToken())
-            if (response.status == 500) {
+            if (response.status === 200) {
                 history.push('/maintenance')
             }
         }
@@ -32,8 +30,8 @@ const MoreLikeThisItem = (props) => {
 
     }
     return (
-        <div id='moreLikeThis'>
-            <div className="titleCard__container more-like-this-item pb-4" onClick={itemClicked}>
+        <div id='moreLikeThis' onClick={itemClicked}>
+            <div className="titleCard__container more-like-this-item pb-4" >
                 <div className="d-flex has-duration h-25 w-100">
                     <img className='w-25 h-125' src={item.uri_avatar} alt={item.m_name} />
                     <div className="d-flex  justify-content-center align-items-center px-4 pt-2 text-center" style={{ backgroundColor: '#333' }}>

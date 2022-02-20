@@ -41,7 +41,6 @@ const Homepage = () => {
             // You can await here
             try {
                 const response = await getMovieTypeAPI(getToken())
-                console.log("🚀 ~ file: index.js ~ line 47 ~ useEffect ~ response", response)
                 if (response.status === 200 && dataTypes.length == 0) {
                     const data = await response.data
                     dispatch(setMovieTypes(data))
@@ -54,7 +53,6 @@ const Homepage = () => {
                 }
             }
             catch (err) {
-                console.log("🚀 ~ file: index.js ~ line 62 ~ useEffect ~ err", err)
                 //  history.push('/maintenance')
             }
         }
@@ -69,8 +67,6 @@ const Homepage = () => {
             // You can await here
             try {
                 const response = await getRecommUserMoviesState1(localStorage.getItem('id_user'))
-                console.log("🚀 ~ file: index.js ~ line 39 ~ useEffect ~ response", response)
-
                 if (response.status === 200) {
                     const data = await response.json()
                     const res = await getMoviesByListID(data.map((key) => key.id), getToken())
@@ -105,7 +101,7 @@ const Homepage = () => {
         dataTypes.map(async (item) => {
             try {
                 const res = await getMoviesByGenreAPI(item.id, getToken())
-                if (res.status == 200) {
+                if (res.status === 200) {
                     let data = await res.data
                     var genreMovie = {
                         id: item.id,
@@ -119,7 +115,7 @@ const Homepage = () => {
                     history.push('/maintenance')
                 }
                 else {
-                    if (res.status == 403) {
+                    if (res.status === 403) {
                         setOpen(true)
                     }
                 }
@@ -149,7 +145,7 @@ const Homepage = () => {
                     }
 
                 }
-                else if (response.status == 403) {
+                else if (response.status === 403) {
                     setOpen(true)
                 }
                 else if (response.status === 500) {
@@ -183,7 +179,7 @@ const Homepage = () => {
                     </div>
 
                     :
-                    genreMovies.map(item => (<Slider id={item.id} sliderTitle={item.sliderTitle} sliderMovieList={item.sliderMovieList} />))
+                    genreMovies.map(item => (<Slider key={item.id} id={item.id} sliderTitle={item.sliderTitle} sliderMovieList={item.sliderMovieList} />))
                 }
 
             </div>

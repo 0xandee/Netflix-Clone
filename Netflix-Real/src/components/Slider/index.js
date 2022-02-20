@@ -9,7 +9,6 @@ import "swiper/components/navigation/navigation.min.css"
 import SwiperCore, {
     Navigation
 } from 'swiper/core';
-import {  useHistory } from "react-router-dom";
 import './Slider.scss';
 
 import SliderItemForWatching from "../SliderItemForWatching";
@@ -56,7 +55,7 @@ const Slider = (props) => {
                     {movies.map(item => {
                         return (
                             item != null && item.uri_avatar != null && 
-                            <SwiperSlide className="swiper-slide slide h-100" >
+                            <SwiperSlide className="swiper-slide slide h-100" key={item.id}>
                                 <SliderItemForWatching item={item} id={props.id} itemRemoveClicked={itemRemoveClicked(item)} />
                             </SwiperSlide>)
                     })}

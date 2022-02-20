@@ -15,7 +15,6 @@ const CustomDropdown = () => {
   const signOutClick = async (event) => {
     event.preventDefault();
     const response = await requestLogout(getToken())
-    console.log("🚀 ~ file: index.js ~ line 64 ~ nextClicked ~ response", response)
     if (response.status >= 200 && response.status <= 299) {
        localStorage.clear();
       history.push('/signin')

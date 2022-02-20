@@ -30,15 +30,15 @@ instance.interceptors.response.use((response) => {
 }, async function (error) {
   const originalRequest = error.config;
   
-  if (error.response.status === 401) {
+  if (error.response.status == 401) {
     originalRequest._retry = true;
     const request_token_status = await requestRefreshToken();
-    if (request_token_status == 200) {
+    if (request_token_status === 200) {
       const access_token = await requestAccessToken();
       axios.defaults.headers.common['Authorization'] = 'Bearer ' + access_token;
       return instance(originalRequest);
     }
-    else if (request_token_status === 401) {
+    else if (request_token_status == 401) {
       
       await requestLogout(localStorage.getItem('refresh_token'))
       localStorage.clear()
@@ -57,12 +57,11 @@ axios.interceptors.response.use((response) => {
   return response
 }, async function (error) {
   const originalRequest = error.config;
-  console.log("🚀 ~ file: index.js ~ line 61 ~ axios.interceptors.response.use ~ originalRequest", originalRequest)
   
   if (error.response.status === 401) {
     originalRequest._retry = true;
     const request_token_status = await requestRefreshToken();
-    if (request_token_status == 200) {
+    if (request_token_status === 200) {
       const access_token = await requestAccessToken();
       axios.defaults.headers.common['Authorization'] = 'Bearer ' + access_token;
       return instance(originalRequest);
@@ -245,7 +244,6 @@ export const getMoviesByListID = async (arrIdMovies, token) => {
       }
     })
       .then(response => {
-      console.log("🚀 ~ file: index.js ~ line 264 ~ returnnewPromise ~ response", response)
 
         resolve(response)
       })
@@ -317,7 +315,6 @@ export const addWatchingList = async (id_movie, value_watched) => {
     }
     )
       .then(response => {
-        console.log("🚀 ~ file: index.js ~ line 288 ~ returnnewPromise ~ response", response)
         resolve(response)
       })
       .catch(error => {
@@ -334,7 +331,6 @@ export const updateMovieClicked = async (id_movie) => {
     }
     )
       .then(response => {
-        console.log("🚀 ~ file: index.js ~ line 305 ~ returnnewPromise ~ response", response)
         resolve(response)
       })
       .catch(error => {
@@ -346,7 +342,6 @@ export const updateMovieClicked = async (id_movie) => {
 export const getWatchingList = async () => {
   return new Promise((resolve, reject) => {
     instance.get(movieApi.urlGetWatchingList
-
     )
       .then(response => {
         resolve(response)

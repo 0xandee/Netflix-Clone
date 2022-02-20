@@ -61,7 +61,7 @@ const PreviewButtonControl = (props) => {
             if (response.status === 500) {
                 history.push('/maintenance')
             }
-            else if (response.status == 200) {
+            else if (response.status === 200) {
                 history.push(`/watch/${item.id}`)
             }
         }

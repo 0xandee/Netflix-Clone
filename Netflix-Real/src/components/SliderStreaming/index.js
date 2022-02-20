@@ -18,7 +18,6 @@ const Slider = (props) => {
     
     const itemClicked = (data) => () => {
         props.handleMovieUrlClick(data.m_name);
-        // console.log("data", data);
     }
     return (
     <section className="thumbSection mb-3">

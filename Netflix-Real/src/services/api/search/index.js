@@ -30,14 +30,11 @@ instance.interceptors.response.use((response) => {
   return response
 }, async function (error) {
   const originalRequest = error.config;
-  console.log("🚀 ~ file: index.js ~ line 28 ~ instance.interceptors.response.use ~ originalRequest", originalRequest)
   if (error.response.status === 401 && !originalRequest._retry) {
     originalRequest._retry = true;
     const request_token_status = await requestRefreshToken();
-    console.log("🚀 ~ file: index.js ~ line 36 ~ instance.interceptors.response.use ~ request_token_status", request_token_status)
-    if (request_token_status == 200) {
+    if (request_token_status === 200) {
       const access_token = await requestAccessToken();
-      console.log("🚀 ~ file: index.js ~ line 39 ~ instance.interceptors.response.use ~ access_token", access_token)
       axios.defaults.headers.common['Authorization'] = 'Bearer ' + access_token;
       return instance(originalRequest);
     }

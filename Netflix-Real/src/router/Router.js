@@ -27,19 +27,18 @@ const LoadingRoute = () => {
 const FinalRoute = (props) => {
     const route = props.route
     if (route.meta === undefined && getToken() === null) {
-        console.log("1")
+  
         return <Redirect to='/signin' />
 
     }
-    // else if (route.meta === undefined && getToken() != null && localStorage.getItem('new_user') == 'true') {
-    //     console.log("12")
-    //     return <Redirect to='/choosetype' />
-    // }
-    // else if (route.meta && route.meta.authRoute && getToken() != null && localStorage.getItem('new_user') == 'false') {
-    //     console.log("13")
-    //     return <Redirect to='/' />
-    // }
-    console.log("14")
+    else if (route.meta === undefined && getToken() != null && localStorage.getItem('new_user') == 'true') {
+     
+        return <Redirect to='/choosetype' />
+    }
+    else if (route.meta && route.meta.authRoute && getToken() != null && localStorage.getItem('new_user') == 'false') {
+        return <Redirect to='/' />
+    }
+ 
     return <route.component {...props} />
 }
 
@@ -62,7 +61,8 @@ export default function WebRouter() {
                         exact={route.exact === true}
                         render={props => {
                             return (
-                                <Suspense fallback={<LoadingRoute />}>
+                                <Suspense  fallback={<LoadingRoute />}>
+                                    
                                     <FinalRoute route={route} {...props} />
                                 </Suspense>
                             )

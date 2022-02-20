@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
 import './languageSetup.scss';
-import { Link, NavLink, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { Footer, GenreItem, SignUpNavigationBar } from "../../components";
 import { useDispatch, useSelector } from "react-redux";
-import { getMovieTypeAPI, postNewUserGenres } from '../../services/api/movie'
+import { getMovieTypeAPI } from '../../services/api/movie'
 import { Button } from "reactstrap";
 import { setMovieTypes } from "../../services/redux/actions";
-import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
 import { getToken } from "../../services/function";
 
 
@@ -40,17 +39,15 @@ const ChooseTypeStart = () => {
             // You can await here
             try {
                 const response = await getMovieTypeAPI(getToken())
-                console.log("🚀 ~ file: index.js ~ line 39 ~ useEffect ~ response", response)
                 if (response.status === 200) {
                     let data = await response.data
                     dispatch(setMovieTypes(data))
                 }
-                else if (response.status == 500) {
+                else if (response.status === 500) {
                     history.push('/maintenance')
                 }
             }
             catch (err) {
-                console.log("🚀 ~ file: index.js ~ line 51 ~ useEffect ~ err", err)
                 //  history.push('/maintenance')
             }
         }

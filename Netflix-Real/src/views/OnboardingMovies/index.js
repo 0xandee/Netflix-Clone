@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
 import './onboardingMovies.scss';
-import { Link, NavLink, useHistory, useLocation } from "react-router-dom";
+import {  useHistory, useLocation } from "react-router-dom";
 import { Footer, OnboardingMovieItem, SignUpNavigationBar } from "../../components";
 import { Button } from "reactstrap";
 import { getMoviesByGenres, postNewUserMovies } from "../../services/api/movie";
-// import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
 import { getToken } from "../../services/function";
 
 
@@ -30,7 +29,6 @@ const OnboardingMovies = () => {
             }
         }
         catch (error) {
-            console.log("🚀 ~ file: index.js ~ line 69 ~ triggerFinished ~ error", error)
         }
     }
 
@@ -68,16 +66,13 @@ const OnboardingMovies = () => {
 
             }
             catch (e) {
-                if(e.response.status === 500 )
-                {
+                if (e.response.status === 500) {
                     document.location.reload(true)
                 }
 
             }
         }
         fetchData();
-
-
 
     }, [])
 
@@ -88,9 +83,9 @@ const OnboardingMovies = () => {
                 <div className='registration__background-image'>
                 </div>
                 <div className={`registration__body`}>
-                      <div className=' mb-3' onClick={() => localStorage.setItem('access_token', '1')}>
-                    REmove token key
-                </div>
+                    {/* <div className=' mb-3' onClick={() => localStorage.setItem('access_token', '1')}>
+                        REmove token key
+                    </div> */}
                     <div className={`registration__body__content`}>
                         <div className={`registration__body__content__main `}>
                             {isFinished ?

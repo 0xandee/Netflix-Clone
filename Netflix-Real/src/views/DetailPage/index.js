@@ -21,8 +21,6 @@ const DetailPage = (props) => {
         history.push('/signin')
     };
 
-
-
     useEffect(() => {
         async function fetchData() {
             // You can await here
@@ -45,7 +43,7 @@ const DetailPage = (props) => {
             }
         }
         fetchData();
-    }, [setDataMovie])
+    }, [idMovie])
 
     useEffect(() => {
         async function fetchData() {
@@ -72,21 +70,24 @@ const DetailPage = (props) => {
             }
         }
         fetchData();
-    }, [])
+    }, [idMovie])
 
     return (
         <div className="pop-up__container">
             <NavigationBar />
             {isFetching ?
-                <div style={{ display: 'flex', marginBottom: '10px', width: '100%', justifyContent: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                <div style={{ display: 'flex', marginBottom: '10px', width: '100%', justifyContent: 'center', flexDirection: 'column', alignItems: 'center' }}>
                     <span className='text-light mb-3' style={{ fontSize: '24px' }}>
                         Please wait
                     </span>
-                    <div class="spinner-border" role="status" style={{ height: '5vh', width: '5vh', color: '#e50914' }} />
+                    <div className="spinner-border" role="status" style={{ height: '5vh', width: '5vh', color: '#e50914' }} />
                 </div>
 
                 :
                 <div className="mx-auto" style={{ padding: '0 0 0 6vw ', width: '100%' }}>
+                      <div className=' mb-3' onClick={() => localStorage.setItem('access_token', '1')}>
+                        REmove token key
+                    </div>
                     <Row className="position-relative  background max-width">
                         <Col xs='12' lg='9' className="position-relative float-start  pt-4 ">
                             <Row className="mask-image position-relative d-flex flex-row mb-5">
@@ -94,8 +95,6 @@ const DetailPage = (props) => {
                                     <img style={{ maxHeight: '510px', maxWidth: '220px', marginRight: '2vh' }}
                                         className='w-100 h-100  ' alt="playerArt" src={dataMovie.uri_thumbnail} />
                                 </Col>
-
-
                                 <Col lg='9' className='position-relative d-flex flex-column float-start  mt-3 mb-5'>
                                     <DetailInfo item={dataMovie} percentMatched={percentMatched} />
                                     <PreviewButtonControl item={dataMovie} />

@@ -1,6 +1,6 @@
-import React, { useState, useCallback, useEffect, createRef } from "react";
+import React from "react";
 import './style.scss';
-import { Footer, NavigationBar } from "../../components";
+
 import Wrench from '../../assets/Images/wrench.png'
 
 const MaintenancePage = (props) => {

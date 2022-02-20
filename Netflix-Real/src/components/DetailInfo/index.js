@@ -38,12 +38,11 @@ const DetailInfo = (props) => {
                         <span className="preview-tags-label">Genres: </span>
                         {item.type && item.type.map((item, i, a) => (
                             i !== a.length - 1 ?
-                                <Link to={`/movies/${item.id}`} className="genre-title" >
+                                <Link to={`/movies/${item.id}`} key={i} className="genre-title" >
                                   {  ` ${item.name}, `}
                                 </Link>
-
                                 :
-                                <Link to={`/movies/${item.id}`}  className="genre-title">
+                                <Link to={`/movies/${item.id}`} key={i} className="genre-title">
                                     {` ${item.name} `}
                                 </Link>
 

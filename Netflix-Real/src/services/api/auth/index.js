@@ -28,20 +28,16 @@ instance.interceptors.response.use((response) => {
     return response
 }, async function (error) {
     const originalRequest = error.config;
-    console.log("🚀 ~ file: index.js ~ line 28 ~ instance.interceptors.response.use ~ originalRequest", originalRequest)
     if (error.response.status === 401 && !originalRequest._retry) {
         originalRequest._retry = true;
         const request_token_status = await requestRefreshToken();
-        console.log("🚀 ~ file: index.js ~ line 36 ~ instance.interceptors.response.use ~ request_token_status", request_token_status)
-        if (request_token_status == 200) {
+        if (request_token_status === 200) {
             const access_token = await requestAccessToken();
-            console.log("🚀 ~ file: index.js ~ line 39 ~ instance.interceptors.response.use ~ access_token", access_token)
             axios.defaults.headers.common['Authorization'] = 'Bearer ' + access_token;
             return instance(originalRequest);
         }
         else if (request_token_status === 401) {
-            // const dispatch = useDispatch()
-            // dispatch(handleLogout())
+            
             await requestLogout(localStorage.getItem('refresh_token'))
             localStorage.clear()
             document.location.href = '/signin'
@@ -116,7 +112,7 @@ export const requestForgotPassword = async (email) => {
 
 export const getProfile = async (token) => {
     return new Promise((resolve, reject) => {
-        fetch(authApi.urlProfile
+        instance.put(authApi.urlProfile
             , {
                 crossDomain: true,
                 method: "GET",
@@ -251,7 +247,6 @@ export const checkRefreshToken = (token) => {
 }
 
 export const getAccessToken = (token) => {
-    console.log("🚀 ~ file: index.js ~ line 197 ~ getAccessToken ~ token", token)
     return new Promise((resolve, reject) => {
         fetch(authApi.urlRefreshAccessToken, {
             crossDomain: true,
@@ -263,12 +258,9 @@ export const getAccessToken = (token) => {
             }
         })
             .then(async response => {
-                console.log("🚀 ~ file: index.js ~ line 217 ~ returnnewPromise ~ response", response)
-
                 const data = await response.json();
 
                 if (!response.ok) return reject(response.ok)
-                console.log(data)
                 resolve(data)
             })
             .catch(error => {

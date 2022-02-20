@@ -1,24 +1,19 @@
-import React, { useRef, useState, useCallback, useEffect, createRef } from "react";
+import React, { useState, useCallback, useEffect} from "react";
 import './style.scss';
-import { Slider, Footer, NavigationBar, CustomModal } from "../../components";
-import { to_Decrypt, to_Encrypt } from "../../services/aes256";
+import {  Footer, NavigationBar, CustomModal } from "../../components";
 import { useSelector, useDispatch } from 'react-redux';
-import { setMovieTypes, showPopUpInfo } from "../../services/redux/actions";
-import { Link, useHistory, useLocation, useParams } from "react-router-dom";
-import { getMoviesByGenreAPI, getMoviesByTypeAPI, getMovieType, getMovieTypeAPI } from "../../services/api/movie";
+import { setMovieTypes } from "../../services/redux/actions";
+import { useHistory, useParams } from "react-router-dom";
+import { getMoviesByGenreAPI,  getMovieTypeAPI } from "../../services/api/movie";
 import Select, { createFilter } from 'react-select';
-import { Spinner } from 'reactstrap'
 import DefaultImage from '../../assets/Images/defaultImage.png';
-import { LazyLoadImage } from "react-lazy-load-image-component";
-import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
 import { getToken } from "../../services/function";
-import { IconNetflix } from "../../assets/Icon";
+
 
 
 const MoviesPage = (props) => {
     const { idGenre } = useParams()
     const history = useHistory();
-    const [currentScrollY, setCurrentScrollY] = useState(0);
     const [selectedGenre, setSelectedGenre] = useState(null);
     const [dataApiGenreMovies, setDataApiGenreMovies] = useState([]);
     const [genreMovies, setGenreMovies] = useState([]);
@@ -29,26 +24,21 @@ const MoviesPage = (props) => {
 
     const toggleModal = () => {
         localStorage.clear()
-        // delete_cookie('username')
-        // delete_cookie('id_user')
-        // delete_cookie('access_token')
+      
         history.push('/signin')
     };
 
     const onSelectGenreChange = (e) => {
-        //constsetSelectedGenre(e)
+       
         history.push({
             pathname: `/movies/${e.id.toString()}`,
-            //search: `jbv=${'detailId'}`,
-            state: { scrollY: currentScrollY }
         })
     }
 
     const itemClicked = (data) => () => {
         history.push({
             pathname: `/detail/${data.id.toString()}`,
-            //search: `jbv=${data.id}`,
-            state: { item: data }
+           
         })
     }
 
@@ -58,7 +48,6 @@ const MoviesPage = (props) => {
     }, []);
 
     const fetchMoreListItems = () => {
-
         setTimeout(() => {
             setGenreMovies(prevState => ([...prevState, ...dataApiGenreMovies.slice(prevState.length, prevState.length + 60)]));
             setIsFetching(false);
@@ -73,26 +62,30 @@ const MoviesPage = (props) => {
             return obj;
         });
     }
-    useEffect(async () => {
-        try {
-            const response = await getMovieTypeAPI(getToken())
-            if (response.status === 200 && dataTypes.length == 0) {
-                const data = await response.data
-                dispatch(setMovieTypes(data))
-            }
-            else if (response.status === 500) {
-                history.push('/maintenance')
-            }
-            else {
-                if (response.status == 403) {
-                    setOpen(true)
+    useEffect( () => {
+        async function fetchData() {
+            // You can await here
+            try {
+                const response = await getMovieTypeAPI(getToken())
+                if (response.status === 200 && dataTypes.length == 0) {
+                    const data = await response.data
+                    dispatch(setMovieTypes(data))
+                }
+                else if (response.status === 500) {
+                    history.push('/maintenance')
+                }
+                else {
+                    if (response.status === 403) {
+                        setOpen(true)
+                    }
                 }
             }
-        }
-        catch (err) {
-            console.log("🚀 ~ file: index.js ~ line 92 ~ useEffect ~ err", err)
-            // history.push('/maintenance')
-        }
+            catch (err) {
+                // history.push('/maintenance')
+            }
+          }
+          fetchData();
+      
 
 
     }, [dispatch])
@@ -114,28 +107,31 @@ const MoviesPage = (props) => {
         fetchMoreListItems();
     }, [isFetching]);
 
-    useEffect(async () => {
+    useEffect( () => {
         if (selectedGenre != null) {
-            try {
-                const res = await getMoviesByGenreAPI(selectedGenre.value, getToken())
-                console.log("🚀 ~ file: index.js ~ line 121 ~ useEffect ~ getToken()", getToken())
-                if (res.status == 200) {
-                    let data = await res.data
-                    setDataApiGenreMovies(data)
-                    setGenreMovies(data.slice(0, 31))
-                }
-                else if (res.status === 500) {
-                    history.push('/maintenance')
-                }
-                else {
-                    if (res.status == 403) {
-                        setOpen(true)
+            async function fetchData() {
+                // You can await here
+                try {
+                    const res = await getMoviesByGenreAPI(selectedGenre.value, getToken())
+                    if (res.status === 200) {
+                        let data = await res.data
+                        setDataApiGenreMovies(data)
+                        setGenreMovies(data.slice(0, 31))
+                    }
+                    else if (res.status === 500) {
+                        history.push('/maintenance')
+                    }
+                    else {
+                        if (res.status === 403) {
+                            setOpen(true)
+                        }
                     }
                 }
-            }
-            catch {
-                //  history.push('/maintenance')
-            }
+                catch {
+                    //  history.push('/maintenance')
+                }
+              }
+              fetchData();
         }
     }, [selectedGenre])
 
@@ -143,8 +139,8 @@ const MoviesPage = (props) => {
         <div id='moviesPage' >
             <div className="movie-page overflow-x-hidden bg-black"  >
                 <NavigationBar />
-                <div class="header-genre bg-black">
-                    <div class="select-header">
+                <div className="header-genre bg-black">
+                    <div className="select-header">
                         <Select
                             className="react-select"
                             classNamePrefix="select"

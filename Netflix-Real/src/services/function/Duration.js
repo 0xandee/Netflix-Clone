@@ -1,5 +1,4 @@
 const Duration = (second) => {
-    // console.log("🚀 ~ file: Duration.js ~ line 2 ~ Duration ~ second", second)
     return (
         <time dateTime={`P${Math.round(second)}S`}>
             {Format(second.seconds)}

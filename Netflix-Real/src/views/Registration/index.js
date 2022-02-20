@@ -1,17 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
 import './registration.scss'
-import * as Icon from 'react-feather';
-import { Link, NavLink } from "react-router-dom";
-import { IconNetflix } from "../../assets/Icon";
+import {  NavLink } from "react-router-dom";
 import { Footer, SignUpNavigationBar } from "../../components";
 import { Button } from "reactstrap";
 
 const Registration = () => {
     const backgroudUrl = 'https://assets.nflxext.com/ffe/siteui/acquisition/simplicity/Devices.png'
 
-    const nextClicked = () => {
-
-    }
 
     return (
         <div id='registration'>
@@ -21,7 +16,7 @@ const Registration = () => {
                 <div className={`registration__body`}>
                     <div className={`registration__body__content`}>
                         <div className={`registration__body__content__main`}>
-                            <img className={`registration__body__content__main__image-devices`} src={backgroudUrl} />
+                            <img className={`registration__body__content__main__image-devices`} src={backgroudUrl} alt='icon-netflix' />
                             <div>
                                 <h1 className="registration__body__content__main__step-title">
                                     Finish setting up your account</h1>
@@ -35,11 +30,6 @@ const Registration = () => {
                                     </span>
                                 </Button>
                             </NavLink>
-
-
-
-
-
                         </div>
                         <div>
 

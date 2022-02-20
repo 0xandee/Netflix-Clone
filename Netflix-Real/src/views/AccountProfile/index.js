@@ -1,8 +1,8 @@
-import React, { useState } from "react";
-import { Route, Router, Switch, useRouteMatch, useHistory } from "react-router";
-import { Link, NavLink } from "react-router-dom";
+import React from "react";
+import { Route, Switch, useRouteMatch, useHistory } from "react-router";
+import {  NavLink } from "react-router-dom";
 import { Col, Row } from "reactstrap";
-import { IconAlertCircle, IconNetflix, IconUser } from "../../assets/Icon";
+import {  IconNetflix, IconUser } from "../../assets/Icon";
 import CustomDropdown from "../../components/Dropdown";
 import * as Icon from 'react-feather';
 
@@ -12,7 +12,7 @@ import { ChangePasswordProfile, Footer, GeneralProfile } from "../../components"
 
 
 const AccountProfile = () => {
-  let { path, url } = useRouteMatch();
+  let {  url } = useRouteMatch();
   const history = useHistory();
   const routesprofile = [
     {

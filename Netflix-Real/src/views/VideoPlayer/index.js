@@ -4,7 +4,7 @@ import ReactPlayer from "react-player";
 import { useHistory, useParams } from "react-router-dom";
 import { Tooltip, Row, Col } from "reactstrap";
 import screenfull from "screenfull";
-import { IconBackArrow, IconFullScreen, IconNext10s, IconPause, IconPauseCircle, IconPlay, IconPlayCircle, IconRewind10s, IconSetting, IconSkip, IconVolume, IconVolumeMute } from "../../assets/Icon";
+import { IconBackArrow, IconFullScreen, IconNext10s, IconPause, IconPauseCircle, IconPlay, IconPlayCircle, IconRewind10s, IconVolume, IconVolumeMute } from "../../assets/Icon";
 import { Duration, Format } from "../../services/function/Duration";
 import './style.scss'
 import { useLayoutEffect } from "react";
@@ -115,13 +115,13 @@ const VideoPlayer = ({ socket, roomnum, videoURL, handleOpenMovieRecommend }) =>
         if (playing && !muted) { setMuted(false) }
 
         // if video play 9/10 and socket is connect open recommended section (group stream only)
-        if (state.played >= 0.9 && socket != undefined) {
+        if (state.played >= 0.9 && socket !== undefined) {
             handleOpenMovieRecommend(true)
             setPlaying(false)
             playingRef.current = false
         }
         // if user isn't seeking and state played > 0 update tiem watched variable
-        if (!seeking && state.played != 0) {
+        if (!seeking && state.played !== 0) {
             playedRef.current = state.played
             setPlayed(state.played);
             setLoaded(state.loaded)
@@ -308,7 +308,7 @@ const VideoPlayer = ({ socket, roomnum, videoURL, handleOpenMovieRecommend }) =>
     // request update current time watched and real time watched while unmounted 
     useEffect(() => {
         return async () => {
-            if (socket == undefined) {
+            if (socket === undefined) {
                 if (playedRef.current != null && playedRef.current < 0.9) {
                     await addWatchingList(idMovie.toString(), playedRef.current, getToken())
                     await updateTimeWatched(idMovie.toString(), Math.round((seconds / duration) * 5), getToken())
@@ -319,7 +319,7 @@ const VideoPlayer = ({ socket, roomnum, videoURL, handleOpenMovieRecommend }) =>
 
     // catch event seeking, change playing to update via socket
     useLayoutEffect(() => {
-        if (socket != undefined) {
+        if (socket !== undefined) {
             const data = {
                 room: roomnum,
                 currTime: playedRef.current,
@@ -338,9 +338,8 @@ const VideoPlayer = ({ socket, roomnum, videoURL, handleOpenMovieRecommend }) =>
 
     // set URl video when host choosed movie
     useEffect(() => {
-        if (socket != undefined) {
+        if (socket !== undefined) {
             socket.on("getURLMovie", (data) => {
-                console.log("🚀 ~ file: index.js ~ line 343 ~ socket.on ~ data", data)
                 // turn off recommend section
                 handleOpenMovieRecommend(false)
                 setUrl(data.movieURL)
@@ -357,7 +356,7 @@ const VideoPlayer = ({ socket, roomnum, videoURL, handleOpenMovieRecommend }) =>
 
     // check user is host or not (Group streaming only) while socket is connect
     useLayoutEffect(() => {
-        if (socket != undefined) {
+        if (socket !== undefined) {
             socket.on('isHost', function (data) {
                 setIsHost(data.isHost)
                 // if user isn't host hide player
@@ -370,9 +369,8 @@ const VideoPlayer = ({ socket, roomnum, videoURL, handleOpenMovieRecommend }) =>
 
     // update current host time to server while new member get into the room
     useEffect(() => {
-        if (socket != undefined) {
+        if (socket !== undefined) {
             socket.on("getData", () => {
-                console.log("New member get into the room")
                 const data = {
                     room: roomnum,
                     currTime: playedRef.current,
@@ -384,7 +382,6 @@ const VideoPlayer = ({ socket, roomnum, videoURL, handleOpenMovieRecommend }) =>
             })
 
             socket.on('isHost', function (data) {
-                console.log("🚀 ~ file: index.js ~ line 271 ~ data", data)
                 setIsHost(data.isHost)
                 if (!data.isHost) {
                     controlRef.current.style.opacity = '0'
@@ -398,11 +395,9 @@ const VideoPlayer = ({ socket, roomnum, videoURL, handleOpenMovieRecommend }) =>
 
     // Uses the host data to compare
     useEffect(() => {
-        if (socket != undefined) {
+        if (socket !== undefined) {
             setMuted(true)
             socket.on('compareHost', function (data) {
-                console.log("compareHost");
-                console.log("🚀 ~ file: index.js ~ line 259 ~ data", data)
                 // // The host data
                 var hostTime = data.currTime
                 var hostState = data.state
@@ -413,8 +408,7 @@ const VideoPlayer = ({ socket, roomnum, videoURL, handleOpenMovieRecommend }) =>
                     setUrl(data.currVideo)
                 }
                 if (playedRef.current != hostTime || playingRef.current != hostState) {
-                    console.log("🚀 ~ file: index.js ~ line 416 ~ playerRef.current.getDuration() != null", playerRef.current.getDuration() != null)
-                    console.log("🚀 ~ file: index.js ~ line 416 ~ playedRef.current", playerRef.current)
+                 
                     if (!host) {
                         handleOpenMovieRecommend(false)
                         volumeRef.current = data.muted

@@ -1,5 +1,3 @@
-import { requestAccessToken, requestRefreshToken } from '../../function';
-import { requestLogout } from '../auth';
 import { userApi } from './configUrl'
  const axios = require('axios');
 

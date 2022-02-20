@@ -1,9 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import './forgotPassword.scss'
-import * as Icon from 'react-feather';
-import { Link, NavLink, useHistory } from "react-router-dom";
+import {useHistory } from "react-router-dom";
 import { IconNetflix } from '../../assets/Icon';
-import { FormGroup, Input, Label } from "reactstrap";
 import { CustomInput, Footer } from "../../components";
 import { requestForgotPassword } from "../../services/api/auth";
 import AccountMenuImg from '../../assets/Images/account_menu_image.png'
@@ -21,22 +19,22 @@ const ForgotPassword = () => {
     const forgotPasswordClicked = useCallback(async () => {
         var emailValid = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-        if (email == "" || !email.match(emailValid)) {
+        if (email === "" || !email.match(emailValid)) {
             setIsEmailError(true)
         }
         else {
             try {
                 setIsEmailError(false)
                 const res = await requestForgotPassword(email)
-                if (res.status == 200) {
+                if (res.status === 200) {
                     setIsCheckOTP(true)
                     setSeconds(59)
                 }
-                else if (res.status == 302) {
+                else if (res.status === 302) {
                     setIsEmailError(true)
                     setErrorTextEmail('Account not exist in our web')
                 }
-                else if (res.status == 500) {
+                else if (res.status === 500) {
                     history.push('/maintenance')
                 }
             }
@@ -67,7 +65,7 @@ const ForgotPassword = () => {
     const resendEmailClicked = async () => {
         try {
             const res = await requestForgotPassword(email)
-            if (res.status == 200) {
+            if (res.status === 200) {
                 setSeconds(59)
             }
             else {

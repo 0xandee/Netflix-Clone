@@ -1,6 +1,5 @@
-import React, { createRef, Fragment, useCallback, useEffect, useRef, useState } from "react";
+import React, {Fragment, useCallback, useEffect,  useState } from "react";
 import { useParams, useHistory } from "react-router-dom";
-import { useSelector, useDispatch } from 'react-redux';
 import { CustomModal } from "../../components";
 import {  Button, UncontrolledTooltip } from 'reactstrap'
 import './style.scss';
@@ -173,8 +172,6 @@ const GroupStreaming = () => {
       socket.emit('set movie', { username, roomnum, movieURL, movieId: data.id });
       handleOpenMovieRecommend(false)
       const res = await getRecommGroupMoviesState2(members.join("&id="), data.id)
-
-      console.log("🚀 ~ file: index.js ~ line 156 ~ handleRefreshButton ~ res", res)
       if (res.status === 200) {
         let dataRecommend = await res.json()
         const temp = await getMoviesByListID(dataRecommend.map((key) => key.id), getToken())
@@ -300,7 +297,7 @@ const GroupStreaming = () => {
   }, [socket])
 
   useEffect(() => {
-    if (socket != undefined) {
+    if (socket !== undefined) {
       socket.on("hostAgain", () => {
         setHostModal(true)
         setOpenedMovieRecommend(false)

@@ -15,8 +15,8 @@ const ContactUs = () => {
                 </div>
                 <h5 className="registration__body__content__main__step-subtitle">Download our app (Coming Soon):</h5>
                 <div className="badges">
-                    <img className="badge-android" target="_blank" src="https://help.nflxext.com/helpcenter/deb7c3e60fbabd81678a7b77c779ef51.png"/>
-                    <img className="badge-ios" target="_blank" src="https://help.nflxext.com/helpcenter/a011cbc6f8050b1a0476814ed984c7e4.svg"/>
+                    <img className="badge-android" alt='android' target="_blank" src="https://help.nflxext.com/helpcenter/deb7c3e60fbabd81678a7b77c779ef51.png"/>
+                    <img className="badge-ios" alt='ios' target="_blank" src="https://help.nflxext.com/helpcenter/a011cbc6f8050b1a0476814ed984c7e4.svg"/>
                 </div>
             </div>
             <div className={`maincontent-border`}>

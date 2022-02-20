@@ -97,7 +97,7 @@ const NavigationBar = (props) => {
                             <div className='tab-navigation'>
                                 {
                                     items.map(item => (
-                                        <NavLink to={item.navLink} className='nav-item' activeStyle={styles.activeStyle}>{item.label}</NavLink>
+                                        <NavLink  key={item.id} to={item.navLink} className='nav-item' activeStyle={styles.activeStyle}>{item.label}</NavLink>
                                     ))
                                 }
                             </div>
@@ -115,7 +115,7 @@ const NavigationBar = (props) => {
                                         <div className='callout-arrow-browse' />
                                         <div className='top-bar' />
                                         {isOpen && items.map(item => (
-                                            <div style={{ display: 'flex', flexDirection: 'column' }} id={item.id}>
+                                            <div  key={item.id} style={{ display: 'flex', flexDirection: 'column' }} id={item.id}>
                                                 <Link className="sub-menu-item" to={item.navLink} >
                                                     <span >
                                                         {item.label}
