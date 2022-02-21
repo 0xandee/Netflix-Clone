@@ -172,14 +172,14 @@ const GroupStreaming = () => {
       let movieURL = 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4';
       socket.emit('set movie', { username, roomnum, movieURL, movieId: data.id });
       handleOpenMovieRecommend(false)
-     
+
     }
     else {
       notifyWarning()
     }
   }
 
-  const handleMovieClicked = (item) => () => {    
+  const handleMovieClicked = (item) => () => {
     setClickedMovie(item)
 
   }
@@ -238,8 +238,10 @@ const GroupStreaming = () => {
   useEffect(() => {
     // Join room
     require('dotenv').config();
-    // const url = process.env.REACT_APP_URL;
-    const url = 'http://localhost:8000';
+    const url = process.env.REACT_APP_URL;
+
+    // for testing
+    //const url = 'http://localhost:8000';
     const newSocket = io(url, { transports: ['websocket'] });
     setSocket(newSocket);
     if (newSocket) {

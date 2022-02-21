@@ -204,8 +204,6 @@ const GeneralProfile = () => {
                 name="country"
                 options={countryListData}
                 onChange={(prop) => {
-                  console.log("🚀 ~ file: index.js ~ line 129 ~ GeneralProfile ~ prop", prop)
-
                   setIsChange(true)
                   setValueCountry(prop)
                 }}
