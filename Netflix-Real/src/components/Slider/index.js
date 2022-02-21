@@ -35,7 +35,7 @@ const Slider = (props) => {
     }
 
     return ( movies.length &&
-        <div className="thumbSection mb-3" key={props.id}>
+        <div className="thumbSection mb-3" >
             <h2 className="thumbTitle my-3 ps-5 position-relative cursor-pointer d-inline">{props.sliderTitle}</h2>
             <Swiper spaceBetween={20}
                 slidesPerView={3}
@@ -55,7 +55,7 @@ const Slider = (props) => {
                     {movies.map(item => {
                         return (
                             item != null && item.uri_avatar != null && 
-                            <SwiperSlide className="swiper-slide slide h-100" key={item.id}>
+                            <SwiperSlide className="swiper-slide slide h-100" key={`${props.id}-${item.id}`}>
                                 <SliderItemForWatching item={item} id={props.id} itemRemoveClicked={itemRemoveClicked(item)} />
                             </SwiperSlide>)
                     })}
