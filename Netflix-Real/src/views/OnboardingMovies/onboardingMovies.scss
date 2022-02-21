@@ -46,7 +46,7 @@ $gray: #8c8c8c;
         padding: 10px 3%;
 
         border-bottom: 1px solid #e6e6e6;
-        
+
         &__container {
             line-height: 90px;
         }
@@ -75,7 +75,7 @@ $gray: #8c8c8c;
 
         background-color: transparent;
 
-        .submitBtnContainer{
+        .submitBtnContainer {
             margin-top: 24px;
             text-align: center;
             max-width: 440px;
@@ -116,39 +116,48 @@ $gray: #8c8c8c;
                 text-align: center;
                 width: 100%;
                 padding: 20px 0 30px;
-                
-                &__boxes{
+
+                &__boxes {
                     text-align: center;
                     margin: 15px -2% 15px -1%;
-                    @media screen and (min-width: 1200px){
-                        column-count: 4;
-                    }
-                    @media screen and (max-width: 1200px){
-                        column-count: 3;
-                    }
-                    @media screen and (max-width: 1024px){
-                        column-count: 2;
-                    }
-                    .selected.box{
-                        .overlay-thumb{
+                    display: grid;
+                    grid-gap: 1rem;
+                    // @media screen and (min-width: 1024px) {
+                    //     column-count: 2;
+                    // }
+                    // @media screen and (min-width: 1200px) {
+                    //     column-count: 3;
+                    // }
+                    // @media screen and (min-width: 1200px) {
+                    //     column-count: 4;
+                    // }
+                    // @media screen and (min-width: 1400px) {
+                    //     column-count: 5;
+                    // }
+                    // @media screen and (min-width: 1600px) {
+                    //     column-count: 6;
+                    // }
+
+                    .selected.box {
+                        .overlay-thumb {
                             opacity: 1;
-                            .thumb-up{
+                            .thumb-up {
                                 background-color: #000000b5;
                             }
                         }
                     }
 
-                    .box{
+                    .box {
                         display: inline-block;
                         position: relative;
-                        img{
+                        img {
                             display: block;
                             width: 100%;
                             max-height: 550px;
                             border-radius: 4px;
                         }
-                        .overlay-thumb{
-                            &:hover{
+                        .overlay-thumb {
+                            &:hover {
                                 opacity: 1;
                             }
                             z-index: 1;
@@ -160,14 +169,14 @@ $gray: #8c8c8c;
                             height: 100%;
                             cursor: pointer;
                             transition: all 0.2s;
-                            .thumb-up{
+                            .thumb-up {
                                 display: inline-block;
                                 width: 100%;
                                 height: 100%;
                                 position: relative;
                                 top: 0;
                                 background-color: #0000006b;
-                                svg{
+                                svg {
                                     color: #fff;
                                     fill: currentColor;
                                     text-align: center;
@@ -179,27 +188,26 @@ $gray: #8c8c8c;
                                 }
                             }
                         }
-                        @media screen and (min-width: 1024px){
-                            &{
-                                margin: .75%;
+                        @media screen and (min-width: 1024px) {
+                            & {
+                                margin: 0.75%;
                                 width: 15%;
                             }
                         }
-    
-                        @media screen and (max-width: 1024px){
-                            &{
+
+                        @media screen and (max-width: 1024px) {
+                            & {
                                 margin: 1%;
-                                width:23%;
+                                width: 23%;
                             }
                         }
-                        @media screen and (max-width: 360px){
-                            &{
+                        @media screen and (max-width: 360px) {
+                            & {
                                 margin: 1%;
                                 width: 45%;
                             }
                         }
                     }
-
                 }
 
                 &__image-devices {
@@ -222,11 +230,11 @@ $gray: #8c8c8c;
                     display: inline;
                     color: #333;
                 }
-                &__waiting-spinner{
+                &__waiting-spinner {
                     position: relative;
                     margin: 25px 0;
                     min-height: 110px;
-                    .basic-spinner{
+                    .basic-spinner {
                         width: 50px;
                         height: 50px;
                         display: inline-block;
@@ -240,15 +248,15 @@ $gray: #8c8c8c;
                         animation: full-rotation 1s infinite linear;
                         animation-direction: normal;
                         @keyframes full-rotation {
-                            0%{
-                                transform: translate(-50%,-50%) rotate(0);
+                            0% {
+                                transform: translate(-50%, -50%) rotate(0);
                             }
-                            100%{
-                                transform: translate(-50%,-50%) rotate(360deg);
+                            100% {
+                                transform: translate(-50%, -50%) rotate(360deg);
                             }
                         }
                     }
-                    .center-absolute{
+                    .center-absolute {
                         position: absolute;
                         top: 50%;
                         // left: 45%;
@@ -272,7 +280,6 @@ $gray: #8c8c8c;
 
                     background-color: $red;
 
-                   
                     span {
                         font-weight: 500;
                         font-size: 24px;
@@ -284,6 +291,34 @@ $gray: #8c8c8c;
                     }
                 }
             }
+        }
+    }
+    @media (min-width: 300px) {
+        .registration__body__content__main__boxes {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+    @media (min-width: 900px) {
+        .registration__body__content__main__boxes {
+            grid-template-columns: repeat(3, 1fr);
+        }
+    }
+    @media (min-width: 1200px) {
+        .registration__body__content__main__boxes {
+            grid-template-columns: repeat(4, 1fr);
+        }
+    }
+
+    /* Screen larger than 900px? 3 columns */
+    @media (min-width: 1400px) {
+        .registration__body__content__main__boxes {
+            grid-template-columns: repeat(5, 1fr);
+        }
+    }
+
+    @media (min-width: 1800px) {
+        .registration__body__content__main__boxes {
+            grid-template-columns: repeat(6, 1fr);
         }
     }
 }

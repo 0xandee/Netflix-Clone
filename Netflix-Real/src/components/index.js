@@ -19,13 +19,15 @@ import SliderGrid from './SliderGrid';
 import GeneralProfile from './GeneralProfile'
 import ChangePasswordProfile from './ChangePasswordProfile'
 import CustomModal from './CustomModal'
+import DetailPageGroupStreaming from './DetailPageGroupStreaming'
+import MoreLikeThisItemGroup from './MoreLikeThisItemGroup'
 
 export {
     CustomInput, CustomNotification,
-    DetailInfo, Dropdown,
+    DetailInfo, Dropdown,DetailPageGroupStreaming,
     Episodes, DropdownSelector, GenreItem, OnboardingMovieItem,
     Footer,
-    MoreLikeThisItem, 
+    MoreLikeThisItem, MoreLikeThisItemGroup,
     NavigationBar, SignUpNavigationBar,
     PreviewPlayer, PreviewButtonControl, PreviewInfo,
     Slider, SliderStreaming, SliderGrid,

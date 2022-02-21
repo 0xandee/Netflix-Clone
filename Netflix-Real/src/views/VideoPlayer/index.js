@@ -115,7 +115,7 @@ const VideoPlayer = ({ socket, roomnum, videoURL, handleOpenMovieRecommend }) =>
         if (playing && !muted) { setMuted(false) }
 
         // if video play 9/10 and socket is connect open recommended section (group stream only)
-        if (state.played >= 0.9 && socket !== undefined) {
+        if (state.played >= 0.9 && socket != undefined) {
             handleOpenMovieRecommend(true)
             setPlaying(false)
             playingRef.current = false
@@ -319,7 +319,7 @@ const VideoPlayer = ({ socket, roomnum, videoURL, handleOpenMovieRecommend }) =>
 
     // catch event seeking, change playing to update via socket
     useLayoutEffect(() => {
-        if (socket !== undefined) {
+        if (socket != undefined) {
             const data = {
                 room: roomnum,
                 currTime: playedRef.current,
@@ -338,7 +338,7 @@ const VideoPlayer = ({ socket, roomnum, videoURL, handleOpenMovieRecommend }) =>
 
     // set URl video when host choosed movie
     useEffect(() => {
-        if (socket !== undefined) {
+        if (socket != undefined) {
             socket.on("getURLMovie", (data) => {
                 // turn off recommend section
                 handleOpenMovieRecommend(false)
@@ -356,7 +356,7 @@ const VideoPlayer = ({ socket, roomnum, videoURL, handleOpenMovieRecommend }) =>
 
     // check user is host or not (Group streaming only) while socket is connect
     useLayoutEffect(() => {
-        if (socket !== undefined) {
+        if (socket != undefined) {
             socket.on('isHost', function (data) {
                 setIsHost(data.isHost)
                 // if user isn't host hide player
@@ -369,7 +369,7 @@ const VideoPlayer = ({ socket, roomnum, videoURL, handleOpenMovieRecommend }) =>
 
     // update current host time to server while new member get into the room
     useEffect(() => {
-        if (socket !== undefined) {
+        if (socket != undefined) {
             socket.on("getData", () => {
                 const data = {
                     room: roomnum,
@@ -395,7 +395,7 @@ const VideoPlayer = ({ socket, roomnum, videoURL, handleOpenMovieRecommend }) =>
 
     // Uses the host data to compare
     useEffect(() => {
-        if (socket !== undefined) {
+        if (socket != undefined) {
             setMuted(true)
             socket.on('compareHost', function (data) {
                 // // The host data
@@ -430,7 +430,7 @@ const VideoPlayer = ({ socket, roomnum, videoURL, handleOpenMovieRecommend }) =>
         <div id={`videoPlayer`} onMouseMove={handleMouseMove} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} style={{ position: 'absolute', width: '100%', height: '100%' }}>
             {!isHost &&
                 <div className='position-absolute'
-                    style={{ bottom: '4vh', left: '2vw', height: '60px', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 6 }}>
+                    style={{ bottom: '4vh', left: '2vw', height: '60px', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 4 }}>
                     <div onClick={handleVolumeMute}>
                         {volume > 0 && !muted ?
                             <IconVolume className={'icon--color'} />
@@ -469,7 +469,7 @@ const VideoPlayer = ({ socket, roomnum, videoURL, handleOpenMovieRecommend }) =>
                     transition: 'all 0.5s'
                 }}>
                     <div className={`video-player__top`} style={{ justifyContent: "space-between" }}>
-                        <div className={`video-player__top__icon-container`} style={{ zIndex: '5', }} onClick={() => history.push('/home')}>
+                        <div className={`video-player__top__icon-container`} style={{ zIndex: '4', }} onClick={() => history.push('/home')}>
                             <IconBackArrow className={'video-player__top__icon-back'} />
                             <span>Back to Browse</span>
                         </div>

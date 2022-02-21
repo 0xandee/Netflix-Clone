@@ -58,7 +58,7 @@ axios.interceptors.response.use((response) => {
 }, async function (error) {
   const originalRequest = error.config;
   
-  if (error.response.status === 401) {
+  if (error.response.status === 401 && !originalRequest._retry) {
     originalRequest._retry = true;
     const request_token_status = await requestRefreshToken();
     if (request_token_status === 200) {
@@ -132,7 +132,7 @@ export const getRecommUserMoviesState1 = async (idUser) => {
 
 export const getRecommUserMoviesState2 = async (idUser, idMovie) => {
   return new Promise((resolve, reject) => {
-    fetch(movieApi.urlGetRecommendedUserMoviesState2 + idUser + `&n_movie=100&id_movie=${idMovie}&fil_by_des=genre`, {
+    fetch(movieApi.urlGetRecommendedUserMoviesState2 + idUser + `&n_movie=100&id_movie=${idMovie}&filter=genre`, {
       crossDomain: true,
       method: "GET",
       mode: 'cors',
@@ -231,7 +231,6 @@ export const getMoviesByGenres = async (arrIdGenre, number, token) => {
 
 export const getMoviesByListID = async (arrIdMovies, token) => {
   return new Promise((resolve, reject) => {
- 
     axios({
       method: 'post',
       url: movieApi.urlGetMoviesByListID,
@@ -244,7 +243,6 @@ export const getMoviesByListID = async (arrIdMovies, token) => {
       }
     })
       .then(response => {
-
         resolve(response)
       })
       .catch(error => {

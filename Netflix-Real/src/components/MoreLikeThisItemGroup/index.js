@@ -13,7 +13,7 @@ const MoreLikeThisItem = (props) => {
     const toggleAddPlaylist = () => setAdd(!iconAdd);
 
     const itemClicked = () => {
-        history.push(`/detail/${item.id}`)
+        props.setClickedMovie(item)
     }
 
     const addFavoriteClicked = async (e) => {

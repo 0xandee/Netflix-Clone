@@ -55,7 +55,7 @@ const OnboardingMovies = () => {
             // You can await here
             let temp = JSON.parse(query.get('value'))
             try {
-                const response = await getMoviesByGenres(temp, 32, getToken())
+                const response = await getMoviesByGenres(temp, 60, getToken())
 
                 if (response.status === 200) {
                     setMovies(await response.data)

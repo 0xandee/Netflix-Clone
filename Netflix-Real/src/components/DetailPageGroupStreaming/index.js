@@ -1,67 +1,61 @@
 import React, { useEffect, useState } from 'react';
 import './PreviewPopup.scss';
-import { PreviewButtonControl, Episodes, DetailInfo, MoreLikeThisItem, NavigationBar, CustomModal } from "../../components";
-import { useParams } from 'react-router';
-import { getMovieAPI, getMoviesByListID, getRecommUserMoviesState2, updateMovieClicked } from '../../services/api/movie';
+
+import { getMovieAPI, getMoviesByListID, getRecommGroupMoviesState2 } from '../../services/api/movie';
 import { useHistory } from 'react-router-dom';
 import { getToken } from '../../services/function';
 import { Col, Row } from 'reactstrap';
+import { DetailInfo, MoreLikeThisItemGroup } from '..';
 
-const DetailPage = (props) => {
-    const { idMovie } = useParams()
+const DetailPageGroupStreaming = (props) => {
+    const { idMovie, members, item, setClickedMovie } = props
+
     const [dataMovie, setDataMovie] = useState([]);
     const [recommendedMovies, setRecommendedMovies] = useState([]);
     const [isFetching, setIsFetching] = useState(true);
     const history = useHistory();
-    const [open, setOpen] = useState(false);
     const [percentMatched, setPercentMatched] = useState(0);
-
-    const toggleModal = () => {
-        localStorage.clear()
-        history.push('/signin')
-    };
 
     useEffect(() => {
         async function fetchData() {
             // You can await here
             try {
-                await updateMovieClicked(idMovie.toString())
-                const response = await getMovieAPI(idMovie.toString())
-                if (response.status === 200) {
-                    let data = await response.data
-                    setDataMovie(data)
+                if (item != undefined) {
+                    setDataMovie(item)
+                }
+                else if (idMovie != undefined) {
+                    const response = await getMovieAPI(idMovie)
+                    if (response.status === 200) {
+                        let data = await response.data
+                        setDataMovie(data)
+                    }
+                    else if (response.status === 500) {
+                        history.push('/maintenance')
+                    }
+                }
 
-                }
-                else if (response.status === 403) {
-                    setOpen(true)
-                }
-                else if (response.status === 500) {
-                    history.push('/maintenance')
-                }
+
             }
             catch (err) {
             }
         }
         fetchData();
-    }, [idMovie])
+    }, [item])
 
     useEffect(() => {
         async function fetchData() {
             // You can await here
             try {
-                const response = await getRecommUserMoviesState2(localStorage.getItem('id_user'), idMovie.toString())
+                const response = await getRecommGroupMoviesState2(members.join("&id="), item.id.toString())
                 if (response.status === 200) {
                     const data = await response.json()
                     setPercentMatched(data.percentage_match)
-                    const res = await getMoviesByListID(data.list_recommend.map((key) => key.id), getToken())
-                    const data2 = await res.data
-                    const result = data2.map(v => ({ ...v, ...data.list_recommend.find(sp => sp.id === v.id )}));
-
-                    setRecommendedMovies(result.slice(0, 20));
                     setIsFetching(false)
-                }
-                else if (response.status === 403) {
-                    setOpen(true)
+                    const res = await getMoviesByListID(data.map((key) => key.id), getToken())
+                    const data2 = await res.data
+
+                    setRecommendedMovies(data2.slice(0, 20));
+                    setIsFetching(false)
                 }
 
             }
@@ -70,11 +64,10 @@ const DetailPage = (props) => {
             }
         }
         fetchData();
-    }, [idMovie])
+    }, [item,members])
 
     return (
-        <div className="pop-up__container">
-            <NavigationBar />
+        <div className="pop-up__container" >
             {isFetching ?
                 <div style={{ display: 'flex', marginBottom: '10px', width: '100%', justifyContent: 'center', flexDirection: 'column', alignItems: 'center' }}>
                     <span className='text-light mb-3' style={{ fontSize: '24px' }}>
@@ -83,7 +76,7 @@ const DetailPage = (props) => {
                     <div className="spinner-border" role="status" style={{ height: '5vh', width: '5vh', color: '#e50914' }} />
                 </div>
                 :
-                <div className="mx-auto" style={{ padding: '0 0 0 6vw ', width: '100%' }}>
+                <div className="mx-auto" style={{ padding: '0 0 0 3% ', width: '100%' }}>
                     {/* <div className=' mb-3' onClick={() => localStorage.setItem('access_token', '1')}>
                         REmove token key
                     </div> */}
@@ -96,10 +89,21 @@ const DetailPage = (props) => {
                                 </Col>
                                 <Col lg='9' className='position-relative d-flex flex-column float-start  mt-3 mb-5'>
                                     <DetailInfo item={dataMovie} percentMatched={percentMatched} />
-                                    <PreviewButtonControl item={dataMovie} />
+                                    <Col onClick={() => props.handlePlay(item)} lg='4' className="mx-4 mt-3 PlayButton__primary-color PlayButton__primary-button d-flex flex-row justify-content-center align-items-center"  >
+                                        <div className="PlayIcon_icon-container px-2">
+                                            <div id="PlayIcon" className="PlayIcon_icon">
+                                                <svg viewBox="0 0 24 24">
+                                                    <path d="M6 4l15 8-15 8z" fill="currentColor"></path>
+                                                </svg>
+                                            </div>
+
+                                        </div>
+                                        <span className="PlayButton__primary-text PlayButton__primary-text-transform plr-2 ">Play</span>
+                                    </Col>
+                                    {/* <PreviewButtonControl item={dataMovie} handlePlay={props.handlePlay(item)} /> */}
                                 </Col>
                             </Row>
-                            <Episodes item={dataMovie} />
+
                         </Col>
                         <Col xs='12' lg='3' className="position-relative float-end mt-4" >
                             <h3 className="position-absolute text-light text-center" style={{ top: '-2%', zIndex: '1000' }}>More Like This</h3>
@@ -107,9 +111,9 @@ const DetailPage = (props) => {
 
                                 <div className="pb-3 d-flex flex-column justify-content-center align-items-center">
 
-                                    {recommendedMovies.length && recommendedMovies.map((item) =>
-                                        item.id != idMovie && 
-                                        <MoreLikeThisItem key={item.id} item={item} />
+                                    {recommendedMovies.length && recommendedMovies.map((movie) =>
+                                        movie.id != item.id &&
+                                        <MoreLikeThisItemGroup key={movie.id} item={movie} setClickedMovie={setClickedMovie} />
                                     )}
 
                                 </div>
@@ -119,11 +123,9 @@ const DetailPage = (props) => {
                     </Row>
                 </div>
             }
-            <CustomModal isOpen={open} onClick={toggleModal} headerText={"Session Timed out"} buttonText='Back to log in page' bodyText=
-                {"Look like your log in session have been timed out. So please log in again.\nWe are so sorry for this inconvenience"
-                } />
+
         </div>
     );
 };
 
-export default DetailPage;
+export default DetailPageGroupStreaming;

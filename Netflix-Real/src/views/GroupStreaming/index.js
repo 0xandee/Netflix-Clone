@@ -1,10 +1,10 @@
-import React, {Fragment, useCallback, useEffect,  useState } from "react";
+import React, { Fragment, useCallback, useEffect, useState } from "react";
 import { useParams, useHistory } from "react-router-dom";
-import { CustomModal } from "../../components";
-import {  Button, UncontrolledTooltip } from 'reactstrap'
+import { CustomModal, DetailPageGroupStreaming } from "../../components";
+import { Button, UncontrolledTooltip } from 'reactstrap'
 import './style.scss';
 import VideoPlayer from "../VideoPlayer";
-import { IconChevronLeft, IconChevronRight } from "../../assets/Icon";
+import { IconBackArrow, IconChevronLeft, IconChevronRight } from "../../assets/Icon";
 import Chat from "../../components/Chat";
 import io from "socket.io-client";
 import * as Icon from 'react-feather';
@@ -31,7 +31,7 @@ const WarningToast = (props) => (
       <span role='img' aria-label='toast-text'>
         {props.data != null ?
           props.data :
-          'Only host can choose movie!!'
+          'Only host can choose movie to play!!'
         }
       </span>
     </div>
@@ -93,6 +93,7 @@ const GroupStreaming = () => {
   const [isFetchingApi, setIsFetchingApi] = useState(false);
   const [members, setMembers] = useState([localStorage.getItem('id_user')]);
   const [choosedMovie, setChoosedMovie] = useState('');
+  const [clickedMovie, setClickedMovie] = useState('');
 
   const notifyWarning = (data) => toast.warning(<WarningToast data={data} />, { position: toast.POSITION.TOP_CENTER, hideProgressBar: true })
   const notifyInvite = (data) => toast.info(<InviteToast data={data} />, { position: toast.POSITION.TOP_CENTER, hideProgressBar: true })
@@ -164,40 +165,23 @@ const GroupStreaming = () => {
 
   }, [movieURL, openedMovieRecommend])
 
-  const handleMovieUrlClick = (data) => async () => {
+  const handleMovieUrlClick = async (data) => {
     if (isHost) {
       setChoosedMovie(data.id)
       setMovieURL('https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4');
       let movieURL = 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4';
       socket.emit('set movie', { username, roomnum, movieURL, movieId: data.id });
       handleOpenMovieRecommend(false)
-      const res = await getRecommGroupMoviesState2(members.join("&id="), data.id)
-      if (res.status === 200) {
-        let dataRecommend = await res.json()
-        const temp = await getMoviesByListID(dataRecommend.map((key) => key.id), getToken())
-        let data2 = await temp.data
-        setRecommendedMovies(data2)
-        setShowedMovies(data2.slice(0, 31))
-        setIsFetchingApi(false)
-      }
-      else {
-        if (!movies.length) {
-          const response = await getAllMovies(getToken())
-          if (response.status === 200) {
-            let data = await response.data
-            setMovies(data)
-            setShowedMovies(data.slice(0, 31))
-          }
-          else if (response.status == 500) {
-            history.push('/maintenance')
-          }
-        }
-        setIsFetchingApi(false)
-      }
+     
     }
     else {
       notifyWarning()
     }
+  }
+
+  const handleMovieClicked = (item) => () => {    
+    setClickedMovie(item)
+
   }
 
   const onBlurSearchInput = () => {
@@ -218,10 +202,8 @@ const GroupStreaming = () => {
   const handleRefreshButton = useCallback(async () => {
     try {
       setIsFetchingApi(true)
-      const res = !choosedMovie ?
-        await getRecommGroupMoviesState1(members.join("&id="))
-        :
-        await getRecommGroupMoviesState2(members.join("&id="), choosedMovie)
+      const res = await getRecommGroupMoviesState1(members.join("&id="))
+
       const response = await getAllMovies(getToken())
       let data = []
       if (response.status === 200) {
@@ -256,8 +238,8 @@ const GroupStreaming = () => {
   useEffect(() => {
     // Join room
     require('dotenv').config();
-    const url = process.env.REACT_APP_URL;
-    //const url = 'http://localhost:8000';
+    // const url = process.env.REACT_APP_URL;
+    const url = 'http://localhost:8000';
     const newSocket = io(url, { transports: ['websocket'] });
     setSocket(newSocket);
     if (newSocket) {
@@ -297,7 +279,7 @@ const GroupStreaming = () => {
   }, [socket])
 
   useEffect(() => {
-    if (socket !== undefined) {
+    if (socket != undefined) {
       socket.on("hostAgain", () => {
         setHostModal(true)
         setOpenedMovieRecommend(false)
@@ -308,7 +290,7 @@ const GroupStreaming = () => {
   useEffect(() => {
     navigator.clipboard.writeText(window.location.href)
     handleRefreshButton()
-  }, [choosedMovie]);
+  }, []);
 
 
   useEffect(() => {
@@ -322,10 +304,11 @@ const GroupStreaming = () => {
       {socket &&
         <div className='position-relative group-streaming h-100 w-100 ' >
           {isFetchingApi &&
-            <div className='position-absolute bg-dark' style={{
+            <div className='position-absolute' style={{
               display: 'flex',
               height: '100vh',
-              width: '80vw',
+              width: '100%',
+              backgroundColor: '#242526',
               justifyContent: 'center', flexDirection: 'column', alignItems: 'center'
               , zIndex: '6'
             }}>
@@ -334,10 +317,10 @@ const GroupStreaming = () => {
               </span>
               <div class="spinner-border" role="status" style={{ height: '5vh', width: '5vh', color: '#e50914' }} />
             </div>
-
           }
+
           <div className='group-player position-relative '>
-            <div className={`icon-chevron--right ${openedChatBox && 'active'}`} onClick={handleOpenChatBox}>
+            <div onClick={handleMovieClicked('test')} className={`icon-chevron--right ${openedChatBox && 'active'}`} onClick={handleOpenChatBox} style={{ zIndex: '5' }}>
               {!openedChatBox ?
                 <IconChevronRight />
                 :
@@ -348,73 +331,86 @@ const GroupStreaming = () => {
 
             <div id="movieRecommend" onScroll={handleScroll}
               className={`${openedMovieRecommend ? '' : 'd-none'}`}
-              style={{ position: 'absolute', width: '100%', height: '100%', backgroundColor: '#242526', zIndex: 7, overflowX: 'auto', paddingTop: '40px' }}>
-              <div className=" position-absolute d-flex justify-content-end" style={{ top: '0', zIndex: '5', width: '100%', backgroundColor: '#242526' }} >
-                <div className={`search-box ${isShown && 'input-search'} ${openedMovieRecommend ? '' : 'd-none'}`} style={{ marginRight: "7rem" }}>
-                  <div >
-                    <div >
-                      <Button
-                        outline
-                        id='btnRefresh'
-                        disabled={members.length < 2}
-                        style={{ marginRight: "1rem", fontSize: "1rem", fontWeight: "bold", paddingRight: "0.5rem", float: "right", borderRadius: "8px", backgroundColor: "rgb(183, 7, 16)", padding: "12px 12px", border: "none", color: 'white' }}
-                        onClick={handleRefreshButton}>
-                        Refresh
-                      </Button>
-                    </div>
-
-                    <UncontrolledTooltip placement="bottom" target="btnRefresh" >
-                      Refresh list movies base on group members
-                    </UncontrolledTooltip>
-                  </div>
-                  <div>
-                    <Icon.Search className='icon-style' size='16px' strokeWidth='4' color='white' onClick={btnSearchClicked} style={{ cursor: 'pointer', marginRight: "1rem" }} />
-                  </div>
-                  <React.Fragment>
-                    <input
-                      onBlur={onBlurSearchInput}
-                      ref={textInput} value={searchText}
-                      type={'text'}
-                      name="search"
-                      placeholder="Search.."
-                      onChange={onValueSearchChange} >
-                    </input>
-                  </React.Fragment>
-                </div>
-              </div>
-              <div className='body-content'>
-                <div className='list-grid'>
-                  {searchText.length && !filteredMovies.length ?
-                    <div style={{ color: 'white', fontWeight: "bold", fontSize: '24px' }} >No results found</div>
-                    :
-                    showedMovies.map(item =>
-                    (item.uri_avatar != null &&
-                      <div className='grid-container' onClick={handleMovieUrlClick(item)}>
-                        <div className=' item-grid multi-landing-stack-space-holder w-100 h-100'>
-                          {/* <div className="multi-landing-stack-1"></div>
-                                      <div className="multi-landing-stack-2"></div> */}
-                          <img onError={
-                            (e) => e.currentTarget.src = DefaultImage
-                          } style={{ borderRadius: '4px', }} className="title-card w-100 h-100" src={item.uri_avatar} alt={item.m_name} />
+              style={{ position: 'absolute', width: '100%', height: '100%', backgroundColor: '#242526', zIndex: 4, overflowX: 'auto', paddingTop: '60px' }}>
+              {!clickedMovie ?
+                <div>
+                  <div className=" position-absolute d-flex justify-content-end" style={{ top: '0', zIndex: '5', width: '100%', backgroundColor: '#242526' }} >
+                    <div className={`search-box ${isShown && 'input-search'} ${openedMovieRecommend ? '' : 'd-none'}`} style={{ marginRight: "7rem" }}>
+                      <div >
+                        <div >
+                          <Button
+                            outline
+                            id='btnRefresh'
+                            disabled={members.length < 2}
+                            style={{ marginRight: "1rem", fontSize: "1rem", fontWeight: "bold", paddingRight: "0.5rem", float: "right", borderRadius: "8px", backgroundColor: "rgb(183, 7, 16)", padding: "12px 12px", border: "none", color: 'white' }}
+                            onClick={handleRefreshButton}>
+                            Refresh
+                          </Button>
                         </div>
-                        <div className='name-label'>
-                          {item.name}
+                        <UncontrolledTooltip placement="bottom" target="btnRefresh" >
+                          Refresh list movies base on group members
+                        </UncontrolledTooltip>
+                      </div>
+
+                      <div>
+                        <Icon.Search className='icon-style' size='16px' strokeWidth='4' color='white' onClick={btnSearchClicked} style={{ cursor: 'pointer', marginRight: "1rem" }} />
+                      </div>
+                      <React.Fragment>
+                        <input
+                          onBlur={onBlurSearchInput}
+                          ref={textInput} value={searchText}
+                          type={'text'}
+                          name="search"
+                          placeholder="Search.."
+                          onChange={onValueSearchChange} >
+                        </input>
+                      </React.Fragment>
+                    </div>
+                  </div>
+                  <div className='body-content'>
+                    <div className='list-grid'>
+                      {searchText.length && !filteredMovies.length ?
+                        <div style={{ color: 'white', fontWeight: "bold", fontSize: '24px' }} >No results found</div>
+                        :
+                        showedMovies.map(item =>
+                        (item.uri_avatar != null &&
+                          <div className='grid-container' onClick={handleMovieClicked(item)}>
+                            <div className=' item-grid multi-landing-stack-space-holder w-100 h-100'>
+                              <img onError={
+                                (e) => e.currentTarget.src = DefaultImage
+                              } style={{ borderRadius: '4px', }} className="title-card w-100 h-100" src={item.uri_avatar} alt={item.m_name} />
+                            </div>
+                            <div className='name-label'>
+                              {item.name}
+                            </div>
+                          </div>
+                        )
+                        )
+                      }
+                    </div>
+                    {isFetching &&
+                      <div style={{ display: 'flex', marginBottom: '10px', width: '100%', justifyContent: 'center' }}>
+                        <div className="spinner-border spinner-color" role="status">
                         </div>
                       </div>
-                    )
-                    )
-                  }
-
-                </div>
-                {isFetching &&
-                  <div style={{ display: 'flex', marginBottom: '10px', width: '100%', justifyContent: 'center' }}>
-                    <div className="spinner-border spinner-color" role="status">
-                    </div>
+                    }
                   </div>
-                }
-              </div>
-            </div>
+                </div>
+                :
+                <div className=" position-absolute d-flex " style={{ top: '0', zIndex: '10', width: '100%', backgroundColor: '#242526' }} >
+                  <div className='position-relative w-100' >
+                    <div className={`absolute__top`} style={{ zIndex: '7', justifyContent: "space-between" }}>
+                      <div className={`icon-container`} style={{ zIndex: '7', }} onClick={() => setClickedMovie('')}>
+                        <IconBackArrow className={'icon-back'} />
+                        <span>Back</span>
+                      </div>
+                    </div>
+                    <DetailPageGroupStreaming idMovie={choosedMovie} setClickedMovie={setClickedMovie} members={members} handlePlay={handleMovieUrlClick} item={clickedMovie} />
+                  </div>
+                </div>
+              }
 
+            </div>
           </div>
 
           <div className={`group-chat-box ${!openedChatBox && 'active'}`} >
