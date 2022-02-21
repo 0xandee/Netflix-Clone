@@ -37,7 +37,7 @@ instance.interceptors.response.use((response) => {
             return instance(originalRequest);
         }
         else if (request_token_status === 401) {
-            
+
             await requestLogout(localStorage.getItem('refresh_token'))
             localStorage.clear()
             document.location.href = '/signin'
@@ -112,7 +112,7 @@ export const requestForgotPassword = async (email) => {
 
 export const getProfile = async (token) => {
     return new Promise((resolve, reject) => {
-        instance.put(authApi.urlProfile
+        fetch(authApi.urlProfile
             , {
                 crossDomain: true,
                 method: "GET",
@@ -157,23 +157,25 @@ export const requestChangePass = async (oldPassword, newPassword) => {
     })
 }
 
-export const requestUpdateProfile = async (data) => {
+export const requestUpdateProfile = async (data, token) => {
     return new Promise((resolve, reject) => {
-        instance.put(authApi.urlProfile,
-            // {
-            // crossDomain: true,
-            // method: "PUT",
-            // mode: 'cors',
-            // headers: {
-            //     'Content-Type': 'application/json',
-            //     'Authorization': "Bearer " + token,
-            // },
-            // body: JSON.stringify(
+        fetch(authApi.urlProfile,
             {
-                gender: data.gender,
-                email: data.email,
-                dob: data.dob,
-                country: data.country,
+                crossDomain: true,
+                method: "PUT",
+                mode: 'cors',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': "Bearer " + token,
+                },
+                body: JSON.stringify(
+                    {
+                        gender: data.gender,
+                        email: data.email,
+                        dob: data.dob,
+                        country: data.country,
+                    }
+                )
             }
         )
             .then(response => {

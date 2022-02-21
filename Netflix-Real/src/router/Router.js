@@ -31,13 +31,13 @@ const FinalRoute = (props) => {
         return <Redirect to='/signin' />
 
     }
-    // else if (route.meta === undefined && getToken() != null && localStorage.getItem('new_user') == 'true') {
+    else if (route.meta === undefined && getToken() != null && localStorage.getItem('new_user') == 'true') {
      
-    //     return <Redirect to='/choosetype' />
-    // }
-    // else if (route.meta && route.meta.authRoute && getToken() != null && localStorage.getItem('new_user') == 'false') {
-    //     return <Redirect to='/' />
-    // }
+        return <Redirect to='/choosetype' />
+    }
+    else if (route.meta && route.meta.authRoute && getToken() != null && localStorage.getItem('new_user') == 'false') {
+        return <Redirect to='/' />
+    }
  
     return <route.component {...props} />
 }

@@ -49,7 +49,7 @@ const InviteToast = (props) => (
       <span role='img' aria-label='toast-text'>
         {props.data != null ?
           props.data :
-          'Link room is already in clipboard. You can invite another by giving them this link (max 10)'
+          'You can invite another by giving them url of this room (max 10)'
         }
       </span>
     </div>
@@ -290,7 +290,7 @@ const GroupStreaming = () => {
   }, [socket])
 
   useEffect(() => {
-    navigator.clipboard.writeText(window.location.href)
+  //  navigator.clipboard.writeText(window.location.href)
     handleRefreshButton()
   }, []);
 
@@ -322,7 +322,7 @@ const GroupStreaming = () => {
           }
 
           <div className='group-player position-relative '>
-            <div onClick={handleMovieClicked('test')} className={`icon-chevron--right ${openedChatBox && 'active'}`} onClick={handleOpenChatBox} style={{ zIndex: '5' }}>
+            <div  className={`icon-chevron--right ${openedChatBox && 'active'}`} onClick={handleOpenChatBox} style={{ zIndex: '5' }}>
               {!openedChatBox ?
                 <IconChevronRight />
                 :

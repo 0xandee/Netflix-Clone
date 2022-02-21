@@ -76,7 +76,7 @@ const GeneralProfile = () => {
   const saveClicked = async () => {
     try {
       const response = await requestUpdateProfile({ email, country: country.value, dob: dob.toISOString().slice(0, 10), gender: gender.value },getToken())
-      if (response.status >= 200 && response.status < 299) {
+      if (response.status === 200 ) {
         notifySuccess()
         setIsChange(false)
       }
@@ -135,11 +135,12 @@ const GeneralProfile = () => {
                 <Label for='username'>Email</Label>
                 <Input
                   name='email'
+                  disabled
                   placeholder='Email'
                   value={email}
-                  onChange={(value) => {
+                  onChange={(e) => {
                     setIsChange(true)
-                    setEmail(value)
+                    setEmail(e.target.value)
                   }}
                   style={{ background: '#fff', border: '1px solid gray', height: '50px' }}
                 />
