@@ -90,21 +90,21 @@ const PreviewButtonControl = (props) => {
 
     }
 
-    const dislikeClicked = async () => {
-        try {
-            const response = await isLikeOrDislike(item.id, 0, getToken())
-            if (response.status === 200) {
-                setLikeOrDislike(0)
-            }
-            else if (response.status === 500) {
-                history.push('/maintenance')
-            }
-        }
-        catch {
-            // history.push('/maintenance')
-        }
+    // const dislikeClicked = async () => {
+    //     try {
+    //         const response = await isLikeOrDislike(item.id, 0, getToken())
+    //         if (response.status === 200) {
+    //             setLikeOrDislike(0)
+    //         }
+    //         else if (response.status === 500) {
+    //             history.push('/maintenance')
+    //         }
+    //     }
+    //     catch {
+    //         // history.push('/maintenance')
+    //     }
 
-    }
+    // }
 
     const playClicked = async () => {
         try {
