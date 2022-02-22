@@ -329,6 +329,14 @@ const GroupStreaming = () => {
                 <IconChevronLeft />
               }
             </div>
+            {!isHost &&
+              <div className={``} style={{ zIndex: '5', justifyContent: "space-between", marginLeft: '15px' }}>
+                <div className={`icon-container position-absolute`} style={{ zIndex: '5', top: '50px' }} onClick={() => history.push('/home')}>
+                  <IconBackArrow className={'icon-back'} />
+                  <span>Back to Home2</span>
+                </div>
+              </div>
+            }
             <VideoPlayer socket={socket} roomnum={roomnum} movieURL={movieURL} handleOpenMovieRecommend={handleOpenMovieRecommend} />
 
             <div id="movieRecommend" onScroll={handleScroll}
@@ -337,7 +345,7 @@ const GroupStreaming = () => {
               {!clickedMovie ?
                 <div>
                   <div className=" position-absolute d-flex justify-content-between align-items-center " style={{ top: '0', zIndex: '5', width: '100%', backgroundColor: '#242526' }} >
-                    <div className={``} style={{ zIndex: '5', justifyContent: "space-between", marginLeft: '15px'}}>
+                    <div className={``} style={{ zIndex: '5', justifyContent: "space-between", marginLeft: '15px' }}>
                       <div className={`icon-container`} style={{ zIndex: '5', }} onClick={() => history.push('/home')}>
                         <IconBackArrow className={'icon-back'} />
                         <span>Back to Home</span>

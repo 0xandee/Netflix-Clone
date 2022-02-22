@@ -83,7 +83,7 @@ const Homepage = () => {
                 }
                 else if (response.status == 403) {
                     setOpen(true)
-                }           
+                }
                 else {
                     setIsFetching(false)
                 }
@@ -126,7 +126,7 @@ const Homepage = () => {
             }
 
         });
- 
+
     }, [dataTypes])
 
     useEffect(() => {
@@ -167,7 +167,7 @@ const Homepage = () => {
     return (
         <div className="overflow-x-hidden bg-black w-100" ref={homePageRef} style={{ minHeight: '100vh' }}>
             <NavigationBar />
-            <div className="h-100" style={{ minHeight: '75vh', paddingTop: '5vh' }}>
+            <div className="h-100" style={{ minHeight: '80vh', paddingTop: '5vh' }}>
                 {/* <div className='text-light mb-3' onClick={() => localStorage.setItem('access_token', '1')}>
                     REmove token key
                 </div> */}
@@ -187,8 +187,10 @@ const Homepage = () => {
             <CustomModal isOpen={open} onClick={toggleModal} headerText={"Session Timed out"} buttonText='Back to log in page' bodyText=
                 {"Look like your log in session have been timed out. So please log in again.\nWe are so sorry for this inconvenience"
                 } />
-
-            <Footer key = 'homepage' />
+            {/* <div style={{ position: 'absolute', bottom: '0', }}>
+                <Footer key='homepage' />
+            </div> */}
+            <Footer key='homepage' />
         </div>
     );
 };
