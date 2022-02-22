@@ -160,7 +160,7 @@ const SignIn = () => {
                                     Forgot password ?
                                 </NavLink>
                             </span>
-                            <div style={{ display: 'flex', flexDirection: 'row', color: '#c8c8c8', size: '14', marginTop: '40px', justifyContent: 'center' }}>
+                            <div style={{ display: 'flex',height: '100%', flexDirection: 'row', color: '#c8c8c8', size: '14', marginTop: '20px', justifyContent: 'center' }}>
                                 <span> Don't have account yet?
                                 </span>
                                 <NavLink className={`sign-up`} to='/signup/registration' >
