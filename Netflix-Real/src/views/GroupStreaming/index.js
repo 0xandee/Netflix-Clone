@@ -290,7 +290,7 @@ const GroupStreaming = () => {
   }, [socket])
 
   useEffect(() => {
-  //  navigator.clipboard.writeText(window.location.href)
+    //  navigator.clipboard.writeText(window.location.href)
     handleRefreshButton()
   }, []);
 
@@ -322,7 +322,7 @@ const GroupStreaming = () => {
           }
 
           <div className='group-player position-relative '>
-            <div  className={`icon-chevron--right ${openedChatBox && 'active'}`} onClick={handleOpenChatBox} style={{ zIndex: '5' }}>
+            <div className={`icon-chevron--right ${openedChatBox && 'active'}`} onClick={handleOpenChatBox} style={{ zIndex: '5' }}>
               {!openedChatBox ?
                 <IconChevronRight />
                 :
@@ -336,7 +336,13 @@ const GroupStreaming = () => {
               style={{ position: 'absolute', width: '100%', height: '100%', backgroundColor: '#242526', zIndex: 4, overflowX: 'auto', paddingTop: '60px' }}>
               {!clickedMovie ?
                 <div>
-                  <div className=" position-absolute d-flex justify-content-end" style={{ top: '0', zIndex: '5', width: '100%', backgroundColor: '#242526' }} >
+                  <div className=" position-absolute d-flex justify-content-between align-items-center " style={{ top: '0', zIndex: '5', width: '100%', backgroundColor: '#242526' }} >
+                    <div className={``} style={{ zIndex: '5', justifyContent: "space-between", marginLeft: '15px'}}>
+                      <div className={`icon-container`} style={{ zIndex: '5', }} onClick={() => history.push('/home')}>
+                        <IconBackArrow className={'icon-back'} />
+                        <span>Back to Home</span>
+                      </div>
+                    </div>
                     <div className={`search-box ${isShown && 'input-search'} ${openedMovieRecommend ? '' : 'd-none'}`} style={{ marginRight: "7rem" }}>
                       <div >
                         <div >
