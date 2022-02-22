@@ -56,7 +56,7 @@
     }
     &--right {
       @extend .icon-chevron;
-      right: 0;
+      right: 5px;
       &.active {
         right: 0.5%;
       }
