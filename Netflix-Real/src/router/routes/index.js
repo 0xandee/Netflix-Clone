@@ -1,5 +1,4 @@
 import { lazy } from 'react'
-
 // ** Document title
 const TemplateTitle = ''
 

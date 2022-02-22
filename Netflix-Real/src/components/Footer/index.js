@@ -32,7 +32,7 @@ const Footer = (props) => {
 
     return (
         <div id='footer'>
-            <div className={`footer`} style={props.style}>
+            <div className={`footer py-4`} style={props.style}>
                 <div className={`footer__content`}>
                     <div className={`footer__content--top-site`}>
                         <NavLink to='/contactus'>

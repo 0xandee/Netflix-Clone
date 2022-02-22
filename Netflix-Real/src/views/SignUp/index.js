@@ -1,8 +1,6 @@
 import React from "react";
 import './signUp.scss'
-
 import {  NavLink } from "react-router-dom";
-
 import { IconCheckmark } from "../../assets/Icon";
 import { Footer } from "../../components";
 

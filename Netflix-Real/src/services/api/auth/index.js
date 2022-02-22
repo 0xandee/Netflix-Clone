@@ -132,21 +132,22 @@ export const getProfile = async (token) => {
     })
 }
 
-export const requestChangePass = async (oldPassword, newPassword) => {
+export const requestChangePass = async (oldPassword, newPassword,token) => {
     return new Promise((resolve, reject) => {
-        instance.put(authApi.urlChangePassword,
-            // crossDomain: true,
-            // method: "PUT",
-            // mode: 'cors',
-            // headers: {
-            //     'Content-Type': 'application/json',
-            //     'Authorization': "Bearer " + token,
-            // },
-            // body: JSON.stringify(
+        fetch(authApi.urlChangePassword,
+            {crossDomain: true,
+            method: "PUT",
+            mode: 'cors',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': "Bearer " + token,
+            },
+            body: JSON.stringify(
             {
                 oldPassword,
                 newPassword
             }
+            )}
         )
             .then(response => {
                 resolve(response)

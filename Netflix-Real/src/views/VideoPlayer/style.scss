@@ -120,7 +120,8 @@ $icon-color: white;
             position: relative;
             display: flex;
             flex-direction: column;
-
+            justify-content: space-evenly;
+            box-sizing: border-box;
             &__bar {
                 box-sizing: border-box;
                 float: none;

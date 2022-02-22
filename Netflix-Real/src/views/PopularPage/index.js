@@ -1,10 +1,8 @@
 import React, {  useState, useCallback, useEffect } from "react";
 import './style.scss';
 import { Footer, NavigationBar, CustomModal } from "../../components";
-import { useSelector, useDispatch } from 'react-redux';
-import { setMovieTypes } from "../../services/redux/actions";
 import {  useHistory } from "react-router-dom";
-import {  getMoviesByListID,  getMovieTypeAPI, getRecommUserMoviesState1 } from "../../services/api/movie";
+import {  getMoviesByListID, getRecommUserMoviesState1 } from "../../services/api/movie";
 import { getToken } from "../../services/function";
 import DefaultImage from '../../assets/Images/defaultImage.png';
 
@@ -74,9 +72,9 @@ const PopularPage = (props) => {
                 else if (response.status === 403) {
                     setOpen(true)
                 }
-                else if (response.status === 500) {
-                    history.push('/maintenance')
-                }
+                // else if (response.status === 500) {
+                //     history.push('/maintenance')
+                // }
             }
             catch (error) {
                 //history.push('/maintenance')

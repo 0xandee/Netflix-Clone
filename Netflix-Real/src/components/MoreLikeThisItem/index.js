@@ -1,14 +1,55 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import '../Episodes/Episodes.scss';
 import { favMoviePost } from '../../services/api/user';
 import { useHistory } from "react-router-dom";
 import { getToken } from '../../services/function';
 import { useState } from 'react';
 import { Tooltip } from 'reactstrap';
+import { toast } from 'react-toastify';
+
+const SuccessToast = (props) => (
+    <Fragment>
+      <div className='toastify-header'>
+        <div className='title-wrapper'>
+       
+        </div>
+      </div>
+      <div className='toastify-body'>
+        <span role='img' aria-label='toast-text'>
+          {props.data != null ?
+            props.data :
+            'Successfully added movie to playlist'
+          }
+        </span>
+      </div>
+    </Fragment>
+  )
+
+  const InfoToast = (props) => (
+    <Fragment>
+      <div className='toastify-header'>
+        <div className='title-wrapper'>
+        </div>
+      </div>
+      <div className='toastify-body'>
+        <span role='img' aria-label='toast-text'>
+          {props.data != null ?
+            props.data :
+            'Movie is already in Playlist!!'
+          }
+        </span>
+      </div>
+    </Fragment>
+  )
+
 const MoreLikeThisItem = (props) => {
     const { item } = props
     const history = useHistory()
     const [iconAdd, setAdd] = useState(false);
+
+    const notifySuccess = (data) => toast.success(<SuccessToast data={data} />, { position: toast.POSITION.TOP_CENTER, hideProgressBar: true })
+    const notifyInfo = (data) => toast.info(<InfoToast data={data} />, { position: toast.POSITION.TOP_CENTER, hideProgressBar: true })
+
 
     const toggleAddPlaylist = () => setAdd(!iconAdd);
 
@@ -20,12 +61,17 @@ const MoreLikeThisItem = (props) => {
         e.stopPropagation();
         try {
             const response = await favMoviePost(item.id, getToken())
-            if (response.status === 200) {
-                history.push('/maintenance')
+            if (response.status === 201) {
+                notifySuccess()
             }
+            
         }
-        catch {
-            history.push('/maintenance')
+        catch (err) {
+            if(err.response.status === 422)
+            {
+                notifyInfo()
+            }
+            //  history.push('/maintenance')
         }
 
     }

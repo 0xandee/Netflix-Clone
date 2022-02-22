@@ -43,7 +43,8 @@ $gray: #8c8c8c;
 
         border-bottom: transparent;
         .sign-in__header__logo {
-            height: 70px;
+            max-height: 70px;
+            height: 5vh;
             margin-left: 3%;
             margin-top: 1vh;
             fill:red;
@@ -63,7 +64,8 @@ $gray: #8c8c8c;
             flex-direction: column;
             display: flex;
 
-            min-height: 450px;
+            height: 430px;
+           
             
             width: 100%;
             min-width: 360px;
@@ -115,7 +117,7 @@ $gray: #8c8c8c;
 
                 &__title {
                     color: #fff;
-                    font-size: 32px;
+                    font-size: 28px;
                     font-weight: 700;
 
                     margin-bottom: 28px;

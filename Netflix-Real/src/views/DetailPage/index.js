@@ -7,6 +7,9 @@ import { useHistory } from 'react-router-dom';
 import { getToken } from '../../services/function';
 import { Col, Row } from 'reactstrap';
 
+
+
+
 const DetailPage = (props) => {
     const { idMovie } = useParams()
     const [dataMovie, setDataMovie] = useState([]);
@@ -15,6 +18,7 @@ const DetailPage = (props) => {
     const history = useHistory();
     const [open, setOpen] = useState(false);
     const [percentMatched, setPercentMatched] = useState(0);
+
 
     const toggleModal = () => {
         localStorage.clear()
@@ -29,6 +33,7 @@ const DetailPage = (props) => {
                 const response = await getMovieAPI(idMovie.toString())
                 if (response.status === 200) {
                     let data = await response.data
+                    console.log("🚀 ~ file: index.js ~ line 36 ~ fetchData ~ data", data)
                     setDataMovie(data)
 
                 }
@@ -53,12 +58,13 @@ const DetailPage = (props) => {
                 if (response.status === 200) {
                     const data = await response.json()
                     setPercentMatched(data.percentage_match)
-                    const res = await getMoviesByListID(data.list_recommend.map((key) => key.id), getToken())
+                    const res = await getMoviesByListID(data.list_recommend.slice(0, 20).map((key) => key.id != 0 &&key.id), getToken())
                     const data2 = await res.data
-                    const result = data2.map(v => ({ ...v, ...data.list_recommend.find(sp => sp.id === v.id )}));
+                    const result = data2.map(v => ({ ...v, ...data.list_recommend.find(sp => v != null && sp.id === v.id )}));
 
-                    setRecommendedMovies(result.slice(0, 20));
+                     setRecommendedMovies(result);
                     setIsFetching(false)
+
                 }
                 else if (response.status === 403) {
                     setOpen(true)
@@ -108,7 +114,7 @@ const DetailPage = (props) => {
                                 <div className="pb-3 d-flex flex-column justify-content-center align-items-center">
 
                                     {recommendedMovies.length && recommendedMovies.map((item) =>
-                                        item.id != idMovie && 
+                                        item.id != idMovie &&
                                         <MoreLikeThisItem key={item.id} item={item} />
                                     )}
 

@@ -30,7 +30,7 @@ instance.interceptors.response.use((response) => {
 }, async function (error) {
   const originalRequest = error.config;
   
-  if (error.response.status == 401) {
+  if (error.response.status == 401 && !originalRequest._retry) {
     originalRequest._retry = true;
     const request_token_status = await requestRefreshToken();
     if (request_token_status === 200) {
@@ -364,13 +364,28 @@ export const deleteWatchingList = async (idMovie) => {
 }
 
 //0: Dislike, 1: Like
-export const isLikeOrDislike = async (idMovie, value) => {
+export const isLikeOrDislike = async (idMovie, value,token) => {
   return new Promise((resolve, reject) => {
-    instance.post(movieApi.urlIsLike, {
-      idMovie,
-      value: value
-    }
-    )
+    // instance.post(movieApi.urlIsLike, {
+    //   id_movie: idMovie,
+    //   value: value
+    // }
+    // )
+    fetch(movieApi.urlIsLike
+      , {
+          crossDomain: true,
+          method: "POST",
+          mode: 'cors',
+          headers: {
+              'Content-Type': 'application/json',
+              'Authorization': "Bearer " + token,
+          },
+          body: JSON.stringify({ 
+            id_movie:idMovie,
+            value
+          })
+      }
+  )
       .then(response => {
         resolve(response)
       })

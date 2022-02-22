@@ -58,7 +58,7 @@
     border-width: 2px;
     background-color: rgba(109, 109, 110, 0.7);
     border-color: rgba(255,255,255,.5);
-    color: white;
+    color: green;
     &:hover{
         opacity: 0.5;
         transition: ease-in-out 0.3s;
@@ -114,7 +114,15 @@
     color: white;
     height: 2rem;
     width: 2rem;
+    &.is_liked{
+        color:#00D039
+    }
+    &.is_disliked{
+        color:#F50002;
+    }
 }
+
+
 
 .CloseIcon_icon {
     color: white;
