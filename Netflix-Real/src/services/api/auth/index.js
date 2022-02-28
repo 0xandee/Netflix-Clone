@@ -12,7 +12,7 @@ instance.interceptors.request.use(
             config.headers = {
                 'Authorization': `Bearer ${token}`,
                 'Accept': 'application/json',
-                'Content-Type': 'application/x-www-form-urlencoded'
+                'Content-Type': 'application/json'
             }
         }
 
@@ -37,7 +37,6 @@ instance.interceptors.response.use((response) => {
             return instance(originalRequest);
         }
         else if (request_token_status === 401) {
-
             await requestLogout(localStorage.getItem('refresh_token'))
             localStorage.clear()
             document.location.href = '/signin'
@@ -112,17 +111,18 @@ export const requestForgotPassword = async (email) => {
 
 export const getProfile = async (token) => {
     return new Promise((resolve, reject) => {
-        fetch(authApi.urlProfile
-            , {
-                crossDomain: true,
-                method: "GET",
-                mode: 'cors',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': "Bearer " + token,
-                },
-            }
-        )
+        instance.get(authApi.urlProfile)
+            // fetch(authApi.urlProfile
+            //     , {
+            //         crossDomain: true,
+            //         method: "GET",
+            //         mode: 'cors',
+            //         headers: {
+            //             'Content-Type': 'application/json',
+            //             'Authorization': "Bearer " + token,
+            //         },
+            //     }
+            // )
             .then(response => {
                 resolve(response)
             })
@@ -132,23 +132,29 @@ export const getProfile = async (token) => {
     })
 }
 
-export const requestChangePass = async (oldPassword, newPassword,token) => {
+export const requestChangePass = async (oldPassword, newPassword, token) => {
     return new Promise((resolve, reject) => {
-        fetch(authApi.urlChangePassword,
-            {crossDomain: true,
-            method: "PUT",
-            mode: 'cors',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': "Bearer " + token,
-            },
-            body: JSON.stringify(
-            {
-                oldPassword,
-                newPassword
-            }
-            )}
-        )
+        instance.put(authApi.urlChangePassword, {
+            oldPassword,
+            newPassword
+        })
+            // fetch(authApi.urlChangePassword,
+            //     {
+            //         crossDomain: true,
+            //         method: "PUT",
+            //         mode: 'cors',
+            //         headers: {
+            //             'Content-Type': 'application/json',
+            //             'Authorization': "Bearer " + token,
+            //         },
+            //         body: JSON.stringify(
+            //             {
+            //                 oldPassword,
+            //                 newPassword
+            //             }
+            //         )
+            //     }
+            // )
             .then(response => {
                 resolve(response)
             })
@@ -160,25 +166,31 @@ export const requestChangePass = async (oldPassword, newPassword,token) => {
 
 export const requestUpdateProfile = async (data, token) => {
     return new Promise((resolve, reject) => {
-        fetch(authApi.urlProfile,
-            {
-                crossDomain: true,
-                method: "PUT",
-                mode: 'cors',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': "Bearer " + token,
-                },
-                body: JSON.stringify(
-                    {
-                        gender: data.gender,
-                        email: data.email,
-                        dob: data.dob,
-                        country: data.country,
-                    }
-                )
-            }
-        )
+        instance.put(authApi.urlProfile, {
+            gender: data.gender,
+            email: data.email,
+            dob: data.dob,
+            country: data.country,
+        })
+            // fetch(authApi.urlProfile,
+            //     {
+            //         crossDomain: true,
+            //         method: "PUT",
+            //         mode: 'cors',
+            //         headers: {
+            //             'Content-Type': 'application/json',
+            //             'Authorization': "Bearer " + token,
+            //         },
+            //         body: JSON.stringify(
+            //             {
+            //                 gender: data.gender,
+            //                 email: data.email,
+            //                 dob: data.dob,
+            //                 country: data.country,
+            //             }
+            //         )
+            //     }
+            // )
             .then(response => {
                 resolve(response)
             })

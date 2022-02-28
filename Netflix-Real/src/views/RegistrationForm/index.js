@@ -137,7 +137,7 @@ const RegistrationForm = () => {
             if (res.status === 200) {
                 setSeconds(59)
             }
-            else {
+            else  if (res.status === 500) {
                 history.push('maintenance')
             }
         }

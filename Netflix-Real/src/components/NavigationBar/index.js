@@ -154,7 +154,7 @@ const NavigationBar = (props) => {
                         <Link to={`/watchgroup/${idgroup}`} className="text-decoration-none text-light">
                             <div style={{ textAlign: 'center', paddingRight: '2vw', cursor: 'pointer', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                                 <Icon.Plus className='icon-style' style={{ color: 'white' }} />
-                                <span className='text-white text-center' style={{fontSize: '14px' }} >Create Group</span>
+                                <span className='text-white text-center' style={{fontSize: '12px' }} >Create Group</span>
                             </div>
                         </Link>
                     </div>

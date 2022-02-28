@@ -73,9 +73,25 @@ const GeneralProfile = () => {
     })
   };
 
+  const convertDateIntoYYYYMMDD = (date) => {
+    const offset = date.getTimezoneOffset()
+    date = new Date(date.getTime() - (offset * 60 * 1000))
+    // dates.push(currentDate.toISOString().split('T')[0]);
+
+    return (date.getFullYear()
+      + '-' +
+      ((date.getMonth() > 8) ?
+        (date.getMonth() + 1) :
+        ('0' + (date.getMonth() + 1)))
+      + '-' +
+      ((date.getDate() > 9) ?
+        date.getDate() : ('0' + date.getDate())))
+  }
+
+
   const saveClicked = async () => {
     try {
-      const response = await requestUpdateProfile({ email, country: country.value, dob: dob.toISOString().slice(0, 10), gender: gender.value },getToken())
+      const response = await requestUpdateProfile({ email, country: country.value, dob:convertDateIntoYYYYMMDD (new Date(dob)), gender: gender.value },getToken())
       if (response.status === 200 ) {
         notifySuccess()
         setIsChange(false)
@@ -85,6 +101,7 @@ const GeneralProfile = () => {
       }
     }
     catch (error) {
+     
       notifyError()
     }
   }
@@ -105,7 +122,7 @@ const GeneralProfile = () => {
       try {
         let response = await getProfile(getToken())
         if (response.status === 200) {
-          let data = await response.json()
+          let data = await response.data
           setEmail(data.email)
           setGender(genderData.find(option => option.value === data.gender))
           setDob(new Date(data.dob))
@@ -181,8 +198,7 @@ const GeneralProfile = () => {
                   value={dob}
                   style={{ background: 'white', height: '50px', border: '1px solid gray' }}
                   onChange={date => {
-
-
+                    console.log('date',convertDateIntoYYYYMMDD (new Date(date[0])))
                     setIsChange(true)
                     setDob(date[0])
                   }}

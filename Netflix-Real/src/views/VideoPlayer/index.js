@@ -311,6 +311,7 @@ const VideoPlayer = ({ socket, roomnum, videoURL, handleOpenMovieRecommend }) =>
             if (socket === undefined) {
                 if (playedRef.current != null && playedRef.current < 0.9) {
                     await addWatchingList(idMovie.toString(), playedRef.current, getToken())
+
                     await updateTimeWatched(idMovie.toString(), Math.round((seconds / duration) * 5), getToken())
                 }
             }
@@ -408,7 +409,7 @@ const VideoPlayer = ({ socket, roomnum, videoURL, handleOpenMovieRecommend }) =>
                     setUrl(data.currVideo)
                 }
                 if (playedRef.current != hostTime || playingRef.current != hostState) {
-                 
+
                     if (!host) {
                         handleOpenMovieRecommend(false)
                         volumeRef.current = data.muted
