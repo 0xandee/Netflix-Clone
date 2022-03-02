@@ -9,7 +9,7 @@
 .nav-bar {
     position: fixed;
     width: 100%;
-    height: 4vw;
+    height: 5vh;
     min-height: 40px;
     max-height: 65px;
     top: 0;
@@ -46,19 +46,20 @@
     }
     .nav-element {
         position: relative;
-        margin-right: 2.5vw;
+        margin-right: 2vw;
     }
 
     .secondary-navigation {
         display: flex;
         align-items: center;
+        justify-content: space-between;
     }
 
     .icon-style {
         background-color: transparent;
         border: none;
         size: 16px;
-        stroke-width: 4;
+        stroke-width: 3;
         margin-right: 5px;
     }
     .search-box {
@@ -101,7 +102,7 @@
         color: #fff;
     }
     input[type="text"]:focus {
-        width: 230px;
+        width: 200px;
     }
 
     button {

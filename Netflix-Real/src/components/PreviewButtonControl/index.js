@@ -47,7 +47,7 @@ const PreviewButtonControl = (props) => {
     const { item } = props
     const [iconAddPlaylist, setIconAddPlaylist] = useState(false);
     const [iconLike, setIconLike] = useState(false);
-    const [iconDislike, setIconDislike] = useState(false);
+    //const [iconDislike, setIconDislike] = useState(false);
     const [likeOrDislike, setLikeOrDislike] = useState(item.is_like);
 
     const notifySuccess = (data) => toast.success(<SuccessToast data={data} />, { position: toast.POSITION.TOP_CENTER, hideProgressBar: true })
@@ -55,7 +55,7 @@ const PreviewButtonControl = (props) => {
 
     const toggleAddPlaylist = () => setIconAddPlaylist(!iconAddPlaylist);
     const toggleLike = () => setIconLike(!iconLike);
-    const toggleDislike = () => setIconDislike(!iconDislike);
+    //const toggleDislike = () => setIconDislike(!iconDislike);
     const history = useHistory()
     const addFavoriteClicked = async () => {
         try {
@@ -124,7 +124,7 @@ const PreviewButtonControl = (props) => {
     return (
         <div className="position-relative px-4">
             <Row lg='9' sm='12' className=" PreviewButton__container PreviewButton__float-left-container">
-                <Col sm='12' lg='4' className=" my-3 PlayButton__primary-color PlayButton__primary-button d-flex flex-row justify-content-center align-items-center" onClick={playClicked} >
+                <Col xs='12' sm='5'  lg='4' className=" my-3 PlayButton__primary-color PlayButton__primary-button d-flex flex-row justify-content-center align-items-center" onClick={playClicked} >
                     <div className="PlayIcon_icon-container px-2">
                         <div id="PlayIcon" className="PlayIcon_icon">
                             <svg viewBox="0 0 24 24">
@@ -135,7 +135,7 @@ const PreviewButtonControl = (props) => {
                     </div>
                     <span className="PlayButton__primary-text PlayButton__primary-text-transform plr-2 ">Play</span>
                 </Col>
-                <Col sm='12' md='12' lg='6' xl='4' className="d-flex justify-content-around mx-3">
+                <Col xs='12' sm='6' md='4' lg='4' xl='3' className="d-flex justify-content-around mx-3">
                     <div id="AddIcon" >
                         <div className="PlayButton__secondary-color PlayButton__secondary-button mr-2" onClick={addFavoriteClicked}>
                             <div className="PlayIcon_icon-container">

@@ -7,6 +7,7 @@ import * as Icon from 'react-feather';
 
 import CustomDropdown from '../Dropdown';
 import { IconNetflix } from '../../assets/Icon';
+import { UncontrolledTooltip } from 'reactstrap';
 
 
 const navTabs = [{ id: 0, label: "Home", navLink: '/home' },
@@ -14,13 +15,13 @@ const navTabs = [{ id: 0, label: "Home", navLink: '/home' },
 { id: 1, label: "Just for You", navLink: '/popular' },
 { id: 4, label: "My Playlist", navLink: '/playlist' }];
 
-const NavigationBar = (props) => {
+const NavigationBar = () => {
     const history = useHistory();
     const [isShown, setIsShown] = useState(false);
     const [isOpen, setOpen] = useState(false);
     const textInput = React.createRef(null);
     const [searchText, setSearchText] = useState('');
-    const [items, setItem] = useState(navTabs);
+    const items = navTabs;
     const [onToppage, setOnTopPage] = useState(false);
 
     const idgroup = localStorage.getItem('username');
@@ -132,12 +133,18 @@ const NavigationBar = (props) => {
                     }
                 </div>
                 <div className='secondary-navigation'>
-                    <div className='position-relative nav-element'>
+                    <div className='position-relative nav-element d-flex'>
+                    <Link to={`/watchgroup/${idgroup}`} className="text-decoration-none text-light" id='createGroup'>
+                            <div style={{ textAlign: 'center',paddingRight:'30px',  cursor: 'pointer', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                                <Icon.Plus className='icon-style' style={{ color: 'white' }} />
+                                <Icon.Users className='icon-style' style={{ color: 'white' }} />
+                                {/* <span className='text-white text-center' style={{fontSize: '12px' }} >Create Group</span> */}
+                            </div>
+                        </Link>
                         <div className={`search-box  ${isShown && 'input-search'}`} >
                             <div>
                                 <Icon.Search className='icon-style' size='16px' strokeWidth='4' color='white' onClick={btnSearchClicked} />
                             </div>
-
                             <React.Fragment>
                                 <input
                                     onKeyPress={onSearchKeyPress}
@@ -151,12 +158,10 @@ const NavigationBar = (props) => {
                             </React.Fragment>
 
                         </div>
-                        <Link to={`/watchgroup/${idgroup}`} className="text-decoration-none text-light">
-                            <div style={{ textAlign: 'center', paddingRight: '2vw', cursor: 'pointer', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                                <Icon.Plus className='icon-style' style={{ color: 'white' }} />
-                                <span className='text-white text-center' style={{fontSize: '12px' }} >Create Group</span>
-                            </div>
-                        </Link>
+                        
+                        <UncontrolledTooltip placement="auto" target='createGroup'>
+                            Create a new group for watching
+                        </UncontrolledTooltip>
                     </div>
 
                     <div className='nav-element'>

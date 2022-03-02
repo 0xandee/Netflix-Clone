@@ -4,12 +4,13 @@
   .header-genre {
     position: fixed;
     top: 0;
-    height: 13vh;
+    height: 12vh;
+    min-height: 90px;
     width: 100%;
     z-index: 3;
     .select-header {
       position: absolute;
-      bottom: 2%;
+      bottom: 5%;
       left: 3rem;
       width: 200px;
       z-index: 3;

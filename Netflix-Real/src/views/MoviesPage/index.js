@@ -43,9 +43,10 @@ const MoviesPage = (props) => {
     }
 
     const handleScroll = useCallback(() => {
-        if (window.innerHeight + document.documentElement.scrollTop !== document.documentElement.offsetHeight || isFetching) return;
+        
+        if (genreMovies.length === dataApiGenreMovies.length || window.innerHeight + document.documentElement.scrollTop >= document.documentElement.offsetHeight || isFetching ) return;
         setIsFetching(true);
-    }, []);
+    }, [isFetching,genreMovies,dataApiGenreMovies]);
 
     const fetchMoreListItems = () => {
         setTimeout(() => {
@@ -204,8 +205,7 @@ const MoviesPage = (props) => {
                     </div>
                     {isFetching &&
                         <div style={{ display: 'flex', marginBottom: '10px', width: '100%', justifyContent: 'center' }}>
-                            <div class="spinner-border spinner-color" role="status">
-
+                            <div className="spinner-border text-danger spinner-color" role="status">
                             </div>
                         </div>
 
