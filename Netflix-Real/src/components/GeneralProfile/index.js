@@ -198,7 +198,6 @@ const GeneralProfile = () => {
                   value={dob}
                   style={{ background: 'white', height: '50px', border: '1px solid gray' }}
                   onChange={date => {
-                    console.log('date',convertDateIntoYYYYMMDD (new Date(date[0])))
                     setIsChange(true)
                     setDob(date[0])
                   }}

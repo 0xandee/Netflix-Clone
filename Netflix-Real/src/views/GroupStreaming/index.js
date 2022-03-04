@@ -208,6 +208,7 @@ const GroupStreaming = () => {
       let data = []
       if (response.status === 200) {
         data = await response.data
+  
         setMovies(data)
 
       }
@@ -329,11 +330,11 @@ const GroupStreaming = () => {
                 <IconChevronLeft />
               }
             </div>
-            {!isHost &&
+            {!isHost && !openedMovieRecommend &&
               <div className={``} style={{ zIndex: '5', justifyContent: "space-between", marginLeft: '15px' }}>
                 <div className={`icon-container position-absolute`} style={{ zIndex: '5', top: '50px' }} onClick={() => history.push('/home')}>
                   <IconBackArrow className={'icon-back'} />
-                  <span>Back to Home2</span>
+                  <span>Back to Home</span>
                 </div>
               </div>
             }

@@ -71,7 +71,6 @@ const Homepage = () => {
                     const data = await response.json()
                     const res = await getMoviesByListID(data.map((key) => key.id), getToken())
                     const data2 = await res.data
-                    console.log("🚀 ~ file: index.js ~ line 74 ~ fetchData ~ data2", data2)
                     var genreMovie = {
                         id: 'recommend',
                         sliderTitle: 'Recommend for you',
