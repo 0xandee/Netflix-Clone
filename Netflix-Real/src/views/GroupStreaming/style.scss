@@ -212,7 +212,7 @@
     }
 
     /* Screen larger than 900px? 3 columns */
-    @media (min-width: 900px) {
+    @media (min-width: 700px) {
       .list-grid {
         grid-template-columns: repeat(2, 1fr);
       }
