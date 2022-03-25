@@ -1,17 +1,19 @@
 #navbar .brand-logo {
-    height: 28px;
+    height: 3vh;
+    max-height: 32px;
     font-size: 25px;
-    margin-right: 40px;
+    margin-right: 2vw;
     fill: #e50914;
+    cursor: pointer;
 }
 .nav-bar {
     position: fixed;
     width: 100%;
-    height: 4vw;
+    height: 5vh;
     min-height: 40px;
     max-height: 65px;
     top: 0;
-    padding: 1% 2%;
+    padding: 2% 2%;
     align-items: center;
     justify-content: center;
     display: flex;
@@ -19,7 +21,7 @@
     justify-content: space-between;
     box-sizing: border-box;
     background-color: #000000;
-    background: linear-gradient(to top, rgba(0,0,0,0), rgba(0,0,0,0.8));
+    background: linear-gradient(to top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.8));
     transition: background-color 0.4s;
     z-index: 100;
     &.top-page {
@@ -43,31 +45,47 @@
         align-items: center;
     }
     .nav-element {
-        margin-right: 2.5vw;
+        position: relative;
+        margin-right: 2vw;
     }
-    
+
     .secondary-navigation {
         display: flex;
         align-items: center;
+        justify-content: space-between;
     }
-    
+
     .icon-style {
         background-color: transparent;
         border: none;
         size: 16px;
-        stroke-width: 4;
+        stroke-width: 3;
+        margin-right: 5px;
     }
     .search-box {
-        position: static;
-        display: flex;
-        height: 95%;
+        position: absolute;   
+       
+        right: 0;
+
+        height: 100%;
         width: 20px;
+
+        display: flex;
+        justify-content: space-between;
         align-items: center;
+
         box-sizing: border-box;
+        z-index: 10;
+
+        background-color:transparent;
+       
+        overflow: hidden;
+        transition: width 1s;
         transition: width 0.4s ease-in-out;
     }
     .input-search {
-        width: 230px;
+        width: 200px;
+        background-color: black
     }
     input[type="text"] {
         box-sizing: border-box;
@@ -80,11 +98,13 @@
         border-radius: 4px;
         opacity: 1;
         background-color: #141414;
+        float: right;
+        color: #fff;
     }
     input[type="text"]:focus {
-        width: 230px;
+        width: 200px;
     }
-    
+
     button {
         border: none;
         background-color: transparent;
@@ -106,7 +126,7 @@
                 color: white;
             }
         }
-    
+
         .sub-menu-body {
             display: none;
             position: absolute;
@@ -128,7 +148,7 @@
             text-decoration: none;
             color: white;
             font-size: 13px;
-    
+
             &:hover {
                 background-color: #141414;
                 font-weight: 700;
@@ -143,7 +163,7 @@
             background: white;
         }
     }
-    
+
     .callout-arrow-browse {
         position: absolute;
         top: -16px;
@@ -154,6 +174,4 @@
         height: 0;
         width: 0;
     }
-    
 }
-

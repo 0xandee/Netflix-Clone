@@ -1,8 +1,9 @@
-import { IS_INFO_POP_UP } from "./constrains";
+import { SET_MOVIE_TYPES, IS_INFO_POP_UP } from "./constrains";
 
 var initialState = {
         // isPopUp : false, 
-        currentUser: {} 
+        currentUser: {} ,
+        movieTypes:[],
 };
 
 export const rootReducer = (state = initialState, action) => {
@@ -13,6 +14,12 @@ export const rootReducer = (state = initialState, action) => {
                 isPopUp: action.payload.isPopUp
             }
         }
+        case SET_MOVIE_TYPES: {
+          return {
+              ...state,
+              movieTypes: action.payload.movieTypes
+          }
+      }
 
         default:
             return state;

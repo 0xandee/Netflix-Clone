@@ -10,7 +10,6 @@ $gray: #8c8c8c;
     height: 100%;
     width: 100%;
 
-    overflow: hidden;
 
     z-index: 0;
 
@@ -20,7 +19,7 @@ $gray: #8c8c8c;
         display: block;
 
         height: 100%;
-        min-height: 120vh;
+        min-height: 100vh;
         width: 100%;
 
         overflow: hidden;
@@ -38,52 +37,39 @@ $gray: #8c8c8c;
         }
     }
     &__header {
-        position: absolute;
-        top: 0;
-
         width: 100%;
 
         padding: 10px 15px;
 
         border-bottom: transparent;
         .sign-in__header__logo {
-            height: 70px;
+            max-height: 70px;
+            height: 5vh;
             margin-left: 3%;
             margin-top: 1vh;
             fill:red;
         }
     }
     &__body {
-        min-width: 500px;
-        width: 35vw;
-        max-width: 750px;
-        min-height: 100vh;
-
-        margin: 0 auto -236px;
-        padding: 0 5%;
-
+       
+        width: 100vw;
+        
+        min-height: 60vh;
+        
+        padding: 0 2%;
         background-color: transparent;
 
-        &::before {
-            content: "";
-            height: 12vh;
-            display: block;
-        }
-        &::after {
-            content: "";
-            height: 12vh;
-            display: block;
-        }
         &__content {
             box-sizing: border-box;
             flex-direction: column;
             display: flex;
-
-            min-height: 660px;
+            
             width: 100%;
+            min-width: 360px;
+            max-width: 400px;
 
-            padding: 40px 68px;
-            margin-bottom: 290px;
+            padding: 2vw 5vh;
+            margin-bottom: 3vh;
 
             border-radius: 4px;
 
@@ -92,19 +78,32 @@ $gray: #8c8c8c;
                 box-sizing: border-box;
                 display: flex;
                 flex-direction: column;
+                justify-content: space-between; 
 
                 width: 100%;
-                min-height: 515px;
+                height: 100%;
+                min-height: 450px;
 
                 padding: 20px 0 30px;
+                .error-label {
+                    font-size: 12px;
+                    color: red;
 
+                    padding-top: 5px;
+                    padding-bottom: 15px;
+
+                    opacity:0;
+                    &.visible{
+                        opacity:1
+                    }
+                }
                 span {
                     color: $gray;
                     font-size: 12px;
 
                     display: flex;
                     align-items: center;
-                    justify-content: space-between;
+                    justify-content: flex-end;
                 }
                 a {
                     text-decoration: none;
@@ -117,7 +116,7 @@ $gray: #8c8c8c;
 
                 &__title {
                     color: #fff;
-                    font-size: 32px;
+                    font-size: 28px;
                     font-weight: 700;
 
                     margin-bottom: 28px;
@@ -132,6 +131,7 @@ $gray: #8c8c8c;
                     border-radius: 4px;
 
                     background-color: $red;
+                    cursor: pointer;
                     span {
                         font-size: 16px;
                         font-weight: 700;

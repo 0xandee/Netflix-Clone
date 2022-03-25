@@ -30,7 +30,7 @@ body {
 }
 
 .thumbSection {
-    padding-top: 4vh;
+    padding-top: 3vh;
     color: var(--colorWhite);
 }
 
@@ -58,6 +58,7 @@ body {
 
 .thumbTile__image {
     width: 100%;
+    height: 100%;
     border-radius: var(--tileBorderRadius);
 }
 
@@ -118,6 +119,7 @@ body {
     transition: all 0.2s ease-in-out;
     overflow: hidden;
     position:relative;
+    min-height: 100%;
     z-index:1;
     img{
         -webkit-transition:all .2s ease;
@@ -153,6 +155,7 @@ body {
 
 .swiper-container {
     overflow: visible;
+   
 }
 
 .controlPlayer {
@@ -247,4 +250,23 @@ body {
 .pl-4em {
     padding-top: 0.4em;
     padding-left: 0.4em;
+}
+
+.btn-container{
+    cursor:pointer;
+    border-width: 2px;
+    background-color: rgba(109, 109, 110, 0.7);
+    border-color: rgba(255,255,255,.5);
+    color: white;
+    border-radius: 80px;
+    padding: 0.5vw;
+    opacity: 1;
+    &:hover{
+        opacity: 0.7;
+        transition: ease-in-out 0.3s;
+    }
+
+    // &.red-background{
+    //     background-color:
+    // }
 }

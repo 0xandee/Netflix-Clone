@@ -91,6 +91,7 @@ $greyColor: #242526;
         background-color: #3A3B3C;
         border-radius: 0px 10px 10px 10px;
         padding: 0.5rem;
+       
       }
 
       span {
@@ -99,6 +100,14 @@ $greyColor: #242526;
         padding-left: 0.5rem;
         font-weight: 200;
       }
+    }
+    .welcome-message{
+      color: #b4b6be;
+        font-size: 14px;
+        padding-left: 0.5rem;
+        font-weight: 200;
+        overflow-wrap: break-word; 
+        text-align: center;
     }
     .mess-right {
       display: flex;

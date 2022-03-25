@@ -55,4 +55,17 @@ $input-focus-box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.1) !default;
       }
     }
   }
+  .error-label {
+    font-size: 12px;
+    color: red;
+
+    opacity: 0;
+    &.visible {
+      opacity: 1;
+    }
+  }
+  input[type="password"]::-ms-reveal,
+  input[type="password"]::-ms-clear {
+    display: none;
+  }
 }

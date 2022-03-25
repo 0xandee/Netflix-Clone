@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React from "react";
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
 
@@ -8,7 +8,6 @@ import "swiper/swiper.min.css";
 import SwiperCore, {
     Navigation,
 } from 'swiper/core';
-import { Link, useHistory, useLocation } from "react-router-dom";
 import './SliderGrid.scss';
 
 // install Swiper modules
@@ -31,9 +30,9 @@ const SliderGrid = (props) => {
         <div>
             {props.sliderMovieList.map(item => (
                 <SwiperSlide className="swiper-slide slide" onClick={props.handleMoreInfo}>
-                    <a className="thumbTile cursor-pointer" >
+                    <div className="thumbTile cursor-pointer" >
                         <img className="thumbTile__image" src={item.artworkLink} alt={item.movieName}/>
-                    </a>
+                    </div>
                     {/* <div className="controlPlayer pl-4em"></div> */}
                 </SwiperSlide>))}
         </div>          

@@ -1,0 +1,163 @@
+@mixin scrollbars($size, $foreground-color, $background-color: mix($foreground-color, white, 50%)) {
+    //stylesheet for the display in Google Chrome
+    &::-webkit-scrollbar {
+        height: $size;
+        width: $size;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        border-radius: 10px;
+        background: $foreground-color;
+    }
+
+    &::-webkit-scrollbar-track {
+        border-radius: 10px;
+        background: $background-color;
+    }
+
+    // stylesheet for the display in Internet Explorer
+    & {
+        scrollbar-track-color: $background-color;
+        scrollbar-face-color: $foreground-color;
+    }
+}
+.background {
+    // background-color: #141414;
+    padding: 0 1vw;
+}
+.pop-up__background {
+    // width: 932.62px;
+
+    position: fixed;
+    // height: 100vh;
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    left: 0;
+    transform-origin: center top;
+    // transform: translateX(0px) translateY(calc(-103px + 2em)) scaleX(1) scaleY(1) translateZ(0px);
+    z-index: 1;
+    opacity: 1;
+    box-shadow: rgba(0, 0, 0, 75%) 0px 3px 10px;
+    background-color: rgba(0, 0, 0, 0.5);
+    box-sizing: border-box;
+    padding: 8% 0;
+
+    // min-width: 850px;
+}
+
+.pop-up__dialog {
+    // width: 932.62px;
+
+    position: absolute;
+    // height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    top: 30px;
+    transform-origin: center top;
+    // transform: translateX(0px) translateY(calc(-103px + 2em)) scaleX(1) scaleY(1) translateZ(0px);
+    z-index: 100;
+    opacity: 1;
+    box-shadow: rgba(0, 0, 0, 75%) 0px 3px 10px;
+
+    box-sizing: border-box;
+    &.pop-up {
+        animation: popup 0.5s ease-out;
+    }
+    &.pop-out {
+        animation: popout 0.5s ease-out;
+        visibility: hidden;
+    }
+
+    // min-width: 850px;
+}
+
+.pop-up__container {
+    width: 100%;
+    height: 100%;
+    min-height: 100vh;
+    will-change: scroll-position;
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    background-color: rgba(0, 0, 0, 1);
+    font-size: 16px;
+    padding: 4vw 0;
+    // border-radius: 6px;
+
+    // overflow-y: auto;
+}
+
+.max-width {
+    z-index: 3;
+    width: 100%;
+    height: 100%;
+    // max-width: 965px;
+}
+
+.preview-tags {
+    font-size: 14px;
+    line-height: 20px;
+    margin: 0.5em;
+    margin-left: 0;
+    word-break: break-word;
+}
+
+.preview-tags-label {
+    color: #777;
+}
+
+.preview-tags-item {
+    color: #ddd;
+
+    outline-color: #fff;
+
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    text-overflow: ellipsis;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.more-like-this-container {
+    @include scrollbars(5px, gray, #3a3b3c);
+}
+@keyframes popup {
+    0% {
+        transform: scaleX(0.6) scaleY(0.8);
+
+        opacity: 0.7;
+    }
+
+    // 50%{
+    //     transform: scaleX(0.8) scaleY(0.8) ;
+
+    //     opacity:0.7;
+    //    }
+
+    100% {
+        transform: scaleX(1) scaleY(1);
+
+        opacity: 1;
+    }
+}
+
+@keyframes popout {
+    0% {
+        opacity: 1;
+    }
+
+    // 50%{
+    //     transform: scaleX(0.8) scaleY(0.8) ;
+
+    //     opacity:0.7;
+    //    }
+
+    100% {
+        opacity: 0;
+    }
+}
