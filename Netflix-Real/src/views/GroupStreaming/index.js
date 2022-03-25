@@ -202,7 +202,7 @@ const GroupStreaming = () => {
   const handleRefreshButton = useCallback(async () => {
     try {
       setIsFetchingApi(true)
-      const res = await getRecommGroupMoviesState1(members.join("&id="))
+      const res = await getRecommGroupMoviesState1(members.join("&id_user="))
 
       const response = await getAllMovies(getToken())
       let data = []

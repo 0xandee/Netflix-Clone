@@ -9,7 +9,7 @@ const DetailInfo = (props) => {
         <div className="px-4 pb-4" >
             <div className="preview-detail-metadata">
                 <h2 className="episodes__label">{item.name}</h2>
-                <span className="match-score">{props.percentMatched > 0 && `${props.percentMatched}% Match`}</span>
+                <span className="match-score">{props.percentMatched > 30  && `${props.percentMatched}% Match`}</span>
                 <span className="maturiry-rating ml-2">
                     <span className="maturity-number">13+</span>
                 </span>

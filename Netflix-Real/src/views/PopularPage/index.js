@@ -29,9 +29,10 @@ const PopularPage = (props) => {
     }
 
     const handleScroll = useCallback(() => {
-        if (window.innerHeight + document.documentElement.scrollTop !== document.documentElement.offsetHeight || isFetching) return;
+        
+        if (genreMovies.length === dataApiGenreMovies.length || window.innerHeight + document.documentElement.scrollTop >= document.documentElement.offsetHeight || isFetching ) return;
         setIsFetching(true);
-    }, []);
+    }, [isFetching,genreMovies,dataApiGenreMovies]);
 
     const fetchMoreListItems = () => {
 
